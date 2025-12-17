@@ -136,7 +136,7 @@ const HeroSection = () => {
               return (
                 <div key={index} className="flex items-start gap-4 sm:gap-5">
                   {/* Icon */}
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <Icon
                       className="w-10 h-10 sm:w-10 sm:h-10 text-gray-700"
                       strokeWidth={1.5}
