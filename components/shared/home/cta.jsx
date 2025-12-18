@@ -5,20 +5,19 @@ import { ArrowRight } from "lucide-react";
 
 const CTASection = () => {
   return (
-    <section className="py-16 sm:py-20 md:py-16 bg-linear-to-br from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl">
+    <section className="py-16 sm:py-20 md:py-16 bg-[#F5F5F5]  h-[40vh]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute -bottom-5 z-50 bg-[#FAFAFA] h-[40vh] flex flex-col items-center justify-center ">
+        <div className="w-[80vw] md:w-[70vw] pl-5 md:pl-32">
           {/* Main Heading */}
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-8 sm:mb-10 md:mb-12 leading-tight">
-            Let&apos;s make your space amazing together.
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-primary mb-8 sm:mb-10 md:mb-12 leading-tight font-manrope">
+            Let&apos;s make your space <br /> amazing together.
           </h2>
 
           {/* CTA Button */}
-          <button className="group inline-flex items-center gap-3 bg-transparent hover:bg-gray-900/5 text-gray-700 font-semibold px-0 py-2 transition-all duration-200 border-b-2 border-gray-900">
-            <span className="text-base sm:text-lg md:text-xl tracking-wide uppercase">
+          <button className="group inline-flex items-center gap-3 bg-transparent hover:bg-gray-900/5 text-gray-500 font-semibold px-0 py-2 transition-all duration-200  border-gray-900">
+            <span className="text-base sm:text-lg md:text-lg tracking-wide uppercase font-inter">
               LET&lsquo;S GET STARTED
             </span>
-            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform duration-200" />
           </button>
         </div>
       </div>
