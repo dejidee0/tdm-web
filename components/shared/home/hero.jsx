@@ -48,7 +48,7 @@ const HeroSection = () => {
   return (
     <div className="min-h-screen bg-[#F5F5F5] md:min-h-[90vh] overflow-visible relative">
       {/* Container with max-width for content constraint */}
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 relative min-h-[90vh]">
+      <div className="max-w-[1300px] mx-auto h-full flex items-center justify-center px-4 sm:px-2 lg:px-3  relative min-h-[90vh]">
         {/* Blue background section with image */}
         <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 h-[85%] sm:h-[85%] rounded-xl md:rounded-2xl overflow-hidden">
           {/* Background Image */}
