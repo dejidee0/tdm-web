@@ -2,6 +2,7 @@ import { Titillium_Web, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/common/navbar";
 import Footer from "@/components/common/footer";
+import Providers from "@/components/common/providers";
 
 const titilum = Titillium_Web({
   variable: "--font-titilum",
@@ -30,9 +31,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${titilum.variable} ${inter.variable} ${manRope.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
