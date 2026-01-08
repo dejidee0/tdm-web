@@ -2,97 +2,48 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useLogin } from "@/hooks/use-auth";
 
 export default function SignInPage() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
+  const { mutate: login, isPending } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
-    if (!validateForm()) {
+    const formData = new FormData(e.currentTarget);
+
+    // Add remember me to form data
+    formData.append("rememberMe", rememberMe.toString());
+
+    // Client-side validation
+    const newErrors = {};
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Valid email is required";
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Sign in failed");
-      }
-
-      // Store auth token based on remember me preference
-      if (rememberMe) {
-        localStorage.setItem("authToken", data.token);
-      } else {
-        sessionStorage.setItem("authToken", data.token);
-      }
-
-      // Redirect to dashboard or home
-      router.push("/");
-    } catch (error) {
-      setErrors({
-        submit: error.message || "An error occurred during sign in",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Submit with React Query
+    login(formData, {
+      onError: (error) => {
+        setErrors({ submit: error.message });
+      },
+    });
   };
 
   const handleGoogleSignIn = () => {
@@ -106,7 +57,6 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope pt-32">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[#1e293b] mb-2">
             Welcome Back!
@@ -114,16 +64,12 @@ export default function SignInPage() {
           <p className="text-gray-500">Enter your details to proceed further</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email Input */}
           <div>
             <label className="block text-sm text-gray-600 mb-1.5">Email</label>
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               placeholder="abubakarjamiu52@gmail.com"
               className={`w-full px-4 py-3 bg-white border ${
                 errors.email ? "border-red-500" : "border-gray-200"
@@ -134,7 +80,6 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Password Input */}
           <div>
             <label className="block text-sm text-gray-600 mb-1.5">
               Password
@@ -143,8 +88,6 @@ export default function SignInPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
                 placeholder="Min5chars.web"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.password ? "border-red-500" : "border-gray-200"
@@ -167,7 +110,6 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -186,23 +128,20 @@ export default function SignInPage() {
             </Link>
           </div>
 
-          {/* Submit Error */}
           {errors.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-600 text-sm">{errors.submit}</p>
             </div>
           )}
 
-          {/* Sign In Button */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Signing In..." : "Sign In"}
+            {isPending ? "Signing In..." : "Sign In"}
           </button>
 
-          {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200"></div>
@@ -212,7 +151,6 @@ export default function SignInPage() {
             </div>
           </div>
 
-          {/* Google Sign In */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
@@ -239,7 +177,6 @@ export default function SignInPage() {
             Sign In With Google
           </button>
 
-          {/* Apple Sign In */}
           <button
             type="button"
             onClick={handleAppleSignIn}
@@ -252,7 +189,6 @@ export default function SignInPage() {
           </button>
         </form>
 
-        {/* Sign Up Link */}
         <p className="text-center text-sm text-gray-600 mt-6">
           Don&apos;t have an account?{" "}
           <Link

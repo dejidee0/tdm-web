@@ -124,7 +124,7 @@ const Footer = () => {
               href="mailto:tbmdigitals@gmail.com"
               className="text-white text-xl font-semibold hover:text-white/90 transition-colors duration-200 inline-block"
             >
-              tbmdigitals@gmail.com
+              info@tbmbuilding.com
             </a>
           </div>
         </div>

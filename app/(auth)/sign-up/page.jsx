@@ -2,128 +2,61 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useRegister } from "@/hooks/use-auth";
 
 export default function SignUpPage() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
 
-  const validateForm = () => {
+  const { mutate: register, isPending } = useRegister();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+
+    // Client-side validation
     const newErrors = {};
+    const email = formData.get("email");
+    const firstName = formData.get("firstName");
+    const lastName = formData.get("lastName");
+    const phoneNumber = formData.get("phoneNumber");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
 
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Valid email is required";
     }
-
-    if (!formData.firstName) {
-      newErrors.firstName = "First name is required";
+    if (!firstName) newErrors.firstName = "First name is required";
+    if (!lastName) newErrors.lastName = "Last name is required";
+    if (!phoneNumber || !/^\+?[\d\s\-()]+$/.test(phoneNumber)) {
+      newErrors.phoneNumber = "Valid phone number is required";
     }
-
-    if (!formData.lastName) {
-      newErrors.lastName = "Last name is required";
-    }
-
-    if (!formData.phoneNumber) {
-      newErrors.phoneNumber = "Phone number is required";
-    } else if (!/^\+?[\d\s\-()]+$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Phone number is invalid";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
+    if (!password || password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
+    if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-
     if (!agreedToTerms) {
       newErrors.terms = "You must agree to terms & conditions";
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            phoneNumber: formData.phoneNumber,
-            confirmPassword: formData.confirmPassword,
-            password: formData.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Sign up failed");
-      }
-
-      // Store email in localStorage for verification page
-      localStorage.setItem("verificationEmail", formData.email);
-
-      // Redirect to verification page with email as query param
-      router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
-    } catch (error) {
-      setErrors({
-        submit: error.message || "An error occurred during sign up",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Submit with React Query
+    register(formData, {
+      onError: (error) => {
+        setErrors({ submit: error.message });
+      },
+    });
   };
 
   const handleGoogleSignUp = () => {
@@ -150,8 +83,6 @@ export default function SignUpPage() {
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               placeholder="codemonk123@gmail.com"
               className={`w-full px-4 py-3 bg-white border ${
                 errors.email ? "border-red-500" : "border-gray-200"
@@ -170,8 +101,6 @@ export default function SignUpPage() {
               <input
                 type="text"
                 name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
                 placeholder="First name"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.firstName ? "border-red-500" : "border-gray-200"
@@ -188,8 +117,6 @@ export default function SignUpPage() {
               <input
                 type="text"
                 name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
                 placeholder="Last name"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.lastName ? "border-red-500" : "border-gray-200"
@@ -208,8 +135,6 @@ export default function SignUpPage() {
             <input
               type="tel"
               name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
               placeholder="+1 (555) 000-0000"
               className={`w-full px-4 py-3 bg-white border ${
                 errors.phoneNumber ? "border-red-500" : "border-gray-200"
@@ -228,8 +153,6 @@ export default function SignUpPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
                 placeholder="Password"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.password ? "border-red-500" : "border-gray-200"
@@ -260,8 +183,6 @@ export default function SignUpPage() {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
                 placeholder="Confirm password"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-200"
@@ -291,12 +212,7 @@ export default function SignUpPage() {
               <input
                 type="checkbox"
                 checked={agreedToTerms}
-                onChange={(e) => {
-                  setAgreedToTerms(e.target.checked);
-                  if (errors.terms) {
-                    setErrors((prev) => ({ ...prev, terms: "" }));
-                  }
-                }}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <span className="text-sm text-gray-600">
@@ -322,10 +238,10 @@ export default function SignUpPage() {
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Signing Up..." : "Sign Up"}
+            {isPending ? "Signing Up..." : "Sign Up"}
           </button>
 
           <div className="relative my-6">
