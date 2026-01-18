@@ -9,6 +9,9 @@ import {
   Package,
   ShoppingCart,
   CheckCircle,
+  File,
+  Folder,
+  FolderPlus,
 } from "lucide-react";
 import Breadcrumb from "@/components/shared/materials/details/bread-crumb";
 import ImageGallery from "@/components/shared/materials/details/image-gallery";
@@ -82,109 +85,113 @@ export default function MaterialDetailClient({
           />
 
           {/* Right Column - Product Details */}
-          <div className="space-y-6">
-            {/* Title & Favorite */}
-            <div className="flex items-start justify-between gap-4">
-              <h1 className="text-3xl font-semibold text-primary leading-tight">
-                {material?.name || "Product Name"}
-              </h1>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={toggleFavorite}
-                className="shrink-0 w-10 h-10 flex items-center justify-center hover:border-primary transition-colors"
-              >
-                <Heart
-                  className={`w-5 h-5 ${
-                    isFavorite ? "fill-primary text-primary" : "text-primary"
-                  }`}
-                />
-              </motion.button>
-            </div>
-
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < Math.floor(material?.rating || 4.8)
-                        ? "fill-primary text-primary"
-                        : "fill-gray-200 text-gray-200"
+          <div className="w-full max-w-full overflow-hidden">
+            <div className="space-y-6">
+              {/* Title & Favorite */}
+              <div className="flex items-start justify-between gap-4">
+                <h1 className="text-3xl font-semibold text-primary leading-tight flex-1 min-w-0">
+                  {material?.name || "Product Name"}
+                </h1>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={toggleFavorite}
+                  className="shrink-0 w-10 h-10 flex items-center justify-center hover:border-primary transition-colors"
+                >
+                  <Heart
+                    className={`w-5 h-5 ${
+                      isFavorite ? "fill-primary text-primary" : "text-primary"
                     }`}
                   />
-                ))}
+                </motion.button>
               </div>
-              <span className="text-sm text-gray-600">
-                {material?.reviewCount || 42} reviews
-              </span>
-            </div>
 
-            {/* Price */}
-            <div className="space-y-1">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-gray-900">
-                  ${material?.pricePerSqFt?.toFixed(2) || "8.50"}
+              {/* Rating */}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < Math.floor(material?.rating || 4.8)
+                          ? "fill-primary text-primary"
+                          : "fill-gray-200 text-gray-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">
+                  {material?.reviewCount || 42} reviews
                 </span>
-                <span className="text-base text-gray-500">/ sq. ft</span>
               </div>
-              <p className="text-sm text-gray-800">
-                Sold in boxes of {boxes} sq ft (
-                {material?.boxSizeImperial || "900 BF / box"})
-              </p>
-            </div>
 
-            {/* Stock Status */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
-              <CheckCircle className="text-primary w-5 h-5" />
-              <span className="text-sm font-medium text-primary">
-                In Stock & Ready to Ship
-              </span>
-            </div>
+              {/* Price */}
+              <div className="space-y-1">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-gray-900">
+                    ${material?.pricePerSqFt?.toFixed(2) || "8.50"}
+                  </span>
+                  <span className="text-base text-gray-500">/ sq. ft</span>
+                </div>
+                <p className="text-sm text-gray-800">
+                  Sold in boxes of {boxes} sq ft (
+                  {material?.boxSizeImperial || "900 BF / box"})
+                </p>
+              </div>
 
-            {/* Quantity Calculator */}
-            <QuantityCalculator
-              quantity={quantity}
-              setQuantity={setQuantity}
-              boxes={boxes}
-              totalPrice={totalPrice}
-            />
+              {/* Stock Status */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
+                <CheckCircle className="text-primary w-5 h-5" />
+                <span className="text-sm font-medium text-primary">
+                  In Stock & Ready to Ship
+                </span>
+              </div>
 
-            {/* Add to Cart Button */}
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={handleAddToCart}
-              className="w-[90%] mx-auto py-4 bg-primary text-white font-semibold rounded-lg hover:bg-[#0f172a] transition-colors flex items-center justify-center gap-2"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Add to Cart
-            </motion.button>
+              {/* Quantity Calculator */}
+              <div className="w-full">
+                <QuantityCalculator
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  boxes={boxes}
+                  totalPrice={totalPrice}
+                />
+              </div>
 
-            {/* Share Button */}
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={handleShare}
-              className="w-full py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
-            >
-              <Share2 className="w-4 h-4" />
-              Share Project
-            </motion.button>
+              {/* Add to Cart Button */}
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={handleAddToCart}
+                className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-[#0f172a] transition-colors flex items-center justify-center gap-2"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                Add to Cart
+              </motion.button>
 
-            {/* AI Visualizer */}
-            <div className="">
-              <AIVisualizer />
-            </div>
+              {/* Share Button */}
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={handleShare}
+                className="w-full py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                Share Project
+              </motion.button>
 
-            {/* Project Card */}
-            <div className="">
-              <ProjectCard
-                title="Master Bath Renovation"
-                description="This item matches the moodboard for your active project"
-                icon={<Package className="w-5 h-5 text-blue-600" />}
-              />
+              {/* AI Visualizer */}
+              <div className="w-full">
+                <AIVisualizer />
+              </div>
+
+              {/* Project Card */}
+              <div className="w-full">
+                <ProjectCard
+                  title="Master Bath Renovation"
+                  description="This item matches the moodboard for your active project"
+                  icon={<FolderPlus className="w-5 h-5 text-primary/40" />}
+                />
+              </div>
             </div>
           </div>
         </div>

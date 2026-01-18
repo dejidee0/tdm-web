@@ -206,7 +206,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="relative group overflow-hidden rounded-lg flex flex-col"
+            className="relative group overflow-hidden rounded-lg flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "125%" }}>
               <Image
@@ -289,7 +289,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="relative group overflow-hidden rounded-lg bg-white flex flex-col"
+            className="relative group overflow-hidden rounded-lg bg-white flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -366,7 +366,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white rounded-lg overflow-hidden border border-gray-200 flex flex-col"
+            className="bg-white rounded-lg overflow-hidden border border-gray-200 flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -424,7 +424,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white rounded-lg overflow-hidden flex flex-col"
+            className="bg-white rounded-lg overflow-hidden flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -479,7 +479,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white rounded-lg overflow-hidden flex flex-col"
+            className="bg-white rounded-lg overflow-hidden flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -560,7 +560,7 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="relative group overflow-hidden rounded-lg flex flex-col"
+            className="relative group overflow-hidden rounded-lg flex flex-col w-full"
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -728,12 +728,19 @@ export default function MasterpiecesGallery() {
           </div>
         )}
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Masonry Grid */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
           {filteredProjects.map((project, index) => (
-            <div key={project.id} className="w-full">
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="break-inside-avoid mb-6"
+            >
               {renderCard(project, index)}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

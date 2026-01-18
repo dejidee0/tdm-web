@@ -22,28 +22,28 @@ export default function SimilarStyles({ materials = [] }) {
             name: "Calacatta Gold 12x24",
             subtitle: "Italian Marble",
             price: 12.5,
-            image: "/materials/calacatta-gold.jpg",
+            image: "/mock/1.svg",
           },
           {
             id: 2,
             name: "Statuary White 12x24",
             subtitle: "Premium Porcelain",
             price: 6.99,
-            image: "/materials/statuary-white.jpg",
+            image: "/mock/2.svg",
           },
           {
             id: 3,
             name: "Emperador Dark 12x24",
             subtitle: "Spanish Marble",
             price: 9.25,
-            image: "/materials/emperador-dark.jpg",
+            image: "/mock/3.svg",
           },
           {
             id: 4,
             name: "Travertine Beige 12x24",
             subtitle: "Natural Stone",
             price: 5.5,
-            image: "/materials/travertine-beige.jpg",
+            image: "/mock/4.svg",
           },
         ];
 
@@ -92,7 +92,7 @@ export default function SimilarStyles({ materials = [] }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="bg-white rounded-lg border border-gray-200 p-6"
+      className="bg-white p-4"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -145,11 +145,11 @@ export default function SimilarStyles({ materials = [] }) {
           >
             <Link
               href={`/materials/${product.id}`}
-              className="group block w-[280px] flex-shrink-0"
+              className="group block w-[280px] shrink-0"
             >
               <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all">
                 {/* Product Image */}
-                <div className="relative aspect-square bg-gray-100">
+                <div className="relative aspect-3/2 bg-gray-100">
                   <Image
                     src={product.image}
                     alt={product.name}

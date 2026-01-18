@@ -36,7 +36,7 @@ export default function RatingsReviews({
                 key={i}
                 className={`w-5 h-5 ${
                   i < Math.floor(averageRating)
-                    ? "fill-yellow-400 text-yellow-400"
+                    ? "fill-primary text-primary"
                     : "fill-gray-200 text-gray-200"
                 }`}
               />
@@ -68,7 +68,7 @@ export default function RatingsReviews({
                       delay: 0.1 * (5 - rating),
                       ease: "easeOut",
                     }}
-                    className="h-full bg-yellow-400 rounded-full"
+                    className="h-full bg-primary rounded-full"
                   />
                 </div>
                 <span className="text-sm text-gray-600 w-10 text-right">
