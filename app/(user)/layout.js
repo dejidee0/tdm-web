@@ -1,5 +1,5 @@
 import { Titillium_Web, Inter, Manrope } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Navbar from "@/components/common/navbar";
 import Footer from "@/components/common/footer";
 import Providers from "@/components/common/providers";
