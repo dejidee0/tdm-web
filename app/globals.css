@@ -29,3 +29,71 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom scrollbar styles for tables */
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+.table-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* For Firefox */
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+/* Add scroll shadow indicators */
+.scroll-container {
+  position: relative;
+}
+
+.scroll-container::before,
+.scroll-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s;
+}
+
+.scroll-container::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.scroll-container::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+/* Hide shadows when not scrollable */
+.scroll-container.no-scroll::before,
+.scroll-container.no-scroll::after {
+  display: none;
+}
