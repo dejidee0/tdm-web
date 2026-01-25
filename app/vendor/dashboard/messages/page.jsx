@@ -69,7 +69,7 @@ export default function MessagesPage() {
   );
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col bg-[#F8FAFC]">
+    <div className="h-[calc(100vh-65px)] flex flex-col bg-[#F8FAFC] overflow-hidden">
       {/* Page Header - Above everything */}
       <div className="px-4 md:px-6 py-4 md:py-6 bg-white border-b border-[#E5E7EB]">
         <div className="flex items-center gap-3">
