@@ -1,7 +1,7 @@
 // app/materials/[id]/page.jsx
 import { notFound } from "next/navigation";
 import MaterialDetailClient from "./client";
-import { mockMaterialData, mockSimilarMaterials } from "../../../lib/mock-data";
+import { mockMaterialData, mockSimilarMaterials } from "@/lib/mock-data";
 
 // API function - currently using mock data
 async function getMaterial(id) {
