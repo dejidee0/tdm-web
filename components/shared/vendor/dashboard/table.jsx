@@ -161,7 +161,9 @@ export default function OrdersTable({ orders, isLoading }) {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => router.push(`/vendor/orders/${order.id}`)}
+                    onClick={() =>
+                      router.push(`/vendor/dashboard/orders/${order.id}`)
+                    }
                     className="px-4 py-2 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
                   >
                     View Order

@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 import Navbar from "@/components/common/navbar";
 
 import Providers from "@/components/common/providers";
@@ -10,13 +10,9 @@ export const metadata = {
 
 export default function AuthLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
-      </body>
-    </html>
+    <Providers>
+      <Navbar />
+      {children}
+    </Providers>
   );
 }

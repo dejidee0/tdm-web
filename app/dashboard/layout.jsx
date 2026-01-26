@@ -1,19 +1,18 @@
-import { Titillium_Web, Inter, Manrope } from "next/font/google";
-import "../globals.css";
 import Navbar from "@/components/common/navbar";
-import Footer from "@/components/common/footer";
+import "../globals.css";
 import Providers from "@/components/common/providers";
+import Footer from "@/components/common/footer";
 
 export const metadata = {
-  title: "TDM ",
+  title: "TDM User Dashboard",
   description: "Building and Construction Company",
 };
 
-export default function UserLayout({ children }) {
+export default function UserDashboardLayout({ children }) {
   return (
     <Providers>
       <Navbar />
-      {children}
+      <div className="mt-24 ">{children}</div>
       <Footer />
     </Providers>
   );
