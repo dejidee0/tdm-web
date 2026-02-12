@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Design
+
+View the Figma design: [TBM Design](https://www.figma.com/design/LecIlerhL3NDfYBqa3pfNv/TBM?node-id=1-2&t=GpPRd4v1dmtfBKZR-1)
+
 ## Getting Started
 
 First, run the development server:
