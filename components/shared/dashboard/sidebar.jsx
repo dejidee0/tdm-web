@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { icon: LayoutGrid, label: "Overview", href: "/dashboard" },
   { icon: Package, label: "Orders", href: "/dashboard/orders" },
-  { icon: Layers, label: "AI Designs", href: "/dashboard/designs" },
+  { icon: Layers, label: "AI Designs", href: "/dashboard/ai-designs" },
   { icon: Heart, label: "Saved Items", href: "/dashboard/saved" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
 ];

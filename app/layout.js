@@ -1,12 +1,22 @@
-import { Inter } from "next/font/google";
+import { Inter, Manrope, Titillium_Web } from "next/font/google";
 import "./globals.css";
 
 import Providers from "@/components/common/providers";
 
+const titilum = Titillium_Web({
+  variable: "--font-titilum",
+  subsets: ["latin"],
+  weight: ["200", "300", "400"],
+});
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "700", "900"],
+  weight: ["200", "300", "400"],
+});
+const manRope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  weight: ["200", "300", "400"],
   display: "swap",
 });
 
@@ -19,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${titilum.variable} ${inter.variable} ${manRope.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

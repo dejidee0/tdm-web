@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-6 md:space-y-8 md:w-[60vw] w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

@@ -11,8 +11,12 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-text-black: #0f172a;
   --color-foreground: var(--foreground);
   --font-inter: var(--font-inter);
+  --font-primary: var(--font-titilum);
+  --font-inter: var(--font-inter);
+  --font-manrope: var(--font-manrope);
 }
 
 @media (prefers-color-scheme: dark) {
