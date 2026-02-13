@@ -1,12 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { KeyRound, Trash2, FileText, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const iconMap = {
-  KeyRound,
-  Trash2,
-  FileText,
+  KeyRound: "/assets/svgs/admin dashboard overview/reset password.svg",
+  Trash2: "/assets/svgs/admin dashboard overview/clear cache.svg",
+  FileText: "/assets/svgs/admin dashboard overview/generate audit.svg",
+};
+
+const iconColors = {
+  KeyRound: { bg: "bg-[#60A5FA]/10" },
+  Trash2: { bg: "bg-[#FBBF24]/10" },
+  FileText: { bg: "bg-[#C084FC]/10" },
 };
 
 export default function AdminQuickActions({ actions }) {
@@ -27,7 +34,8 @@ export default function AdminQuickActions({ actions }) {
 
       <div className="space-y-2">
         {actions.map((action, index) => {
-          const Icon = iconMap[action.icon];
+          const iconPath = iconMap[action.icon];
+          const colors = iconColors[action.icon] || { bg: "bg-[#F1F5F9]" };
 
           return (
             <motion.button
@@ -40,8 +48,15 @@ export default function AdminQuickActions({ actions }) {
               className="w-full flex items-center justify-between p-4 bg-[#F8FAFC] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                  <Icon size={18} className="text-[#64748B]" />
+                <div className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center`}>
+                  {iconPath && (
+                    <Image
+                      src={iconPath}
+                      alt={action.label}
+                      width={18}
+                      height={18}
+                    />
+                  )}
                 </div>
                 <span className="font-manrope text-[14px] font-medium text-[#1E293B]">
                   {action.label}
