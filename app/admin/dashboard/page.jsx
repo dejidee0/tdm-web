@@ -16,7 +16,8 @@ import {
   useRefreshAdminDashboard,
   useExportReport,
 } from "@/hooks/use-admin";
-
+import refreshData from "@/public/assets/svgs/adminDashboardOverview/refreshData.svg"
+import Image from "next/image";
 
 export default function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useAdminStats();
@@ -82,10 +83,7 @@ export default function AdminDashboardPage() {
               disabled={isRefreshing}
               className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
-              <RefreshCw
-                size={16}
-                className={isRefreshing ? "animate-spin" : ""}
-              />
+              <Image src={refreshData} alt="Refresh Data" />
               Refresh Data
             </motion.button>
           </div>

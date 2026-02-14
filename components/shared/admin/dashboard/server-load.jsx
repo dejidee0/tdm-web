@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import vectorIcon from "@/public/assets/svgs/adminDashboardOverview/vector.svg";
 
 export default function ServerLoad({ data }) {
   if (!data) {
@@ -13,7 +14,7 @@ export default function ServerLoad({ data }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      className="bg-[#273054] p-5 rounded-none"
+      className="bg-gradient-to-br from-[#273054] to-[#0F172A] p-5 rounded-[12.67px]"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
@@ -26,7 +27,7 @@ export default function ServerLoad({ data }) {
 
         {/* Server Icon */}
         <Image
-          src="/assets/svgs/admin dashboard overview/vector.svg"
+          src={vectorIcon}
           alt="Server"
           width={80}
           height={84}

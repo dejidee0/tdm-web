@@ -6,6 +6,17 @@ import { Download, Search, Calendar, Eye } from "lucide-react";
 import Image from "next/image";
 import { useSystemStats, useSystemLogs, useExportLogs } from "@/hooks/use-system-logs";
 import { severityColors } from "@/lib/mock/system-logs";
+import aiJobEngineIcon from "@/public/assets/svgs/systemLogs/ajJobEngine.svg";
+import paymentGwIcon from "@/public/assets/svgs/systemLogs/paymentGw.svg";
+import userAuthIcon from "@/public/assets/svgs/systemLogs/userAuth.svg";
+import dbShard04Icon from "@/public/assets/svgs/systemLogs/dbShard04.svg";
+import dataSyncIcon from "@/public/assets/svgs/systemLogs/dataSync.svg";
+import publicApiIcon from "@/public/assets/svgs/systemLogs/publicApi.svg";
+import criticalErrorsIcon from "@/public/assets/svgs/systemLogs/criticalErrors.svg";
+import activeWarningsIcon from "@/public/assets/svgs/systemLogs/activeWarnings.svg";
+import avgResponseIcon from "@/public/assets/svgs/systemLogs/avgResponse.svg";
+import logsIngestedIcon from "@/public/assets/svgs/systemLogs/logsIngested.svg";
+import filterIcon from "@/public/assets/svgs/systemLogs/filter.svg";
 
 export default function SystemLogPage() {
   const [page, setPage] = useState(1);
@@ -15,16 +26,16 @@ export default function SystemLogPage() {
   // Map service names to icon paths
   const getServiceIcon = (serviceName) => {
     const iconMap = {
-      "AI_JOB_ENGINE": "/assets/svgs/system logs/ajjobengine.svg",
-      "PAYMENT_GW": "/assets/svgs/system logs/paymentgw.svg",
-      "USER_AUTH": "/assets/svgs/system logs/userauth.svg",
-      "DB_SHARD_04": "/assets/svgs/system logs/dbshard04.svg",
-      "DATA_SYNC": "/assets/svgs/system logs/datasync.svg",
-      "PUBLIC_API": "/assets/svgs/system logs/publicapi.svg",
-      "WEBHOOK_SRV": "/assets/svgs/system logs/publicapi.svg",
-      "CACHE_LAYER": "/assets/svgs/system logs/datasync.svg",
+      "AI_JOB_ENGINE": aiJobEngineIcon,
+      "PAYMENT_GW": paymentGwIcon,
+      "USER_AUTH": userAuthIcon,
+      "DB_SHARD_04": dbShard04Icon,
+      "DATA_SYNC": dataSyncIcon,
+      "PUBLIC_API": publicApiIcon,
+      "WEBHOOK_SRV": publicApiIcon,
+      "CACHE_LAYER": dataSyncIcon,
     };
-    return iconMap[serviceName] || "/assets/svgs/system logs/publicapi.svg";
+    return iconMap[serviceName] || publicApiIcon;
   };
 
   const { data: stats, isLoading: statsLoading } = useSystemStats();
@@ -52,10 +63,10 @@ export default function SystemLogPage() {
   }
 
   const statsData = [
-    { ...stats.criticalErrors, key: "criticalErrors", bgColor: "bg-white", icon: "/assets/svgs/system logs/criticalerrors.svg" },
-    { ...stats.activeWarnings, key: "activeWarnings", bgColor: "bg-white", icon: "/assets/svgs/system logs/activewarnings.svg" },
-    { ...stats.avgResponseTime, key: "avgResponseTime", bgColor: "bg-white", icon: "/assets/svgs/system logs/avgresponse.svg" },
-    { ...stats.logsIngested, key: "logsIngested", bgColor: "bg-white", icon: "/assets/svgs/system logs/logsingested.svg" },
+    { ...stats.criticalErrors, key: "criticalErrors", bgColor: "bg-white", icon: criticalErrorsIcon },
+    { ...stats.activeWarnings, key: "activeWarnings", bgColor: "bg-white", icon: activeWarningsIcon },
+    { ...stats.avgResponseTime, key: "avgResponseTime", bgColor: "bg-white", icon: avgResponseIcon },
+    { ...stats.logsIngested, key: "logsIngested", bgColor: "bg-white", icon: logsIngestedIcon },
   ];
 
   const severityFilters = [
@@ -189,7 +200,7 @@ export default function SystemLogPage() {
               </div>
               <button className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155]">
                 <Image
-                  src="/assets/svgs/system logs/filter.svg"
+                  src={filterIcon}
                   alt="Filter"
                   width={16}
                   height={16}

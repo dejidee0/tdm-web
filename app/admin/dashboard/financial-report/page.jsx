@@ -12,6 +12,8 @@ import {
   useTransactions,
   useExportFinancialReport,
 } from "@/hooks/use-financial";
+import revenueIcon from "@/public/assets/svgs/financialReport/revenue.svg";
+import pendingIcon from "@/public/assets/svgs/financialReport/pending.svg";
 
 export default function FinancialReportPage() {
   const [page, setPage] = useState(1);
@@ -110,7 +112,7 @@ export default function FinancialReportPage() {
               {/* Icon in top right */}
               <div className="absolute top-6 right-6">
                 <Image
-                  src={stat.isNegative ? "/assets/svgs/financial report/pending.svg" : "/assets/svgs/financial report/revenue.svg"}
+                  src={stat.isNegative ? pendingIcon : revenueIcon}
                   alt={stat.label}
                   width={26}
                   height={26}

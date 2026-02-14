@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Search, ChevronDown, Download } from "lucide-react";
 import { useExportUsers } from "@/hooks/use-users";
 import Image from "next/image";
+import roleIcon from "@/public/assets/svgs/userAndRoleMgt/role.svg";
+import statusIcon from "@/public/assets/svgs/userAndRoleMgt/status.svg";
 
 export default function UserManagementFilters({
   search,
@@ -41,7 +43,7 @@ export default function UserManagementFilters({
         {/* Role Filter */}
         <div className="relative">
           <Image
-            src="/assets/svgs/user and role mgt/role.svg"
+            src={roleIcon}
             alt="Role"
             width={16}
             height={16}
@@ -68,7 +70,7 @@ export default function UserManagementFilters({
         {/* Status Filter */}
         <div className="relative">
           <Image
-            src="/assets/svgs/user and role mgt/status.svg"
+            src={statusIcon}
             alt="Status"
             width={16}
             height={16}

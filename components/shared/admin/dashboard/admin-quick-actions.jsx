@@ -3,17 +3,20 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import resetPasswordIcon from "@/public/assets/svgs/adminDashboardOverview/resetPassword.svg";
+import clearCacheIcon from "@/public/assets/svgs/adminDashboardOverview/clearCache.svg";
+import generateAuditIcon from "@/public/assets/svgs/adminDashboardOverview/generateAudit.svg";
 
 const iconMap = {
-  KeyRound: "/assets/svgs/admin dashboard overview/reset password.svg",
-  Trash2: "/assets/svgs/admin dashboard overview/clear cache.svg",
-  FileText: "/assets/svgs/admin dashboard overview/generate audit.svg",
+  KeyRound: resetPasswordIcon,
+  Trash2: clearCacheIcon,
+  FileText: generateAuditIcon,
 };
 
 const iconColors = {
-  KeyRound: { bg: "bg-[#60A5FA]/10" },
-  Trash2: { bg: "bg-[#FBBF24]/10" },
-  FileText: { bg: "bg-[#C084FC]/10" },
+  KeyRound: { bg: "bg-[#1E3A8A4D]" },
+  Trash2: { bg: "bg-[#78350F4D]" },
+  FileText: { bg: "bg-[#581C874D]" },
 };
 
 export default function AdminQuickActions({ actions }) {
@@ -45,7 +48,7 @@ export default function AdminQuickActions({ actions }) {
               transition={{ delay: 0.5 + index * 0.1 }}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-between p-4 bg-[#F8FAFC] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
+              className="w-full flex items-center justify-between p-4 bg-[#2730541A] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
             >
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center`}>

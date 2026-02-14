@@ -92,10 +92,10 @@ export default function RevenueChart({ data }) {
         {/* Row 1: Title + Dropdown */}
         <div className="flex items-center justify-between mb-1">
           <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
-            Monthly Revenue Trends
+            Revenue Summary
           </h2>
           <div className="relative">
-            <select className="appearance-none bg-[#1E293B] text-white rounded-full px-4 py-1.5 pr-8 font-manrope text-[12px] font-medium cursor-pointer hover:bg-[#334155] transition-colors">
+            <select className="appearance-none bg-[#273054] text-white rounded-[8.44px] px-4 py-2 pr-8 font-manrope text-[12px] font-medium cursor-pointer hover:bg-[#334155] transition-colors">
               <option>Last 6 Months</option>
               <option>Last 12 Months</option>
               <option>Last Year</option>

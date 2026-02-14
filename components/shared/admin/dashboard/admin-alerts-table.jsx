@@ -5,27 +5,27 @@ import { AlertTriangle, ChevronDown } from "lucide-react";
 
 const severityStyles = {
   critical: {
-    dot: "bg-[#DC2626]",
-    text: "text-[#DC2626]",
-    badge: "bg-[#FEE2E2]",
+    dot: "bg-[#EF4444]",
+    text: "text-[#EF4444]",
+    badge: "bg-[#EF44441A]",
   },
   high: {
-    dot: "bg-[#EA580C]",
-    text: "text-[#EA580C]",
-    badge: "bg-[#FED7AA]",
+    dot: "bg-[#F97316]",
+    text: "text-[#F97316]",
+    badge: "bg-[#F973161A]",
   },
   medium: {
-    dot: "bg-[#2563EB]",
-    text: "text-[#2563EB]",
-    badge: "bg-[#DBEAFE]",
+    dot: "bg-[#EAB308]",
+    text: "text-[#EAB308]",
+    badge: "bg-[#EAB3081A]",
   },
 };
 
 const getActionButtonStyle = (action) => {
   if (action === "Resolve") {
-    return "bg-[#E5E7EB] text-[#1E293B] hover:bg-[#CBD5E1]";
+    return "bg-[#27305433] text-[#273054] hover:bg-[#CBD5E1]";
   }
-  return "bg-[#1E293B] text-white hover:bg-[#334155]";
+  return "bg-[#273054] text-white hover:bg-[#334155]";
 };
 
 export default function AdminAlertsTable({ alerts }) {
@@ -99,7 +99,7 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Severity Badge with background pill */}
                   <div>
                     <span
-                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${severity.badge}`}
+                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity.badge}`}
                     >
                       <span className={`w-2 h-2 rounded-full ${severity.dot}`} />
                       <span
@@ -132,7 +132,7 @@ export default function AdminAlertsTable({ alerts }) {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`px-4 py-1.5 rounded-md font-manrope text-[12px] font-medium transition-colors ${getActionButtonStyle(alert.action)}`}
+                      className={`px-4 py-1.5 rounded-[8.44px] font-manrope text-[12px] font-medium transition-colors ${getActionButtonStyle(alert.action)}`}
                     >
                       {alert.action}
                     </motion.button>
