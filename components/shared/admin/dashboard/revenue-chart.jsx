@@ -38,18 +38,21 @@ export default function RevenueChart({ data }) {
       return { x, y, month: item.month, revenue: item.revenue };
     });
 
-    // Generate SVG path
-    const path = points.reduce((acc, point, index) => {
+    // Generate smooth curve SVG path using cubic bezier curves
+    const path = points.reduce((acc, point, index, arr) => {
       if (index === 0) {
         return `M ${point.x} ${point.y}`;
       }
-      return `${acc} L ${point.x} ${point.y}`;
-    }, "");
 
-    // Generate area path (for gradient fill)
-    const areaPath = `${path} L ${points[points.length - 1].x} ${
-      padding.top + chartHeight
-    } L ${padding.left} ${padding.top + chartHeight} Z`;
+      // Calculate control points for smooth curve
+      const prev = arr[index - 1];
+      const controlX1 = prev.x + (point.x - prev.x) / 3;
+      const controlY1 = prev.y;
+      const controlX2 = point.x - (point.x - prev.x) / 3;
+      const controlY2 = point.y;
+
+      return `${acc} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${point.x} ${point.y}`;
+    }, "");
 
     // Generate Y-axis labels
     const yAxisLabels = [];
@@ -71,7 +74,6 @@ export default function RevenueChart({ data }) {
       chartHeight,
       points,
       path,
-      areaPath,
       yAxisLabels,
       maxRevenue,
       minRevenue,
@@ -86,31 +88,35 @@ export default function RevenueChart({ data }) {
       className="bg-white rounded-xl border border-[#E5E7EB] p-6"
     >
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6 gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-3">
-            <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
-              Revenue Summary
-            </h2>
-            <div className="relative">
-              <select className="appearance-none bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg px-3 py-1.5 pr-8 font-manrope text-[12px] text-[#64748B] cursor-pointer hover:bg-[#F1F5F9] transition-colors">
-                <option>Last 6 Months</option>
-                <option>Last 12 Months</option>
-                <option>Last Year</option>
-              </select>
-              <ChevronDown
-                size={14}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
-              />
-            </div>
+      <div className="mb-6">
+        {/* Row 1: Title + Dropdown */}
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+            Monthly Revenue Trends
+          </h2>
+          <div className="relative">
+            <select className="appearance-none bg-[#1E293B] text-white rounded-full px-4 py-1.5 pr-8 font-manrope text-[12px] font-medium cursor-pointer hover:bg-[#334155] transition-colors">
+              <option>Last 6 Months</option>
+              <option>Last 12 Months</option>
+              <option>Last Year</option>
+            </select>
+            <ChevronDown
+              size={14}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white pointer-events-none"
+            />
           </div>
-          <p className="font-manrope text-[13px] text-[#64748B]">
-            Monthly recurring revenue & growth trends
-          </p>
         </div>
 
-        {/* Key Metrics */}
-        <div className="flex gap-6">
+        {/* Row 2: Subtitle */}
+        <p className="font-manrope text-[13px] text-[#64748B] mb-4">
+          Monthly recurring revenue & growth trends
+        </p>
+
+        {/* Divider */}
+        <div className="h-[1px] bg-[#273054] mb-4" />
+
+        {/* Row 3: Key Metrics */}
+        <div className="flex gap-8">
           <div>
             <p className="text-[12px] text-[#64748B] mb-1">
               Total Revenue (YTD)
@@ -136,16 +142,9 @@ export default function RevenueChart({ data }) {
           width="100%"
           height={chartConfig.height}
           viewBox={`0 0 ${chartConfig.width} ${chartConfig.height}`}
-          className="min-w-[600px]"
+          className="min-w-[300px] sm:min-w-[500px] md:min-w-[600px]"
+          preserveAspectRatio="xMidYMid meet"
         >
-          <defs>
-            {/* Gradient for area fill */}
-            <linearGradient id="revenueGradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
           {/* Grid lines */}
           {chartConfig.yAxisLabels.map((label, i) => (
             <g key={i}>
@@ -169,21 +168,12 @@ export default function RevenueChart({ data }) {
             </g>
           ))}
 
-          {/* Area fill */}
-          <motion.path
-            d={chartConfig.areaPath}
-            fill="url(#revenueGradient)"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          />
-
           {/* Line path */}
           <motion.path
             d={chartConfig.path}
             fill="none"
-            stroke="#3B82F6"
-            strokeWidth="3"
+            stroke="#1E293B"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             initial={{ pathLength: 0 }}
@@ -197,8 +187,8 @@ export default function RevenueChart({ data }) {
               <motion.circle
                 cx={point.x}
                 cy={point.y}
-                r={activePoint === i ? 6 : 4}
-                fill="#3B82F6"
+                r={activePoint === i ? 5 : 3.5}
+                fill="#1E293B"
                 stroke="#ffffff"
                 strokeWidth="2"
                 className="cursor-pointer"

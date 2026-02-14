@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Search, SlidersHorizontal, Calendar, Eye } from "lucide-react";
+import { Download, Search, Calendar, Eye } from "lucide-react";
+import Image from "next/image";
 import { useSystemStats, useSystemLogs, useExportLogs } from "@/hooks/use-system-logs";
 import { severityColors } from "@/lib/mock/system-logs";
 
@@ -10,6 +11,21 @@ export default function SystemLogPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [severity, setSeverity] = useState("all");
+
+  // Map service names to icon paths
+  const getServiceIcon = (serviceName) => {
+    const iconMap = {
+      "AI_JOB_ENGINE": "/assets/svgs/system logs/ajjobengine.svg",
+      "PAYMENT_GW": "/assets/svgs/system logs/paymentgw.svg",
+      "USER_AUTH": "/assets/svgs/system logs/userauth.svg",
+      "DB_SHARD_04": "/assets/svgs/system logs/dbshard04.svg",
+      "DATA_SYNC": "/assets/svgs/system logs/datasync.svg",
+      "PUBLIC_API": "/assets/svgs/system logs/publicapi.svg",
+      "WEBHOOK_SRV": "/assets/svgs/system logs/publicapi.svg",
+      "CACHE_LAYER": "/assets/svgs/system logs/datasync.svg",
+    };
+    return iconMap[serviceName] || "/assets/svgs/system logs/publicapi.svg";
+  };
 
   const { data: stats, isLoading: statsLoading } = useSystemStats();
   const { data: logs, isLoading: logsLoading } = useSystemLogs({
@@ -36,10 +52,10 @@ export default function SystemLogPage() {
   }
 
   const statsData = [
-    { ...stats.criticalErrors, key: "criticalErrors", bgColor: "bg-[#FEE2E2]" },
-    { ...stats.activeWarnings, key: "activeWarnings", bgColor: "bg-[#FEF3C7]" },
-    { ...stats.avgResponseTime, key: "avgResponseTime", bgColor: "bg-[#DBEAFE]" },
-    { ...stats.logsIngested, key: "logsIngested", bgColor: "bg-[#D1FAE5]" },
+    { ...stats.criticalErrors, key: "criticalErrors", bgColor: "bg-white", icon: "/assets/svgs/system logs/criticalerrors.svg" },
+    { ...stats.activeWarnings, key: "activeWarnings", bgColor: "bg-white", icon: "/assets/svgs/system logs/activewarnings.svg" },
+    { ...stats.avgResponseTime, key: "avgResponseTime", bgColor: "bg-white", icon: "/assets/svgs/system logs/avgresponse.svg" },
+    { ...stats.logsIngested, key: "logsIngested", bgColor: "bg-white", icon: "/assets/svgs/system logs/logsingested.svg" },
   ];
 
   const severityFilters = [
@@ -53,14 +69,14 @@ export default function SystemLogPage() {
   return (
     <div className="max-w-[1440px] mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="font-manrope text-[32px] font-bold text-[#1E293B]">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <h1 className="font-manrope text-[20px] sm:text-[26px] md:text-[32px] font-extrabold text-[#1E293B]" style={{ fontWeight: 900 }}>
                 System Logs & Monitoring
               </h1>
-              <span className="px-3 py-1 bg-[#10B981] text-white rounded-full font-manrope text-[11px] font-bold uppercase tracking-wider">
+              <span className="px-2 sm:px-3 py-1 bg-[#D1FAE5] text-[#10B981] rounded-full font-manrope text-[9px] sm:text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
                 • LIVE
               </span>
             </div>
@@ -76,10 +92,11 @@ export default function SystemLogPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => exportLogs()}
             disabled={isExporting}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[12px] sm:text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 whitespace-nowrap"
           >
-            <Download size={16} />
-            Export Logs
+            <Download size={14} className="sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Export Logs</span>
+            <span className="sm:hidden">Export</span>
           </motion.button>
         </div>
       </div>
@@ -92,12 +109,22 @@ export default function SystemLogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`${stat.bgColor} rounded-xl p-6 border border-[#E5E7EB]`}
+            className={`${stat.bgColor} rounded-xl p-6 border border-[#E5E7EB] relative overflow-hidden`}
           >
+            {/* Icon in top right */}
+            <div className="absolute top-6 right-6 opacity-20">
+              <Image
+                src={stat.icon}
+                alt={stat.label}
+                width={26}
+                height={26}
+              />
+            </div>
+
             <p className="font-manrope text-[13px] text-[#64748B] mb-2">{stat.label}</p>
-            <div className="flex items-end gap-3 mb-2">
+            <div className="flex items-end gap-3">
               <h3 className="font-manrope text-[32px] font-bold text-[#1E293B]">{stat.value}</h3>
-              {stat.change !== 0 && (
+              {stat.change !== 0 ? (
                 <span
                   className={`font-manrope text-[14px] font-bold mb-2 ${
                     stat.changeType === "increase" ? "text-[#EF4444]" : "text-[#10B981]"
@@ -106,16 +133,19 @@ export default function SystemLogPage() {
                   {stat.changeType === "increase" ? "+" : ""}
                   {stat.change}%
                 </span>
+              ) : (
+                <span className="font-manrope text-[14px] font-bold mb-2 text-[#94A3B8]">
+                  {stat.subtitle}
+                </span>
               )}
             </div>
-            <p className="font-manrope text-[12px] text-[#94A3B8]">{stat.subtitle}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="bg-white rounded-xl border border-[#E5E7EB] p-4 sm:p-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
           {/* Search Logs */}
           <div>
             <label className="block font-manrope text-[13px] font-medium text-[#64748B] uppercase tracking-wider mb-2">
@@ -134,7 +164,7 @@ export default function SystemLogPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+                className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
               />
             </div>
           </div>
@@ -154,11 +184,17 @@ export default function SystemLogPage() {
                   type="text"
                   value="Oct 26, 2023 - Oct 27, 2023"
                   readOnly
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#64748B] cursor-pointer"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#64748B] cursor-pointer"
                 />
               </div>
               <button className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155]">
-                <SlidersHorizontal size={16} />
+                <Image
+                  src="/assets/svgs/system logs/filter.svg"
+                  alt="Filter"
+                  width={16}
+                  height={16}
+                  className="brightness-0 invert"
+                />
                 Filters
               </button>
             </div>
@@ -166,34 +202,52 @@ export default function SystemLogPage() {
         </div>
 
         {/* Severity Pills */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-manrope text-[13px] font-medium text-[#64748B] uppercase tracking-wider">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+          <span className="font-manrope text-[11px] sm:text-[13px] font-medium text-[#64748B] uppercase tracking-wider">
             Severity:
           </span>
-          {severityFilters.map((filter) => (
-            <button
-              key={filter.value}
-              onClick={() => {
-                setSeverity(filter.value);
-                setPage(1);
-              }}
-              className={`px-4 py-2 rounded-full font-manrope text-[13px] font-medium transition-colors ${
-                severity === filter.value
-                  ? filter.value === "critical"
-                    ? "bg-[#EF4444] text-white"
-                    : filter.value === "error"
-                    ? "bg-[#F59E0B] text-white"
-                    : filter.value === "warning"
-                    ? "bg-[#F59E0B] text-white"
-                    : filter.value === "info"
-                    ? "bg-[#3B82F6] text-white"
-                    : "bg-[#1E293B] text-white"
-                  : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#E5E7EB]"
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
+          {severityFilters.map((filter) => {
+            const isActive = severity === filter.value;
+
+            // Determine text color and bullet color based on filter type
+            let textColor = "";
+            let bulletColor = "";
+            let showBullet = filter.value !== "all";
+
+            if (filter.value === "all") {
+              textColor = isActive ? "text-white" : "text-[#64748B]";
+            } else if (filter.value === "critical") {
+              textColor = isActive ? "text-white" : "text-[#DC2626]";
+              bulletColor = "bg-[#DC2626]";
+            } else if (filter.value === "error") {
+              textColor = isActive ? "text-white" : "text-[#EA580C]";
+              bulletColor = "bg-[#EA580C]";
+            } else if (filter.value === "warning") {
+              textColor = isActive ? "text-white" : "text-[#EA580C]";
+              bulletColor = "bg-[#EA580C]";
+            } else if (filter.value === "info") {
+              textColor = isActive ? "text-white" : "text-[#2563EB]";
+              bulletColor = "bg-[#2563EB]";
+            }
+
+            const buttonBg = isActive ? "bg-[#1E293B]" : "bg-white";
+
+            return (
+              <button
+                key={filter.value}
+                onClick={() => {
+                  setSeverity(filter.value);
+                  setPage(1);
+                }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full font-manrope text-[13px] font-medium transition-colors ${buttonBg} ${textColor} hover:bg-[#E5E7EB]`}
+              >
+                {showBullet && !isActive && (
+                  <span className={`w-2 h-2 rounded-full ${bulletColor}`} />
+                )}
+                {filter.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -203,22 +257,22 @@ export default function SystemLogPage() {
           <table className="w-full">
             <thead className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
               <tr>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
                   Timestamp
                 </th>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
                   Severity
                 </th>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
-                  Service Source
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+                  Service
                 </th>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
                   Message
                 </th>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
-                  User/Actor
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+                  Actor
                 </th>
-                <th className="px-6 py-3 text-left font-manrope text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
                   Action
                 </th>
               </tr>
@@ -229,33 +283,39 @@ export default function SystemLogPage() {
 
                 return (
                   <tr key={log.id} className="hover:bg-[#F8FAFC]">
-                    <td className="px-6 py-4 font-manrope text-[13px] text-[#64748B]">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] text-[#64748B] whitespace-normal sm:whitespace-nowrap">
                       {log.timestamp}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-3 py-1 rounded-md font-manrope text-[11px] font-bold uppercase ${severityStyle.badge}`}
+                        className={`inline-flex px-2 sm:px-3 py-1 rounded-md font-manrope text-[10px] sm:text-[11px] font-bold uppercase ${severityStyle.badge}`}
                       >
                         {log.severity}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center">
-                          <span className="text-[14px]">⚙</span>
+                    <td className="px-2 sm:px-6 py-3 sm:py-4">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center">
+                          <Image
+                            src={getServiceIcon(log.service.name)}
+                            alt={log.service.displayName}
+                            width={16}
+                            height={16}
+                            className="w-3 h-3 sm:w-4 sm:h-4"
+                          />
                         </div>
-                        <span className="font-manrope text-[13px] font-medium text-[#1E293B]">
+                        <span className="font-manrope text-[11px] sm:text-[13px] font-medium text-[#1E293B]">
                           {log.service.name}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-manrope text-[13px] text-[#64748B] max-w-md truncate">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] text-[#64748B] max-w-xs sm:max-w-sm md:max-w-md truncate">
                       {log.message}
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         <div
-                          className="w-8 h-8 rounded-full flex items-center justify-center font-manrope font-bold text-[11px]"
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-manrope font-bold text-[9px] sm:text-[11px]"
                           style={{
                             backgroundColor: log.actor.colorScheme.bg,
                             color: log.actor.colorScheme.text,
@@ -263,14 +323,14 @@ export default function SystemLogPage() {
                         >
                           {log.actor.initials}
                         </div>
-                        <span className="font-manrope text-[13px] text-[#64748B]">
+                        <span className="font-manrope text-[11px] sm:text-[13px] text-[#64748B] hidden sm:inline">
                           {log.actor.name}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <button className="text-[#3B82F6] hover:text-[#1E40AF]">
-                        <Eye size={18} />
+                        <Eye size={16} className="sm:w-[18px] sm:h-[18px]" />
                       </button>
                     </td>
                   </tr>

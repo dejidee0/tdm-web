@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Search, ChevronDown, Download } from "lucide-react";
 import { useExportUsers } from "@/hooks/use-users";
+import Image from "next/image";
 
 export default function UserManagementFilters({
   search,
@@ -31,7 +32,7 @@ export default function UserManagementFilters({
           placeholder="Search by name, email, or ID..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+          className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
         />
       </div>
 
@@ -39,10 +40,17 @@ export default function UserManagementFilters({
       <div className="flex items-center gap-3">
         {/* Role Filter */}
         <div className="relative">
+          <Image
+            src="/assets/svgs/user and role mgt/role.svg"
+            alt="Role"
+            width={16}
+            height={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+          />
           <select
             value={role}
             onChange={(e) => onRoleChange(e.target.value)}
-            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg px-4 py-2.5 pr-10 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
           >
             <option value="all">Role: All Roles</option>
             <option value="Admin">Admin</option>
@@ -59,10 +67,17 @@ export default function UserManagementFilters({
 
         {/* Status Filter */}
         <div className="relative">
+          <Image
+            src="/assets/svgs/user and role mgt/status.svg"
+            alt="Status"
+            width={16}
+            height={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+          />
           <select
             value={status}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg px-4 py-2.5 pr-10 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
           >
             <option value="any">Status: Any</option>
             <option value="active">Active</option>
