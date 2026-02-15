@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Calendar, TrendingUp, TrendingDown, Search, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { Download, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import RevenueChart from "@/components/shared/admin/dashboard/revenue-chart";
 import {
@@ -12,8 +12,11 @@ import {
   useTransactions,
   useExportFinancialReport,
 } from "@/hooks/use-financial";
-import revenueIcon from "@/public/assets/svgs/financialReport/revenue.svg";
+import netProfitIcon from "@/public/assets/svgs/financialReport/netProfit.svg";
 import pendingIcon from "@/public/assets/svgs/financialReport/pending.svg";
+import calendarIcon from "@/public/assets/svgs/financialReport/calendarIcon.svg";
+import filterIcon from "@/public/assets/svgs/financialReport/filter.svg";
+import searchIcon from "@/public/assets/svgs/financialReport/searchIcon.svg";
 
 export default function FinancialReportPage() {
   const [page, setPage] = useState(1);
@@ -38,8 +41,8 @@ export default function FinancialReportPage() {
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-[#64748B] font-manrope text-[14px]">Loading financial data...</p>
+            <div className="w-16 h-16 border-4 border-[#D1D5DB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-[#64748B] font-inter text-[14px]">Loading financial data...</p>
           </div>
         </div>
       </div>
@@ -47,10 +50,10 @@ export default function FinancialReportPage() {
   }
 
   const statsData = [
-    { ...stats.totalRevenue, icon: TrendingUp, key: "totalRevenue" },
-    { ...stats.avgTransaction, icon: TrendingUp, key: "avgTransaction" },
-    { ...stats.netProfit, icon: TrendingUp, key: "netProfit" },
-    { ...stats.pending, icon: TrendingDown, key: "pending", isNegative: true },
+    { ...stats.totalRevenue, key: "totalRevenue" },
+    { ...stats.avgTransaction, key: "avgTransaction" },
+    { ...stats.netProfit, key: "netProfit" },
+    { ...stats.pending, key: "pending", isNegative: true },
   ];
 
   return (
@@ -59,10 +62,10 @@ export default function FinancialReportPage() {
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <h1 className="font-manrope text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-inter text-[28px] sm:text-[34px] md:text-[39px] font-black text-[#273054] mb-2 leading-[1.1] tracking-[-1.3px]">
               Financial Reports
             </h1>
-            <p className="font-manrope text-[13px] sm:text-[14px] text-[#64748B]">
+            <p className="font-inter text-[14px] sm:text-[16px] md:text-[18px] text-[#273054]">
               Overview of platform revenue and financial health
             </p>
           </div>
@@ -70,8 +73,8 @@ export default function FinancialReportPage() {
           {/* Header Actions */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <div className="relative w-full sm:w-auto">
-              <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none" />
-              <select className="appearance-none w-full bg-white border border-[#E5E7EB] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors cursor-pointer">
+              <Image src={calendarIcon} alt="Calendar" width={16} height={16} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <select className="appearance-none w-full bg-white border border-[#D1D5DB] rounded-lg pl-10 pr-10 py-2.5 font-inter text-[14px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors cursor-pointer">
                 <option>Last 7 Days</option>
                 <option selected>Last 30 Days</option>
                 <option>Last 90 Days</option>
@@ -86,7 +89,7 @@ export default function FinancialReportPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-inter text-[14px] font-bold hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Download size={16} />
               Export Report
@@ -98,8 +101,7 @@ export default function FinancialReportPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statsData.map((stat, index) => {
-          const Icon = stat.icon;
-          const changeColor = stat.changeType === "increase" ? "text-[#10B981]" : "text-[#EF4444]";
+          const changeColor = stat.changeType === "increase" ? "text-[#16A34A]" : "text-[#EF4444]";
 
           return (
             <motion.div
@@ -107,28 +109,27 @@ export default function FinancialReportPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl p-6 border border-[#E5E7EB] relative overflow-hidden"
+              className="bg-white rounded-xl p-6 border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] relative overflow-hidden"
             >
               {/* Icon in top right */}
               <div className="absolute top-6 right-6">
                 <Image
-                  src={stat.isNegative ? pendingIcon : revenueIcon}
+                  src={stat.isNegative ? pendingIcon : netProfitIcon}
                   alt={stat.label}
                   width={26}
                   height={26}
                 />
               </div>
 
-              <p className="font-manrope text-[13px] text-[#64748B] mb-2">{stat.label}</p>
-              <h3 className="font-manrope text-[32px] font-bold text-[#1E293B] leading-none mb-2">{stat.value}</h3>
+              <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">{stat.label}</p>
+              <h3 className="font-inter text-[32px] font-bold text-[#1E293B] leading-none mb-2">{stat.value}</h3>
               <div className="flex items-center gap-2">
                 <div className={`flex items-center gap-1 ${changeColor}`}>
-                  <Icon size={14} />
-                  <span className="font-manrope text-[13px] font-bold">
+                  <span className="font-inter text-[12px] font-medium">
                     {stat.change > 0 ? "+" : ""}{stat.change}%
                   </span>
                 </div>
-                <p className="font-manrope text-[12px] text-[#94A3B8]">{stat.subtitle}</p>
+                <p className="font-inter text-[12px] text-[#9CA3AF]">{stat.subtitle}</p>
               </div>
             </motion.div>
           );
@@ -149,8 +150,8 @@ export default function FinancialReportPage() {
         </div>
 
         {/* Revenue by Service */}
-        <div className="bg-white rounded-xl border border-[#E5E7EB] p-6">
-          <h2 className="font-manrope text-[18px] font-bold text-[#1E293B] mb-6">
+        <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] p-6">
+          <h2 className="font-inter text-[18px] font-bold text-[#111827] mb-6">
             Revenue by Service
           </h2>
           <div className="flex flex-col items-center">
@@ -181,27 +182,27 @@ export default function FinancialReportPage() {
                 })}
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="font-manrope text-[24px] font-bold text-[#1E293B]">$1.2M</p>
-                <p className="font-manrope text-[12px] text-[#64748B]">Total</p>
+                <p className="font-inter text-[12px] font-medium text-[#9CA3AF]">Total</p>
+                <p className="font-inter text-[20px] font-bold text-[#111827]">$1.2M</p>
               </div>
             </div>
 
             {/* Legend */}
-            <div className="w-full space-y-2">
+            <div className="w-full grid grid-cols-2 gap-3">
               {revenueByService.services.map((service, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: service.color }}
-                    />
-                    <span className="font-manrope text-[13px] text-[#64748B]">
+                <div key={i} className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: service.color }}
+                  />
+                  <div>
+                    <p className="font-inter text-[12px] font-medium text-[#6B7280]">
                       {service.name}
-                    </span>
+                    </p>
+                    <p className="font-inter text-[14px] font-bold text-[#111827]">
+                      {service.percentage}%
+                    </p>
                   </div>
-                  <span className="font-manrope text-[13px] font-bold text-[#1E293B]">
-                    {service.percentage}%
-                  </span>
                 </div>
               ))}
             </div>
@@ -210,25 +211,25 @@ export default function FinancialReportPage() {
       </div>
 
       {/* Transactions Section */}
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)]">
         <div className="px-6 py-4 border-b border-[#E5E7EB]">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+            <h2 className="font-inter text-[18px] font-bold text-[#1E293B]">
               Transaction Summaries
             </h2>
             <div className="flex items-center gap-3">
               <div className="relative flex-1 md:w-80">
-                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                <Image src={searchIcon} alt="Search" width={18} height={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search transactions..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-[#D1D5DB] rounded-lg font-inter text-[14px] placeholder:text-[#6B7280] placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
                 />
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#64748B] hover:bg-[#F8FAFC]">
-                <SlidersHorizontal size={16} />
+              <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg font-inter text-[14px] font-medium text-[#374151] hover:bg-[#F8FAFC]">
+                <Image src={filterIcon} alt="Filter" width={16} height={16} />
                 Filter
               </button>
             </div>
@@ -240,22 +241,22 @@ export default function FinancialReportPage() {
           <table className="w-full">
             <thead className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
               <tr>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase">
-                  ID
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px]">
+                  Transaction ID
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px]">
                   Date
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase hidden sm:table-cell">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px] hidden sm:table-cell">
                   User
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase hidden md:table-cell">
-                  Service
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px] hidden md:table-cell">
+                  Service Type
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px]">
                   Amount
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-[0.59px]">
                   Status
                 </th>
                 <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 hidden sm:table-cell"></th>
@@ -264,17 +265,17 @@ export default function FinancialReportPage() {
             <tbody className="divide-y divide-[#E5E7EB]">
               {transactions?.transactions.map((txn, index) => (
                 <tr key={txn.id} className="hover:bg-[#F8FAFC]">
-                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B]">
+                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[14px] font-medium text-[#273054]">
                     #{txn.id}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <p className="font-manrope text-[11px] sm:text-[13px] md:text-[14px] text-[#1E293B]">{txn.date}</p>
-                    <p className="font-manrope text-[10px] sm:text-[11px] md:text-[12px] text-[#94A3B8]">{txn.time}</p>
+                    <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B]">{txn.date}</p>
+                    <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-[#9CA3AF]">{txn.time}</p>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-manrope font-bold text-[10px] sm:text-[12px]"
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[10px] sm:text-[12px]"
                         style={{
                           backgroundColor: txn.user.colorScheme.bg,
                           color: txn.user.colorScheme.text,
@@ -283,24 +284,24 @@ export default function FinancialReportPage() {
                         {txn.user.initials}
                       </div>
                       <div>
-                        <p className="font-manrope text-[12px] sm:text-[14px] font-medium text-[#1E293B]">
+                        <p className="font-inter text-[12px] sm:text-[14px] font-medium text-[#111827]">
                           {txn.user.name}
                         </p>
-                        <p className="font-manrope text-[10px] sm:text-[12px] text-[#94A3B8]">
+                        <p className="font-inter text-[10px] sm:text-[12px] text-[#6B7280]">
                           {txn.user.type}
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B] hidden md:table-cell">
+                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#374151] hidden md:table-cell">
                     {txn.serviceType}
                   </td>
-                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-manrope text-[12px] sm:text-[13px] md:text-[14px] font-bold text-[#1E293B]">
+                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[12px] sm:text-[13px] md:text-[14px] font-semibold text-[#111827]">
                     ${txn.amount.toLocaleString()}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
                     <span
-                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-md font-manrope text-[10px] sm:text-[11px] md:text-[12px] font-bold ${txn.statusColor.bg} ${txn.statusColor.text}`}
+                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[10px] sm:text-[11px] md:text-[12px] font-medium ${txn.statusColor.bg} ${txn.statusColor.text}`}
                     >
                       <span
                         className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
@@ -311,7 +312,13 @@ export default function FinancialReportPage() {
                       {txn.status}
                     </span>
                   </td>
-                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 text-[#64748B] hidden sm:table-cell">...</td>
+                  <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
+                    <div className="flex items-center gap-[3px]">
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -321,30 +328,42 @@ export default function FinancialReportPage() {
         {/* Pagination */}
         {transactions?.pagination && (
           <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between">
-            <p className="font-manrope text-[13px] text-[#64748B]">
-              Showing {(page - 1) * 5 + 1} to {Math.min(page * 5, transactions.pagination.total)} of{" "}
-              {transactions.pagination.total} results
+            <p className="font-inter text-[13.7px] font-normal text-[#374151]">
+              Showing <span className="font-medium">{(page - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(page * 5, transactions.pagination.total)}</span> of{" "}
+              <span className="font-medium">{transactions.pagination.total}</span> results
             </p>
-            <div className="flex gap-2">
+            <div className="flex items-center">
+              <button
+                onClick={() => setPage(Math.max(1, page - 1))}
+                className="w-[35px] h-[35px] flex items-center justify-center rounded-l-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC]"
+              >
+                <ChevronLeft size={16} className="text-[#9CA3AF]" />
+              </button>
               {[1, 2, 3, "...", 10].map((p, i) =>
                 p === "..." ? (
-                  <span key={i} className="px-3 py-2 font-manrope text-[13px] text-[#64748B]">
+                  <span key={i} className="w-[44px] h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[14px] font-semibold text-[#374151]">
                     ...
                   </span>
                 ) : (
                   <button
                     key={i}
                     onClick={() => setPage(p)}
-                    className={`px-3 py-2 rounded-lg font-manrope text-[13px] font-bold ${
+                    className={`${p >= 10 ? "w-[44px]" : "w-[40px]"} h-[35px] flex items-center justify-center font-inter text-[14px] font-semibold ${
                       page === p
-                        ? "bg-[#1E293B] text-white"
-                        : "text-[#1E293B] hover:bg-[#F8FAFC]"
+                        ? "bg-[#273054] text-white shadow-[inset_0_0_0_0.98px_#273054]"
+                        : "bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
                     }`}
                   >
                     {p}
                   </button>
                 )
               )}
+              <button
+                onClick={() => setPage(Math.min(10, page + 1))}
+                className="w-[35px] h-[35px] flex items-center justify-center rounded-r-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC]"
+              >
+                <ChevronRight size={16} className="text-[#9CA3AF]" />
+              </button>
             </div>
           </div>
         )}

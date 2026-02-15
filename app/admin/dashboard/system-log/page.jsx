@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Search, Calendar, Eye } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import Image from "next/image";
 import { useSystemStats, useSystemLogs, useExportLogs } from "@/hooks/use-system-logs";
 import { severityColors } from "@/lib/mock/system-logs";
@@ -12,11 +12,13 @@ import userAuthIcon from "@/public/assets/svgs/systemLogs/userAuth.svg";
 import dbShard04Icon from "@/public/assets/svgs/systemLogs/dbShard04.svg";
 import dataSyncIcon from "@/public/assets/svgs/systemLogs/dataSync.svg";
 import publicApiIcon from "@/public/assets/svgs/systemLogs/publicApi.svg";
-import criticalErrorsIcon from "@/public/assets/svgs/systemLogs/criticalErrors.svg";
+import criticalErrorsIcon from "@/public/assets/svgs/systemLogs/criritcalErrors.svg";
 import activeWarningsIcon from "@/public/assets/svgs/systemLogs/activeWarnings.svg";
-import avgResponseIcon from "@/public/assets/svgs/systemLogs/avgResponse.svg";
+import avgResponseIcon from "@/public/assets/svgs/systemLogs/avgResponseTime.svg";
 import logsIngestedIcon from "@/public/assets/svgs/systemLogs/logsIngested.svg";
 import filterIcon from "@/public/assets/svgs/systemLogs/filter.svg";
+import calendarIcon from "@/public/assets/svgs/systemLogs/calendar.svg";
+import searchIcon from "@/public/assets/svgs/systemLogs/search.svg";
 
 export default function SystemLogPage() {
   const [page, setPage] = useState(1);
@@ -55,7 +57,7 @@ export default function SystemLogPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-[#64748B] font-manrope text-[14px]">Loading system logs...</p>
+            <p className="text-[#64748B] font-inter text-[14px]">Loading system logs...</p>
           </div>
         </div>
       </div>
@@ -80,18 +82,19 @@ export default function SystemLogPage() {
   return (
     <div className="max-w-[1440px] mx-auto">
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
+      <div className="mb-6 sm:mb-8 pb-6 border-b border-[#314368]/50">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
             <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <h1 className="font-manrope text-[20px] sm:text-[26px] md:text-[32px] font-extrabold text-[#1E293B]" style={{ fontWeight: 900 }}>
+              <h1 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-black text-[#273054] tracking-[-1.34px] leading-[1.1]">
                 System Logs & Monitoring
               </h1>
-              <span className="px-2 sm:px-3 py-1 bg-[#D1FAE5] text-[#10B981] rounded-full font-manrope text-[9px] sm:text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
-                • LIVE
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20 rounded-full font-inter text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.67px] whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
+                LIVE
               </span>
             </div>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-inter text-[14px] sm:text-[16px] md:text-[18px] text-[#273054]">
               Real-time oversight of system events, errors, and operational metrics. Governance
               view for Super Admin.
             </p>
@@ -103,7 +106,7 @@ export default function SystemLogPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => exportLogs()}
             disabled={isExporting}
-            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[12px] sm:text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-[#1E293B] text-white rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold hover:bg-[#334155] transition-colors disabled:opacity-50 whitespace-nowrap"
           >
             <Download size={14} className="sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Export Logs</span>
@@ -120,32 +123,32 @@ export default function SystemLogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`${stat.bgColor} rounded-xl p-6 border border-[#E5E7EB] relative overflow-hidden`}
+            className={`${stat.bgColor} rounded-xl p-6 border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] relative overflow-hidden`}
           >
             {/* Icon in top right */}
-            <div className="absolute top-6 right-6 opacity-20">
+            <div className="absolute top-6 right-6">
               <Image
                 src={stat.icon}
                 alt={stat.label}
-                width={26}
-                height={26}
+                width={44}
+                height={44}
               />
             </div>
 
-            <p className="font-manrope text-[13px] text-[#64748B] mb-2">{stat.label}</p>
+            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium text-[#273054] uppercase tracking-[0.39px] mb-2">{stat.label}</p>
             <div className="flex items-end gap-3">
-              <h3 className="font-manrope text-[32px] font-bold text-[#1E293B]">{stat.value}</h3>
+              <h3 className="font-inter text-[28px] sm:text-[32px] md:text-[34px] font-bold text-[#273054] leading-none">{stat.value}</h3>
               {stat.change !== 0 ? (
                 <span
-                  className={`font-manrope text-[14px] font-bold mb-2 ${
-                    stat.changeType === "increase" ? "text-[#EF4444]" : "text-[#10B981]"
+                  className={`font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium mb-2 px-2 py-0.5 rounded-[4.5px] ${
+                    stat.changeType === "increase" ? "text-[#EF4444] bg-[#F87171]/10" : "text-[#10B981] bg-[#10B981]/10"
                   }`}
                 >
-                  {stat.changeType === "increase" ? "+" : ""}
+                  {stat.changeType === "increase" ? "↑" : "↓"}
                   {stat.change}%
                 </span>
               ) : (
-                <span className="font-manrope text-[14px] font-bold mb-2 text-[#94A3B8]">
+                <span className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium mb-2 text-[#273054]">
                   {stat.subtitle}
                 </span>
               )}
@@ -159,14 +162,11 @@ export default function SystemLogPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
           {/* Search Logs */}
           <div>
-            <label className="block font-manrope text-[13px] font-medium text-[#64748B] uppercase tracking-wider mb-2">
+            <label className="block font-inter text-[13px] font-semibold text-[#64748B] uppercase tracking-[0.67px] mb-2">
               Search Logs
             </label>
             <div className="relative">
-              <Search
-                size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-              />
+              <Image src={searchIcon} alt="Search" width={18} height={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search by ID, Message, Service, or User..."
@@ -175,30 +175,27 @@ export default function SystemLogPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+                className="w-full pl-10 pr-4 py-2.5 bg-[#273054]/10 border border-[#273054]/20 rounded-[9px] font-inter text-[14px] sm:text-[16px] md:text-[18px] placeholder:text-[#273054]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
               />
             </div>
           </div>
 
           {/* Date Range */}
           <div>
-            <label className="block font-manrope text-[13px] font-medium text-[#64748B] uppercase tracking-wider mb-2">
+            <label className="block font-inter text-[13px] font-semibold text-[#64748B] uppercase tracking-[0.67px] mb-2">
               Date Range
             </label>
             <div className="flex gap-3">
               <div className="flex-1 relative">
-                <Calendar
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-                />
+                <Image src={calendarIcon} alt="Calendar" width={18} height={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value="Oct 26, 2023 - Oct 27, 2023"
                   readOnly
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#64748B] cursor-pointer"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#273054]/10 border border-[#273054]/20 rounded-[9px] font-inter text-[14px] text-[#64748B] cursor-pointer"
                 />
               </div>
-              <button className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155]">
+              <button className="flex items-center gap-2 px-4 py-2.5 bg-[#273054] text-white rounded-[9px] font-inter text-[14px] sm:text-[16px] md:text-[18px] font-medium hover:bg-[#1E293B] transition-colors">
                 <Image
                   src={filterIcon}
                   alt="Filter"
@@ -213,35 +210,29 @@ export default function SystemLogPage() {
         </div>
 
         {/* Severity Pills */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          <span className="font-manrope text-[11px] sm:text-[13px] font-medium text-[#64748B] uppercase tracking-wider">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap pt-4 border-t border-[#314368]/50">
+          <span className="font-inter text-[11px] sm:text-[13px] font-medium text-[#273054] uppercase">
             Severity:
           </span>
           {severityFilters.map((filter) => {
             const isActive = severity === filter.value;
 
-            // Determine text color and bullet color based on filter type
-            let textColor = "";
+            // Bullet and text color for each severity type
             let bulletColor = "";
-            let showBullet = filter.value !== "all";
-
-            if (filter.value === "all") {
-              textColor = isActive ? "text-white" : "text-[#64748B]";
-            } else if (filter.value === "critical") {
-              textColor = isActive ? "text-white" : "text-[#DC2626]";
-              bulletColor = "bg-[#DC2626]";
+            let textColor = "text-white";
+            if (filter.value === "critical") {
+              bulletColor = "bg-[#F87171]";
+              textColor = "text-[#F87171]";
             } else if (filter.value === "error") {
-              textColor = isActive ? "text-white" : "text-[#EA580C]";
-              bulletColor = "bg-[#EA580C]";
+              bulletColor = "bg-[#FB923C]";
+              textColor = "text-[#FB923C]";
             } else if (filter.value === "warning") {
-              textColor = isActive ? "text-white" : "text-[#EA580C]";
-              bulletColor = "bg-[#EA580C]";
+              bulletColor = "bg-[#FACC15]";
+              textColor = "text-[#FACC15]";
             } else if (filter.value === "info") {
-              textColor = isActive ? "text-white" : "text-[#2563EB]";
-              bulletColor = "bg-[#2563EB]";
+              bulletColor = "bg-white";
+              textColor = "text-white";
             }
-
-            const buttonBg = isActive ? "bg-[#1E293B]" : "bg-white";
 
             return (
               <button
@@ -250,9 +241,9 @@ export default function SystemLogPage() {
                   setSeverity(filter.value);
                   setPage(1);
                 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full font-manrope text-[13px] font-medium transition-colors ${buttonBg} ${textColor} hover:bg-[#E5E7EB]`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border border-[#273054] bg-[#273054] ${textColor} font-inter text-[15.74px] font-medium transition-colors ${isActive ? "shadow-[0_1.12px_2.25px_0_rgba(0,0,0,0.05)]" : ""}`}
               >
-                {showBullet && !isActive && (
+                {filter.value !== "all" && (
                   <span className={`w-2 h-2 rounded-full ${bulletColor}`} />
                 )}
                 {filter.label}
@@ -266,75 +257,71 @@ export default function SystemLogPage() {
       <div className="bg-white rounded-xl border border-[#E5E7EB]">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
-              <tr>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+            <thead className="bg-[#273054]/10 [&_tr:first-child_th:first-child]:rounded-tl-xl [&_tr:first-child_th:last-child]:rounded-tr-xl">
+              <tr className="border-b-[1.12px] border-[#314368]">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
                   Timestamp
                 </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
                   Severity
                 </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
-                  Service
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
+                  Service Source
                 </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
                   Message
                 </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
-                  Actor
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
+                  User/Actor
                 </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-manrope text-[9px] sm:text-[11px] font-bold text-[#64748B] uppercase">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E5E7EB]">
+            <tbody>
               {logs?.logs.map((log, index) => {
                 const severityStyle = severityColors[log.severity];
 
                 return (
-                  <tr key={log.id} className="hover:bg-[#F8FAFC]">
-                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] text-[#64748B] whitespace-normal sm:whitespace-nowrap">
+                  <tr key={log.id} className="bg-white border-t-[1.12px] border-[#273054]/50">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] whitespace-normal sm:whitespace-nowrap">
                       {log.timestamp}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-2 sm:px-3 py-1 rounded-md font-manrope text-[10px] sm:text-[11px] font-bold uppercase ${severityStyle.badge}`}
+                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[10px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle.badge}`}
                       >
                         {log.severity}
                       </span>
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center">
-                          <Image
-                            src={getServiceIcon(log.service.name)}
-                            alt={log.service.displayName}
-                            width={16}
-                            height={16}
-                            className="w-3 h-3 sm:w-4 sm:h-4"
-                          />
-                        </div>
-                        <span className="font-manrope text-[11px] sm:text-[13px] font-medium text-[#1E293B]">
+                        <Image
+                          src={getServiceIcon(log.service.name)}
+                          alt={log.service.displayName}
+                          width={20}
+                          height={20}
+                        />
+                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] font-medium text-[#273054]">
                           {log.service.name}
                         </span>
                       </div>
                     </td>
-                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-manrope text-[11px] sm:text-[13px] text-[#64748B] max-w-xs sm:max-w-sm md:max-w-md truncate">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] max-w-xs sm:max-w-sm md:max-w-md truncate">
                       {log.message}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <div
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-manrope font-bold text-[9px] sm:text-[11px]"
+                          className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white"
                           style={{
                             backgroundColor: log.actor.colorScheme.bg,
-                            color: log.actor.colorScheme.text,
                           }}
                         >
                           {log.actor.initials}
                         </div>
-                        <span className="font-manrope text-[11px] sm:text-[13px] text-[#64748B] hidden sm:inline">
+                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] hidden sm:inline">
                           {log.actor.name}
                         </span>
                       </div>
@@ -354,22 +341,22 @@ export default function SystemLogPage() {
         {/* Pagination */}
         {logs?.pagination && (
           <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between">
-            <p className="font-manrope text-[13px] text-[#64748B]">
-              Showing {(page - 1) * 6 + 1}-{Math.min(page * 6, logs.pagination.total)} of{" "}
-              {logs.pagination.total.toLocaleString()} entries
+            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054]">
+              Showing <span className="font-medium">{(page - 1) * 6 + 1}-{Math.min(page * 6, logs.pagination.total)}</span> of{" "}
+              <span className="font-medium">{logs.pagination.total.toLocaleString()}</span> entries
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 rounded-lg font-manrope text-[13px] font-medium text-[#64748B] hover:bg-[#F8FAFC] disabled:opacity-40"
+                className="px-4 py-2 rounded-[9px] border border-[#273054] font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054] opacity-50 hover:opacity-75 disabled:opacity-30"
               >
                 Previous
               </button>
               <button
                 onClick={() => setPage(Math.min(logs.pagination.totalPages, page + 1))}
                 disabled={page === logs.pagination.totalPages}
-                className="px-4 py-2 rounded-lg font-manrope text-[13px] font-medium bg-[#1E293B] text-white hover:bg-[#334155] disabled:opacity-40"
+                className="px-4 py-2 rounded-[9px] border border-[#273054] font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054] hover:bg-[#273054]/5 disabled:opacity-30"
               >
                 Next
               </button>
