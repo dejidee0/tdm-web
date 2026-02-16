@@ -141,7 +141,7 @@ export default function SystemLogPage() {
               {stat.change !== 0 ? (
                 <span
                   className={`font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium mb-2 px-2 py-0.5 rounded-[4.5px] ${
-                    stat.changeType === "increase" ? "text-[#EF4444] bg-[#F87171]/10" : "text-[#10B981] bg-[#10B981]/10"
+                    (stat.changeType === "increase" && stat.label === "Avg Response Time" || stat.label === "Logs Ingested") ? "text-[#4ADE80] bg-[#4ADE801A]" : "text-[#F87171] bg-[#F871711A]"
                   }`}
                 >
                   {stat.changeType === "increase" ? "↑" : "↓"}

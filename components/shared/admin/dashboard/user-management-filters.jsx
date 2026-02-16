@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, ChevronDown, Download } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import { useExportUsers } from "@/hooks/use-users";
 import Image from "next/image";
 import roleIcon from "@/public/assets/svgs/userAndRoleMgt/role.svg";
 import statusIcon from "@/public/assets/svgs/userAndRoleMgt/status.svg";
+import downloadIcon from "@/public/assets/svgs/userAndRoleMgt/download.svg";
 
 export default function UserManagementFilters({
   search,
@@ -22,7 +23,7 @@ export default function UserManagementFilters({
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 bg-[#FFFFFF] p-4 rounded-[13.04px] border border-[#E5E7EB]">
       {/* Search Bar */}
       <div className="relative flex-1 max-w-md">
         <Search
@@ -34,7 +35,7 @@ export default function UserManagementFilters({
           placeholder="Search by name, email, or ID..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-[#E2E8F0] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+          className="w-full pl-10 pr-4 py-2.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
         />
       </div>
 
@@ -97,10 +98,10 @@ export default function UserManagementFilters({
           whileTap={{ scale: 0.95 }}
           onClick={handleExport}
           disabled={isExporting}
-          className="p-2.5 bg-white border border-[#E5E7EB] rounded-lg text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+          className="p-2.5 bg-white rounded-lg text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
           title="Export users"
         >
-          <Download size={18} />
+          <Image src={downloadIcon} alt="Export" />
         </motion.button>
       </div>
     </div>

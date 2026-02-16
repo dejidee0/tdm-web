@@ -127,7 +127,7 @@ export default function AdminSidebar() {
         <motion.button
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#EF4444] hover:bg-[#FEE2E2] font-manrope text-[13px] transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#273054] hover:bg-[#2730541A] font-manrope text-[13px] transition-colors"
         >
           <LogOut size={16} />
           <span>Log Out</span>

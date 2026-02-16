@@ -327,42 +327,91 @@ export default function FinancialReportPage() {
 
         {/* Pagination */}
         {transactions?.pagination && (
-          <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between">
-            <p className="font-inter text-[13.7px] font-normal text-[#374151]">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
+            <p className="font-inter text-[12px] sm:text-[13.7px] font-normal text-[#374151] text-center sm:text-left">
               Showing <span className="font-medium">{(page - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(page * 5, transactions.pagination.total)}</span> of{" "}
               <span className="font-medium">{transactions.pagination.total}</span> results
             </p>
             <div className="flex items-center">
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
-                className="w-[35px] h-[35px] flex items-center justify-center rounded-l-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC]"
+                disabled={page === 1}
+                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-l-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC] disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
-                <ChevronLeft size={16} className="text-[#9CA3AF]" />
+                <ChevronLeft size={14} className="sm:w-4 sm:h-4 text-[#9CA3AF]" />
               </button>
-              {[1, 2, 3, "...", 10].map((p, i) =>
-                p === "..." ? (
-                  <span key={i} className="w-[44px] h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[14px] font-semibold text-[#374151]">
+
+              {/* Show only first, current, and last on mobile */}
+              <div className="flex sm:hidden">
+                {page > 1 && (
+                  <button
+                    onClick={() => setPage(1)}
+                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
+                  >
+                    1
+                  </button>
+                )}
+                {page > 2 && (
+                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] font-semibold text-[#374151]">
                     ...
                   </span>
-                ) : (
+                )}
+                {page !== 1 && page !== 10 && (
                   <button
-                    key={i}
-                    onClick={() => setPage(p)}
-                    className={`${p >= 10 ? "w-[44px]" : "w-[40px]"} h-[35px] flex items-center justify-center font-inter text-[14px] font-semibold ${
-                      page === p
+                    onClick={() => setPage(page)}
+                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-[#273054] text-white shadow-[inset_0_0_0_0.98px_#273054]"
+                  >
+                    {page}
+                  </button>
+                )}
+                {page < 9 && (
+                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] font-semibold text-[#374151]">
+                    ...
+                  </span>
+                )}
+                {page < 10 && (
+                  <button
+                    onClick={() => setPage(10)}
+                    className={`w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold ${
+                      page === 10
                         ? "bg-[#273054] text-white shadow-[inset_0_0_0_0.98px_#273054]"
                         : "bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
                     }`}
                   >
-                    {p}
+                    10
                   </button>
-                )
-              )}
+                )}
+              </div>
+
+              {/* Show all page numbers on desktop */}
+              <div className="hidden sm:flex">
+                {[1, 2, 3, "...", 10].map((p, i) =>
+                  p === "..." ? (
+                    <span key={i} className="w-[40px] md:w-[44px] h-[30px] sm:h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] sm:text-[14px] font-semibold text-[#374151]">
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={i}
+                      onClick={() => setPage(p)}
+                      className={`${p >= 10 ? "w-[40px] md:w-[44px]" : "w-[36px] md:w-[40px]"} h-[30px] sm:h-[35px] flex items-center justify-center font-inter text-[13px] sm:text-[14px] font-semibold ${
+                        page === p
+                          ? "bg-[#273054] text-white shadow-[inset_0_0_0_0.98px_#273054]"
+                          : "bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+              </div>
+
               <button
                 onClick={() => setPage(Math.min(10, page + 1))}
-                className="w-[35px] h-[35px] flex items-center justify-center rounded-r-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC]"
+                disabled={page === 10}
+                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-r-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC] disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
-                <ChevronRight size={16} className="text-[#9CA3AF]" />
+                <ChevronRight size={14} className="sm:w-4 sm:h-4 text-[#9CA3AF]" />
               </button>
             </div>
           </div>

@@ -56,7 +56,7 @@ export default function AdminAlertsTable({ alerts }) {
               </p>
             </div>
           </div>
-          <button className="font-manrope text-[13px] text-[#3B82F6] hover:underline">
+          <button className="font-manrope text-[13px] text-[#273054] hover:underline">
             View All Logs
           </button>
         </div>
@@ -67,16 +67,16 @@ export default function AdminAlertsTable({ alerts }) {
         {/* Table Header */}
         <div className="px-6 py-4 bg-[#CBD5E1] border-b border-[#E5E7EB]">
           <div className="grid grid-cols-[140px_1fr_180px_140px] gap-4">
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
               SEVERITY
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
               ISSUE DESCRIPTION
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
               TIMESTAMP
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
               ACTION
             </span>
           </div>
@@ -198,7 +198,7 @@ export default function AdminAlertsTable({ alerts }) {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-[#E5E7EB] flex justify-center">
-        <button className="flex items-center gap-1 text-[#3B82F6] font-manrope text-[13px] font-medium hover:underline">
+        <button className="flex items-center gap-1 text-[#273054] font-manrope text-[13px] font-medium hover:underline">
           Show 5 more alerts
           <ChevronDown size={14} />
         </button>
