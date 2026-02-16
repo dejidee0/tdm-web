@@ -4,44 +4,47 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  LayoutGrid,
-  Users,
-  DollarSign,
-  FileText,
-  Settings,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
+import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
+import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
+import financialReportIcon from "@/public/assets/svgs/sidebars/financialReport.svg";
+import systemLogIcon from "@/public/assets/svgs/sidebars/systemLog.svg";
+import settingsIcon from "@/public/assets/svgs/sidebars/settings.svg";
 
 const navItems = [
   {
     label: "Overview",
-    icon: LayoutGrid,
+    icon: overviewIcon,
     href: "/admin/dashboard",
   },
   {
     label: "User Management",
-    icon: Users,
+    icon: userManagementIcon,
     href: "/admin/dashboard/user-management",
   },
   {
     label: "Financial Report",
-    icon: DollarSign,
+    icon: financialReportIcon,
     href: "/admin/dashboard/financial-report",
   },
   {
     label: "System Log",
-    icon: FileText,
+    icon: systemLogIcon,
     href: "/admin/dashboard/system-log",
   },
   {
     label: "Settings",
-    icon: Settings,
+    icon: settingsIcon,
     href: "/admin/dashboard/settings",
   },
 ];
 
 const isActivePath = (pathname, href) => {
+  // Exact match for the dashboard root (Overview)
+  if (href === "/admin/dashboard") {
+    return pathname === href;
+  }
+  // For other routes, check if pathname starts with the href
   return pathname === href || pathname.startsWith(href + "/");
 };
 
@@ -79,7 +82,6 @@ export default function AdminSidebar() {
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = isActivePath(pathname, item.href);
-            const Icon = item.icon;
 
             return (
               <li key={item.href}>
@@ -92,12 +94,12 @@ export default function AdminSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-primary/10 text-[#1E293B] font-medium"
-                          : "text-[#64748B] hover:bg-[#F8FAFC]"
+                          ? "bg-[#2730541A] text-[#273054] font-semibold"
+                          : "text-[#64748B] hover:bg-[#2730541A]"
                       }
                     `}
                   >
-                    <Icon size={20} />
+                    <Image src={item.icon} alt={item.label} width={20} height={20} />
                     <span>{item.label}</span>
                   </motion.div>
                 </Link>
@@ -125,7 +127,7 @@ export default function AdminSidebar() {
         <motion.button
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#EF4444] hover:bg-[#FEE2E2] font-manrope text-[13px] transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#273054] hover:bg-[#2730541A] font-manrope text-[13px] transition-colors"
         >
           <LogOut size={16} />
           <span>Log Out</span>

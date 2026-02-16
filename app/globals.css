@@ -99,3 +99,13 @@ body {
 .scroll-container.no-scroll::after {
   display: none;
 }
+
+/* Hide scrollbar for horizontal scrolling elements */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

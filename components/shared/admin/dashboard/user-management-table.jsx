@@ -72,35 +72,35 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           {/* Table Header */}
-          <thead className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
+          <thead className="bg-[#27305433] border-b border-[#E5E7EB]">
             <tr>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   USER ID
                 </span>
               </th>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   USER
                 </span>
               </th>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   EMAIL
                 </span>
               </th>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   ROLE
                 </span>
               </th>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   STATUS
                 </span>
               </th>
               <th className="px-6 py-4 text-left">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
                   ACTIONS
                 </span>
               </th>
@@ -179,7 +179,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                       onClick={() => handleToggleStatus(user.id)}
                       className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B82F6]"
                       style={{
-                        backgroundColor: user.isActive ? "#10B981" : "#94A3B8",
+                        backgroundColor: user.isActive ? "#22C55E" : "#475569",
                       }}
                     >
                       <span
@@ -251,7 +251,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                   onClick={() => handleToggleStatus(user.id)}
                   className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
                   style={{
-                    backgroundColor: user.isActive ? "#10B981" : "#94A3B8",
+                    backgroundColor: user.isActive ? "#22C55E" : "#475569",
                   }}
                 >
                   <span
@@ -281,10 +281,10 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
       {/* Pagination Footer */}
       {pagination && (
         <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-manrope text-[13px] text-[#64748B]">
-            Showing {(currentPage - 1) * pagination.limit + 1} to{" "}
-            {Math.min(currentPage * pagination.limit, pagination.total)} of{" "}
-            {pagination.total} results
+          <p className="font-manrope text-[13px] text-[#273054]">
+            Showing <span className="font-medium">{(currentPage - 1) * pagination.limit + 1}</span> to{" "}
+            <span className="font-medium">{Math.min(currentPage * pagination.limit, pagination.total)}</span> of{" "}
+            <span className="font-medium">{pagination.total}</span> results
           </p>
 
           <div className="flex items-center gap-2">
@@ -320,8 +320,8 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                   onClick={() => onPageChange(pageNum)}
                   className={`px-3 py-2 rounded-lg font-manrope text-[13px] font-medium transition-colors ${
                     currentPage === pageNum
-                      ? "bg-[#1E293B] text-white"
-                      : "text-[#64748B] hover:bg-[#F8FAFC]"
+                      ? "bg-[#E2E8F0] text-[#64748B]"
+                      : "bg-[#1E293B] text-white hover:bg-[#334155]"
                   }`}
                 >
                   {pageNum}

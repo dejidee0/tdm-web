@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { UserPlus } from "lucide-react";
 import { useUsers } from "@/hooks/use-users";
 import UserManagementTable from "@/components/shared/admin/dashboard/user-management-table";
 import UserManagementFilters from "@/components/shared/admin/dashboard/user-management-filters";
 import AddUserModal from "@/components/shared/admin/dashboard/add-user-modal";
+import addNewUser from "@/public/assets/svgs/userAndRoleMgt/addNewUser.svg";
+import Image from "next/image";
 
 export default function UserManagementPage() {
   // Modal state
@@ -17,6 +19,13 @@ export default function UserManagementPage() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
   const [status, setStatus] = useState("any");
+
+  // Track initial load
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    isInitialMount.current = false;
+  }, []);
 
   // Fetch users with filters
   const { data, isLoading, isError } = useUsers({
@@ -51,7 +60,8 @@ export default function UserManagementPage() {
     // TODO: Implement user creation logic
   };
 
-  if (isLoading) {
+  // Only show full-page loading on initial mount
+  if (isLoading && isInitialMount.current) {
     return (
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
@@ -104,7 +114,7 @@ export default function UserManagementPage() {
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
           >
-            <UserPlus size={16} />
+            <Image src={addNewUser} alt="Add New User" />
             Add New User
           </motion.button>
         </div>
@@ -121,11 +131,19 @@ export default function UserManagementPage() {
       />
 
       {/* Users Table */}
-      <UserManagementTable
-        data={data?.users || []}
-        pagination={data?.pagination}
-        onPageChange={handlePageChange}
-      />
+      <div className="relative">
+        {isLoading && !isInitialMount.current && (
+          <div className="absolute top-4 right-4 z-10">
+            <div className="w-6 h-6 border-2 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin" />
+          </div>
+        )}
+        <UserManagementTable
+          data={data?.users || []}
+          pagination={data?.pagination}
+          onPageChange={handlePageChange}
+          isLoading={isLoading && !isInitialMount.current}
+        />
+      </div>
 
       {/* Add User Modal */}
       <AddUserModal

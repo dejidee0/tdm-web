@@ -1,12 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { KeyRound, Trash2, FileText, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import Image from "next/image";
+import resetPasswordIcon from "@/public/assets/svgs/adminDashboardOverview/resetPassword.svg";
+import clearCacheIcon from "@/public/assets/svgs/adminDashboardOverview/clearCache.svg";
+import generateAuditIcon from "@/public/assets/svgs/adminDashboardOverview/generateAudit.svg";
 
 const iconMap = {
-  KeyRound,
-  Trash2,
-  FileText,
+  KeyRound: resetPasswordIcon,
+  Trash2: clearCacheIcon,
+  FileText: generateAuditIcon,
+};
+
+const iconColors = {
+  KeyRound: { bg: "bg-[#1E3A8A4D]" },
+  Trash2: { bg: "bg-[#78350F4D]" },
+  FileText: { bg: "bg-[#581C874D]" },
 };
 
 export default function AdminQuickActions({ actions }) {
@@ -27,7 +37,8 @@ export default function AdminQuickActions({ actions }) {
 
       <div className="space-y-2">
         {actions.map((action, index) => {
-          const Icon = iconMap[action.icon];
+          const iconPath = iconMap[action.icon];
+          const colors = iconColors[action.icon] || { bg: "bg-[#F1F5F9]" };
 
           return (
             <motion.button
@@ -37,11 +48,18 @@ export default function AdminQuickActions({ actions }) {
               transition={{ delay: 0.5 + index * 0.1 }}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-between p-4 bg-[#F8FAFC] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
+              className="w-full flex items-center justify-between p-4 bg-[#2730541A] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                  <Icon size={18} className="text-[#64748B]" />
+                <div className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center`}>
+                  {iconPath && (
+                    <Image
+                      src={iconPath}
+                      alt={action.label}
+                      width={18}
+                      height={18}
+                    />
+                  )}
                 </div>
                 <span className="font-manrope text-[14px] font-medium text-[#1E293B]">
                   {action.label}

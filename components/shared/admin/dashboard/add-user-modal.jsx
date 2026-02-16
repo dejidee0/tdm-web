@@ -209,7 +209,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       value={formData.password}
                       onChange={(e) => handleChange("password", e.target.value)}
                       required
-                      className="flex-1 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                       placeholder="Enter or generate password"
                     />
                     <motion.button

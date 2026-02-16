@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, RefreshCw, Activity, TrendingUp, Zap } from "lucide-react";
-import StatCard from "@/components/shared/vendor/dashboard/stat-card";
+import { Download, RefreshCw } from "lucide-react";
+import AdminStatCard from "@/components/shared/admin/dashboard/stat-card";
 import RevenueChart from "@/components/shared/admin/dashboard/revenue-chart";
 import ServerLoad from "@/components/shared/admin/dashboard/server-load";
 import AdminAlertsTable from "@/components/shared/admin/dashboard/admin-alerts-table";
@@ -16,12 +16,8 @@ import {
   useRefreshAdminDashboard,
   useExportReport,
 } from "@/hooks/use-admin";
-
-const statIcons = {
-  platformUptime: Activity,
-  activeUsers: TrendingUp,
-  avgApiLatency: Zap,
-};
+import refreshData from "@/public/assets/svgs/adminDashboardOverview/refreshData.svg"
+import Image from "next/image";
 
 export default function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useAdminStats();
@@ -58,24 +54,24 @@ export default function AdminDashboardPage() {
     <div className="max-w-[1440px] mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#1E293B] mb-2">
               Dashboard Overview
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-manrope text-[13px] sm:text-[14px] text-[#64748B]">
               System performance, financial metrics, and critical alerts
             </p>
           </div>
 
           {/* Header Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Download size={16} />
               Export Report
@@ -85,12 +81,9 @@ export default function AdminDashboardPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => refreshDashboard()}
               disabled={isRefreshing}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
-              <RefreshCw
-                size={16}
-                className={isRefreshing ? "animate-spin" : ""}
-              />
+              <Image src={refreshData} alt="Refresh Data" />
               Refresh Data
             </motion.button>
           </div>
@@ -101,10 +94,10 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {stats &&
           Object.keys(stats).map((key, index) => (
-            <StatCard
+            <AdminStatCard
               key={key}
               data={stats[key]}
-              icon={statIcons[key]}
+              statKey={key}
               index={index}
             />
           ))}
