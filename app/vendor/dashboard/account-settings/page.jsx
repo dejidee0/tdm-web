@@ -119,7 +119,7 @@ export default function SettingsPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               Account Settings
             </h1>
             <p className="font-manrope text-[14px] text-[#64748B]">
@@ -137,7 +137,7 @@ export default function SettingsPage() {
               whileTap={{ scale: 0.98 }}
               onClick={handleSaveProfile}
               disabled={updateProfile.isLoading}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
             >
               <Save size={16} />
               Save Changes
@@ -157,8 +157,8 @@ export default function SettingsPage() {
                 pb-3 font-manrope text-[14px] font-medium border-b-2 transition-colors
                 ${
                   activeTab === tab.id
-                    ? "border-[#1E293B] text-[#1E293B]"
-                    : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-[#64748B] hover:text-primary"
                 }
               `}
             >
@@ -190,7 +190,7 @@ export default function SettingsPage() {
                       </span>
                     </div>
                     {profile?.isVerifiedVendor && (
-                      <div className="absolute top-0 right-0 px-3 py-1 bg-[#1E293B] text-white rounded-full font-manrope text-[10px] font-bold">
+                      <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-white rounded-full font-manrope text-[10px] font-bold">
                         Verified Vendor
                       </div>
                     )}
@@ -198,7 +198,7 @@ export default function SettingsPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F1F5F9] transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F1F5F9] transition-colors"
                   >
                     <Camera size={16} />
                     Change Photo
@@ -210,7 +210,7 @@ export default function SettingsPage() {
                   {/* Name Row */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         FIRST NAME
                       </label>
                       <input
@@ -219,11 +219,11 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("firstName", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         LAST NAME
                       </label>
                       <input
@@ -232,14 +232,14 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("lastName", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                       EMAIL ADDRESS
                     </label>
                     <div className="relative">
@@ -252,14 +252,14 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("email", e.target.value)
                         }
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                       PHONE NUMBER
                     </label>
                     <div className="relative">
@@ -272,7 +272,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("phone", e.target.value)
                         }
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
                   </div>
@@ -284,7 +284,7 @@ export default function SettingsPage() {
                         <label className="block font-manrope text-[13px] font-medium text-[#64748B] mb-2">
                           COMPANY NAME
                         </label>
-                        <div className="px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[14px]">
+                        <div className="px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[14px]">
                           {profile?.companyName}
                         </div>
                       </div>
@@ -319,7 +319,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-manrope text-[18px] font-bold text-[#1E293B] mb-1">
+                <h3 className="font-manrope text-[18px] font-bold text-primary mb-1">
                   Authorized Brand Access
                 </h3>
                 <p className="font-manrope text-[13px] text-[#64748B]">
@@ -329,7 +329,7 @@ export default function SettingsPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
               >
                 Request Access
               </motion.button>
@@ -375,7 +375,7 @@ export default function SettingsPage() {
                           {brand.brandIcon}
                         </div>
                         <div>
-                          <h4 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                          <h4 className="font-manrope text-[14px] font-bold text-primary">
                             {brand.brandName}
                           </h4>
                           <p className="font-manrope text-[12px] text-[#64748B]">
@@ -385,7 +385,7 @@ export default function SettingsPage() {
                       </div>
 
                       {/* Role */}
-                      <span className="font-manrope text-[13px] text-[#1E293B]">
+                      <span className="font-manrope text-[13px] text-primary">
                         {brand.role}
                       </span>
 
@@ -434,15 +434,15 @@ export default function SettingsPage() {
               className="bg-white rounded-xl border border-[#E5E7EB] p-6"
             >
               <div className="flex items-center gap-3 mb-6">
-                <Lock size={20} className="text-[#1E293B]" />
-                <h3 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+                <Lock size={20} className="text-primary" />
+                <h3 className="font-manrope text-[18px] font-bold text-primary">
                   Security
                 </h3>
               </div>
 
               {/* Change Password */}
               <div className="mb-6">
-                <h4 className="font-manrope text-[14px] font-bold text-[#1E293B] mb-4">
+                <h4 className="font-manrope text-[14px] font-bold text-primary mb-4">
                   Change Password
                 </h4>
                 <div className="space-y-3">
@@ -456,7 +456,7 @@ export default function SettingsPage() {
                         currentPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <input
                     type="password"
@@ -468,7 +468,7 @@ export default function SettingsPage() {
                         newPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <input
                     type="password"
@@ -480,14 +480,14 @@ export default function SettingsPage() {
                         confirmPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={handlePasswordChange}
                     disabled={changePassword.isLoading}
-                    className="w-full px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+                    className="w-full px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
                   >
                     Update Password
                   </motion.button>
@@ -498,7 +498,7 @@ export default function SettingsPage() {
               <div className="pt-6 border-t border-[#E5E7EB]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-bold text-[#1E293B] mb-1">
+                    <h4 className="font-manrope text-[14px] font-bold text-primary mb-1">
                       Two-Factor Auth
                     </h4>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -512,7 +512,7 @@ export default function SettingsPage() {
                       onChange={(e) => handleToggle2FA(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
                 <button className="mt-3 font-manrope text-[13px] text-[#3B82F6] hover:underline flex items-center gap-1">
@@ -530,8 +530,8 @@ export default function SettingsPage() {
               className="bg-white rounded-xl border border-[#E5E7EB] p-6"
             >
               <div className="flex items-center gap-3 mb-6">
-                <Bell size={20} className="text-[#1E293B]" />
-                <h3 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+                <Bell size={20} className="text-primary" />
+                <h3 className="font-manrope text-[18px] font-bold text-primary">
                   Notifications
                 </h3>
               </div>
@@ -540,7 +540,7 @@ export default function SettingsPage() {
                 {/* Order Updates */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
                       Order Updates
                     </h4>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -559,14 +559,14 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
 
                 {/* Inventory Alerts */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
                       Inventory Alerts
                     </h4>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -585,14 +585,14 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
 
                 {/* Marketing */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
                       Marketing
                     </h4>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -608,7 +608,7 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
               </div>
@@ -656,8 +656,8 @@ export default function SettingsPage() {
             className="bg-white rounded-xl border border-[#E5E7EB] p-6 lg:col-span-2"
           >
             <div className="flex items-center gap-3 mb-6">
-              <Bell size={20} className="text-[#1E293B]" />
-              <h3 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+              <Bell size={20} className="text-primary" />
+              <h3 className="font-manrope text-[18px] font-bold text-primary">
                 Notification Preferences
               </h3>
             </div>
@@ -666,7 +666,7 @@ export default function SettingsPage() {
               {/* Order Updates */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-[#1E293B] mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
                     Order Updates
                   </h4>
                   <p className="font-manrope text-[13px] text-[#64748B]">
@@ -682,14 +682,14 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
 
               {/* Inventory Alerts */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-[#1E293B] mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
                     Inventory Alerts
                   </h4>
                   <p className="font-manrope text-[13px] text-[#64748B]">
@@ -708,14 +708,14 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
 
               {/* Marketing */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-[#1E293B] mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
                     Marketing
                   </h4>
                   <p className="font-manrope text-[13px] text-[#64748B]">
@@ -731,7 +731,7 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1E293B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E293B]"></div>
+                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
             </div>

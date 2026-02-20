@@ -35,7 +35,7 @@ export default function UserManagementFilters({
           placeholder="Search by name, email, or ID..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+          className="w-full pl-10 pr-4 py-2.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
         />
       </div>
 
@@ -53,7 +53,7 @@ export default function UserManagementFilters({
           <select
             value={role}
             onChange={(e) => onRoleChange(e.target.value)}
-            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+            className="appearance-none bg-primary text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
           >
             <option value="all">Role: All Roles</option>
             <option value="Admin">Admin</option>
@@ -80,7 +80,7 @@ export default function UserManagementFilters({
           <select
             value={status}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="appearance-none bg-[#1E293B] text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+            className="appearance-none bg-primary text-white border border-[#334155] rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-[#334155] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
           >
             <option value="any">Status: Any</option>
             <option value="active">Active</option>
@@ -98,7 +98,7 @@ export default function UserManagementFilters({
           whileTap={{ scale: 0.95 }}
           onClick={handleExport}
           disabled={isExporting}
-          className="p-2.5 bg-white rounded-lg text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+          className="p-2.5 bg-white rounded-lg text-[#64748B] hover:text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
           title="Export users"
         >
           <Image src={downloadIcon} alt="Export" />

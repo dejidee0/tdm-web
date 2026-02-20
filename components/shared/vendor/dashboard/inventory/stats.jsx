@@ -25,7 +25,7 @@ export default function InventoryStatsCards({ stats }) {
             </span>
           </div>
         </div>
-        <p className="font-manrope text-[32px] font-bold text-[#1E293B]">
+        <p className="font-manrope text-[32px] font-bold text-primary">
           {stats.totalProducts.value.toLocaleString()}
         </p>
       </motion.div>
@@ -48,7 +48,7 @@ export default function InventoryStatsCards({ stats }) {
             </span>
           </div>
         </div>
-        <p className="font-manrope text-[32px] font-bold text-[#1E293B]">
+        <p className="font-manrope text-[32px] font-bold text-primary">
           {stats.lowStockAlerts.value}
         </p>
       </motion.div>
@@ -63,7 +63,7 @@ export default function InventoryStatsCards({ stats }) {
         <h3 className="font-manrope text-[13px] text-[#64748B] font-medium mb-4">
           {stats.inventoryValue.label}
         </h3>
-        <p className="font-manrope text-[32px] font-bold text-[#1E293B]">
+        <p className="font-manrope text-[32px] font-bold text-primary">
           {stats.inventoryValue.formatted}
         </p>
       </motion.div>

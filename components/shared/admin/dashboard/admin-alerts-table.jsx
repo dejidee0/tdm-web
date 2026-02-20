@@ -48,7 +48,7 @@ export default function AdminAlertsTable({ alerts }) {
               <AlertTriangle size={16} className="text-[#EF4444]" />
             </div>
             <div>
-              <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+              <h2 className="font-manrope text-[18px] font-bold text-primary">
                 Alerts & Escalations
               </h2>
               <p className="font-manrope text-[13px] text-[#64748B] mt-1">
@@ -101,7 +101,9 @@ export default function AdminAlertsTable({ alerts }) {
                     <span
                       className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity.badge}`}
                     >
-                      <span className={`w-2 h-2 rounded-full ${severity.dot}`} />
+                      <span
+                        className={`w-2 h-2 rounded-full ${severity.dot}`}
+                      />
                       <span
                         className={`font-manrope text-[12px] font-bold capitalize ${severity.text}`}
                       >
@@ -112,7 +114,7 @@ export default function AdminAlertsTable({ alerts }) {
 
                   {/* Issue Description */}
                   <div>
-                    <p className="font-manrope text-[14px] font-medium text-[#1E293B]">
+                    <p className="font-manrope text-[14px] font-medium text-primary">
                       {alert.issue}
                     </p>
                     {alert.description && (
@@ -175,7 +177,7 @@ export default function AdminAlertsTable({ alerts }) {
               </div>
 
               {/* Issue */}
-              <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+              <p className="font-manrope text-[14px] font-medium text-primary mb-1">
                 {alert.issue}
               </p>
               {alert.description && (

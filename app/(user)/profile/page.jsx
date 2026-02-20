@@ -38,7 +38,7 @@ export default function ProfilePage() {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -71,7 +71,7 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center font-manrope">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#1e293b] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your profile...</p>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default function ProfilePage() {
           </div>
           <button
             onClick={fetchCurrentUser}
-            className="bg-[#1e293b] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors"
+            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors"
           >
             Try Again
           </button>
@@ -102,16 +102,16 @@ export default function ProfilePage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-24 h-24 bg-[#1e293b] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-12 h-12 text-white" strokeWidth={2} />
           </div>
-          <h1 className="text-3xl font-bold text-[#1e293b] mb-2">My Profile</h1>
+          <h1 className="text-3xl font-bold text-primary mb-2">My Profile</h1>
           <p className="text-gray-500">Manage your account information</p>
         </div>
 
         {/* Profile Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <h2 className="text-xl font-semibold text-[#1e293b] mb-6">
+          <h2 className="text-xl font-semibold text-primary mb-6">
             Account Information
           </h2>
 
@@ -164,7 +164,7 @@ export default function ProfilePage() {
 
         {/* Actions Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-[#1e293b] mb-6">
+          <h2 className="text-xl font-semibold text-primary mb-6">
             Account Actions
           </h2>
 

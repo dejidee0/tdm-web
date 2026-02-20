@@ -24,25 +24,32 @@ export default function FinancialReportPage() {
   const [filter, setFilter] = useState("all");
 
   const { data: stats, isLoading: statsLoading } = useFinancialStats();
-  const { data: monthlyRevenue, isLoading: revenueLoading } = useMonthlyRevenue();
-  const { data: revenueByService, isLoading: serviceLoading } = useRevenueByService();
-  const { data: transactions, isLoading: transactionsLoading } = useTransactions({
-    page,
-    limit: 5,
-    search,
-    filter,
-  });
-  const { mutate: exportReport, isPending: isExporting } = useExportFinancialReport();
+  const { data: monthlyRevenue, isLoading: revenueLoading } =
+    useMonthlyRevenue();
+  const { data: revenueByService, isLoading: serviceLoading } =
+    useRevenueByService();
+  const { data: transactions, isLoading: transactionsLoading } =
+    useTransactions({
+      page,
+      limit: 5,
+      search,
+      filter,
+    });
+  const { mutate: exportReport, isPending: isExporting } =
+    useExportFinancialReport();
 
-  const isLoading = statsLoading || revenueLoading || serviceLoading || transactionsLoading;
+  const isLoading =
+    statsLoading || revenueLoading || serviceLoading || transactionsLoading;
 
   if (isLoading) {
     return (
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#D1D5DB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-[#64748B] font-inter text-[14px]">Loading financial data...</p>
+            <div className="w-16 h-16 border-4 border-[#D1D5DB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-[#64748B] font-inter text-[14px]">
+              Loading financial data...
+            </p>
           </div>
         </div>
       </div>
@@ -73,7 +80,13 @@ export default function FinancialReportPage() {
           {/* Header Actions */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <div className="relative w-full sm:w-auto">
-              <Image src={calendarIcon} alt="Calendar" width={16} height={16} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Image
+                src={calendarIcon}
+                alt="Calendar"
+                width={16}
+                height={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+              />
               <select className="appearance-none w-full bg-white border border-[#D1D5DB] rounded-lg pl-10 pr-10 py-2.5 font-inter text-[14px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors cursor-pointer">
                 <option>Last 7 Days</option>
                 <option selected>Last 30 Days</option>
@@ -82,14 +95,17 @@ export default function FinancialReportPage() {
                 <option>Last Year</option>
                 <option>All Time</option>
               </select>
-              <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none" />
+              <ChevronDown
+                size={16}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
+              />
             </div>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-inter text-[14px] font-bold hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-inter text-[14px] font-bold hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Download size={16} />
               Export Report
@@ -101,7 +117,10 @@ export default function FinancialReportPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statsData.map((stat, index) => {
-          const changeColor = stat.changeType === "increase" ? "text-[#16A34A]" : "text-[#EF4444]";
+          const changeColor =
+            stat.changeType === "increase"
+              ? "text-[#16A34A]"
+              : "text-[#EF4444]";
 
           return (
             <motion.div
@@ -121,15 +140,22 @@ export default function FinancialReportPage() {
                 />
               </div>
 
-              <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">{stat.label}</p>
-              <h3 className="font-inter text-[32px] font-bold text-[#1E293B] leading-none mb-2">{stat.value}</h3>
+              <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">
+                {stat.label}
+              </p>
+              <h3 className="font-inter text-[32px] font-bold text-primary leading-none mb-2">
+                {stat.value}
+              </h3>
               <div className="flex items-center gap-2">
                 <div className={`flex items-center gap-1 ${changeColor}`}>
                   <span className="font-inter text-[12px] font-medium">
-                    {stat.change > 0 ? "+" : ""}{stat.change}%
+                    {stat.change > 0 ? "+" : ""}
+                    {stat.change}%
                   </span>
                 </div>
-                <p className="font-inter text-[12px] text-[#9CA3AF]">{stat.subtitle}</p>
+                <p className="font-inter text-[12px] text-[#9CA3AF]">
+                  {stat.subtitle}
+                </p>
               </div>
             </motion.div>
           );
@@ -182,8 +208,12 @@ export default function FinancialReportPage() {
                 })}
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="font-inter text-[12px] font-medium text-[#9CA3AF]">Total</p>
-                <p className="font-inter text-[20px] font-bold text-[#111827]">$1.2M</p>
+                <p className="font-inter text-[12px] font-medium text-[#9CA3AF]">
+                  Total
+                </p>
+                <p className="font-inter text-[20px] font-bold text-[#111827]">
+                  $1.2M
+                </p>
               </div>
             </div>
 
@@ -214,12 +244,18 @@ export default function FinancialReportPage() {
       <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)]">
         <div className="px-6 py-4 border-b border-[#E5E7EB]">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 className="font-inter text-[18px] font-bold text-[#1E293B]">
+            <h2 className="font-inter text-[18px] font-bold text-primary">
               Transaction Summaries
             </h2>
             <div className="flex items-center gap-3">
               <div className="relative flex-1 md:w-80">
-                <Image src={searchIcon} alt="Search" width={18} height={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
+                <Image
+                  src={searchIcon}
+                  alt="Search"
+                  width={18}
+                  height={18}
+                  className="absolute left-3 top-1/2 -translate-y-1/2"
+                />
                 <input
                   type="text"
                   placeholder="Search transactions..."
@@ -269,8 +305,12 @@ export default function FinancialReportPage() {
                     #{txn.id}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B]">{txn.date}</p>
-                    <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-[#9CA3AF]">{txn.time}</p>
+                    <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B]">
+                      {txn.date}
+                    </p>
+                    <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-[#9CA3AF]">
+                      {txn.time}
+                    </p>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-2 sm:gap-3">
@@ -306,7 +346,8 @@ export default function FinancialReportPage() {
                       <span
                         className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
                         style={{
-                          backgroundColor: txn.statusColor.text.match(/#[0-9A-Fa-f]{6}/)?.[0]
+                          backgroundColor:
+                            txn.statusColor.text.match(/#[0-9A-Fa-f]{6}/)?.[0],
                         }}
                       ></span>
                       {txn.status}
@@ -329,8 +370,16 @@ export default function FinancialReportPage() {
         {transactions?.pagination && (
           <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
             <p className="font-inter text-[12px] sm:text-[13.7px] font-normal text-[#374151] text-center sm:text-left">
-              Showing <span className="font-medium">{(page - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(page * 5, transactions.pagination.total)}</span> of{" "}
-              <span className="font-medium">{transactions.pagination.total}</span> results
+              Showing <span className="font-medium">{(page - 1) * 5 + 1}</span>{" "}
+              to{" "}
+              <span className="font-medium">
+                {Math.min(page * 5, transactions.pagination.total)}
+              </span>{" "}
+              of{" "}
+              <span className="font-medium">
+                {transactions.pagination.total}
+              </span>{" "}
+              results
             </p>
             <div className="flex items-center">
               <button
@@ -338,7 +387,10 @@ export default function FinancialReportPage() {
                 disabled={page === 1}
                 className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-l-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC] disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
-                <ChevronLeft size={14} className="sm:w-4 sm:h-4 text-[#9CA3AF]" />
+                <ChevronLeft
+                  size={14}
+                  className="sm:w-4 sm:h-4 text-[#9CA3AF]"
+                />
               </button>
 
               {/* Show only first, current, and last on mobile */}
@@ -387,7 +439,10 @@ export default function FinancialReportPage() {
               <div className="hidden sm:flex">
                 {[1, 2, 3, "...", 10].map((p, i) =>
                   p === "..." ? (
-                    <span key={i} className="w-[40px] md:w-[44px] h-[30px] sm:h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] sm:text-[14px] font-semibold text-[#374151]">
+                    <span
+                      key={i}
+                      className="w-[40px] md:w-[44px] h-[30px] sm:h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] sm:text-[14px] font-semibold text-[#374151]"
+                    >
                       ...
                     </span>
                   ) : (
@@ -402,7 +457,7 @@ export default function FinancialReportPage() {
                     >
                       {p}
                     </button>
-                  )
+                  ),
                 )}
               </div>
 
@@ -411,7 +466,10 @@ export default function FinancialReportPage() {
                 disabled={page === 10}
                 className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-r-[6px] bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] hover:bg-[#F8FAFC] disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
-                <ChevronRight size={14} className="sm:w-4 sm:h-4 text-[#9CA3AF]" />
+                <ChevronRight
+                  size={14}
+                  className="sm:w-4 sm:h-4 text-[#9CA3AF]"
+                />
               </button>
             </div>
           </div>

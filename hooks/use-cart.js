@@ -1,5 +1,4 @@
-// hooks/useCart.js
-
+// hooks/use-cart.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartApi } from "@/lib/api/cart";
 
@@ -77,7 +76,8 @@ export function useAddToCart() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: cartApi.addToCart,
+    mutationFn: ({ productId, quantity }) =>
+      cartApi.addToCart(productId, quantity),
     onSuccess: () => {
       queryClient.invalidateQueries(["cart"]);
     },

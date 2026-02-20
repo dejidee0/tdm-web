@@ -100,7 +100,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
               <div className="px-8 py-6 border-b border-[#E5E7EB]">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="font-manrope text-[20px] font-bold text-[#1E293B] mb-1">
+                    <h2 className="font-manrope text-[20px] font-bold text-primary mb-1">
                       Add New Product
                     </h2>
                     <p className="font-manrope text-[13px] text-[#64748B]">
@@ -124,19 +124,19 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* General Information Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
+                    <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                       <span className="text-white text-[10px] font-bold">
                         ℹ
                       </span>
                     </div>
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-primary">
                       General Information
                     </h3>
                   </div>
 
                   {/* Product Name */}
                   <div className="mb-4">
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                       Product Name
                     </label>
                     <input
@@ -146,7 +146,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       onChange={(e) =>
                         handleChange("productName", e.target.value)
                       }
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                   </div>
 
@@ -154,7 +154,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     {/* SKU */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         SKU
                       </label>
                       <div className="relative">
@@ -164,7 +164,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                           value={formData.sku}
                           onChange={(e) => handleChange("sku", e.target.value)}
                           disabled={isAutoSKU}
-                          className="w-full px-4 py-2.5 pr-16 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent disabled:bg-[#F8FAFC] disabled:text-[#94A3B8]"
+                          className="w-full px-4 py-2.5 pr-16 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-[#F8FAFC] disabled:text-[#94A3B8]"
                         />
                         <motion.button
                           whileHover={{ scale: 1.05 }}
@@ -182,7 +182,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
 
                     {/* Category */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         Category
                       </label>
                       <select
@@ -190,7 +190,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                         onChange={(e) =>
                           handleChange("category", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none cursor-pointer"
                       >
                         <option value="">Select Category</option>
                         <option value="industrial">Industrial Grade</option>
@@ -203,7 +203,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
 
                   {/* Description */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                       Description
                     </label>
                     <textarea
@@ -213,7 +213,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                         handleChange("description", e.target.value)
                       }
                       rows={4}
-                      className="w-full px-4 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                     />
                   </div>
                 </div>
@@ -221,12 +221,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* Inventory & Pricing Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
+                    <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                       <span className="text-white text-[10px] font-bold">
                         📦
                       </span>
                     </div>
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-primary">
                       Inventory & Pricing
                     </h3>
                   </div>
@@ -235,7 +235,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     {/* Warehouse Location */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         Warehouse Location
                       </label>
                       <select
@@ -243,7 +243,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                         onChange={(e) =>
                           handleChange("warehouseLocation", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none cursor-pointer"
                       >
                         <option value="">Select Warehouse</option>
                         <option value="warehouse-a">Warehouse A</option>
@@ -255,7 +255,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
 
                     {/* Initial Quantity */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         Initial Quantity
                       </label>
                       <input
@@ -269,13 +269,13 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                             parseInt(e.target.value) || 0,
                           )
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
 
                     {/* Reorder Point */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                         Reorder Point
                       </label>
                       <input
@@ -289,14 +289,14 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                             parseInt(e.target.value) || 10,
                           )
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                   </div>
 
                   {/* Unit Price */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
                       Unit Price ($)
                     </label>
                     <div className="relative">
@@ -315,7 +315,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                             parseFloat(e.target.value) || 0,
                           )
                         }
-                        className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -324,12 +324,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* Product Images Section */}
                 <div className="mb-2">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
+                    <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                       <span className="text-white text-[10px] font-bold">
                         📷
                       </span>
                     </div>
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-primary">
                       Product Images
                     </h3>
                   </div>
@@ -345,7 +345,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       transition-colors cursor-pointer
                       ${
                         dragActive
-                          ? "border-[#1E293B] bg-[#F8FAFC]"
+                          ? "border-primary bg-[#F8FAFC]"
                           : "border-[#E5E7EB] bg-[#F8FAFC] hover:border-[#94A3B8]"
                       }
                     `}
@@ -362,7 +362,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                         <Upload size={20} className="text-[#64748B]" />
                       </div>
                       <div>
-                        <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+                        <p className="font-manrope text-[14px] font-medium text-primary mb-1">
                           Click to upload or drag and drop
                         </p>
                         <p className="font-manrope text-[12px] text-[#94A3B8]">
@@ -388,7 +388,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSubmit}
-                  className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+                  className="px-6 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
                 >
                   Add Product
                 </motion.button>

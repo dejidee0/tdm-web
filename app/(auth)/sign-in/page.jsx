@@ -58,7 +58,7 @@ export default function SignInPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope pt-32">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#1e293b] mb-2">
+          <h1 className="text-3xl font-bold text-primary mb-2">
             Welcome Back!
           </h1>
           <p className="text-gray-500">Enter your details to proceed further</p>
@@ -73,7 +73,7 @@ export default function SignInPage() {
               placeholder="abubakarjamiu52@gmail.com"
               className={`w-full px-4 py-3 bg-white border ${
                 errors.email ? "border-red-500" : "border-gray-200"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+              } rounded-lg focus:outline-none focus:ring-2 placeholder:text-gray-300 text-primary focus:ring-blue-500 focus:border-transparent transition-all`}
             />
             {errors.email && (
               <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -91,7 +91,7 @@ export default function SignInPage() {
                 placeholder="Min5chars.web"
                 className={`w-full px-4 py-3 bg-white border ${
                   errors.password ? "border-red-500" : "border-gray-200"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12`}
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-300 text-primary transition-all pr-12`}
               />
               <button
                 type="button"
@@ -137,7 +137,7 @@ export default function SignInPage() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending ? "Signing In..." : "Sign In"}
           </button>
@@ -193,7 +193,7 @@ export default function SignInPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/sign-up"
-            className="text-[#1e293b] font-semibold hover:underline"
+            className="text-primary font-semibold hover:underline"
           >
             Sign Up
           </Link>

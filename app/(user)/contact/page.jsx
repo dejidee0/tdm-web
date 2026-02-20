@@ -12,7 +12,7 @@ import Image from "next/image";
 
 export default function ContactPage() {
   const [selectedService, setSelectedService] = useState(
-    "Consultation for Home Renovation"
+    "Consultation for Home Renovation",
   );
   const [isServiceOpen, setIsServiceOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState("");
@@ -57,10 +57,10 @@ export default function ContactPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-[#1e293b]/5 rounded-full px-4 py-2 mb-4 sm:mb-6"
+              className="inline-flex items-center gap-2 bg-primary/5 rounded-full px-4 py-2 mb-4 sm:mb-6"
             >
-              <div className="w-2 h-2 bg-[#1e293b] rounded-full"></div>
-              <span className="text-[#1e293b] text-xs sm:text-sm font-medium tracking-wide uppercase">
+              <div className="w-2 h-2 bg-primary rounded-full"></div>
+              <span className="text-primary text-xs sm:text-sm font-medium tracking-wide uppercase">
                 Contact Us
               </span>
             </motion.div>
@@ -70,7 +70,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-[#1e293b] text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-4 leading-tight"
+              className="text-primary text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-4 leading-tight"
             >
               Let&apos;s build your vision.
             </motion.h1>
@@ -94,8 +94,8 @@ export default function ContactPage() {
             >
               <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1e293b]/10 flex items-center justify-center shrink-0">
-                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#1e293b]" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
                   <span className="text-[#6B7280] text-xs sm:text-sm font-bold uppercase tracking-wide">
                     Call Us Now
@@ -103,7 +103,7 @@ export default function ContactPage() {
                 </div>
                 <a
                   href="tel:+2349066913241"
-                  className="text-[#1e293b] text-base sm:text-lg font-bold break-all"
+                  className="text-primary text-base sm:text-lg font-bold break-all"
                 >
                   (+234) 906-691-3241
                 </a>
@@ -111,8 +111,8 @@ export default function ContactPage() {
 
               <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1e293b]/10 flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#1e293b]" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
                   <span className="text-[#6B7280] text-xs sm:text-sm font-bold uppercase tracking-wide">
                     Email Us
@@ -120,7 +120,7 @@ export default function ContactPage() {
                 </div>
                 <a
                   href="mailto:info@tbmbuilding.com"
-                  className="text-[#1e293b] text-base sm:text-lg font-bold break-all"
+                  className="text-primary text-base sm:text-lg font-bold break-all"
                 >
                   info@tbmbuilding.com
                 </a>
@@ -136,14 +136,14 @@ export default function ContactPage() {
             >
               {/* Service Dropdown */}
               <div>
-                <label className="block text-[#1e293b] text-base sm:text-lg font-bold mb-2">
+                <label className="block text-primary text-base sm:text-lg font-bold mb-2">
                   What can we help you with?
                 </label>
                 <div className="relative">
                   <button
                     type="button"
                     onClick={() => setIsServiceOpen(!isServiceOpen)}
-                    className="w-full bg-white rounded-xl px-4 py-4 text-left text-[#1e293b] shadow-sm flex items-center justify-between"
+                    className="w-full bg-white rounded-xl px-4 py-4 text-left text-primary shadow-sm flex items-center justify-between"
                   >
                     <span>{selectedService}</span>
                     <ChevronDown
@@ -166,7 +166,7 @@ export default function ContactPage() {
                             setSelectedService(service);
                             setIsServiceOpen(false);
                           }}
-                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-[#1e293b]"
+                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-primary"
                         >
                           {service}
                         </button>
@@ -181,12 +181,12 @@ export default function ContactPage() {
                 <input
                   type="text"
                   placeholder="Full Name"
-                  className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-[#1e293b] placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1e293b]"
+                  className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <input
                   type="email"
                   placeholder="Email Address"
-                  className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-[#1e293b] placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1e293b]"
+                  className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
@@ -221,7 +221,7 @@ export default function ContactPage() {
                             setSelectedBudget(budget);
                             setIsBudgetOpen(false);
                           }}
-                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-[#1e293b]"
+                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-primary"
                         >
                           {budget}
                         </button>
@@ -259,7 +259,7 @@ export default function ContactPage() {
                             setSelectedMethod(method);
                             setIsMethodOpen(false);
                           }}
-                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-[#1e293b]"
+                          className="w-full px-4 py-3 text-left hover:bg-gray-50 text-primary"
                         >
                           {method}
                         </button>
@@ -273,7 +273,7 @@ export default function ContactPage() {
               <textarea
                 placeholder="Tell us about your project..."
                 rows={5}
-                className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-[#1e293b] placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1e293b] resize-none"
+                className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               ></textarea>
 
               {/* Submit Button */}
@@ -281,7 +281,7 @@ export default function ContactPage() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 type="submit"
-                className="w-full bg-[#1e293b] text-white rounded-xl py-3 sm:py-4 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 shadow-lg"
+                className="w-full bg-primary text-white rounded-xl py-3 sm:py-4 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 shadow-lg"
               >
                 Send Message
                 <SendHorizonal className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -300,8 +300,8 @@ export default function ContactPage() {
               className="mt-8 sm:mt-12"
             >
               <div className="flex items-center gap-2 mb-4 sm:mb-6">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-[#1e293b]" />
-                <h2 className="text-[#1e293b] text-lg sm:text-xl font-bold">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                <h2 className="text-primary text-lg sm:text-xl font-bold">
                   Frequently Asked Questions
                 </h2>
               </div>
@@ -317,7 +317,7 @@ export default function ContactPage() {
                   >
                     <button
                       onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between text-[#1e293b] text-sm sm:text-base font-medium"
+                      className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between text-primary text-sm sm:text-base font-medium"
                     >
                       <span className="pr-4">{faq}</span>
                       <ChevronDown

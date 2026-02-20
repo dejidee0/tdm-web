@@ -51,7 +51,7 @@ export default function NotificationsPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               Notifications Center
             </h1>
             <p className="font-manrope text-[14px] text-[#64748B] max-w-2xl">
@@ -69,7 +69,7 @@ export default function NotificationsPage() {
               whileTap={{ scale: 0.98 }}
               onClick={handleMarkAllRead}
               disabled={markAllRead.isLoading}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
             >
               <Check size={16} />
               Mark all as read
@@ -77,7 +77,7 @@ export default function NotificationsPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
             >
               <SlidersHorizontal size={16} />
               Configure Alerts
@@ -103,7 +103,7 @@ export default function NotificationsPage() {
                 whitespace-nowrap transition-colors flex-shrink-0
                 ${
                   activeTab === tab.id
-                    ? "bg-[#1E293B] text-white"
+                    ? "bg-primary text-white"
                     : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
                 }
               `}
@@ -142,7 +142,7 @@ export default function NotificationsPage() {
             placeholder="Search alerts..."
             value={searchInput}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
       </motion.div>
@@ -150,7 +150,7 @@ export default function NotificationsPage() {
       {/* Notifications List */}
       {isLoading ? (
         <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
             Loading notifications...
           </p>
@@ -207,7 +207,7 @@ export default function NotificationsPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => refetch()}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
             >
               <RefreshCw size={16} />
               Load older notifications

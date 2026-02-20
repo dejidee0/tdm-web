@@ -31,7 +31,7 @@ export default function AdminQuickActions({ actions }) {
       transition={{ delay: 0.4 }}
       className="bg-white rounded-xl border border-[#E5E7EB] p-6"
     >
-      <h3 className="font-manrope text-[18px] font-bold text-[#1E293B] mb-4">
+      <h3 className="font-manrope text-[18px] font-bold text-primary mb-4">
         Quick Actions
       </h3>
 
@@ -51,7 +51,9 @@ export default function AdminQuickActions({ actions }) {
               className="w-full flex items-center justify-between p-4 bg-[#2730541A] hover:bg-[#F1F5F9] rounded-lg transition-colors group"
             >
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center`}>
+                <div
+                  className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center`}
+                >
                   {iconPath && (
                     <Image
                       src={iconPath}
@@ -61,7 +63,7 @@ export default function AdminQuickActions({ actions }) {
                     />
                   )}
                 </div>
-                <span className="font-manrope text-[14px] font-medium text-[#1E293B]">
+                <span className="font-manrope text-[14px] font-medium text-primary">
                   {action.label}
                 </span>
               </div>

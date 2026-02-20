@@ -66,7 +66,7 @@ export default function UserManagementPage() {
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
             <p className="text-[#64748B] font-manrope text-[14px]">
               Loading users...
             </p>
@@ -99,7 +99,7 @@ export default function UserManagementPage() {
       <div className="mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               User & Role Management
             </h1>
             <p className="font-manrope text-[14px] text-[#64748B]">
@@ -112,7 +112,7 @@ export default function UserManagementPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
           >
             <Image src={addNewUser} alt="Add New User" />
             Add New User
@@ -134,7 +134,7 @@ export default function UserManagementPage() {
       <div className="relative">
         {isLoading && !isInitialMount.current && (
           <div className="absolute top-4 right-4 z-10">
-            <div className="w-6 h-6 border-2 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#E5E7EB] border-t-primary rounded-full animate-spin" />
           </div>
         )}
         <UserManagementTable

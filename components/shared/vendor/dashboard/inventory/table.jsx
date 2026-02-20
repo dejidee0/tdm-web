@@ -64,7 +64,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
     return (
       <div className="bg-white rounded-xl border border-[#E5E7EB]">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
             Loading products...
           </p>
@@ -100,7 +100,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
             type="checkbox"
             checked={selectedProducts.length === products.length}
             onChange={handleSelectAll}
-            className="w-4 h-4 rounded border-[#E5E7EB] text-[#1E293B] focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+            className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
           />
           <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
             PRODUCT DETAILS
@@ -146,7 +146,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                   type="checkbox"
                   checked={isSelected}
                   onChange={() => handleSelectProduct(product.id)}
-                  className="w-4 h-4 rounded border-[#E5E7EB] text-[#1E293B] focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+                  className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
                 />
 
                 <div className="flex items-center gap-3">
@@ -162,7 +162,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                     </div>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-manrope text-[14px] font-medium text-[#1E293B] truncate">
+                    <h3 className="font-manrope text-[14px] font-medium text-primary truncate">
                       {product.name}
                     </h3>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -171,7 +171,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                   </div>
                 </div>
 
-                <span className="font-manrope text-[13px] text-[#1E293B]">
+                <span className="font-manrope text-[13px] text-primary">
                   {product.sku}
                 </span>
 
@@ -198,13 +198,13 @@ export default function InventoryProductsTable({ products, isLoading }) {
                     disabled={
                       product.quantity === 0 || updateQuantity.isLoading
                     }
-                    className="w-8 h-8 bg-[#1E293B] text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <Minus size={14} />
                   </motion.button>
 
                   <div className="text-center min-w-[60px]">
-                    <span className="font-manrope text-[16px] font-bold text-[#1E293B] block">
+                    <span className="font-manrope text-[16px] font-bold text-primary block">
                       {product.quantity}
                     </span>
                     <span className="font-manrope text-[10px] text-[#64748B]">
@@ -219,7 +219,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                       handleQuantityChange(product.id, product.quantity, 1)
                     }
                     disabled={updateQuantity.isLoading}
-                    className="w-8 h-8 bg-[#1E293B] text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30"
+                    className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30"
                   >
                     <Plus size={14} />
                   </motion.button>
@@ -280,7 +280,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => handleSelectProduct(product.id)}
-                    className="w-4 h-4 rounded border-[#E5E7EB] text-[#1E293B] focus:ring-2 focus:ring-[#1E293B] cursor-pointer mt-1"
+                    className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer mt-1"
                   />
                   <div
                     className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -294,7 +294,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-manrope text-[14px] font-medium text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-medium text-primary">
                       {product.name}
                     </h3>
                     <p className="font-manrope text-[12px] text-[#64748B]">
@@ -327,13 +327,13 @@ export default function InventoryProductsTable({ products, isLoading }) {
                       disabled={
                         product.quantity === 0 || updateQuantity.isLoading
                       }
-                      className="w-8 h-8 bg-[#1E293B] text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors disabled:opacity-30"
+                      className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors disabled:opacity-30"
                     >
                       <Minus size={14} />
                     </motion.button>
 
                     <div className="text-center min-w-[50px]">
-                      <span className="font-manrope text-[16px] font-bold text-[#1E293B]">
+                      <span className="font-manrope text-[16px] font-bold text-primary">
                         {product.quantity}
                       </span>
                     </div>
@@ -344,7 +344,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                         handleQuantityChange(product.id, product.quantity, 1)
                       }
                       disabled={updateQuantity.isLoading}
-                      className="w-8 h-8 bg-[#1E293B] text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors"
+                      className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors"
                     >
                       <Plus size={14} />
                     </motion.button>

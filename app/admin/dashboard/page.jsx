@@ -16,7 +16,7 @@ import {
   useRefreshAdminDashboard,
   useExportReport,
 } from "@/hooks/use-admin";
-import refreshData from "@/public/assets/svgs/adminDashboardOverview/refreshData.svg"
+import refreshData from "@/public/assets/svgs/adminDashboardOverview/refreshData.svg";
 import Image from "next/image";
 
 export default function AdminDashboardPage() {
@@ -41,7 +41,7 @@ export default function AdminDashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
             Loading dashboard...
           </p>
@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
       <div className="mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <h1 className="font-manrope text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[24px] sm:text-[28px] md:text-[32px] font-bold text-primary mb-2">
               Dashboard Overview
             </h1>
             <p className="font-manrope text-[13px] sm:text-[14px] text-[#64748B]">
@@ -71,7 +71,7 @@ export default function AdminDashboardPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Download size={16} />
               Export Report
@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => refreshDashboard()}
               disabled={isRefreshing}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Image src={refreshData} alt="Refresh Data" />
               Refresh Data

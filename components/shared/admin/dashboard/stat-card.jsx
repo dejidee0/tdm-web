@@ -54,7 +54,9 @@ export default function AdminStatCard({ data, statKey, index }) {
           {label}
         </h3>
         {iconPath && (
-          <div className={`p-2 rounded-lg ${iconBgClass} flex items-center justify-center`}>
+          <div
+            className={`p-2 rounded-lg ${iconBgClass} flex items-center justify-center`}
+          >
             <Image
               src={iconPath}
               alt={label}
@@ -67,7 +69,7 @@ export default function AdminStatCard({ data, statKey, index }) {
       </div>
 
       {/* Value */}
-      <p className="text-[#1E293B] font-manrope text-[28px] font-bold leading-none mb-3">
+      <p className="text-primary font-manrope text-[28px] font-bold leading-none mb-3">
         {value}
       </p>
 
@@ -83,7 +85,9 @@ export default function AdminStatCard({ data, statKey, index }) {
             {change}%
           </span>
         </div>
-        <span className="text-[#64748B] font-manrope text-[12px]">{subtitle}</span>
+        <span className="text-[#64748B] font-manrope text-[12px]">
+          {subtitle}
+        </span>
       </div>
     </motion.div>
   );

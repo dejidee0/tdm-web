@@ -7,7 +7,7 @@ import Link from "next/link";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
-export default function OrderConfirmation() {
+export default function OrderConfirmation({ orderId }) {
   const { width, height } = useWindowSize();
 
   return (
@@ -30,25 +30,31 @@ export default function OrderConfirmation() {
           <CheckCircle className="w-12 h-12 text-[#16a34a]" />
         </div>
 
-        <h2 className="text-[32px] font-bold text-primary mb-3">
+        <h2 className="text-[32px] font-bold text-text-black mb-3">
           Order Confirmed!
         </h2>
 
+        {orderId && (
+          <p className="text-[18px] font-semibold text-primary mb-4">
+            Order #{orderId}
+          </p>
+        )}
+
         <p className="text-[16px] text-[#666666] mb-8 max-w-md mx-auto">
-          Thank you for your purchase. We&apos;ve sent a confirmation email with
-          your order details and tracking information.
+          Thank you for your purchase. We&lsquo;ve sent a confirmation email
+          with your order details and tracking information.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/dashboard/orders"
-            className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-[#2a2a2a] transition-colors"
+            href={orderId ? `/orders/${orderId}` : "/dashboard/orders"}
+            className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
           >
             View Order
           </Link>
           <Link
-            href="/shop"
-            className="px-6 py-3 bg-white border border-[#e5e5e5] text-primary rounded-lg font-medium hover:bg-[#f8f8f8] transition-colors"
+            href="/materials"
+            className="px-6 py-3 bg-white border border-[#e5e5e5] text-text-black rounded-lg font-medium hover:bg-background transition-colors"
           >
             Continue Shopping
           </Link>
