@@ -131,7 +131,7 @@ const HeroSection = () => {
           </div>
 
           {/* Slider Controls */}
-          <div className="absolute inset-0 z-10 flex items-center justify-between px-4 sm:px-6 md:px-2">
+          <div className="absolute inset-0 z-10  items-center justify-between px-4 sm:px-6 md:px-2 hidden">
             {/* Previous Button */}
             <motion.button
               whileHover={{ scale: 1.1, x: -4 }}
