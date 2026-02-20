@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/use-cart";
+import { showToast } from "@/components/shared/toast";
 import Breadcrumb from "@/components/shared/materials/details/bread-crumb";
 import ImageGallery from "@/components/shared/materials/details/image-gallery";
 import QuantityCalculator from "@/components/shared/materials/details/quantity-calculator";
@@ -37,12 +38,16 @@ export default function MaterialDetailClient({
       { productId: material.id, quantity },
       {
         onSuccess: (data) => {
-          alert(data.message || `Added ${quantity} sq ft to cart!`);
-          // Optionally redirect to cart
-          // router.push('/cart');
+          showToast.success({
+            title: "Added to Cart",
+            message: data.message || `${quantity} sq ft added successfully.`,
+          });
         },
         onError: (error) => {
-          alert(error.message || "Failed to add to cart. Please try again.");
+          showToast.error({
+            title: "Couldn't Add to Cart",
+            message: error.message || "Something went wrong. Please try again.",
+          });
         },
       },
     );
@@ -57,17 +62,48 @@ export default function MaterialDetailClient({
           url: window.location.href,
         });
       } catch (error) {
-        console.log("Error sharing:", error);
+        if (error.name !== "AbortError") {
+          showToast.error({
+            title: "Share Failed",
+            message: "Unable to share. Please try again.",
+          });
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast.success({
+          title: "Link Copied",
+          message: "Product link copied to your clipboard.",
+        });
+      } catch {
+        showToast.error({
+          title: "Copy Failed",
+          message: "Unable to copy the link.",
+        });
       }
     }
   };
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+    setIsFavorite((prev) => {
+      const next = !prev;
+      if (next) {
+        showToast.success({
+          title: "Saved",
+          message: "Added to your saved items.",
+        });
+      } else {
+        showToast.info({
+          title: "Removed",
+          message: "Removed from your saved items.",
+        });
+      }
+      return next;
+    });
   };
 
-  // Calculate values with safe fallbacks
-  const boxSize = material?.boxSize || 10; // sq ft per box
+  const boxSize = material?.boxSize || 10;
   const boxes = Math.ceil(quantity / boxSize);
   const totalPrice = quantity * (material?.pricePerSqFt || 0);
 
@@ -87,7 +123,7 @@ export default function MaterialDetailClient({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Left Column - Image Gallery */}
           <ImageGallery
@@ -154,7 +190,7 @@ export default function MaterialDetailClient({
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
                 <CheckCircle className="text-primary w-5 h-5" />
                 <span className="text-sm font-medium text-primary">
-                  In Stock & Ready to Ship
+                  In Stock &amp; Ready to Ship
                 </span>
               </div>
 
