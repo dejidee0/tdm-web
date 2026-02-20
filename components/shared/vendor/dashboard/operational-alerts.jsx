@@ -38,7 +38,7 @@ export default function OperationalAlerts({ alerts }) {
       <div className="flex items-center justify-between mb-6 border-b border-gray-200 py-4 px-4">
         <div className="flex items-center gap-2 px-4">
           <AlertTriangle size={20} className="text-[#F59E0B]" />
-          <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+          <h2 className="font-manrope text-[18px] font-bold text-primary">
             Operational Alerts
           </h2>
         </div>
@@ -69,7 +69,7 @@ export default function OperationalAlerts({ alerts }) {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-4 mb-2">
-                  <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                  <h3 className="font-manrope text-[14px] font-bold text-primary">
                     {alert.title}
                   </h3>
                   <span className="flex-shrink-0 text-[#64748B] font-manrope text-[11px] whitespace-nowrap">
@@ -79,7 +79,7 @@ export default function OperationalAlerts({ alerts }) {
                 <p className="text-[#64748B] font-manrope text-[13px] mb-3">
                   {alert.description}
                 </p>
-                <button className="text-[#1E293B] font-manrope text-[13px] font-bold hover:underline">
+                <button className="text-primary font-manrope text-[13px] font-bold hover:underline">
                   {alert.action}
                 </button>
               </div>

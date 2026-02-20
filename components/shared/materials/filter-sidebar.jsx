@@ -140,15 +140,16 @@ export default function FilterSidebar({
           )}
         </button>
       </div>
-
       {(filterTab || filterDrop) && (
         <>
           <div className="flex flex-col gap-2 py-2">
             <p className="text-gray-600">
-              {data?.pagination?.total || 124} Results
+              {data?.pagination?.total || 0} Results
             </p>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Hardwood Flooring
+              {activeFilters.categories?.length > 0
+                ? activeFilters.categories.join(", ")
+                : "All Materials"}
             </h1>
             <ActiveFilterTags
               activeFilters={activeFilters}
@@ -329,7 +330,7 @@ export default function FilterSidebar({
       )}
 
       {/* Sustainable Choice Card */}
-      <div className="mt-6 bg-[#1e293b] text-white p-6 rounded-lg hidden md:block">
+      <div className="mt-6 bg-primary text-white p-6 rounded-lg hidden md:block">
         <h4 className="font-semibold mb-2">Sustainable Choice</h4>
         <p className="text-sm text-gray-300 mb-4">
           Browse our collection of Eco-Friendly materials

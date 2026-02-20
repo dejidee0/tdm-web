@@ -53,7 +53,7 @@ export default function CartPage() {
           </div>
 
           <Link
-            href="/shop"
+            href="/materials"
             className="text-[14px] text-[#3b82f6] font-medium hover:text-[#2563eb] transition-colors hidden md:block"
           >
             Continue Shopping

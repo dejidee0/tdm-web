@@ -47,7 +47,7 @@ export default function QuickActions() {
       className="bg-white rounded-xl p-4 h-full border border-[#E5E7EB]"
     >
       {/* Header */}
-      <h2 className="font-manrope text-[18px] font-bold text-[#1E293B] mb-6">
+      <h2 className="font-manrope text-[18px] font-bold text-primary mb-6">
         Quick Actions
       </h2>
 
@@ -75,7 +75,7 @@ export default function QuickActions() {
               >
                 <Icon size={20} strokeWidth={2} />
               </div>
-              <span className="font-manrope text-[13px] font-medium text-[#1E293B]">
+              <span className="font-manrope text-[13px] font-medium text-primary">
                 {action.label}
               </span>
             </motion.button>

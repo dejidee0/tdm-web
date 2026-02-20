@@ -1,3 +1,4 @@
+// app/materials/[id]/client.jsx
 "use client";
 
 import { useState } from "react";
@@ -6,19 +7,17 @@ import {
   Heart,
   Share2,
   Star,
-  Package,
   ShoppingCart,
   CheckCircle,
-  File,
-  Folder,
   FolderPlus,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAddToCart } from "@/hooks/use-cart";
 import Breadcrumb from "@/components/shared/materials/details/bread-crumb";
 import ImageGallery from "@/components/shared/materials/details/image-gallery";
 import QuantityCalculator from "@/components/shared/materials/details/quantity-calculator";
 import AIVisualizer from "@/components/shared/materials/details/visualizer";
 import ProjectCard from "@/components/shared/materials/details/card";
-
 import RatingsReviews from "@/components/shared/materials/details/reviews";
 import SimilarStyles from "@/components/shared/materials/details/similar";
 import ProductTabs from "@/components/shared/materials/details/tabs";
@@ -29,10 +28,24 @@ export default function MaterialDetailClient({
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [quantity, setQuantity] = useState(200);
+  const router = useRouter();
+
+  const addToCart = useAddToCart();
 
   const handleAddToCart = () => {
-    // Add to cart logic
-    console.log("Adding to cart:", { materialId: material?.id, quantity });
+    addToCart.mutate(
+      { productId: material.id, quantity },
+      {
+        onSuccess: (data) => {
+          alert(data.message || `Added ${quantity} sq ft to cart!`);
+          // Optionally redirect to cart
+          // router.push('/cart');
+        },
+        onError: (error) => {
+          alert(error.message || "Failed to add to cart. Please try again.");
+        },
+      },
+    );
   };
 
   const handleShare = async () => {
@@ -51,7 +64,6 @@ export default function MaterialDetailClient({
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // Add API call to save favorite
   };
 
   // Calculate values with safe fallbacks
@@ -67,9 +79,8 @@ export default function MaterialDetailClient({
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "Renovation", href: "/renovation" },
-              { label: "Tiles", href: "/renovation/tiles" },
-              { label: material?.category || "Carrara Marble", href: "#" },
+              { label: "Materials", href: "/flooring" },
+              { label: material?.category || "Product", href: "#" },
             ]}
           />
         </div>
@@ -134,7 +145,7 @@ export default function MaterialDetailClient({
                   <span className="text-base text-gray-500">/ sq. ft</span>
                 </div>
                 <p className="text-sm text-gray-800">
-                  Sold in boxes of {boxes} sq ft (
+                  Sold in boxes of {boxSize} sq ft (
                   {material?.boxSizeImperial || "900 BF / box"})
                 </p>
               </div>
@@ -162,10 +173,11 @@ export default function MaterialDetailClient({
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleAddToCart}
-                className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-[#0f172a] transition-colors flex items-center justify-center gap-2"
+                disabled={addToCart.isPending}
+                className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-5 h-5" />
-                Add to Cart
+                {addToCart.isPending ? "Adding..." : "Add to Cart"}
               </motion.button>
 
               {/* Share Button */}

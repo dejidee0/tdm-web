@@ -87,7 +87,7 @@ export default function OrdersPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               Order Management
             </h1>
             <p className="font-manrope text-[14px] text-[#64748B]">
@@ -101,7 +101,7 @@ export default function OrdersPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
             >
               <Upload size={16} />
               Import
@@ -109,7 +109,7 @@ export default function OrdersPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
             >
               <Plus size={16} />
               Create Order
@@ -136,7 +136,7 @@ export default function OrdersPage() {
               placeholder="Search by Order ID, Customer..."
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
 
@@ -149,7 +149,7 @@ export default function OrdersPage() {
             <select
               value={filters.status}
               onChange={(e) => handleFilterChange("status", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
             >
               <option value="all">Status: All</option>
               <option value="processing">Processing</option>
@@ -169,7 +169,7 @@ export default function OrdersPage() {
             <select
               value={filters.dateRange}
               onChange={(e) => handleFilterChange("dateRange", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
             >
               <option value="last30days">Last 30 Days</option>
               <option value="last7days">Last 7 Days</option>
@@ -187,7 +187,7 @@ export default function OrdersPage() {
             <select
               value={filters.type}
               onChange={(e) => handleFilterChange("type", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
             >
               <option value="all">Type: All</option>
               <option value="renovation">Renovation</option>
@@ -199,7 +199,7 @@ export default function OrdersPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors whitespace-nowrap"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors whitespace-nowrap"
           >
             <Download size={16} />
             Export
@@ -239,7 +239,7 @@ export default function OrdersPage() {
             })}
             <button
               onClick={clearAllFilters}
-              className="font-manrope text-[12px] text-[#64748B] hover:text-[#1E293B] underline"
+              className="font-manrope text-[12px] text-[#64748B] hover:text-primary underline"
             >
               Clear all
             </button>

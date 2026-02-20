@@ -29,7 +29,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
     const password = Array.from({ length: 12 }, () =>
-      chars.charAt(Math.floor(Math.random() * chars.length))
+      chars.charAt(Math.floor(Math.random() * chars.length)),
     ).join("");
 
     setTimeout(() => {
@@ -91,7 +91,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
               <div className="px-8 py-6 border-b border-[#E5E7EB]">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="font-manrope text-[24px] font-bold text-[#1E293B] mb-2">
+                    <h2 className="font-manrope text-[24px] font-bold text-primary mb-2">
                       Add New User
                     </h2>
                     <p className="font-manrope text-[14px] text-[#64748B]">
@@ -113,7 +113,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Full Name */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
                       Full Name
                     </label>
                     <input
@@ -121,14 +121,14 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       value={formData.fullName}
                       onChange={(e) => handleChange("fullName", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                       placeholder="Enter full name"
                     />
                   </div>
 
                   {/* Email Address */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
                       Email Address
                     </label>
                     <input
@@ -136,7 +136,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       value={formData.email}
                       onChange={(e) => handleChange("email", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                       placeholder="Enter email address"
                     />
                   </div>
@@ -145,7 +145,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Role Selection */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
                       Role Selection
                     </label>
                     <div className="relative">
@@ -153,7 +153,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                         value={formData.role}
                         onChange={(e) => handleChange("role", e.target.value)}
                         required
-                        className="appearance-none w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                        className="appearance-none w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                       >
                         <option value="">Select a role</option>
                         <option value="Admin">Admin</option>
@@ -171,7 +171,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
 
                   {/* Account Status */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
                       Account Status
                     </label>
                     <div className="flex items-center gap-3 h-[42px]">
@@ -187,7 +187,9 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       >
                         <span
                           className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            formData.isActive ? "translate-x-6" : "translate-x-1"
+                            formData.isActive
+                              ? "translate-x-6"
+                              : "translate-x-1"
                           }`}
                         />
                       </button>
@@ -200,7 +202,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
 
                 {/* Initial Password */}
                 <div className="mb-6">
-                  <label className="block font-manrope text-[14px] font-medium text-[#1E293B] mb-2">
+                  <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
                     Initial Password
                   </label>
                   <div className="flex gap-3">
@@ -209,7 +211,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       value={formData.password}
                       onChange={(e) => handleChange("password", e.target.value)}
                       required
-                      className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                       placeholder="Enter or generate password"
                     />
                     <motion.button
@@ -218,7 +220,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                       disabled={isGenerating}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
                     >
                       <RefreshCw
                         size={16}
@@ -248,7 +250,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-[#334155] transition-colors"
+                    className="px-6 py-2.5 bg-primary text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-[#334155] transition-colors"
                   >
                     Create User
                   </motion.button>

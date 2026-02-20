@@ -46,7 +46,7 @@ function VerifyEmailContent() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -56,7 +56,7 @@ function VerifyEmailContent() {
       }
 
       setSuccessMessage(
-        "Email verified successfully! Redirecting to sign in..."
+        "Email verified successfully! Redirecting to sign in...",
       );
 
       // Clear email from localStorage
@@ -94,7 +94,7 @@ function VerifyEmailContent() {
           body: JSON.stringify({
             email: email,
           }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -118,25 +118,25 @@ function VerifyEmailContent() {
         {/* Icon */}
         <div className="flex justify-center mb-6">
           <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center relative">
-            <div className="w-20 h-20 bg-[#1e293b] rounded-2xl flex items-center justify-center transform -rotate-12">
+            <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center transform -rotate-12">
               <Mail className="w-10 h-10 text-white" strokeWidth={2} />
             </div>
             <div className="absolute top-4 right-6">
               <div className="relative">
-                <div className="w-8 h-8 bg-[#1e293b] rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                   <MessageCircle
                     className="w-4 h-4 text-white"
                     strokeWidth={2.5}
                   />
                 </div>
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#1e293b] rounded-full"></div>
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Header */}
-        <h1 className="text-3xl font-bold text-[#1e293b] mb-4">
+        <h1 className="text-3xl font-bold text-primary mb-4">
           Verify Your Email
         </h1>
 
@@ -180,7 +180,7 @@ function VerifyEmailContent() {
           <button
             type="submit"
             disabled={isVerifying || !token.trim()}
-            className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isVerifying ? "Verifying..." : "Verify Email"}
           </button>

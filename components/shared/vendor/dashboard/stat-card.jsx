@@ -45,7 +45,7 @@ export default function StatCard({ data, icon: Icon, index }) {
           {label}
         </h3>
         <div className="flex items-end gap-3">
-          <p className="text-[#1E293B] font-manrope text-[40px] font-bold leading-none">
+          <p className="text-primary font-manrope text-[40px] font-bold leading-none">
             {value}
           </p>
           {change !== 0 && (

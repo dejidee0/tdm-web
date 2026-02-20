@@ -89,7 +89,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
     return (
       <div className="bg-white rounded-xl border border-[#E5E7EB]">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
             Loading assignments...
           </p>
@@ -118,7 +118,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
               type="checkbox"
               checked={selectedAssignments.length === assignments.length}
               onChange={handleSelectAll}
-              className="w-4 h-4 rounded border-[#E5E7EB] text-[#1E293B] focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+              className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
             />
             <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
               STATUS
@@ -167,7 +167,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => handleSelectAssignment(assignment.id)}
-                    className="w-4 h-4 rounded border-[#E5E7EB] text-[#1E293B] focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+                    className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
                   />
 
                   {/* Status */}
@@ -181,13 +181,13 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                   </div>
 
                   {/* Order ID */}
-                  <span className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                  <span className="font-manrope text-[14px] font-bold text-primary">
                     #{assignment.orderId}
                   </span>
 
                   {/* Customer Details */}
                   <div>
-                    <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-0.5">
+                    <p className="font-manrope text-[14px] font-medium text-primary mb-0.5">
                       {assignment.customer.name}
                     </p>
                     <p className="font-manrope text-[12px] text-[#64748B] truncate">
@@ -200,7 +200,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     className={`font-manrope text-[13px] ${
                       assignment.isOverdue
                         ? "text-[#DC2626] font-bold"
-                        : "text-[#1E293B]"
+                        : "text-primary"
                     }`}
                   >
                     {assignment.expectedDate}
@@ -217,7 +217,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           deliveryPartner: e.target.value,
                         }))
                       }
-                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
                     >
                       <option value="">Select Partner</option>
                       {deliveryPartners.map((partner) => (
@@ -230,10 +230,10 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     <div className="flex items-center gap-2">
                       {assignment.deliveryPartner ? (
                         <>
-                          <span className="w-4 h-4 bg-[#1E293B] rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
+                          <span className="w-4 h-4 bg-primary rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
                             📦
                           </span>
-                          <span className="font-manrope text-[13px] text-[#1E293B] truncate">
+                          <span className="font-manrope text-[13px] text-primary truncate">
                             {assignment.deliveryPartner}
                           </span>
                         </>
@@ -246,7 +246,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                               deliveryPartner: e.target.value,
                             }));
                           }}
-                          className="w-full px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+                          className="w-full px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
                         >
                           <option value="">Select Partner</option>
                           {deliveryPartners.map((partner) => (
@@ -271,12 +271,12 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           trackingNumber: e.target.value,
                         }))
                       }
-                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   ) : (
                     <>
                       {assignment.trackingNumber ? (
-                        <span className="font-manrope text-[13px] text-[#1E293B] font-mono">
+                        <span className="font-manrope text-[13px] text-primary font-mono">
                           {assignment.trackingNumber}
                         </span>
                       ) : (
@@ -284,7 +284,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           type="text"
                           placeholder="Enter Tracking #"
                           onFocus={() => handleEdit(assignment)}
-                          className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B]"
+                          className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                       )}
                     </>

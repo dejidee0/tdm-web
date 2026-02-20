@@ -1,24 +1,24 @@
+// app/flooring/page.jsx
 "use client";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import FilterSidebar from "@/components/shared/materials/filter-sidebar";
-import ActiveFilterTags from "@/components/shared/materials/active-filter-tabs";
 import ProductGrid from "@/components/shared/materials/product-grid";
 import Pagination from "@/components/shared/materials/pagination";
 import { ThumbsUp } from "lucide-react";
 
 export default function FlooringPage() {
   const [activeFilters, setActiveFilters] = useState({
-    categories: ["Flooring"],
+    categories: [], // Start with empty array to show all products
     materialTypes: [],
     minPrice: 5,
     maxPrice: 80,
   });
   const [sortBy, setSortBy] = useState("popular");
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState("grid");
 
   // Fetch products using React Query
   const { data, isLoading, error } = useQuery({
@@ -49,7 +49,7 @@ export default function FlooringPage() {
       }
       return response.json();
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const handleFilterChange = (newFilters) => {
@@ -94,7 +94,6 @@ export default function FlooringPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 text-sm">
             <Link href="/">
-              {" "}
               <p className="text-gray-500 hover:text-gray-700">Home</p>
             </Link>
 
@@ -111,9 +110,12 @@ export default function FlooringPage() {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-            <a href="/materials" className="text-gray-500 hover:text-gray-700">
+            <Link
+              href="/flooring"
+              className="text-gray-500 hover:text-gray-700"
+            >
               Materials
-            </a>
+            </Link>
             <svg
               className="w-4 h-4 text-gray-400"
               fill="none"
@@ -127,7 +129,7 @@ export default function FlooringPage() {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-            <span className="text-gray-900 font-medium">Flooring</span>
+            <span className="text-gray-900 font-medium">All Materials</span>
           </div>
         </div>
       </div>
@@ -155,10 +157,10 @@ export default function FlooringPage() {
           {/* Main Content Area */}
           <main className="flex-1">
             {/* Active Filters & Sort Controls */}
-            <div className=" flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 hidden md:flex">
+            <div className="flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 hidden md:flex">
               <div className="flex items-center gap-3 ml-auto">
                 <p className="text-gray-600">
-                  {data?.pagination?.total || 124} Results
+                  {data?.pagination?.total || 0} Results
                 </p>
                 <label className="text-sm text-gray-700">Sort:</label>
                 <select
@@ -217,7 +219,7 @@ export default function FlooringPage() {
                   <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center shrink-0">
                     <div className="w-6 h-6 bg-transparent border-2 border-primary rounded-full flex items-center justify-center shrink-0">
                       <ThumbsUp
-                        className="text-primary "
+                        className="text-primary"
                         size={12}
                         strokeWidth={2}
                       />
@@ -230,12 +232,12 @@ export default function FlooringPage() {
                     <p className="text-sm text-gray-600">
                       Based on your recent renovation style quiz
                     </p>
-                    <button className="text-sm  text-start font-semibold text-primary hover:text-gray-800 whitespace-nowrap block md:hidden ">
+                    <button className="text-sm text-start font-semibold text-primary hover:text-gray-800 whitespace-nowrap block md:hidden">
                       View All Recommendations
                     </button>
                   </div>
                 </div>
-                <button className="text-sm font-medium text-gray-600 hover:text-gray-800 whitespace-nowrap hidden md:block ">
+                <button className="text-sm font-medium text-gray-600 hover:text-gray-800 whitespace-nowrap hidden md:block">
                   View All Recommendations
                 </button>
               </div>

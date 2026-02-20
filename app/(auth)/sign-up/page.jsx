@@ -71,7 +71,7 @@ export default function SignUpPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope pt-40 text-primary">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#1e293b] mb-2">
+          <h1 className="text-3xl font-bold text-primary mb-2">
             Sign Up to get started
           </h1>
           <p className="text-gray-500">Enter your details to proceed further</p>
@@ -239,7 +239,7 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending ? "Signing Up..." : "Sign Up"}
           </button>
@@ -295,7 +295,7 @@ export default function SignUpPage() {
           Already have an account?{" "}
           <Link
             href="/sign-in"
-            className="text-[#1e293b] font-semibold hover:underline"
+            className="text-primary font-semibold hover:underline"
           >
             Sign In
           </Link>

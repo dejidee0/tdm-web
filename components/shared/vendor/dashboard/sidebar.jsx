@@ -65,7 +65,7 @@ export default function VendorSidebar() {
             />
           </div>
           <div>
-            <h1 className="font-manrope font-bold text-[15px] text-[#1E293B]">
+            <h1 className="font-manrope font-bold text-[15px] text-primary">
               TBM & Bogat
             </h1>
             <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
@@ -93,7 +93,7 @@ export default function VendorSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-primary/10 text-[#1E293B] font-medium"
+                          ? "bg-primary/10 text-primary font-medium"
                           : "text-[#64748B] hover:bg-[#F8FAFC]"
                       }
                     `}
@@ -138,7 +138,7 @@ export default function VendorSidebar() {
             AM
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-manrope font-medium text-[14px] text-[#1E293B] truncate">
+            <p className="font-manrope font-medium text-[14px] text-primary truncate">
               Alex Morgan
             </p>
             <p className="font-manrope text-[12px] text-[#64748B] truncate">

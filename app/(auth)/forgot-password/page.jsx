@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[#1e293b] mb-2">
+          <h1 className="text-2xl font-bold text-primary mb-2">
             Lost your password?
           </h1>
           <p className="text-gray-500">Enter your details to recover</p>
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending ? "Sending..." : "Send"}
           </button>
@@ -89,7 +89,7 @@ export default function ForgotPasswordPage() {
         <div className="text-center mt-6">
           <Link
             href="/sign-in"
-            className="text-sm text-gray-600 hover:text-[#1e293b] transition-colors"
+            className="text-sm text-gray-600 hover:text-primary transition-colors"
           >
             ← Back to Sign In
           </Link>

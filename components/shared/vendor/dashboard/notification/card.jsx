@@ -76,7 +76,7 @@ export default function NotificationCard({ notification, index }) {
           <h3
             className={`
               font-manrope text-[16px] font-bold mb-2
-              ${isRead ? "text-white" : "text-[#1E293B]"}
+              ${isRead ? "text-white" : "text-primary"}
             `}
           >
             {notification.title}

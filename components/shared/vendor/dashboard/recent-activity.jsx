@@ -58,7 +58,7 @@ export default function RecentActivityStream({ activities }) {
       {/* Header with Tabs */}
       <div className="p-4 md:p-6 border-b border-[#E5E7EB]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-          <h2 className="font-manrope text-[18px] font-bold text-[#1E293B]">
+          <h2 className="font-manrope text-[18px] font-bold text-primary">
             Recent Activity Stream
           </h2>
         </div>
@@ -74,7 +74,7 @@ export default function RecentActivityStream({ activities }) {
                 transition-colors flex-shrink-0
                 ${
                   activeTab === tab
-                    ? "bg-[#1E293B] text-white"
+                    ? "bg-primary text-white"
                     : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
                 }
               `}
@@ -130,7 +130,7 @@ export default function RecentActivityStream({ activities }) {
                   <div className="w-8 h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center text-[#64748B]">
                     <Icon size={16} />
                   </div>
-                  <span className="font-manrope text-[13px] font-medium text-[#1E293B]">
+                  <span className="font-manrope text-[13px] font-medium text-primary">
                     {activity.type}
                   </span>
                 </div>
@@ -154,7 +154,7 @@ export default function RecentActivityStream({ activities }) {
                 </div>
 
                 {/* Customer */}
-                <span className="font-manrope text-[13px] text-[#1E293B]">
+                <span className="font-manrope text-[13px] text-primary">
                   {activity.customer}
                 </span>
 
@@ -164,7 +164,7 @@ export default function RecentActivityStream({ activities }) {
                 </span>
 
                 {/* Action */}
-                <button className="text-[#64748B] hover:text-[#1E293B] transition-colors">
+                <button className="text-[#64748B] hover:text-primary transition-colors">
                   <MoreVertical size={18} />
                 </button>
               </div>
@@ -177,7 +177,7 @@ export default function RecentActivityStream({ activities }) {
                       <Icon size={16} />
                     </div>
                     <div>
-                      <span className="font-manrope text-[13px] font-medium text-[#1E293B] block">
+                      <span className="font-manrope text-[13px] font-medium text-primary block">
                         {activity.type}
                       </span>
                       <span className="font-manrope text-[11px] text-[#64748B] font-mono">
@@ -185,7 +185,7 @@ export default function RecentActivityStream({ activities }) {
                       </span>
                     </div>
                   </div>
-                  <button className="text-[#64748B] hover:text-[#1E293B] transition-colors flex-shrink-0">
+                  <button className="text-[#64748B] hover:text-primary transition-colors flex-shrink-0">
                     <MoreVertical size={18} />
                   </button>
                 </div>
@@ -210,7 +210,7 @@ export default function RecentActivityStream({ activities }) {
                 </div>
 
                 <div>
-                  <span className="font-manrope text-[13px] text-[#1E293B]">
+                  <span className="font-manrope text-[13px] text-primary">
                     {activity.customer}
                   </span>
                 </div>
@@ -222,7 +222,7 @@ export default function RecentActivityStream({ activities }) {
 
       {/* View All Footer */}
       <div className="p-4 md:p-6 border-t border-[#E5E7EB] flex justify-center">
-        <button className="flex items-center gap-2 text-[#1E293B] font-manrope text-[13px] font-bold hover:gap-3 transition-all group">
+        <button className="flex items-center gap-2 text-primary font-manrope text-[13px] font-bold hover:gap-3 transition-all group">
           View All Activity
           <ArrowRight
             size={16}

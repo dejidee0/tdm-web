@@ -39,7 +39,7 @@ export default function OrdersTable({ orders, isLoading }) {
     return (
       <div className="bg-white rounded-xl border border-[#E5E7EB]">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-[#1E293B] rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
             Loading orders...
           </p>
@@ -104,7 +104,7 @@ export default function OrdersTable({ orders, isLoading }) {
               >
                 <div className="grid grid-cols-[140px_240px_120px_140px_120px_140px_120px] gap-4 justify-between items-center">
                   {/* Order ID */}
-                  <span className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                  <span className="font-manrope text-[14px] font-bold text-primary">
                     #{order.id}
                   </span>
 
@@ -119,7 +119,7 @@ export default function OrdersTable({ orders, isLoading }) {
                     >
                       {order.customer.initials}
                     </div>
-                    <span className="font-manrope text-[14px] text-[#1E293B] truncate">
+                    <span className="font-manrope text-[14px] text-primary truncate">
                       {order.customer.name}
                     </span>
                   </div>
@@ -132,13 +132,13 @@ export default function OrdersTable({ orders, isLoading }) {
                   {/* Type */}
                   <div className="flex items-center gap-2">
                     <TypeIcon size={16} className="text-[#F59E0B]" />
-                    <span className="font-manrope text-[13px] text-[#1E293B]">
+                    <span className="font-manrope text-[13px] text-primary">
                       {order.type}
                     </span>
                   </div>
 
                   {/* Total */}
-                  <span className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                  <span className="font-manrope text-[14px] font-bold text-primary">
                     ${order.total.toFixed(2)}
                   </span>
 
@@ -164,7 +164,7 @@ export default function OrdersTable({ orders, isLoading }) {
                     onClick={() =>
                       router.push(`/vendor/dashboard/orders/${order.id}`)
                     }
-                    className="px-4 py-2 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+                    className="px-4 py-2 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
                   >
                     View Order
                   </motion.button>

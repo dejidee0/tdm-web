@@ -43,7 +43,7 @@ function ResetEmailSentContent() {
         </div>
 
         {/* Header */}
-        <h1 className="text-3xl font-bold text-[#1e293b] mb-4">Thank you!</h1>
+        <h1 className="text-3xl font-bold text-primary mb-4">Thank you!</h1>
 
         {/* Message */}
         <p className="text-gray-600 mb-2">
@@ -58,7 +58,7 @@ function ResetEmailSentContent() {
         <div className="space-y-3">
           <Link
             href="/sign-in"
-            className="block w-full bg-[#1e293b] text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors"
+            className="block w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors"
           >
             Go to Sign In
           </Link>

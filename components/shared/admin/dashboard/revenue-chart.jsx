@@ -20,14 +20,14 @@ export default function RevenueChart({ data }) {
       {/* Header */}
       <div className="flex items-start justify-between mb-6 pb-6 border-b-[1.06px] border-[#334155]">
         <div>
-          <h2 className="font-inter text-[18px] font-bold text-[#1E293B] mb-1">
+          <h2 className="font-inter text-[18px] font-bold text-primary mb-1">
             Revenue Summary
           </h2>
           <p className="font-inter text-[13px] text-[#64748B]">
             Monthly recurring revenue & growth trends
           </p>
         </div>
-        <button className="px-4 py-2 bg-[#1E293B] text-white rounded-lg font-inter text-[13px] font-medium hover:bg-[#334155] transition-colors">
+        <button className="px-4 py-2 bg-primary text-white rounded-lg font-inter text-[13px] font-medium hover:bg-[#334155] transition-colors">
           Last 6 Months
         </button>
       </div>
@@ -38,16 +38,16 @@ export default function RevenueChart({ data }) {
           <p className="font-inter text-[13px] text-[#64748B] mb-1">
             Total Revenue (YTD)
           </p>
-          <p className="font-inter text-[28px] font-bold text-[#1E293B]">
-            ${data?.totalRevenue?.toLocaleString() || '4,250,000'}
+          <p className="font-inter text-[28px] font-bold text-primary">
+            ${data?.totalRevenue?.toLocaleString() || "4,250,000"}
           </p>
         </div>
         <div>
           <p className="font-inter text-[13px] text-[#64748B] mb-1">
             Monthly Recurring (MRR)
           </p>
-          <p className="font-inter text-[28px] font-bold text-[#1E293B]">
-            ${data?.monthlyRecurring?.toLocaleString() || '355,000'}
+          <p className="font-inter text-[28px] font-bold text-primary">
+            ${data?.monthlyRecurring?.toLocaleString() || "355,000"}
           </p>
         </div>
       </div>

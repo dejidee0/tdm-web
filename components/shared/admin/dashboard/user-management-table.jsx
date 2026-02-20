@@ -6,7 +6,11 @@ import { roleBadgeColors } from "@/lib/mock/users";
 import { useToggleUserStatus } from "@/hooks/use-users";
 import Image from "next/image";
 
-export default function UserManagementTable({ data, pagination, onPageChange }) {
+export default function UserManagementTable({
+  data,
+  pagination,
+  onPageChange,
+}) {
   const { mutate: toggleStatus } = useToggleUserStatus();
 
   if (!data || data.length === 0) {
@@ -110,7 +114,8 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
           {/* Table Body */}
           <tbody className="divide-y divide-[#E5E7EB]">
             {data.map((user, index) => {
-              const roleColor = roleBadgeColors[user.role] || roleBadgeColors.Customer;
+              const roleColor =
+                roleBadgeColors[user.role] || roleBadgeColors.Customer;
 
               return (
                 <motion.tr
@@ -151,7 +156,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                           {user.initials}
                         </div>
                       )}
-                      <span className="font-manrope text-[14px] font-medium text-[#1E293B]">
+                      <span className="font-manrope text-[14px] font-medium text-primary">
                         {user.name}
                       </span>
                     </div>
@@ -192,7 +197,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
 
                   {/* Actions Menu */}
                   <td className="px-6 py-4">
-                    <button className="text-[#64748B] hover:text-[#1E293B] transition-colors">
+                    <button className="text-[#64748B] hover:text-primary transition-colors">
                       <MoreVertical size={20} />
                     </button>
                   </td>
@@ -206,7 +211,8 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
       {/* Mobile Card View */}
       <div className="md:hidden divide-y divide-[#E5E7EB]">
         {data.map((user, index) => {
-          const roleColor = roleBadgeColors[user.role] || roleBadgeColors.Customer;
+          const roleColor =
+            roleBadgeColors[user.role] || roleBadgeColors.Customer;
 
           return (
             <motion.div
@@ -240,7 +246,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                   </div>
                 )}
                 <div className="flex-1">
-                  <p className="font-manrope text-[14px] font-medium text-[#1E293B]">
+                  <p className="font-manrope text-[14px] font-medium text-primary">
                     {user.name}
                   </p>
                   <p className="font-manrope text-[12px] text-[#64748B]">
@@ -282,9 +288,15 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
       {pagination && (
         <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-manrope text-[13px] text-[#273054]">
-            Showing <span className="font-medium">{(currentPage - 1) * pagination.limit + 1}</span> to{" "}
-            <span className="font-medium">{Math.min(currentPage * pagination.limit, pagination.total)}</span> of{" "}
-            <span className="font-medium">{pagination.total}</span> results
+            Showing{" "}
+            <span className="font-medium">
+              {(currentPage - 1) * pagination.limit + 1}
+            </span>{" "}
+            to{" "}
+            <span className="font-medium">
+              {Math.min(currentPage * pagination.limit, pagination.total)}
+            </span>{" "}
+            of <span className="font-medium">{pagination.total}</span> results
           </p>
 
           <div className="flex items-center gap-2">
@@ -294,7 +306,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
               whileTap={{ scale: 0.95 }}
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="p-2 rounded-lg bg-[#1E293B] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={16} />
             </motion.button>
@@ -321,7 +333,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
                   className={`px-3 py-2 rounded-lg font-manrope text-[13px] font-medium transition-colors ${
                     currentPage === pageNum
                       ? "bg-[#E2E8F0] text-[#64748B]"
-                      : "bg-[#1E293B] text-white hover:bg-[#334155]"
+                      : "bg-primary text-white hover:bg-[#334155]"
                   }`}
                 >
                   {pageNum}
@@ -335,7 +347,7 @@ export default function UserManagementTable({ data, pagination, onPageChange }) 
               whileTap={{ scale: 0.95 }}
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="p-2 rounded-lg bg-[#1E293B] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronRight size={16} />
             </motion.button>

@@ -51,9 +51,9 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
     <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-[#E5E7EB]">
       {/* Results info */}
       <p className="font-manrope text-[13px] text-[#64748B]">
-        Showing <span className="font-bold text-[#1E293B]">1</span> to{" "}
-        <span className="font-bold text-[#1E293B]">5</span> of{" "}
-        <span className="font-bold text-[#1E293B]">128</span> results
+        Showing <span className="font-bold text-primary">1</span> to{" "}
+        <span className="font-bold text-primary">5</span> of{" "}
+        <span className="font-bold text-primary">128</span> results
       </p>
 
       {/* Page numbers */}
@@ -105,7 +105,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                 transition-colors
                 ${
                   isActive
-                    ? "bg-[#1E293B] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
                 }
               `}

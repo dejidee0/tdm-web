@@ -81,7 +81,7 @@ export default function InventoryPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               Product Inventory
             </h1>
             <p className="font-manrope text-[14px] text-[#64748B]">
@@ -97,7 +97,7 @@ export default function InventoryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
             >
               <Download size={16} />
               Export Report
@@ -106,7 +106,7 @@ export default function InventoryPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsAddProductModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
             >
               <Plus size={16} />
               Add New Product
@@ -136,12 +136,12 @@ export default function InventoryPage() {
               placeholder="Search by Product Name, SKU..."
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center gap-2 px-1 py-1 bg-[#1E293B] rounded-lg">
+          <div className="flex items-center gap-2 px-1 py-1 bg-primary rounded-lg">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -151,7 +151,7 @@ export default function InventoryPage() {
                   transition-colors flex items-center gap-2
                   ${
                     activeTab === tab.id
-                      ? "bg-white text-[#1E293B]"
+                      ? "bg-white text-primary"
                       : "text-white hover:bg-[#334155]"
                   }
                 `}
@@ -162,7 +162,7 @@ export default function InventoryPage() {
                     px-2 py-0.5 rounded-full text-[11px] font-bold
                     ${
                       activeTab === tab.id
-                        ? "bg-[#1E293B] text-white"
+                        ? "bg-primary text-white"
                         : "bg-[#334155] text-white"
                     }
                   `}
@@ -188,7 +188,7 @@ export default function InventoryPage() {
                   page: 1,
                 }))
               }
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
             >
               <option value="all">Location</option>
               <option value="warehouse-a">Warehouse A</option>
@@ -206,7 +206,7 @@ export default function InventoryPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
           >
             <SlidersHorizontal size={16} />
             Filter
@@ -223,18 +223,18 @@ export default function InventoryPage() {
           <div className="flex items-center justify-between px-6 py-4">
             <p className="font-manrope text-[13px] text-[#64748B]">
               Showing{" "}
-              <span className="font-bold text-[#1E293B]">
+              <span className="font-bold text-primary">
                 {(data.pagination.page - 1) * data.pagination.limit + 1}
               </span>{" "}
               to{" "}
-              <span className="font-bold text-[#1E293B]">
+              <span className="font-bold text-primary">
                 {Math.min(
                   data.pagination.page * data.pagination.limit,
                   data.pagination.total,
                 )}
               </span>{" "}
               of{" "}
-              <span className="font-bold text-[#1E293B]">
+              <span className="font-bold text-primary">
                 {data.pagination.total}
               </span>{" "}
               results
@@ -277,7 +277,7 @@ export default function InventoryPage() {
                       transition-colors
                       ${
                         data.pagination.page === pageNum
-                          ? "bg-[#1E293B] text-white"
+                          ? "bg-primary text-white"
                           : "bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
                       }
                     `}
