@@ -19,7 +19,7 @@ export default function Navbar() {
   const itemCount = cart?.items?.length || 0;
 
   const navLinks = [
-    { name: "Materials", href: "/flooring" },
+    { name: "Materials", href: "/materials" },
     { name: "AI Visualizer", href: "/ai-visualizer" },
     { name: "Project", href: "/project" },
     { name: "About", href: "/about" },
