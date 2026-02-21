@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, RefreshCw, Upload } from "lucide-react";
+import { X, RefreshCw, ChevronDown } from "lucide-react";
 
 export default function AddProductModal({ isOpen, onClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -124,11 +124,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* General Information Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
-                      <span className="text-white text-[10px] font-bold">
-                        ℹ
-                      </span>
-                    </div>
+                    <img src="/assets/svgs/vendor/inventory/addNewProduct/generalInformation.svg" alt="" width={20} height={20} />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       General Information
                     </h3>
@@ -157,20 +153,20 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         SKU
                       </label>
-                      <div className="relative">
+                      <div className="flex items-center gap-2">
                         <input
                           type="text"
                           placeholder="SKU-0000"
                           value={formData.sku}
                           onChange={(e) => handleChange("sku", e.target.value)}
                           disabled={isAutoSKU}
-                          className="w-full px-4 py-2.5 pr-16 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent disabled:bg-[#F8FAFC] disabled:text-[#94A3B8]"
+                          className="flex-1 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent disabled:bg-[#F8FAFC] disabled:text-[#94A3B8]"
                         />
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handleGenerateSKU}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1 bg-[#F1F5F9] hover:bg-[#E2E8F0] rounded text-[#64748B] transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-2.5 bg-[#F1F5F9] border border-[#E5E7EB] rounded-lg text-[#64748B] hover:bg-[#E2E8F0] transition-colors whitespace-nowrap"
                         >
                           <RefreshCw size={12} />
                           <span className="font-manrope text-[11px] font-medium">
@@ -185,19 +181,22 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         Category
                       </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) =>
-                          handleChange("category", e.target.value)
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
-                      >
-                        <option value="">Select Category</option>
-                        <option value="industrial">Industrial Grade</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="logistics">Logistics</option>
-                        <option value="hardware">Hardware</option>
-                      </select>
+                      <div className="relative">
+                        <select
+                          value={formData.category}
+                          onChange={(e) =>
+                            handleChange("category", e.target.value)
+                          }
+                          className="w-full px-4 py-2.5 pr-10 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                        >
+                          <option value="">Select Category</option>
+                          <option value="industrial">Industrial Grade</option>
+                          <option value="electronics">Electronics</option>
+                          <option value="logistics">Logistics</option>
+                          <option value="hardware">Hardware</option>
+                        </select>
+                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                      </div>
                     </div>
                   </div>
 
@@ -221,11 +220,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* Inventory & Pricing Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
-                      <span className="text-white text-[10px] font-bold">
-                        📦
-                      </span>
-                    </div>
+                    <img src="/assets/svgs/vendor/inventory/addNewProduct/inventoryPricing.svg" alt="" width={20} height={20} />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       Inventory & Pricing
                     </h3>
@@ -238,19 +233,22 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         Warehouse Location
                       </label>
-                      <select
-                        value={formData.warehouseLocation}
-                        onChange={(e) =>
-                          handleChange("warehouseLocation", e.target.value)
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
-                      >
-                        <option value="">Select Warehouse</option>
-                        <option value="warehouse-a">Warehouse A</option>
-                        <option value="warehouse-b">Warehouse B</option>
-                        <option value="warehouse-c">Warehouse C</option>
-                        <option value="warehouse-d">Warehouse D</option>
-                      </select>
+                      <div className="relative">
+                        <select
+                          value={formData.warehouseLocation}
+                          onChange={(e) =>
+                            handleChange("warehouseLocation", e.target.value)
+                          }
+                          className="w-full px-4 py-2.5 pr-10 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                        >
+                          <option value="">Select Warehouse</option>
+                          <option value="warehouse-a">Warehouse A</option>
+                          <option value="warehouse-b">Warehouse B</option>
+                          <option value="warehouse-c">Warehouse C</option>
+                          <option value="warehouse-d">Warehouse D</option>
+                        </select>
+                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                      </div>
                     </div>
 
                     {/* Initial Quantity */}
@@ -324,11 +322,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                 {/* Product Images Section */}
                 <div className="mb-2">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 bg-[#1E293B] rounded-full flex items-center justify-center">
-                      <span className="text-white text-[10px] font-bold">
-                        📷
-                      </span>
-                    </div>
+                    <img src="/assets/svgs/vendor/inventory/addNewProduct/productImages.svg" alt="" width={20} height={20} />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       Product Images
                     </h3>
@@ -341,12 +335,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                     onDragOver={handleDrag}
                     onDrop={handleDrop}
                     className={`
-                      relative border-2 border-dashed rounded-xl p-12 text-center
-                      transition-colors cursor-pointer
+                      relative border-[1.19px] border-dashed rounded-[7.15px] p-12 text-center
+                      transition-colors cursor-pointer bg-[#273054]/10
                       ${
                         dragActive
-                          ? "border-[#1E293B] bg-[#F8FAFC]"
-                          : "border-[#E5E7EB] bg-[#F8FAFC] hover:border-[#94A3B8]"
+                          ? "border-[#1E293B]"
+                          : "border-[#E2E8F0] hover:border-[#94A3B8]"
                       }
                     `}
                   >
@@ -358,9 +352,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
-                        <Upload size={20} className="text-[#64748B]" />
-                      </div>
+                      <img src="/assets/svgs/vendor/inventory/addNewProduct/clickToUpload.svg" alt="" width={48} height={48} />
                       <div>
                         <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
                           Click to upload or drag and drop

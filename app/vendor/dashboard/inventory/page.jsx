@@ -6,10 +6,13 @@ import {
   Search,
   Download,
   Plus,
-  MapPin,
-  SlidersHorizontal,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import Image from "next/image";
+import locationIcon from "@/public/assets/svgs/vendor/inventory/location.svg";
+import filterIcon from "@/public/assets/svgs/vendor/inventory/filter.svg";
 import { useInventoryProducts, useInventoryStats } from "@/hooks/use-inventory";
 import InventoryStatsCards from "@/components/shared/vendor/dashboard/inventory/stats";
 import InventoryProductsTable from "@/components/shared/vendor/dashboard/inventory/table";
@@ -81,10 +84,10 @@ export default function InventoryPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-[#1E293B] mb-2">
+            <h1 className="font-inter text-[21.8px] font-bold text-[#273054] leading-[30.45px] tracking-[-0.63px] mb-2">
               Product Inventory
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-inter text-[13.53px] font-normal text-[#273054] leading-[20.3px]">
               Manage the Bogat product catalog, track real-time stock levels,
               and update inventory
               <br />
@@ -97,7 +100,7 @@ export default function InventoryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white border-[0.87px] border-[#234848] rounded-[6.96px] font-inter text-[12.19px] font-medium text-[#273054] hover:bg-[#F8FAFC] transition-colors"
             >
               <Download size={16} />
               Export Report
@@ -106,7 +109,7 @@ export default function InventoryPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsAddProductModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#273054] text-white rounded-[6.96px] font-inter text-[12.19px] font-medium hover:bg-[#273054]/90 transition-colors"
             >
               <Plus size={16} />
               Add New Product
@@ -118,66 +121,73 @@ export default function InventoryPage() {
       {/* Stats Cards */}
       <InventoryStatsCards stats={stats} />
 
+      {/* Table Container */}
+      <div className="rounded-[10.45px] border-[0.59px] border-[#273054]/50 overflow-hidden" style={{ boxShadow: '0 0.87px 1.74px 0 rgba(0,0,0,0.05)' }}>
       {/* Search and Filters Bar */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
+        className="p-4 bg-white border-b-[0.87px] border-[#273054]"
       >
         <div className="flex items-center gap-4">
           {/* Search */}
           <div className="flex-1 relative">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-              size={18}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#273054]/40"
+              size={16}
             />
             <input
               type="text"
               placeholder="Search by Product Name, SKU..."
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#273054]/10 border-[0.59px] border-[#273054]/10 rounded-[6.96px] font-inter text-[12.19px] text-[#273054] placeholder:text-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#273054]/20 focus:border-transparent"
             />
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center gap-2 px-1 py-1 bg-[#1E293B] rounded-lg">
+          <div className="flex items-center gap-1 bg-[#273054]/10 rounded-[6.96px] p-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
                 className={`
-                  px-4 py-1.5 rounded-md font-manrope text-[13px] font-medium
-                  transition-colors flex items-center gap-2
+                  px-3 py-1.5 rounded-[5.22px] font-inter text-[12.19px] font-medium
+                  transition-colors flex items-center gap-1.5 leading-[17.41px]
                   ${
                     activeTab === tab.id
-                      ? "bg-white text-[#1E293B]"
-                      : "text-white hover:bg-[#334155]"
+                      ? "bg-[#273054] text-white"
+                      : "text-[#273054]"
                   }
                 `}
               >
                 {tab.label}
-                <span
-                  className={`
-                    px-2 py-0.5 rounded-full text-[11px] font-bold
-                    ${
-                      activeTab === tab.id
-                        ? "bg-[#1E293B] text-white"
-                        : "bg-[#334155] text-white"
-                    }
-                  `}
-                >
-                  {tab.count}
-                </span>
+                {tab.count > 0 && (
+                  <span
+                    className={`
+                      px-1.5 py-0.5 rounded-full text-[10.45px] font-bold
+                      ${
+                        activeTab === tab.id
+                          ? "bg-white text-[#273054]"
+                          : "text-[#273054]"
+                      }
+                    `}
+                  >
+                    {tab.count}
+                  </span>
+                )}
               </button>
             ))}
           </div>
 
           {/* Location Filter */}
           <div className="relative">
-            <MapPin
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
-              size={16}
+            <Image
+              src={locationIcon}
+              alt=""
+              width={16}
+              height={20}
+              className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
             />
             <select
               value={filters.location}
@@ -188,7 +198,8 @@ export default function InventoryPage() {
                   page: 1,
                 }))
               }
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] appearance-none cursor-pointer"
+              style={{ fieldSizing: "content" }}
+              className="pl-9 pr-8 py-2.5 bg-[#273054] text-white border-[0.87px] border-[#234848] rounded-[6.96px] font-inter text-[12.19px] font-medium focus:outline-none appearance-none cursor-pointer"
             >
               <option value="all">Location</option>
               <option value="warehouse-a">Warehouse A</option>
@@ -197,8 +208,8 @@ export default function InventoryPage() {
               <option value="warehouse-d">Warehouse D</option>
             </select>
             <ChevronDown
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
-              size={16}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white pointer-events-none"
+              size={14}
             />
           </div>
 
@@ -206,9 +217,9 @@ export default function InventoryPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#273054] text-white border-[0.87px] border-[#234848] rounded-[6.96px] font-inter text-[12.19px] font-medium transition-colors hover:bg-[#273054]/90"
           >
-            <SlidersHorizontal size={16} />
+            <Image src={filterIcon} alt="" width={16} height={20} />
             Filter
           </motion.button>
         </div>
@@ -216,112 +227,97 @@ export default function InventoryPage() {
 
       {/* Products Table */}
       <InventoryProductsTable products={data?.products} isLoading={isLoading} />
+      </div>
 
       {/* Pagination */}
       {data?.pagination && data.products?.length > 0 && (
-        <div className="mt-6 bg-white rounded-xl border border-[#E5E7EB]">
-          <div className="flex items-center justify-between px-6 py-4">
-            <p className="font-manrope text-[13px] text-[#64748B]">
-              Showing{" "}
-              <span className="font-bold text-[#1E293B]">
-                {(data.pagination.page - 1) * data.pagination.limit + 1}
-              </span>{" "}
-              to{" "}
-              <span className="font-bold text-[#1E293B]">
-                {Math.min(
-                  data.pagination.page * data.pagination.limit,
-                  data.pagination.total,
-                )}
-              </span>{" "}
-              of{" "}
-              <span className="font-bold text-[#1E293B]">
-                {data.pagination.total}
-              </span>{" "}
-              results
-            </p>
+        <div className="mt-6 flex items-center justify-between">
+          <p className="font-inter text-[12.19px] font-normal text-[#273054] leading-[17.41px]">
+            Showing{" "}
+            <span className="font-medium text-[#273054]">
+              {(data.pagination.page - 1) * data.pagination.limit + 1}
+            </span>{" "}
+            to{" "}
+            <span className="font-medium text-[#273054]">
+              {Math.min(
+                data.pagination.page * data.pagination.limit,
+                data.pagination.total,
+              )}
+            </span>{" "}
+            of{" "}
+            <span className="font-medium text-[#273054]">
+              {data.pagination.total}
+            </span>{" "}
+            results
+          </p>
 
-            <div className="flex items-center gap-2">
-              {/* Previous button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handlePageChange(data.pagination.page - 1)}
-                disabled={data.pagination.page === 1}
-                className={`
-                  px-4 py-2 rounded-lg font-manrope text-[13px] font-medium
-                  border border-[#E5E7EB]
-                  ${
-                    data.pagination.page === 1
-                      ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                      : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
-                  }
-                  transition-colors
-                `}
-              >
-                Previous
-              </motion.button>
+          {/* Joined pagination */}
+          <div className="flex items-center overflow-hidden rounded-[6.96px] border-[0.87px] border-[#234848]/20">
+            {/* Previous arrow */}
+            <button
+              onClick={() => handlePageChange(data.pagination.page - 1)}
+              disabled={data.pagination.page === 1}
+              className="w-[33px] h-[31.34px] flex items-center justify-center bg-white border-r-[0.87px] border-[#234848]/20 text-[#234848] hover:bg-[#F6F8F7] transition-colors disabled:text-[#234848]/30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={14} />
+            </button>
 
-              {/* Page numbers */}
-              {[...Array(Math.min(data.pagination.totalPages, 5))].map(
-                (_, i) => {
-                  const pageNum = i + 1;
-                  return (
-                    <motion.button
-                      key={pageNum}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handlePageChange(pageNum)}
-                      className={`
-                      w-9 h-9 rounded-lg flex items-center justify-center
-                      font-manrope text-[13px] font-medium
-                      transition-colors
+            {/* Page numbers */}
+            {[...Array(Math.min(data.pagination.totalPages, 3))].map(
+              (_, i) => {
+                const pageNum = i + 1;
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`
+                      w-[33px] h-[31.34px] flex items-center justify-center
+                      font-inter text-[12.19px] font-medium
+                      border-r-[0.87px] border-[#234848]/20 transition-colors
                       ${
                         data.pagination.page === pageNum
-                          ? "bg-[#1E293B] text-white"
-                          : "bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
+                          ? "bg-[#273054] text-white"
+                          : "bg-white text-[#234848] hover:bg-[#F6F8F7]"
                       }
                     `}
-                    >
-                      {pageNum}
-                    </motion.button>
-                  );
-                },
-              )}
-
-              {data.pagination.totalPages > 5 && (
-                <>
-                  <span className="text-[#64748B]">...</span>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handlePageChange(data.pagination.totalPages)}
-                    className="w-9 h-9 rounded-lg flex items-center justify-center font-manrope text-[13px] font-medium bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
                   >
-                    {data.pagination.totalPages}
-                  </motion.button>
-                </>
-              )}
+                    {pageNum}
+                  </button>
+                );
+              },
+            )}
 
-              {/* Next button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handlePageChange(data.pagination.page + 1)}
-                disabled={data.pagination.page === data.pagination.totalPages}
-                className={`
-                  px-4 py-2 rounded-lg font-manrope text-[13px] font-medium
-                  border border-[#E5E7EB]
-                  ${
-                    data.pagination.page === data.pagination.totalPages
-                      ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                      : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
-                  }
-                  transition-colors
-                `}
-              >
-                Next
-              </motion.button>
-            </div>
+            {data.pagination.totalPages > 3 && (
+              <>
+                <span className="w-[35.46px] h-[31.34px] flex items-center justify-center bg-white border-r-[0.87px] border-[#234848]/20 font-inter text-[12.19px] text-[#234848]">
+                  ...
+                </span>
+                <button
+                  onClick={() => handlePageChange(data.pagination.totalPages)}
+                  className={`
+                    w-[33px] h-[31.34px] flex items-center justify-center
+                    font-inter text-[12.19px] font-medium
+                    border-r-[0.87px] border-[#234848]/20 transition-colors
+                    ${
+                      data.pagination.page === data.pagination.totalPages
+                        ? "bg-[#273054] text-white"
+                        : "bg-white text-[#234848] hover:bg-[#F6F8F7]"
+                    }
+                  `}
+                >
+                  {data.pagination.totalPages}
+                </button>
+              </>
+            )}
+
+            {/* Next arrow */}
+            <button
+              onClick={() => handlePageChange(data.pagination.page + 1)}
+              disabled={data.pagination.page === data.pagination.totalPages}
+              className="w-[33px] h-[31.34px] flex items-center justify-center bg-white text-[#234848] hover:bg-[#F6F8F7] transition-colors disabled:text-[#234848]/30 disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={14} />
+            </button>
           </div>
         </div>
       )}
