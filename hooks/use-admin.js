@@ -1,16 +1,47 @@
 import { adminDashboardAPI } from "@/lib/mock/admin";
+import { adminAnalyticsAPI } from "@/lib/api/admin";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Query keys
 export const ADMIN_QUERY_KEYS = {
   stats: ["admin", "dashboard", "stats"],
+  overview: ["admin", "analytics", "overview"],
   revenue: (timeRange) => ["admin", "dashboard", "revenue", timeRange],
+  monthlyRevenue: ["admin", "analytics", "monthly-revenue"],
+  paymentDistribution: ["admin", "analytics", "payment-distribution"],
   serverLoad: ["admin", "dashboard", "server-load"],
   alerts: ["admin", "dashboard", "alerts"],
   quickActions: ["admin", "dashboard", "quick-actions"],
 };
 
-// Hook to fetch dashboard stats
+// Hook to fetch analytics overview (real API)
+export function useAnalyticsOverview() {
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.overview,
+    queryFn: adminAnalyticsAPI.getOverview,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
+
+// Hook to fetch monthly revenue (real API)
+export function useMonthlyRevenue() {
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.monthlyRevenue,
+    queryFn: adminAnalyticsAPI.getMonthlyRevenue,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Hook to fetch payment distribution (real API)
+export function usePaymentDistribution() {
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.paymentDistribution,
+    queryFn: adminAnalyticsAPI.getPaymentDistribution,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Hook to fetch dashboard stats (legacy - still using mock)
 export function useAdminStats() {
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.stats,
@@ -19,7 +50,7 @@ export function useAdminStats() {
   });
 }
 
-// Hook to fetch revenue data
+// Hook to fetch revenue data (legacy - still using mock)
 export function useRevenueData(timeRange = "Last 6 Months") {
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.revenue(timeRange),

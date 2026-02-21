@@ -1,15 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, RefreshCw } from "lucide-react";
+import { Download, X, AlertCircle } from "lucide-react";
 import AdminStatCard from "@/components/shared/admin/dashboard/stat-card";
 import RevenueChart from "@/components/shared/admin/dashboard/revenue-chart";
 import ServerLoad from "@/components/shared/admin/dashboard/server-load";
 import AdminAlertsTable from "@/components/shared/admin/dashboard/admin-alerts-table";
 import AdminQuickActions from "@/components/shared/admin/dashboard/admin-quick-actions";
 import {
-  useAdminStats,
-  useRevenueData,
+  useAnalyticsOverview,
+  useMonthlyRevenue,
   useServerLoad,
   useAdminAlerts,
   useAdminQuickActions,
@@ -20,22 +21,72 @@ import refreshData from "@/public/assets/svgs/adminDashboardOverview/refreshData
 import Image from "next/image";
 
 export default function AdminDashboardPage() {
-  const { data: stats, isLoading: statsLoading } = useAdminStats();
-  const { data: revenueData, isLoading: revenueLoading } = useRevenueData();
+  const [showError, setShowError] = useState(true);
+
+  // Real API endpoints
+  const { data: analyticsOverview, isLoading: overviewLoading, error: overviewError } = useAnalyticsOverview();
+  const { data: monthlyRevenue, isLoading: monthlyRevenueLoading, error: revenueError } = useMonthlyRevenue();
+
+  // Mock endpoints (until backend provides equivalents)
   const { data: serverLoad, isLoading: serverLoading } = useServerLoad();
   const { data: alerts, isLoading: alertsLoading } = useAdminAlerts();
-  const { data: quickActions, isLoading: actionsLoading } =
-    useAdminQuickActions();
-  const { mutate: refreshDashboard, isPending: isRefreshing } =
-    useRefreshAdminDashboard();
+  const { data: quickActions, isLoading: actionsLoading } = useAdminQuickActions();
+  const { mutate: refreshDashboard, isPending: isRefreshing } = useRefreshAdminDashboard();
   const { mutate: exportReport, isPending: isExporting } = useExportReport();
 
+  // Transform real API data to component format, with fallback to placeholder data
+  const stats = analyticsOverview ? {
+    totalRevenue: {
+      label: "Total Revenue",
+      value: `$${analyticsOverview.totalRevenue?.toLocaleString() || 0}`,
+      change: analyticsOverview.revenueGrowth || 0,
+      trend: (analyticsOverview.revenueGrowth || 0) >= 0 ? "up" : "down",
+    },
+    activeOrders: {
+      label: "Total Orders",
+      value: analyticsOverview.totalOrders?.toLocaleString() || 0,
+      change: analyticsOverview.ordersGrowth || 0,
+      trend: (analyticsOverview.ordersGrowth || 0) >= 0 ? "up" : "down",
+    },
+    activeUsers: {
+      label: "Active Users",
+      value: analyticsOverview.activeUsers?.toLocaleString() || 0,
+      change: 12.3,
+      trend: "up",
+    },
+  } : {
+    totalRevenue: {
+      label: "Total Revenue",
+      value: "Loading...",
+      change: 0,
+      trend: "up",
+    },
+    activeOrders: {
+      label: "Total Orders",
+      value: "Loading...",
+      change: 0,
+      trend: "up",
+    },
+    activeUsers: {
+      label: "Active Users",
+      value: "Loading...",
+      change: 0,
+      trend: "up",
+    },
+  };
+
+  const revenueData = monthlyRevenue || null;
+
   const isLoading =
-    statsLoading ||
-    revenueLoading ||
+    overviewLoading ||
+    monthlyRevenueLoading ||
     serverLoading ||
     alertsLoading ||
     actionsLoading;
+
+  const hasError = overviewError || revenueError;
+  const errorMessage = overviewError?.message || revenueError?.message || '';
+  const isCorsError = errorMessage.includes('CORS') || errorMessage.includes('fetch');
 
   if (isLoading) {
     return (
@@ -89,6 +140,36 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {hasError && showError && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4"
+        >
+          <div className="flex items-start gap-3">
+            <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={20} />
+            <div className="flex-1">
+              <h3 className="font-manrope text-[14px] font-semibold text-red-800 mb-1">
+                {isCorsError ? 'API Connection Issue' : 'Error Loading Data'}
+              </h3>
+              <p className="font-manrope text-[13px] text-red-700">
+                {isCorsError
+                  ? 'Unable to connect to the backend API due to CORS configuration. Contact your backend developer to update CORS settings.'
+                  : errorMessage
+                }
+              </p>
+            </div>
+            <button
+              onClick={() => setShowError(false)}
+              className="text-red-600 hover:text-red-800 transition-colors flex-shrink-0"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Stats Grid - 3 columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
