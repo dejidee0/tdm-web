@@ -5,39 +5,43 @@ import { motion } from "framer-motion";
 import {
   Minus,
   Plus,
-  RefreshCw,
   Edit2,
-  Trash2,
   ShoppingCart,
   ChevronRight,
 } from "lucide-react";
 import {
   useUpdateProductQuantity,
-  useDeleteProduct,
 } from "@/hooks/use-inventory";
+
+const productImages = {
+  1: "/assets/svgs/vendor/inventory/tbmHydraulicPump.svg",
+  2: "/assets/svgs/vendor/inventory/logicController.svg",
+  3: "/assets/svgs/vendor/inventory/steelPackaging.svg",
+  4: "/assets/svgs/vendor/inventory/proToolKitSet.svg",
+};
 
 const stockStatusStyles = {
   success: {
-    bg: "bg-[#D1FAE5]",
-    text: "text-[#065F46]",
-    dot: "bg-[#10B981]",
+    bg: "bg-[#14532D]/10",
+    text: "text-[#4ADE80]",
+    dot: "bg-[#4ADE80]",
   },
   warning: {
-    bg: "bg-[#FEF3C7]",
-    text: "text-[#92400E]",
-    dot: "bg-[#F59E0B]",
+    bg: "bg-[#7F1D1D]/10",
+    text: "text-[#F87171]",
+    dot: "bg-[#F87171]",
   },
   error: {
-    bg: "bg-[#FEF2F2]",
-    text: "text-[#DC2626]",
-    dot: "bg-[#EF4444]",
+    bg: "bg-[#1F2937]/10",
+    text: "text-[#1F2937]",
+    dot: "bg-[#1F2937]",
   },
 };
 
 export default function InventoryProductsTable({ products, isLoading }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const updateQuantity = useUpdateProductQuantity();
-  const deleteProduct = useDeleteProduct();
+
 
   const handleQuantityChange = (productId, currentQuantity, change) => {
     const newQuantity = Math.max(0, currentQuantity + change);
@@ -62,10 +66,10 @@ export default function InventoryProductsTable({ products, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-white rounded-[6.96px] border-[0.59px] border-[#273054]/10">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+          <div className="w-12 h-12 border-4 border-[#273054]/10 border-t-[#273054] rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#273054]/60 font-inter text-[12.19px]">
             Loading products...
           </p>
         </div>
@@ -75,8 +79,8 @@ export default function InventoryProductsTable({ products, isLoading }) {
 
   if (!products || products.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
-        <p className="text-[#64748B] font-manrope text-[14px]">
+      <div className="bg-white rounded-[6.96px] border-[0.59px] border-[#273054]/10 p-12 text-center">
+        <p className="text-[#273054]/60 font-inter text-[12.19px]">
           No products found
         </p>
       </div>
@@ -84,47 +88,47 @@ export default function InventoryProductsTable({ products, isLoading }) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
+    <div className="bg-white overflow-hidden">
       {/* Scroll Hint - Mobile only */}
-      <div className="md:hidden px-4 py-2 bg-[#F8FAFC] border-b border-[#E5E7EB] flex items-center justify-center gap-2 text-[#64748B]">
+      <div className="md:hidden px-4 py-2 bg-[#F6F8F7] border-b border-[#273054]/10 flex items-center justify-center gap-2 text-[#273054]/60">
         <ChevronRight size={14} className="animate-pulse" />
-        <span className="font-manrope text-[11px]">
+        <span className="font-inter text-[10.45px]">
           Swipe to see more options
         </span>
       </div>
 
       {/* Desktop Table Header */}
-      <div className="hidden md:block px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB]">
-        <div className="grid grid-cols-[40px_1fr_140px_140px_160px_180px_120px] gap-4 items-center">
+      <div className="hidden md:block px-6 py-4 bg-[#273054]/15 border-b border-[#273054]/10">
+        <div className="grid grid-cols-[40px_1fr_90px_140px_120px_200px_110px] gap-4 items-center">
           <input
             type="checkbox"
             checked={selectedProducts.length === products.length}
             onChange={handleSelectAll}
-            className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+            className="w-4 h-4 rounded border-[#273054]/20 text-[#273054] focus:ring-2 focus:ring-[#273054] cursor-pointer"
           />
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px]">
             PRODUCT DETAILS
           </span>
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px]">
             SKU
           </span>
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px]">
             LOCATION
           </span>
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px]">
             STOCK STATUS
           </span>
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px] text-center">
             QUANTITY
           </span>
-          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-inter text-[10.45px] font-bold text-[#273054] uppercase tracking-[0.52px] leading-[13.93px] text-center">
             ACTIONS
           </span>
         </div>
       </div>
 
       {/* Table Body - Scrollable on mobile */}
-      <div className="divide-y divide-[#E5E7EB]">
+      <div className="divide-y divide-[#273054]/10">
         {products.map((product, index) => {
           const statusStyle = stockStatusStyles[product.stockStatusColor];
           const isSelected = selectedProducts.includes(product.id);
@@ -141,134 +145,137 @@ export default function InventoryProductsTable({ products, isLoading }) {
               }`}
             >
               {/* Desktop View */}
-              <div className="hidden md:grid md:grid-cols-[40px_1fr_140px_140px_160px_180px_120px] gap-4 items-center px-6 py-4">
+              <div className="hidden md:grid md:grid-cols-[40px_1fr_90px_140px_120px_200px_110px] gap-4 items-center px-6 py-4">
                 <input
                   type="checkbox"
                   checked={isSelected}
                   onChange={() => handleSelectProduct(product.id)}
-                  className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                  className="w-4 h-4 rounded border-[#273054]/20 text-[#273054] focus:ring-2 focus:ring-[#273054] cursor-pointer"
                 />
 
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: product.imageColor + "20" }}
-                  >
+                  {productImages[product.id] ? (
+                    <img
+                      src={productImages[product.id]}
+                      alt={product.name}
+                      width={35}
+                      height={35}
+                      className="flex-shrink-0"
+                    />
+                  ) : (
                     <div
-                      className="w-8 h-8 rounded flex items-center justify-center text-white font-bold text-[10px]"
-                      style={{ backgroundColor: product.imageColor }}
+                      className="w-[35px] h-[35px] rounded-[6.53px] flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: product.imageColor + "20" }}
                     >
-                      {product.name.substring(0, 2)}
+                      <div
+                        className="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[8px]"
+                        style={{ backgroundColor: product.imageColor }}
+                      >
+                        {product.name.substring(0, 2)}
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="min-w-0">
-                    <h3 className="font-manrope text-[14px] font-medium text-primary truncate">
+                    <h3 className="font-inter text-[12.19px] font-medium text-[#273054] leading-[17.41px] truncate">
                       {product.name}
                     </h3>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-inter text-[10.45px] font-normal text-[#273054] leading-[13.93px]">
                       {product.category}
                     </p>
                   </div>
                 </div>
 
-                <span className="font-manrope text-[13px] text-primary">
+                <span className="font-inter text-[12.19px] font-normal text-[#273054] leading-[17.41px]">
                   {product.sku}
                 </span>
 
-                <span className="font-manrope text-[13px] text-[#64748B]">
+                <span className="font-inter text-[12.19px] font-normal text-[#273054] leading-[17.41px]">
                   {product.location}
                 </span>
 
-                <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${statusStyle.dot}`} />
+                <div>
                   <span
-                    className={`px-3 py-1 rounded-full font-manrope text-[11px] font-bold ${statusStyle.bg} ${statusStyle.text}`}
+                    className={`px-3 py-1 rounded-full font-inter text-[10.45px] font-medium ${statusStyle.bg} ${statusStyle.text} inline-flex items-center gap-1.5`}
                   >
+                    <span className={`w-2 h-2 rounded-full ${statusStyle.dot} flex-shrink-0`} />
                     {product.stockStatus}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() =>
-                      handleQuantityChange(product.id, product.quantity, -1)
-                    }
-                    disabled={
-                      product.quantity === 0 || updateQuantity.isLoading
-                    }
-                    className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <Minus size={14} />
-                  </motion.button>
+                <div className="flex justify-center">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() =>
+                          handleQuantityChange(product.id, product.quantity, -1)
+                        }
+                        disabled={
+                          product.quantity === 0 || updateQuantity.isLoading
+                        }
+                        className="disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <img src="/assets/svgs/vendor/inventory/removeButton.svg" alt="Remove" width={25} height={25} />
+                      </motion.button>
 
-                  <div className="text-center min-w-[60px]">
-                    <span className="font-manrope text-[16px] font-bold text-primary block">
-                      {product.quantity}
-                    </span>
-                    <span className="font-manrope text-[10px] text-[#64748B]">
+                      <div className="inline-flex items-center justify-center min-w-[50px] px-3 py-1 border-[0.87px] border-[#273054] rounded-[3.48px]">
+                        <span className="font-inter text-[12.19px] font-bold text-[#273054] leading-[17.41px]">
+                          {product.quantity}
+                        </span>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() =>
+                          handleQuantityChange(product.id, product.quantity, 1)
+                        }
+                        disabled={updateQuantity.isLoading}
+                        className="disabled:opacity-30"
+                      >
+                        <img src="/assets/svgs/vendor/inventory/addButton.svg" alt="Add" width={25} height={25} />
+                      </motion.button>
+                    </div>
+                    <span className="font-inter text-[10.45px] font-normal text-[#273054] leading-[13.93px] block mt-0.5">
                       Reorder: {product.reorderPoint}
                     </span>
                   </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() =>
-                      handleQuantityChange(product.id, product.quantity, 1)
-                    }
-                    disabled={updateQuantity.isLoading}
-                    className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-[#334155] transition-colors disabled:opacity-30"
-                  >
-                    <Plus size={14} />
-                  </motion.button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   {isOutOfStock ? (
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="p-2 text-[#EF4444] hover:bg-[#FEF2F2] rounded-lg transition-colors"
                       title="Reorder Product"
                     >
-                      <ShoppingCart size={18} />
+                      <img src="/assets/svgs/vendor/inventory/blueCartActions.svg" alt="Reorder" width={28} height={28} />
+                    </motion.button>
+                  ) : product.stockStatusColor === "warning" ? (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      title="Low Stock"
+                    >
+                      <img src="/assets/svgs/vendor/inventory/redCartActions.svg" alt="Low Stock" width={28} height={28} />
                     </motion.button>
                   ) : (
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
                       title="Refresh Stock"
                     >
-                      <RefreshCw size={18} />
+                      <img src="/assets/svgs/vendor/inventory/timerIconActions.svg" alt="Refresh" width={28} height={28} />
                     </motion.button>
                   )}
 
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
                     title="Edit Product"
                   >
-                    <Edit2 size={18} />
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      if (
-                        confirm("Are you sure you want to delete this product?")
-                      ) {
-                        deleteProduct.mutate(product.id);
-                      }
-                    }}
-                    className="p-2 text-[#64748B] hover:bg-[#FEF2F2] hover:text-[#EF4444] rounded-lg transition-colors"
-                    title="Delete Product"
-                  >
-                    <Trash2 size={18} />
+                    <img src="/assets/svgs/vendor/inventory/pencilIconActions.svg" alt="Edit" width={28} height={28} />
                   </motion.button>
                 </div>
               </div>
@@ -280,43 +287,49 @@ export default function InventoryProductsTable({ products, isLoading }) {
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => handleSelectProduct(product.id)}
-                    className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer mt-1"
+                    className="w-4 h-4 rounded border-[#273054]/20 text-[#273054] focus:ring-2 focus:ring-[#273054] cursor-pointer mt-1"
                   />
-                  <div
-                    className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: product.imageColor + "20" }}
-                  >
+                  {productImages[product.id] ? (
+                    <img
+                      src={productImages[product.id]}
+                      alt={product.name}
+                      width={35}
+                      height={35}
+                      className="flex-shrink-0"
+                    />
+                  ) : (
                     <div
-                      className="w-8 h-8 rounded flex items-center justify-center text-white font-bold text-[10px]"
-                      style={{ backgroundColor: product.imageColor }}
+                      className="w-[35px] h-[35px] rounded-[6.53px] flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: product.imageColor + "20" }}
                     >
-                      {product.name.substring(0, 2)}
+                      <div
+                        className="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[8px]"
+                        style={{ backgroundColor: product.imageColor }}
+                      >
+                        {product.name.substring(0, 2)}
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-manrope text-[14px] font-medium text-primary">
+                    <h3 className="font-inter text-[12.19px] font-medium text-[#273054] leading-[17.41px]">
                       {product.name}
                     </h3>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-inter text-[10.45px] font-normal text-[#273054] leading-[13.93px]">
                       {product.category}
                     </p>
-                    <p className="font-manrope text-[11px] text-[#94A3B8] mt-1">
+                    <p className="font-inter text-[10.45px] text-[#273054]/40 mt-1">
                       {product.sku} • {product.location}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${statusStyle.dot}`}
-                    />
-                    <span
-                      className={`px-3 py-1 rounded-full font-manrope text-[11px] font-bold ${statusStyle.bg} ${statusStyle.text}`}
-                    >
-                      {product.stockStatus}
-                    </span>
-                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full font-inter text-[10.45px] font-medium ${statusStyle.bg} ${statusStyle.text} inline-flex items-center gap-1.5`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${statusStyle.dot} flex-shrink-0`} />
+                    {product.stockStatus}
+                  </span>
 
                   <div className="flex items-center gap-2">
                     <motion.button
@@ -327,13 +340,13 @@ export default function InventoryProductsTable({ products, isLoading }) {
                       disabled={
                         product.quantity === 0 || updateQuantity.isLoading
                       }
-                      className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors disabled:opacity-30"
+                      className="w-7 h-7 bg-[#273054] text-white rounded-[5.22px] flex items-center justify-center active:bg-[#273054]/90 transition-colors disabled:opacity-30"
                     >
-                      <Minus size={14} />
+                      <Minus size={12} />
                     </motion.button>
 
                     <div className="text-center min-w-[50px]">
-                      <span className="font-manrope text-[16px] font-bold text-primary">
+                      <span className="font-inter text-[12.19px] font-bold text-[#273054]">
                         {product.quantity}
                       </span>
                     </div>
@@ -344,40 +357,27 @@ export default function InventoryProductsTable({ products, isLoading }) {
                         handleQuantityChange(product.id, product.quantity, 1)
                       }
                       disabled={updateQuantity.isLoading}
-                      className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center active:bg-[#334155] transition-colors"
+                      className="w-7 h-7 bg-[#273054] text-white rounded-[5.22px] flex items-center justify-center active:bg-[#273054]/90 transition-colors"
                     >
-                      <Plus size={14} />
+                      <Plus size={12} />
                     </motion.button>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E5E7EB]">
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#273054]/10">
                   {isOutOfStock && (
                     <motion.button
                       whileTap={{ scale: 0.95 }}
-                      className="p-2 text-[#EF4444] hover:bg-[#FEF2F2] rounded-lg transition-colors"
+                      className="p-1.5 text-[#EF4444] hover:bg-[#FEF2F2] rounded-[5.22px] transition-colors"
                     >
-                      <ShoppingCart size={18} />
+                      <ShoppingCart size={16} />
                     </motion.button>
                   )}
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
+                    className="p-1.5 text-[#273054]/60 hover:bg-[#F6F8F7] rounded-[5.22px] transition-colors"
                   >
-                    <Edit2 size={18} />
-                  </motion.button>
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      if (
-                        confirm("Are you sure you want to delete this product?")
-                      ) {
-                        deleteProduct.mutate(product.id);
-                      }
-                    }}
-                    className="p-2 text-[#64748B] hover:bg-[#FEF2F2] hover:text-[#EF4444] rounded-lg transition-colors"
-                  >
-                    <Trash2 size={18} />
+                    <Edit2 size={16} />
                   </motion.button>
                 </div>
               </div>
