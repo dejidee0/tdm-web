@@ -84,12 +84,14 @@ export default function AdminAlertsTable({ alerts }) {
 
         {/* Alert Rows */}
         <div className="divide-y divide-[#E5E7EB]">
-          {alerts.map((alert, index) => {
-            const severity = severityStyles[alert.severity];
+          {alerts?.map((alert, index) => {
+            // Normalize severity to lowercase and provide fallback for unknown values
+            const severityKey = alert?.severity?.toLowerCase() || 'medium';
+            const severity = severityStyles[severityKey] || severityStyles.medium;
 
             return (
               <motion.div
-                key={alert.id}
+                key={alert?.id || index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7 + index * 0.1 }}
@@ -99,15 +101,15 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Severity Badge with background pill */}
                   <div>
                     <span
-                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity.badge}`}
+                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity?.badge || ''}`}
                     >
                       <span
-                        className={`w-2 h-2 rounded-full ${severity.dot}`}
+                        className={`w-2 h-2 rounded-full ${severity?.dot || ''}`}
                       />
                       <span
-                        className={`font-manrope text-[12px] font-bold capitalize ${severity.text}`}
+                        className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
                       >
-                        {alert.severity}
+                        {alert?.severity || 'N/A'}
                       </span>
                     </span>
                   </div>
@@ -115,9 +117,9 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Issue Description */}
                   <div>
                     <p className="font-manrope text-[14px] font-medium text-primary">
-                      {alert.issue}
+                      {alert?.issue || 'No description'}
                     </p>
-                    {alert.description && (
+                    {alert?.description && (
                       <p className="font-manrope text-[12px] text-[#64748B] mt-1">
                         {alert.description}
                       </p>
@@ -126,7 +128,7 @@ export default function AdminAlertsTable({ alerts }) {
 
                   {/* Timestamp */}
                   <span className="font-manrope text-[13px] text-[#64748B]">
-                    {alert.timestamp}
+                    {alert?.timestamp || 'N/A'}
                   </span>
 
                   {/* Action Button */}
@@ -134,9 +136,9 @@ export default function AdminAlertsTable({ alerts }) {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`px-4 py-1.5 rounded-[8.44px] font-manrope text-[12px] font-medium transition-colors ${getActionButtonStyle(alert.action)}`}
+                      className={`px-4 py-1.5 rounded-[8.44px] font-manrope text-[12px] font-medium transition-colors ${getActionButtonStyle(alert?.action)}`}
                     >
-                      {alert.action}
+                      {alert?.action || 'View'}
                     </motion.button>
                   </div>
                 </div>
@@ -148,12 +150,13 @@ export default function AdminAlertsTable({ alerts }) {
 
       {/* Mobile Card View */}
       <div className="md:hidden divide-y divide-[#E5E7EB]">
-        {alerts.map((alert, index) => {
-          const severity = severityStyles[alert.severity];
+        {alerts?.map((alert, index) => {
+          const severityKey = alert?.severity?.toLowerCase() || 'medium';
+          const severity = severityStyles[severityKey] || severityStyles.medium;
 
           return (
             <motion.div
-              key={alert.id}
+              key={alert?.id || index}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 + index * 0.1 }}
@@ -162,25 +165,25 @@ export default function AdminAlertsTable({ alerts }) {
               {/* Severity Badge */}
               <div className="flex items-center gap-2 mb-3">
                 <span
-                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${severity.badge}`}
+                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${severity?.badge || ''}`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${severity.dot}`} />
+                  <span className={`w-2 h-2 rounded-full ${severity?.dot || ''}`} />
                   <span
-                    className={`font-manrope text-[12px] font-bold capitalize ${severity.text}`}
+                    className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
                   >
-                    {alert.severity}
+                    {alert?.severity || 'N/A'}
                   </span>
                 </span>
                 <span className="ml-auto font-manrope text-[12px] text-[#64748B]">
-                  {alert.timestamp}
+                  {alert?.timestamp || 'N/A'}
                 </span>
               </div>
 
               {/* Issue */}
               <p className="font-manrope text-[14px] font-medium text-primary mb-1">
-                {alert.issue}
+                {alert?.issue || 'No description'}
               </p>
-              {alert.description && (
+              {alert?.description && (
                 <p className="font-manrope text-[12px] text-[#64748B] mb-3">
                   {alert.description}
                 </p>
@@ -189,9 +192,9 @@ export default function AdminAlertsTable({ alerts }) {
               {/* Action Button */}
               <motion.button
                 whileTap={{ scale: 0.98 }}
-                className={`w-full px-4 py-2 rounded-md font-manrope text-[13px] font-medium transition-colors ${getActionButtonStyle(alert.action)}`}
+                className={`w-full px-4 py-2 rounded-md font-manrope text-[13px] font-medium transition-colors ${getActionButtonStyle(alert?.action)}`}
               >
-                {alert.action}
+                {alert?.action || 'View'}
               </motion.button>
             </motion.div>
           );

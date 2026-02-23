@@ -11,6 +11,8 @@ import AdminQuickActions from "@/components/shared/admin/dashboard/admin-quick-a
 import {
   useAnalyticsOverview,
   useMonthlyRevenue,
+  useDashboardStats,
+  useDashboardRevenue,
   useServerLoad,
   useAdminAlerts,
   useAdminQuickActions,
@@ -26,31 +28,31 @@ export default function AdminDashboardPage() {
   // Real API endpoints
   const { data: analyticsOverview, isLoading: overviewLoading, error: overviewError } = useAnalyticsOverview();
   const { data: monthlyRevenue, isLoading: monthlyRevenueLoading, error: revenueError } = useMonthlyRevenue();
-
-  // Mock endpoints (until backend provides equivalents)
-  const { data: serverLoad, isLoading: serverLoading } = useServerLoad();
-  const { data: alerts, isLoading: alertsLoading } = useAdminAlerts();
-  const { data: quickActions, isLoading: actionsLoading } = useAdminQuickActions();
+  const { data: dashboardStats, isLoading: statsLoading, error: statsError } = useDashboardStats();
+  const { data: dashboardRevenue, isLoading: dashboardRevenueLoading, error: dashboardRevenueError } = useDashboardRevenue("30d");
+  const { data: serverLoad, isLoading: serverLoading, error: serverLoadError } = useServerLoad();
+  const { data: alerts, isLoading: alertsLoading, error: alertsError } = useAdminAlerts();
+  const { data: quickActions, isLoading: actionsLoading, error: quickActionsError } = useAdminQuickActions();
   const { mutate: refreshDashboard, isPending: isRefreshing } = useRefreshAdminDashboard();
   const { mutate: exportReport, isPending: isExporting } = useExportReport();
 
-  // Transform real API data to component format, with fallback to placeholder data
-  const stats = analyticsOverview ? {
+  // Combine analytics overview and dashboard stats
+  const stats = (analyticsOverview || dashboardStats) ? {
     totalRevenue: {
       label: "Total Revenue",
-      value: `$${analyticsOverview.totalRevenue?.toLocaleString() || 0}`,
-      change: analyticsOverview.revenueGrowth || 0,
-      trend: (analyticsOverview.revenueGrowth || 0) >= 0 ? "up" : "down",
+      value: analyticsOverview?.totalRevenue ? `$${analyticsOverview.totalRevenue.toLocaleString()}` : "Loading...",
+      change: analyticsOverview?.revenueGrowth || 0,
+      trend: (analyticsOverview?.revenueGrowth || 0) >= 0 ? "up" : "down",
     },
     activeOrders: {
       label: "Total Orders",
-      value: analyticsOverview.totalOrders?.toLocaleString() || 0,
-      change: analyticsOverview.ordersGrowth || 0,
-      trend: (analyticsOverview.ordersGrowth || 0) >= 0 ? "up" : "down",
+      value: analyticsOverview?.totalOrders?.toLocaleString() || "Loading...",
+      change: analyticsOverview?.ordersGrowth || 0,
+      trend: (analyticsOverview?.ordersGrowth || 0) >= 0 ? "up" : "down",
     },
     activeUsers: {
       label: "Active Users",
-      value: analyticsOverview.activeUsers?.toLocaleString() || 0,
+      value: dashboardStats?.activeUsers?.toLocaleString() || analyticsOverview?.activeUsers?.toLocaleString() || "Loading...",
       change: 12.3,
       trend: "up",
     },
@@ -75,17 +77,28 @@ export default function AdminDashboardPage() {
     },
   };
 
-  const revenueData = monthlyRevenue || null;
+  // Use dashboard revenue if available, fallback to monthly revenue from analytics
+  const revenueData = dashboardRevenue || monthlyRevenue || null;
+
+  // Update server load with real data
+  const realServerLoad = serverLoad || (dashboardStats ? {
+    cpu: 0,
+    memory: 0,
+    uptime: dashboardStats.platformUptime,
+    latency: dashboardStats.avgLatency,
+  } : null);
 
   const isLoading =
     overviewLoading ||
     monthlyRevenueLoading ||
+    statsLoading ||
+    dashboardRevenueLoading ||
     serverLoading ||
     alertsLoading ||
     actionsLoading;
 
-  const hasError = overviewError || revenueError;
-  const errorMessage = overviewError?.message || revenueError?.message || '';
+  const hasError = overviewError || revenueError || statsError || dashboardRevenueError || serverLoadError || alertsError || quickActionsError;
+  const errorMessage = overviewError?.message || revenueError?.message || statsError?.message || dashboardRevenueError?.message || serverLoadError?.message || alertsError?.message || quickActionsError?.message || '';
   const isCorsError = errorMessage.includes('CORS') || errorMessage.includes('fetch');
 
   if (isLoading) {
@@ -194,7 +207,7 @@ export default function AdminDashboardPage() {
         {/* Right Column - 1/3 width */}
         <div className="space-y-6">
           <AdminQuickActions actions={quickActions} />
-          <ServerLoad data={serverLoad} />
+          <ServerLoad data={realServerLoad} />
         </div>
       </div>
 

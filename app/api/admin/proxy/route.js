@@ -6,7 +6,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
  * Proxy endpoint for admin API requests
  * This proxies requests to avoid CORS issues during development
  *
- * Usage: POST to /api/admin/proxy with { endpoint, method, body }
+ * Usage: POST to /admin/proxy with { endpoint, method, body }
  */
 export async function POST(request) {
   try {

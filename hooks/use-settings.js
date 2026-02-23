@@ -2,6 +2,9 @@ import { settingsAPI } from "@/lib/mock/settings";
 import { adminSettingsAPI } from "@/lib/api/admin";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+// Use mock API until backend implements settings endpoints
+const USE_MOCK_API = true;
+
 // Query keys
 export const SETTINGS_QUERY_KEYS = {
   payment: ["admin", "settings", "payment"],
@@ -14,7 +17,7 @@ export const SETTINGS_QUERY_KEYS = {
 export function usePaymentSettings() {
   return useQuery({
     queryKey: SETTINGS_QUERY_KEYS.payment,
-    queryFn: adminSettingsAPI.getPaymentSettings,
+    queryFn: USE_MOCK_API ? settingsAPI.getPaymentSettings : adminSettingsAPI.getPaymentSettings,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
@@ -23,16 +26,16 @@ export function usePaymentSettings() {
 export function useAIConfiguration() {
   return useQuery({
     queryKey: SETTINGS_QUERY_KEYS.ai,
-    queryFn: adminSettingsAPI.getAISettings,
+    queryFn: USE_MOCK_API ? settingsAPI.getAIConfiguration : adminSettingsAPI.getAISettings,
     staleTime: 5 * 60 * 1000,
   });
 }
 
-// Hook to fetch notification settings (still using mock - no API endpoint yet)
+// Hook to fetch notification settings
 export function useNotificationSettings() {
   return useQuery({
     queryKey: SETTINGS_QUERY_KEYS.notifications,
-    queryFn: settingsAPI.getNotificationSettings,
+    queryFn: USE_MOCK_API ? settingsAPI.getNotificationSettings : adminSettingsAPI.getNotificationSettings,
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -41,7 +44,7 @@ export function useNotificationSettings() {
 export function useGeneralSettings() {
   return useQuery({
     queryKey: SETTINGS_QUERY_KEYS.general,
-    queryFn: adminSettingsAPI.getGeneralSettings,
+    queryFn: USE_MOCK_API ? settingsAPI.getGeneralSettings : adminSettingsAPI.getGeneralSettings,
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -59,7 +62,9 @@ export function useSaveSettings() {
         defaultCurrency: data.currency || "USD",
         gateways: data.gateways || [],
       };
-      return adminSettingsAPI.updatePaymentSettings(settings);
+      return USE_MOCK_API
+        ? settingsAPI.updatePaymentSettings(settings)
+        : adminSettingsAPI.updatePaymentSettings(settings);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SETTINGS_QUERY_KEYS.payment });
@@ -72,27 +77,10 @@ export function useTogglePaymentGateway() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ gatewayId, enabled }) => {
-      // Get current payment settings
-      const currentSettings = queryClient.getQueryData(SETTINGS_QUERY_KEYS.payment);
-
-      if (!currentSettings) {
-        throw new Error("Payment settings not loaded");
-      }
-
-      // Update the specific gateway
-      const updatedGateways = currentSettings.gateways.map((gateway) =>
-        gateway.id === gatewayId ? { ...gateway, enabled } : gateway
-      );
-
-      // Send updated settings to API
-      return adminSettingsAPI.updatePaymentSettings({
-        basePlatformFee: currentSettings.basePlatformFee || 0,
-        fixedFeePerTransaction: currentSettings.fixedFeePerTransaction || 0,
-        defaultCurrency: currentSettings.defaultCurrency || "USD",
-        gateways: updatedGateways,
-      });
-    },
+    mutationFn: ({ gatewayId, enabled }) =>
+      USE_MOCK_API
+        ? settingsAPI.togglePaymentGateway(gatewayId, enabled)
+        : adminSettingsAPI.togglePaymentGateway(gatewayId, enabled),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SETTINGS_QUERY_KEYS.payment });
     },
@@ -104,27 +92,43 @@ export function useToggleAIModel() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ modelId, enabled }) => {
-      // Get current AI settings
-      const currentSettings = queryClient.getQueryData(SETTINGS_QUERY_KEYS.ai);
-
-      if (!currentSettings) {
-        throw new Error("AI settings not loaded");
-      }
-
-      // Update the specific model
-      const updatedModels = currentSettings.models.map((model) =>
-        model.id === modelId ? { ...model, enabled } : model
-      );
-
-      // Send updated settings to API
-      return adminSettingsAPI.updateAISettings({
-        ...currentSettings,
-        models: updatedModels,
-      });
-    },
+    mutationFn: ({ modelId, enabled }) =>
+      USE_MOCK_API
+        ? settingsAPI.toggleAIModel(modelId, enabled)
+        : adminSettingsAPI.toggleAIModel(modelId, enabled),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SETTINGS_QUERY_KEYS.ai });
+    },
+  });
+}
+
+// Hook to update notification settings
+export function useUpdateNotificationSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (settings) =>
+      USE_MOCK_API
+        ? settingsAPI.updateNotificationSettings(settings)
+        : adminSettingsAPI.updateNotificationSettings(settings),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: SETTINGS_QUERY_KEYS.notifications });
+    },
+  });
+}
+
+// Hook to update general settings (PUT /admin/settings)
+export function useUpdateSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (settings) =>
+      USE_MOCK_API
+        ? settingsAPI.updateSettings(settings)
+        : adminSettingsAPI.updateSettings(settings),
+    onSuccess: () => {
+      // Invalidate all settings queries since this is a general update
+      queryClient.invalidateQueries({ queryKey: ["admin", "settings"] });
     },
   });
 }

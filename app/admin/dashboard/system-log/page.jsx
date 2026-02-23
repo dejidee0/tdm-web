@@ -70,32 +70,55 @@ export default function SystemLogPage() {
     );
   }
 
-  const statsData = [
+  // Transform backend stats to UI format
+  const formatStatsValue = (value) => {
+    if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+    if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+    return value?.toString() || "0";
+  };
+
+  const statsData = stats ? [
     {
-      ...stats.criticalErrors,
+      label: "Critical Errors (24H)",
+      value: stats?.errorCount?.toString() || "0",
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Errors",
       key: "criticalErrors",
       bgColor: "bg-white",
       icon: criticalErrorsIcon,
     },
     {
-      ...stats.activeWarnings,
+      label: "Active Warnings",
+      value: stats?.warningCount?.toString() || "0",
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Warnings",
       key: "activeWarnings",
       bgColor: "bg-white",
       icon: activeWarningsIcon,
     },
     {
-      ...stats.avgResponseTime,
+      label: "Info Logs",
+      value: stats?.infoCount?.toString() || "0",
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Info",
       key: "avgResponseTime",
       bgColor: "bg-white",
       icon: avgResponseIcon,
     },
     {
-      ...stats.logsIngested,
+      label: "Total Logs",
+      value: formatStatsValue(stats?.totalLogs || 0),
+      change: 0,
+      changeType: "neutral",
+      subtitle: "All logs",
       key: "logsIngested",
       bgColor: "bg-white",
       icon: logsIngestedIcon,
     },
-  ];
+  ] : [];
 
   const severityFilters = [
     { label: "All Events", value: "all" },
@@ -321,52 +344,52 @@ export default function SystemLogPage() {
               </tr>
             </thead>
             <tbody>
-              {logs?.logs.map((log, index) => {
-                const severityStyle = severityColors[log.severity];
+              {logs?.logs?.map((log, index) => {
+                const severityStyle = severityColors[log?.severity] || severityColors.INFO;
 
                 return (
                   <tr
-                    key={log.id}
+                    key={log?.id || index}
                     className="bg-white border-t-[1.12px] border-[#273054]/50"
                   >
                     <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] whitespace-normal sm:whitespace-nowrap">
-                      {log.timestamp}
+                      {log?.timestamp || log?.createdAt || "N/A"}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[10px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle.badge}`}
+                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[10px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle?.badge}`}
                       >
-                        {log.severity}
+                        {log?.severity || "N/A"}
                       </span>
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <Image
-                          src={getServiceIcon(log.service.name)}
-                          alt={log.service.displayName}
+                          src={getServiceIcon(log?.service?.name || log?.category)}
+                          alt={log?.service?.displayName || log?.category || "Service"}
                           width={20}
                           height={20}
                         />
                         <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] font-medium text-[#273054]">
-                          {log.service.name}
+                          {log?.service?.name || log?.category || "N/A"}
                         </span>
                       </div>
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] max-w-xs sm:max-w-sm md:max-w-md truncate">
-                      {log.message}
+                      {log?.message || log?.action || "N/A"}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <div
                           className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white"
                           style={{
-                            backgroundColor: log.actor.colorScheme.bg,
+                            backgroundColor: log?.actor?.colorScheme?.bg || "#64748B",
                           }}
                         >
-                          {log.actor.initials}
+                          {log?.actor?.initials || log?.userId?.charAt(0) || "U"}
                         </div>
                         <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] hidden sm:inline">
-                          {log.actor.name}
+                          {log?.actor?.name || log?.userId || "N/A"}
                         </span>
                       </div>
                     </td>
@@ -388,11 +411,11 @@ export default function SystemLogPage() {
             <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054]">
               Showing{" "}
               <span className="font-medium">
-                {(page - 1) * 6 + 1}-{Math.min(page * 6, logs.pagination.total)}
+                {(page - 1) * 6 + 1}-{Math.min(page * 6, logs?.pagination?.total || 0)}
               </span>{" "}
               of{" "}
               <span className="font-medium">
-                {logs.pagination.total.toLocaleString()}
+                {logs?.pagination?.total?.toLocaleString() || 0}
               </span>{" "}
               entries
             </p>
@@ -406,9 +429,9 @@ export default function SystemLogPage() {
               </button>
               <button
                 onClick={() =>
-                  setPage(Math.min(logs.pagination.totalPages, page + 1))
+                  setPage(Math.min(logs?.pagination?.totalPages || 1, page + 1))
                 }
-                disabled={page === logs.pagination.totalPages}
+                disabled={page === (logs?.pagination?.totalPages || 1)}
                 className="px-4 py-2 rounded-[9px] border border-[#273054] font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054] hover:bg-[#273054]/5 disabled:opacity-30"
               >
                 Next

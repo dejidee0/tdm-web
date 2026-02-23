@@ -7,6 +7,7 @@ export const ADMIN_SETTINGS_QUERY_KEYS = {
   payment: () => [...ADMIN_SETTINGS_QUERY_KEYS.all, "payment"],
   ai: () => [...ADMIN_SETTINGS_QUERY_KEYS.all, "ai"],
   general: () => [...ADMIN_SETTINGS_QUERY_KEYS.all, "general"],
+  notifications: () => [...ADMIN_SETTINGS_QUERY_KEYS.all, "notifications"],
 };
 
 /**
@@ -85,6 +86,77 @@ export function useUpdateGeneralSettings() {
     onSuccess: (data) => {
       queryClient.setQueryData(ADMIN_SETTINGS_QUERY_KEYS.general(), data);
       queryClient.invalidateQueries({ queryKey: ADMIN_SETTINGS_QUERY_KEYS.general() });
+    },
+  });
+}
+
+/**
+ * Hook to fetch notification settings
+ */
+export function useNotificationSettings() {
+  return useQuery({
+    queryKey: ADMIN_SETTINGS_QUERY_KEYS.notifications(),
+    queryFn: adminSettingsAPI.getNotificationSettings,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+/**
+ * Hook to update notification settings
+ */
+export function useUpdateNotificationSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (settings) => adminSettingsAPI.updateNotificationSettings(settings),
+    onSuccess: (data) => {
+      queryClient.setQueryData(ADMIN_SETTINGS_QUERY_KEYS.notifications(), data);
+      queryClient.invalidateQueries({ queryKey: ADMIN_SETTINGS_QUERY_KEYS.notifications() });
+    },
+  });
+}
+
+/**
+ * Hook to toggle payment gateway
+ */
+export function useTogglePaymentGateway() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ gatewayId, enabled }) =>
+      adminSettingsAPI.togglePaymentGateway(gatewayId, enabled),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_SETTINGS_QUERY_KEYS.payment() });
+    },
+  });
+}
+
+/**
+ * Hook to toggle AI model
+ */
+export function useToggleAIModel() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ modelId, enabled }) =>
+      adminSettingsAPI.toggleAIModel(modelId, enabled),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_SETTINGS_QUERY_KEYS.ai() });
+    },
+  });
+}
+
+/**
+ * Hook to update settings (general PUT /admin/settings)
+ */
+export function useUpdateSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (settings) => adminSettingsAPI.updateSettings(settings),
+    onSuccess: () => {
+      // Invalidate all settings queries
+      queryClient.invalidateQueries({ queryKey: ADMIN_SETTINGS_QUERY_KEYS.all });
     },
   });
 }
