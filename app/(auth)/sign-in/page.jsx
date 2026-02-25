@@ -3,48 +3,38 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { useFormik } from "formik";
 import { useLogin } from "@/hooks/use-auth";
+import { signInSchema } from "@/lib/validations/auth";
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
 
   const { mutate: login, isPending } = useLogin();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
+  const formik = useFormik({
+    initialValues: {
+      email: "Ifemicheal2@gmail.com",
+      password: "Nisotgreg0",
+      rememberMe: true,
+    },
+    validationSchema: signInSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitError("");
 
-    const formData = new FormData(e.currentTarget);
-
-    // Add remember me to form data
-    formData.append("rememberMe", rememberMe.toString());
-
-    // Client-side validation
-    const newErrors = {};
-    const email = formData.get("email");
-    const password = formData.get("password");
-
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Valid email is required";
-    }
-    if (!password) {
-      newErrors.password = "Password is required";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    // Submit with React Query
-    login(formData, {
-      onError: (error) => {
-        setErrors({ submit: error.message });
-      },
-    });
-  };
+      // Submit with React Query
+      login(values, {
+        onError: (error) => {
+          setSubmitError(error.message);
+          setSubmitting(false);
+        },
+        onSettled: () => {
+          setSubmitting(false);
+        },
+      });
+    },
+  });
 
   const handleGoogleSignIn = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
@@ -64,33 +54,43 @@ export default function SignInPage() {
           <p className="text-gray-500">Enter your details to proceed further</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-600 mb-1.5">Email</label>
+            <label htmlFor="email" className="block text-sm text-gray-600 mb-1.5">
+              Email
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
               placeholder="abubakarjamiu52@gmail.com"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className={`w-full px-4 py-3 bg-white border ${
-                errors.email ? "border-red-500" : "border-gray-200"
+                formik.errors.email && formik.touched.email ? "border-red-500" : "border-gray-200"
               } rounded-lg focus:outline-none focus:ring-2 placeholder:text-gray-300 text-primary focus:ring-blue-500 focus:border-transparent transition-all`}
             />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            {formik.errors.email && formik.touched.email && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 mb-1.5">
+            <label htmlFor="password" className="block text-sm text-gray-600 mb-1.5">
               Password
             </label>
             <div className="relative">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Min5chars.web"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className={`w-full px-4 py-3 bg-white border ${
-                  errors.password ? "border-red-500" : "border-gray-200"
+                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-gray-200"
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-300 text-primary transition-all pr-12`}
               />
               <button
@@ -105,17 +105,20 @@ export default function SignInPage() {
                 )}
               </button>
             </div>
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer">
               <input
+                id="rememberMe"
                 type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                name="rememberMe"
+                checked={formik.values.rememberMe}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <span className="text-sm text-gray-600">Remember me</span>
@@ -128,18 +131,18 @@ export default function SignInPage() {
             </Link>
           </div>
 
-          {errors.submit && (
+          {submitError && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-red-600 text-sm">{errors.submit}</p>
+              <p className="text-red-600 text-sm">{submitError}</p>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={isPending}
+            disabled={formik.isSubmitting || isPending}
             className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isPending ? "Signing In..." : "Sign In"}
+            {formik.isSubmitting || isPending ? "Signing In..." : "Sign In"}
           </button>
 
           <div className="relative my-6">

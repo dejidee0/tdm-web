@@ -1,5 +1,6 @@
-import { financialAPI } from "@/lib/mock/financial";
+import { adminAnalyticsAPI, adminFinancialAPI } from "@/lib/api/admin";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { getToken } from "@/lib/client-auth";
 
 // Query keys
 export const FINANCIAL_QUERY_KEYS = {
@@ -7,13 +8,16 @@ export const FINANCIAL_QUERY_KEYS = {
   monthlyRevenue: ["admin", "financial", "monthly-revenue"],
   revenueByService: ["admin", "financial", "revenue-by-service"],
   transactions: (filters) => ["admin", "financial", "transactions", filters],
+  analyticsOverview: ["admin", "analytics", "overview"],
+  paymentDistribution: ["admin", "analytics", "payment-distribution"],
 };
 
 // Hook to fetch financial stats
 export function useFinancialStats() {
   return useQuery({
     queryKey: FINANCIAL_QUERY_KEYS.stats,
-    queryFn: financialAPI.getStats,
+    queryFn: adminFinancialAPI.getStats,
+    enabled: typeof window !== "undefined" && !!getToken(),
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
@@ -22,7 +26,8 @@ export function useFinancialStats() {
 export function useMonthlyRevenue() {
   return useQuery({
     queryKey: FINANCIAL_QUERY_KEYS.monthlyRevenue,
-    queryFn: financialAPI.getMonthlyRevenue,
+    queryFn: adminFinancialAPI.getMonthlyRevenue,
+    enabled: typeof window !== "undefined" && !!getToken(),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
@@ -31,7 +36,8 @@ export function useMonthlyRevenue() {
 export function useRevenueByService() {
   return useQuery({
     queryKey: FINANCIAL_QUERY_KEYS.revenueByService,
-    queryFn: financialAPI.getRevenueByService,
+    queryFn: adminFinancialAPI.getRevenueByService,
+    enabled: typeof window !== "undefined" && !!getToken(),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
@@ -40,7 +46,8 @@ export function useRevenueByService() {
 export function useTransactions({ page = 1, limit = 5, search = "", filter = "all" }) {
   return useQuery({
     queryKey: FINANCIAL_QUERY_KEYS.transactions({ page, limit, search, filter }),
-    queryFn: () => financialAPI.getTransactions({ page, limit, search, filter }),
+    queryFn: () => adminFinancialAPI.getTransactions({ page, limit, search, filter }),
+    enabled: typeof window !== "undefined" && !!getToken(),
     staleTime: 60 * 1000, // 1 minute
     keepPreviousData: true,
   });
@@ -49,6 +56,32 @@ export function useTransactions({ page = 1, limit = 5, search = "", filter = "al
 // Hook to export financial report
 export function useExportFinancialReport() {
   return useMutation({
-    mutationFn: financialAPI.exportReport,
+    mutationFn: adminFinancialAPI.exportFinancialReport,
+    onSuccess: (data) => {
+      console.log('✅ Financial report exported:', data?.filename);
+    },
+    onError: (error) => {
+      console.error('❌ Financial report export failed:', error);
+    },
+  });
+}
+
+// Hook to fetch analytics overview
+export function useAnalyticsOverview() {
+  return useQuery({
+    queryKey: FINANCIAL_QUERY_KEYS.analyticsOverview,
+    queryFn: adminAnalyticsAPI.getOverview,
+    enabled: typeof window !== "undefined" && !!getToken(),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
+
+// Hook to fetch payment distribution
+export function usePaymentDistribution() {
+  return useQuery({
+    queryKey: FINANCIAL_QUERY_KEYS.paymentDistribution,
+    queryFn: adminAnalyticsAPI.getPaymentDistribution,
+    enabled: typeof window !== "undefined" && !!getToken(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }

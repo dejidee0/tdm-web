@@ -1,10 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { LogOut } from "lucide-react";
+import { useState } from "react";
+import { adminLogout } from "@/lib/actions/admin-auth";
 import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
 import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
 import financialReportIcon from "@/public/assets/svgs/sidebars/financialReport.svg";
@@ -50,6 +52,38 @@ const isActivePath = (pathname, href) => {
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+    try {
+      // Clear localStorage token
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("adminToken");
+      }
+
+      // Call server action to clear cookies
+      const result = await adminLogout();
+
+      if (result.success) {
+        // Redirect to admin login page
+        router.push("/admin/login");
+      } else {
+        console.error("Logout failed:", result.error);
+        // Still redirect even if server logout fails
+        router.push("/admin/login");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Redirect anyway to ensure user is logged out
+      router.push("/admin/login");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -130,12 +164,14 @@ export default function AdminSidebar() {
           </div>
         </div>
         <motion.button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#273054] hover:bg-[#2730541A] font-manrope text-[13px] transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#273054] hover:bg-[#2730541A] font-manrope text-[13px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LogOut size={16} />
-          <span>Log Out</span>
+          <span>{isLoggingOut ? "Logging out..." : "Log Out"}</span>
         </motion.button>
       </div>
     </div>

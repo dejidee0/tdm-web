@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Search, ChevronDown } from "lucide-react";
-import { useExportUsers } from "@/hooks/use-users";
+import { useExportUsers } from "@/hooks/use-admin-users";
 import Image from "next/image";
 import roleIcon from "@/public/assets/svgs/userAndRoleMgt/role.svg";
 import statusIcon from "@/public/assets/svgs/userAndRoleMgt/status.svg";
@@ -19,7 +19,12 @@ export default function UserManagementFilters({
   const { mutate: exportUsers, isPending: isExporting } = useExportUsers();
 
   const handleExport = () => {
-    exportUsers();
+    // Pass current filters to export function
+    exportUsers({
+      role: role === "all" ? "" : role,
+      status: status === "any" ? "" : status,
+      search: search || "",
+    });
   };
 
   return (

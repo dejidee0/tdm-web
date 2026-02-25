@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, ChevronDown, ChevronRight } from "lucide-react";
@@ -13,7 +13,8 @@ import {
   useTogglePaymentGateway,
   useToggleAIModel,
 } from "@/hooks/use-settings";
-import { currencyOptions, timezoneOptions } from "@/lib/mock/settings";
+import { timezoneOptions } from "@/lib/mock/settings";
+import PaymentSettingsForm from "@/components/admin/settings/PaymentSettingsForm";
 
 // Import SVG icons
 import paymentIcon from "@/public/icons/settings/payment.svg";
@@ -24,8 +25,6 @@ import paymentGatewaysIcon from "@/public/icons/settings/ppaymentGateways.svg";
 import stripeIcon from "@/public/icons/settings/stripePayments.svg";
 import paypalIcon from "@/public/icons/settings/paypalIntegration.svg";
 import cryptoIcon from "@/public/icons/settings/cryptoPayments.svg";
-import percentageIcon from "@/public/icons/settings/percentage.svg";
-import dollarIcon from "@/public/icons/settings/dollar.svg";
 import quickActionsIcon from "@/public/icons/settings/quickActions.svg";
 import rightArrowIcon from "@/public/icons/settings/rightArrow.svg";
 import shieldIcon from "@/public/icons/settings/shield.svg";
@@ -34,13 +33,18 @@ export default function PlatformSettingsPage() {
   const [activeTab, setActiveTab] = useState("payment");
   const [hasChanges, setHasChanges] = useState(false);
 
-  const { data: paymentSettings, isLoading: paymentLoading } =
+  const { data: paymentSettings, isLoading: paymentLoading, error: paymentError } =
     usePaymentSettings();
   const { data: aiConfig, isLoading: aiLoading } = useAIConfiguration();
   const { data: notificationSettings, isLoading: notificationLoading } =
     useNotificationSettings();
   const { data: generalSettings, isLoading: generalLoading } =
     useGeneralSettings();
+
+  // Debug logging
+  console.log('Payment Settings:', paymentSettings);
+  console.log('Payment Error:', paymentError);
+  console.log('Payment Loading:', paymentLoading);
   const { mutate: saveSettings, isPending: isSaving } = useSaveSettings();
   const { mutate: toggleGateway } = useTogglePaymentGateway();
   const { mutate: toggleModel } = useToggleAIModel();
@@ -50,7 +54,20 @@ export default function PlatformSettingsPage() {
     baseFee: 2.5,
     fixedFee: 0.3,
     currency: "USD",
+    gateways: [],
   });
+
+  // Initialize form data from API when payment settings load
+  useEffect(() => {
+    if (paymentSettings) {
+      setFormData({
+        baseFee: paymentSettings.basePlatformFee || 0,
+        fixedFee: paymentSettings.fixedFeePerTransaction || 0,
+        currency: paymentSettings.defaultCurrency || "USD",
+        gateways: paymentSettings.gateways || [],
+      });
+    }
+  }, [paymentSettings]);
 
   const isLoading =
     paymentLoading || aiLoading || notificationLoading || generalLoading;
@@ -78,15 +95,26 @@ export default function PlatformSettingsPage() {
   };
 
   const handleCancel = () => {
-    setFormData({
-      baseFee: 2.5,
-      fixedFee: 0.3,
-      currency: "USD",
-    });
+    // Reset to API data
+    if (paymentSettings) {
+      setFormData({
+        baseFee: paymentSettings.basePlatformFee || 0,
+        fixedFee: paymentSettings.fixedFeePerTransaction || 0,
+        currency: paymentSettings.defaultCurrency || "USD",
+        gateways: paymentSettings.gateways || [],
+      });
+    }
     setHasChanges(false);
   };
 
   const handleToggleGateway = (gatewayId, currentStatus) => {
+    // Update local form data
+    const updatedGateways = formData.gateways.map((gateway) =>
+      gateway.id === gatewayId ? { ...gateway, enabled: !currentStatus } : gateway
+    );
+    setFormData({ ...formData, gateways: updatedGateways });
+
+    // Call API to toggle gateway
     toggleGateway({ gatewayId, enabled: !currentStatus });
     setHasChanges(true);
   };
@@ -178,6 +206,18 @@ export default function PlatformSettingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Error Display */}
+          {activeTab === "payment" && paymentError && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 sm:p-6">
+              <h3 className="font-inter text-[16px] font-bold text-red-600 mb-2">
+                Error Loading Payment Settings
+              </h3>
+              <p className="font-inter text-[14px] text-red-700">
+                {paymentError.message || 'Failed to load payment settings. Please try again.'}
+              </p>
+            </div>
+          )}
+
           {/* Payment Tab */}
           {activeTab === "payment" && paymentSettings && (
             <>
@@ -252,114 +292,26 @@ export default function PlatformSettingsPage() {
                 </div>
               </div>
 
-              {/* Transaction Fees */}
-              <div className="bg-white rounded-xl border border-[#E5E7EB] p-4 sm:p-6">
-                <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="w-10 h-10 bg-[#F1F5F9] rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Image
-                      src={percentageIcon}
-                      alt="Transaction Fees"
-                      className="h-[20px] w-[20px]"
-                    />
-                  </div>
-                  <h2 className="font-inter text-[16px] sm:text-[18px] font-bold text-primary">
-                    Transaction Fees
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
-                  {/* Base Platform Fee */}
-                  <div>
-                    <label className="block font-inter text-[14px] font-medium text-primary mb-2">
-                      Base Platform Fee (%)
-                    </label>
-                    <div className="relative">
-                      <Image
-                        src={percentageIcon}
-                        alt=""
-                        className="absolute left-4 top-1/2 -translate-y-1/2 h-[16px] w-[16px]"
-                      />
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={formData.baseFee}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            baseFee: parseFloat(e.target.value),
-                          });
-                          setHasChanges(true);
-                        }}
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
-                      />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 font-inter text-[14px] text-[#64748B]">
-                        %
-                      </span>
-                    </div>
-                    <p className="font-inter text-[12px] text-[#94A3B8] mt-1">
-                      Applied to all incoming transactions.
-                    </p>
-                  </div>
-
-                  {/* Fixed Fee */}
-                  <div>
-                    <label className="block font-inter text-[14px] font-medium text-primary mb-2">
-                      Fixed Fee Per Transaction
-                    </label>
-                    <div className="relative">
-                      <Image
-                        src={dollarIcon}
-                        alt=""
-                        className="absolute left-4 top-1/2 -translate-y-1/2 h-[16px] w-[16px]"
-                      />
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={formData.fixedFee}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            fixedFee: parseFloat(e.target.value),
-                          });
-                          setHasChanges(true);
-                        }}
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
-                      />
-                    </div>
-                    <p className="font-inter text-[12px] text-[#94A3B8] mt-1">
-                      Additional flat rate charge.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Default Currency - Full width below */}
-                <div>
-                  <label className="block font-inter text-[14px] font-medium text-primary mb-2">
-                    Default Currency
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={formData.currency}
-                      onChange={(e) => {
-                        setFormData({ ...formData, currency: e.target.value });
-                        setHasChanges(true);
-                      }}
-                      className="appearance-none w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
-                    >
-                      {currencyOptions.map((currency) => (
-                        <option key={currency.value} value={currency.value}>
-                          {currency.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      size={16}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
-                    />
-                  </div>
-                </div>
-              </div>
+              {/* Transaction Fees - Formik Form */}
+              <PaymentSettingsForm
+                initialValues={formData}
+                onSubmit={handleSave}
+                onCancel={handleCancel}
+                isSubmitting={isSaving}
+              />
             </>
+          )}
+
+          {/* Payment Tab - No Data */}
+          {activeTab === "payment" && !paymentSettings && !paymentError && !paymentLoading && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-6">
+              <h3 className="font-inter text-[16px] font-bold text-yellow-600 mb-2">
+                No Payment Settings Found
+              </h3>
+              <p className="font-inter text-[14px] text-yellow-700">
+                Payment settings data is empty. Please check your API configuration.
+              </p>
+            </div>
           )}
 
           {/* AI Configuration Tab */}

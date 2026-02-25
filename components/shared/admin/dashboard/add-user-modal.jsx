@@ -1,10 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown, RefreshCw } from "lucide-react";
 
-export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
+export default function AddUserModal({
+  isOpen,
+  onClose,
+  onCreateUser,
+  editUser = null,
+  onUpdateUser,
+}) {
+  const isEditMode = !!editUser;
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -14,6 +22,34 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // Populate form when editing
+  useEffect(() => {
+    if (isEditMode && editUser) {
+      // Transform backend data structure to form structure
+      // Backend: { fullName, email, roles: ["Vendor"], status: "Active" }
+      // Form: { fullName, email, role: "Vendor", isActive: true }
+      setFormData({
+        fullName: editUser.fullName || editUser.name || "",
+        email: editUser.email || "",
+        role: Array.isArray(editUser.roles)
+          ? editUser.roles[0]
+          : (editUser.role || ""),
+        isActive: editUser.status
+          ? editUser.status.toLowerCase() === "active"
+          : (editUser.isActive ?? true),
+        password: "",
+      });
+    } else if (!isEditMode) {
+      setFormData({
+        fullName: "",
+        email: "",
+        role: "",
+        isActive: true,
+        password: "",
+      });
+    }
+  }, [isEditMode, editUser, isOpen]);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -40,7 +76,21 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onCreateUser) {
+    if (isEditMode && onUpdateUser) {
+      // For edit mode, send only changed data
+      const updateData = {
+        id: editUser.id,
+        fullName: formData.fullName,
+        email: formData.email,
+        role: formData.role,
+        isActive: formData.isActive,
+      };
+      // Only include password if it's been set
+      if (formData.password) {
+        updateData.password = formData.password;
+      }
+      onUpdateUser(updateData);
+    } else if (onCreateUser) {
       onCreateUser(formData);
     }
     // Reset form
@@ -92,11 +142,12 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                 <div className="flex items-start justify-between">
                   <div>
                     <h2 className="font-manrope text-[24px] font-bold text-primary mb-2">
-                      Add New User
+                      {isEditMode ? "Edit User" : "Add New User"}
                     </h2>
                     <p className="font-manrope text-[14px] text-[#64748B]">
-                      Fill in the details below to invite a new user to the
-                      platform.
+                      {isEditMode
+                        ? "Update the user details below."
+                        : "Fill in the details below to invite a new user to the platform."}
                     </p>
                   </div>
                   <button
@@ -203,16 +254,20 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                 {/* Initial Password */}
                 <div className="mb-6">
                   <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
-                    Initial Password
+                    {isEditMode ? "New Password (optional)" : "Initial Password"}
                   </label>
                   <div className="flex gap-3">
                     <input
                       type="text"
                       value={formData.password}
                       onChange={(e) => handleChange("password", e.target.value)}
-                      required
+                      required={!isEditMode}
                       className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
-                      placeholder="Enter or generate password"
+                      placeholder={
+                        isEditMode
+                          ? "Leave blank to keep current password"
+                          : "Enter or generate password"
+                      }
                     />
                     <motion.button
                       type="button"
@@ -230,8 +285,9 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                     </motion.button>
                   </div>
                   <p className="font-manrope text-[12px] text-[#94A3B8] italic mt-2">
-                    The user will be prompted to change this password on their
-                    first login.
+                    {isEditMode
+                      ? "Only enter a new password if you want to change it."
+                      : "The user will be prompted to change this password on their first login."}
                   </p>
                 </div>
 
@@ -252,7 +308,7 @@ export default function AddUserModal({ isOpen, onClose, onCreateUser }) {
                     whileTap={{ scale: 0.98 }}
                     className="px-6 py-2.5 bg-primary text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-[#334155] transition-colors"
                   >
-                    Create User
+                    {isEditMode ? "Update User" : "Create User"}
                   </motion.button>
                 </div>
               </form>
