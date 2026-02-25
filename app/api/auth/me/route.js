@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/api/client";
+import { getCurrentUser } from "@/lib/actions/auth";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -6,15 +6,15 @@ export async function GET() {
     const user = await getCurrentUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     return NextResponse.json(user);
   } catch (error) {
-    console.error("Error fetching current user:", error);
+    console.error("💥 [/api/auth/me] Error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch user" },
-      { status: 500 }
+      { error: "Internal server error" },
+      { status: 500 },
     );
   }
 }

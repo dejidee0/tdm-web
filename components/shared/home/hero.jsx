@@ -103,7 +103,7 @@ const HeroSection = () => {
   return (
     <div className="min-h-screen bg-background md:min-h-[90vh] overflow-visible relative">
       {/* Container with max-width for content constraint */}
-      <div className="max-w-[1300px] mx-auto h-full flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[90vh]">
+      <div className="max-w-325 mx-auto h-full flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[90vh]">
         {/* Blue background section with image slider */}
         <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 h-[85%] sm:h-[85%] rounded-xl md:rounded-2xl overflow-hidden">
           {/* Image Slider with crossfade */}
@@ -235,7 +235,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-16 left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] h-24 sm:h-32 md:h-32 bg-white z-50 rounded-lg md:rounded-xl shadow-2xl"
+          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-16 left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] h-24 sm:h-32 md:h-32 bg-white z-30 rounded-lg md:rounded-xl shadow-2xl"
         >
           <div className="h-full flex items-center justify-around px-4 sm:px-6 md:px-8 lg:px-12">
             {categories.map((category, index) => {
