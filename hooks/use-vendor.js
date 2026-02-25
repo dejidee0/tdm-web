@@ -1,4 +1,4 @@
-import { vendorDashboardAPI } from "@/lib/mock/data";
+import { vendorDashboardAPI } from "@/lib/api/vendor";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Query keys

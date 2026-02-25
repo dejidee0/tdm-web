@@ -45,7 +45,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 1.1 Admin Login
 
-**Endpoint:** `POST /api/admin/auth/login`
+**Endpoint:** `POST /admin/auth/login`
 
 **Request Payload:**
 ```json
@@ -77,7 +77,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 1.2 Refresh Token
 
-**Endpoint:** `POST /api/admin/auth/refresh`
+**Endpoint:** `POST /admin/auth/refresh`
 
 **Request Payload:**
 ```json
@@ -99,7 +99,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 1.3 Admin Logout
 
-**Endpoint:** `POST /api/admin/auth/logout`
+**Endpoint:** `POST /admin/auth/logout`
 
 **Request Payload:**
 ```json
@@ -122,7 +122,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.1 Get All Settings
 
-**Endpoint:** `GET /api/admin/settings`
+**Endpoint:** `GET /admin/settings`
 
 **Query Parameters:**
 - `category` (optional): `payment`, `ai`, `notifications`, `general`
@@ -196,7 +196,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.2 Update Payment Settings
 
-**Endpoint:** `PUT /api/admin/settings/payment`
+**Endpoint:** `PUT /admin/settings/payment`
 
 **Request Payload:**
 ```json
@@ -238,7 +238,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.3 Toggle Payment Gateway
 
-**Endpoint:** `PATCH /api/admin/settings/payment/gateway/{gatewayId}/toggle`
+**Endpoint:** `PATCH /admin/settings/payment/gateway/{gatewayId}/toggle`
 
 **Request Payload:**
 ```json
@@ -262,7 +262,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.4 Update AI Configuration
 
-**Endpoint:** `PUT /api/admin/settings/ai`
+**Endpoint:** `PUT /admin/settings/ai`
 
 **Request Payload:**
 ```json
@@ -305,7 +305,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.5 Toggle AI Model
 
-**Endpoint:** `PATCH /api/admin/settings/ai/model/{modelId}/toggle`
+**Endpoint:** `PATCH /admin/settings/ai/model/{modelId}/toggle`
 
 **Request Payload:**
 ```json
@@ -329,7 +329,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.6 Update Notification Settings
 
-**Endpoint:** `PUT /api/admin/settings/notifications`
+**Endpoint:** `PUT /admin/settings/notifications`
 
 **Request Payload:**
 ```json
@@ -372,7 +372,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 2.7 Update General Settings
 
-**Endpoint:** `PUT /api/admin/settings/general`
+**Endpoint:** `PUT /admin/settings/general`
 
 **Request Payload:**
 ```json
@@ -405,7 +405,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.1 Get All Users
 
-**Endpoint:** `GET /api/admin/users`
+**Endpoint:** `GET /admin/users`
 
 **Query Parameters:**
 - `page` (default: 1)
@@ -416,7 +416,7 @@ Complete API specification for the TDM Admin Dashboard.
 - `sortBy` (default: `createdAt`)
 - `order` (default: `desc`)
 
-**Example:** `GET /api/admin/users?page=1&limit=20&role=user&status=active`
+**Example:** `GET /admin/users?page=1&limit=20&role=user&status=active`
 
 **Response:**
 ```json
@@ -455,7 +455,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.2 Get User Details
 
-**Endpoint:** `GET /api/admin/users/{userId}`
+**Endpoint:** `GET /admin/users/{userId}`
 
 **Response:**
 ```json
@@ -508,7 +508,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.3 Create User
 
-**Endpoint:** `POST /api/admin/users`
+**Endpoint:** `POST /admin/users`
 
 **Request Payload:**
 ```json
@@ -549,7 +549,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.4 Update User
 
-**Endpoint:** `PUT /api/admin/users/{userId}`
+**Endpoint:** `PUT /admin/users/{userId}`
 
 **Request Payload:**
 ```json
@@ -587,7 +587,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.5 Suspend User
 
-**Endpoint:** `PATCH /api/admin/users/{userId}/suspend`
+**Endpoint:** `PATCH /admin/users/{userId}/suspend`
 
 **Request Payload:**
 ```json
@@ -614,7 +614,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.6 Reactivate User
 
-**Endpoint:** `PATCH /api/admin/users/{userId}/reactivate`
+**Endpoint:** `PATCH /admin/users/{userId}/reactivate`
 
 **Request Payload:**
 ```json
@@ -638,7 +638,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 3.7 Delete User
 
-**Endpoint:** `DELETE /api/admin/users/{userId}`
+**Endpoint:** `DELETE /admin/users/{userId}`
 
 **Request Payload:**
 ```json
@@ -669,7 +669,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.1 Get All Orders
 
-**Endpoint:** `GET /api/admin/orders`
+**Endpoint:** `GET /admin/orders`
 
 **Query Parameters:**
 - `page` (default: 1)
@@ -683,7 +683,7 @@ Complete API specification for the TDM Admin Dashboard.
 - `sortBy` (default: `createdAt`)
 - `order` (default: `desc`)
 
-**Example:** `GET /api/admin/orders?page=1&limit=20&status=pending&dateFrom=2026-02-01`
+**Example:** `GET /admin/orders?page=1&limit=20&status=pending&dateFrom=2026-02-01`
 
 **Response:**
 ```json
@@ -747,7 +747,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.2 Get Order Details
 
-**Endpoint:** `GET /api/admin/orders/{orderId}`
+**Endpoint:** `GET /admin/orders/{orderId}`
 
 **Response:**
 ```json
@@ -828,7 +828,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.3 Update Order Status
 
-**Endpoint:** `PATCH /api/admin/orders/{orderId}/status`
+**Endpoint:** `PATCH /admin/orders/{orderId}/status`
 
 **Request Payload:**
 ```json
@@ -860,7 +860,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.4 Add Tracking Information
 
-**Endpoint:** `PATCH /api/admin/orders/{orderId}/tracking`
+**Endpoint:** `PATCH /admin/orders/{orderId}/tracking`
 
 **Request Payload:**
 ```json
@@ -890,7 +890,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.5 Process Refund
 
-**Endpoint:** `POST /api/admin/orders/{orderId}/refund`
+**Endpoint:** `POST /admin/orders/{orderId}/refund`
 
 **Request Payload:**
 ```json
@@ -927,7 +927,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 4.6 Cancel Order
 
-**Endpoint:** `PATCH /api/admin/orders/{orderId}/cancel`
+**Endpoint:** `PATCH /admin/orders/{orderId}/cancel`
 
 **Request Payload:**
 ```json
@@ -961,14 +961,14 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 5.1 Get Dashboard Overview
 
-**Endpoint:** `GET /api/admin/analytics/overview`
+**Endpoint:** `GET /admin/analytics/overview`
 
 **Query Parameters:**
 - `period` (optional): `today`, `week`, `month`, `year`, `custom`
 - `startDate` (optional): ISO 8601 date (required if period=custom)
 - `endDate` (optional): ISO 8601 date (required if period=custom)
 
-**Example:** `GET /api/admin/analytics/overview?period=month`
+**Example:** `GET /admin/analytics/overview?period=month`
 
 **Response:**
 ```json
@@ -1052,7 +1052,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 5.2 Get Revenue Analytics
 
-**Endpoint:** `GET /api/admin/analytics/revenue`
+**Endpoint:** `GET /admin/analytics/revenue`
 
 **Query Parameters:**
 - `period`: `daily`, `weekly`, `monthly`, `yearly`
@@ -1093,7 +1093,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 5.3 Get User Analytics
 
-**Endpoint:** `GET /api/admin/analytics/users`
+**Endpoint:** `GET /admin/analytics/users`
 
 **Query Parameters:**
 - `period`: `today`, `week`, `month`, `year`
@@ -1141,7 +1141,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 5.4 Get Order Analytics
 
-**Endpoint:** `GET /api/admin/analytics/orders`
+**Endpoint:** `GET /admin/analytics/orders`
 
 **Query Parameters:**
 - `period`: `today`, `week`, `month`, `year`
@@ -1198,7 +1198,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 6.1 Get All Products
 
-**Endpoint:** `GET /api/admin/products`
+**Endpoint:** `GET /admin/products`
 
 **Query Parameters:**
 - `page` (default: 1)
@@ -1238,7 +1238,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 6.2 Create Product
 
-**Endpoint:** `POST /api/admin/products`
+**Endpoint:** `POST /admin/products`
 
 **Request Payload:**
 ```json
@@ -1289,7 +1289,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 6.3 Update Product
 
-**Endpoint:** `PUT /api/admin/products/{productId}`
+**Endpoint:** `PUT /admin/products/{productId}`
 
 **Request Payload:** Same as Create Product
 
@@ -1307,7 +1307,7 @@ Complete API specification for the TDM Admin Dashboard.
 
 ### 6.4 Delete Product
 
-**Endpoint:** `DELETE /api/admin/products/{productId}`
+**Endpoint:** `DELETE /admin/products/{productId}`
 
 **Request Payload:**
 ```json
@@ -1372,7 +1372,7 @@ X-RateLimit-Reset: 1676203200
 
 Configure webhooks to receive real-time notifications:
 
-**Endpoint:** `POST /api/admin/webhooks`
+**Endpoint:** `POST /admin/webhooks`
 
 **Request Payload:**
 ```json

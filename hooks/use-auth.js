@@ -10,6 +10,7 @@ import {
   verifyEmail,
   resendVerificationCode,
 } from "@/lib/actions/auth";
+import { setToken, removeToken, getToken } from "@/lib/client-auth";
 
 /**
  * Query key factory for auth-related queries
@@ -24,6 +25,8 @@ export function useCurrentUser() {
     queryKey: authKeys.user(),
     queryFn: async () => {
       const response = await fetch("/api/auth/me");
+      console.log('response', response);
+
       if (!response.ok) {
         if (response.status === 401) {
           return null;
@@ -32,6 +35,7 @@ export function useCurrentUser() {
       }
       return response.json();
     },
+    enabled: typeof window !== "undefined" && !!getToken(), // Only run query if token exists
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: false,
     refetchOnWindowFocus: true,
@@ -76,8 +80,8 @@ export function useLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (formData) => {
-      const result = await loginUser(formData);
+    mutationFn: async (credentials) => {
+      const result = await loginUser(credentials);
 
       if (!result.success) {
         throw new Error(result.error);
@@ -86,6 +90,11 @@ export function useLogin() {
       return result.data;
     },
     onSuccess: (data) => {
+      // Store token in localStorage
+      if (data.token) {
+        setToken(data.token);
+      }
+
       // Update user cache
       queryClient.setQueryData(authKeys.user(), data.user);
 
@@ -117,6 +126,9 @@ export function useLogout() {
       return result;
     },
     onSuccess: () => {
+      // Remove token from localStorage
+      removeToken();
+
       // Clear all user-related cache
       queryClient.setQueryData(authKeys.user(), null);
       queryClient.removeQueries({ queryKey: authKeys.all });

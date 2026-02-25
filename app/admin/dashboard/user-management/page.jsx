@@ -3,7 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { UserPlus } from "lucide-react";
-import { useUsers } from "@/hooks/use-users";
+import {
+  useAdminUsers,
+  useCreateUser,
+  useUpdateUserRole,
+  useUpdateUserStatus,
+} from "@/hooks/use-admin-users";
 import UserManagementTable from "@/components/shared/admin/dashboard/user-management-table";
 import UserManagementFilters from "@/components/shared/admin/dashboard/user-management-filters";
 import AddUserModal from "@/components/shared/admin/dashboard/add-user-modal";
@@ -13,6 +18,7 @@ import Image from "next/image";
 export default function UserManagementPage() {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
 
   // Filter states
   const [page, setPage] = useState(1);
@@ -27,14 +33,19 @@ export default function UserManagementPage() {
     isInitialMount.current = false;
   }, []);
 
-  // Fetch users with filters
-  const { data, isLoading, isError } = useUsers({
+  // Fetch users with filters using real API
+  const { data, isLoading, isError } = useAdminUsers({
     page,
-    limit: 5,
+    pageSize: 5,
     search,
-    role,
-    status,
+    role: role === "all" ? "" : role,
+    status: status === "any" ? "" : status,
   });
+
+  // Mutations
+  const createUser = useCreateUser();
+  const updateUserRole = useUpdateUserRole();
+  const updateUserStatus = useUpdateUserStatus();
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -56,8 +67,64 @@ export default function UserManagementPage() {
   };
 
   const handleCreateUser = (userData) => {
-    console.log("Creating user:", userData);
-    // TODO: Implement user creation logic
+    createUser.mutate(userData, {
+      onSuccess: () => {
+        setIsModalOpen(false);
+        // Data will auto-refresh due to query invalidation
+      },
+      onError: (error) => {
+        console.error("Failed to create user:", error);
+        // You can add toast notification here
+      },
+    });
+  };
+
+  const handleEditUser = (user) => {
+    setEditingUser(user);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateUser = (userData) => {
+    const { id, role, isActive } = userData;
+    const currentUser = editingUser;
+
+    // Handle backend data structure: roles is array, status is string
+    const currentRole = Array.isArray(currentUser.roles)
+      ? currentUser.roles[0]
+      : currentUser.role;
+    const currentIsActive = currentUser.status
+      ? currentUser.status.toLowerCase() === "active"
+      : currentUser.isActive;
+
+    // Check what changed and update accordingly
+    const updates = [];
+
+    if (currentRole !== role) {
+      updates.push(
+        updateUserRole.mutateAsync({ id, newRole: role })
+      );
+    }
+
+    if (currentIsActive !== isActive) {
+      updates.push(
+        updateUserStatus.mutateAsync({ id, isActive })
+      );
+    }
+
+    // Execute all updates
+    Promise.all(updates)
+      .then(() => {
+        setIsModalOpen(false);
+        setEditingUser(null);
+      })
+      .catch((error) => {
+        console.error("Failed to update user:", error);
+      });
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingUser(null);
   };
 
   // Only show full-page loading on initial mount
@@ -111,7 +178,10 @@ export default function UserManagementPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setEditingUser(null);
+              setIsModalOpen(true);
+            }}
             className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
           >
             <Image src={addNewUser} alt="Add New User" />
@@ -142,14 +212,17 @@ export default function UserManagementPage() {
           pagination={data?.pagination}
           onPageChange={handlePageChange}
           isLoading={isLoading && !isInitialMount.current}
+          onEditUser={handleEditUser}
         />
       </div>
 
-      {/* Add User Modal */}
+      {/* Add/Edit User Modal */}
       <AddUserModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         onCreateUser={handleCreateUser}
+        editUser={editingUser}
+        onUpdateUser={handleUpdateUser}
       />
     </div>
   );
