@@ -19,10 +19,50 @@ const statIcons = {
 };
 
 export default function VendorDashboardPage() {
-  const { data: stats, isLoading: statsLoading } = useVendorStats();
+  const { data: rawStats, isLoading: statsLoading } = useVendorStats();
   const { data: alerts, isLoading: alertsLoading } = useVendorAlerts();
   const { data: activities, isLoading: activitiesLoading } =
     useVendorActivity();
+
+    console.log('activities', activities);
+    
+
+  // Transform backend stats to UI format
+  const stats = rawStats ? {
+    newOrders: {
+      label: "New Orders",
+      category: "ORDERS",
+      value: rawStats.assignedOrders || 0,
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Total assigned orders",
+    },
+    pendingEnquiries: {
+      label: "Pending Orders",
+      category: "ORDERS",
+      value: rawStats.pendingOrders || 0,
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Awaiting processing",
+    },
+    activeProjects: {
+      label: "In Progress",
+      category: "ORDERS",
+      value: rawStats.inProgressOrders || 0,
+      change: 0,
+      changeType: "neutral",
+      subtitle: "Currently being fulfilled",
+    },
+    pendingDeliveries: {
+      label: "Products",
+      category: "INVENTORY",
+      value: rawStats.ownedProducts || 0,
+      change: 0,
+      changeType: "neutral",
+      subtitle: `${rawStats.lowStockProducts || 0} low stock`,
+    },
+  } : null;
+  
 
   if (statsLoading || alertsLoading || activitiesLoading) {
     return (

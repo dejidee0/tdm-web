@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, RefreshCw, ChevronDown } from "lucide-react";
 
-export default function AddProductModal({ isOpen, onClose, onSubmit }) {
+export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading = false }) {
   const [formData, setFormData] = useState({
     productName: "",
     sku: "",
@@ -377,12 +377,16 @@ export default function AddProductModal({ isOpen, onClose, onSubmit }) {
                   Cancel
                 </motion.button>
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                  whileTap={{ scale: isLoading ? 1 : 0.98 }}
                   onClick={handleSubmit}
-                  className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+                  disabled={isLoading}
+                  className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
-                  Add Product
+                  {isLoading && (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  )}
+                  {isLoading ? "Adding..." : "Add Product"}
                 </motion.button>
               </div>
             </motion.div>

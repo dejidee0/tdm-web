@@ -7,7 +7,6 @@ import {
   adminLogout,
   adminRefreshToken,
 } from "@/lib/actions/admin-auth";
-import { setToken, removeToken } from "@/lib/client-auth";
 
 /**
  * Query key factory for admin auth
@@ -38,10 +37,12 @@ export function useAdminLogin() {
       console.log('🎉 Admin login success! Data received:', data);
       console.log('🔑 Token from response:', data.token ? 'TOKEN EXISTS' : 'NO TOKEN IN RESPONSE');
 
-      // Store token in localStorage
+      // Store token in localStorage as adminToken
       if (data.token) {
-        setToken(data.token);
-        console.log('✅ Token stored in localStorage');
+        if (typeof window !== "undefined") {
+          localStorage.setItem("adminToken", data.token);
+          console.log('✅ Admin token stored in localStorage');
+        }
       } else {
         console.error('❌ NO TOKEN in response data - cannot authenticate!');
       }
@@ -77,8 +78,10 @@ export function useAdminLogout() {
       return result;
     },
     onSuccess: () => {
-      // Remove token from localStorage
-      removeToken();
+      // Remove admin token from localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("adminToken");
+      }
 
       // Clear all admin-related cache
       queryClient.setQueryData(adminAuthKeys.admin(), null);

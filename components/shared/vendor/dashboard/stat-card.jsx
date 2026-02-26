@@ -18,7 +18,8 @@ export default function StatCard({ data, icon: Icon, index }) {
     neutral: Minus,
   };
 
-  const CurrentTrendIcon = TrendIcon[changeType];
+  const CurrentTrendIcon = TrendIcon[changeType] || Minus;
+  
 
   return (
     <motion.div

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Plus, FileEdit, ClipboardList, MessageSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const quickActions = [
   {
@@ -11,6 +12,7 @@ const quickActions = [
     color: "text-[#06B6D4]",
     bgColor: "bg-[#ECFEFF]",
     hoverBg: "hover:bg-[#CFFAFE]",
+    action: "/vendor/dashboard/inventory?open=add-product",
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ const quickActions = [
     color: "text-[#3B82F6]",
     bgColor: "bg-[#EFF6FF]",
     hoverBg: "hover:bg-[#DBEAFE]",
+    action: "/vendor/projects",
   },
   {
     id: 3,
@@ -27,6 +30,7 @@ const quickActions = [
     color: "text-[#64748B]",
     bgColor: "bg-[#F1F5F9]",
     hoverBg: "hover:bg-[#E2E8F0]",
+    action: "/vendor/dashboard/orders",
   },
   {
     id: 4,
@@ -35,10 +39,12 @@ const quickActions = [
     color: "text-[#64748B]",
     bgColor: "bg-[#F1F5F9]",
     hoverBg: "hover:bg-[#E2E8F0]",
+    action: "/vendor/dashboard/messages",
   },
 ];
 
 export default function QuickActions() {
+  const router = useRouter();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -59,6 +65,7 @@ export default function QuickActions() {
           return (
             <motion.button
               key={action.id}
+              onClick={() => router.push(action.action)}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6 + index * 0.05 }}
@@ -67,7 +74,7 @@ export default function QuickActions() {
               className={`
           flex flex-col items-center justify-between gap-3 p-6 rounded-lg
           ${action.bgColor} ${action.hoverBg}
-          transition-colors group
+          transition-colors group cursor-pointer
         `}
             >
               <div

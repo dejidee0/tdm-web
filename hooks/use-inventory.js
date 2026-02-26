@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { inventoryAPI } from "@/lib/mock/inventory";
+import { vendorInventoryAPI } from "@/lib/api/vendor/inventory";
 
 // Query keys
 export const INVENTORY_QUERY_KEYS = {
@@ -11,7 +11,7 @@ export const INVENTORY_QUERY_KEYS = {
 export function useInventoryStats() {
   return useQuery({
     queryKey: INVENTORY_QUERY_KEYS.stats,
-    queryFn: inventoryAPI.getInventoryStats,
+    queryFn: vendorInventoryAPI.getStats,
     staleTime: 60 * 1000, // 1 minute
   });
 }
@@ -20,11 +20,9 @@ export function useInventoryStats() {
 export function useInventoryProducts(filters = {}) {
   const {
     page = 1,
-    limit = 10,
+    limit = 20,
     search = "",
-    stockStatus = "all",
-    location = "all",
-    archived = false,
+    lowStockOnly = false,
   } = filters;
 
   return useQuery({
@@ -32,31 +30,56 @@ export function useInventoryProducts(filters = {}) {
       page,
       limit,
       search,
-      stockStatus,
-      location,
-      archived,
+      lowStockOnly,
     }),
     queryFn: () =>
-      inventoryAPI.getInventoryProducts({
+      vendorInventoryAPI.getInventory({
         page,
         limit,
         search,
-        stockStatus,
-        location,
-        archived,
+        lowStockOnly,
       }),
     staleTime: 30 * 1000, // 30 seconds
     keepPreviousData: true,
   });
 }
 
-// Hook to update product quantity
+// Hook to add new product
+export function useAddProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productData) => vendorInventoryAPI.addProduct(productData),
+    onSuccess: () => {
+      // Invalidate both stats and products queries
+      queryClient.invalidateQueries({ queryKey: INVENTORY_QUERY_KEYS.stats });
+      queryClient.invalidateQueries({ queryKey: ["inventory", "products"] });
+    },
+  });
+}
+
+// Hook to update product
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ productId, productData }) =>
+      vendorInventoryAPI.updateProduct(productId, productData),
+    onSuccess: () => {
+      // Invalidate both stats and products queries
+      queryClient.invalidateQueries({ queryKey: INVENTORY_QUERY_KEYS.stats });
+      queryClient.invalidateQueries({ queryKey: ["inventory", "products"] });
+    },
+  });
+}
+
+// Hook to update product quantity (convenience wrapper)
 export function useUpdateProductQuantity() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, quantity }) =>
-      inventoryAPI.updateProductQuantity(id, quantity),
+      vendorInventoryAPI.updateProduct(id, { stockQuantity: quantity }),
     onSuccess: () => {
       // Invalidate both stats and products queries
       queryClient.invalidateQueries({ queryKey: INVENTORY_QUERY_KEYS.stats });
@@ -70,7 +93,7 @@ export function useDeleteProduct() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) => inventoryAPI.deleteProduct(id),
+    mutationFn: (productId) => vendorInventoryAPI.deleteProduct(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: INVENTORY_QUERY_KEYS.stats });
       queryClient.invalidateQueries({ queryKey: ["inventory", "products"] });

@@ -8,12 +8,23 @@ import {
   HelpCircle,
   MoreVertical,
   ArrowRight,
+  Package,
+  FileText,
+  Circle,
 } from "lucide-react";
 
 const activityIcons = {
   order: ShoppingCart,
+  Order: ShoppingCart,
   project: Briefcase,
+  Project: Briefcase,
   enquiry: HelpCircle,
+  Enquiry: HelpCircle,
+  delivery: Package,
+  Delivery: Package,
+  invoice: FileText,
+  Invoice: FileText,
+  default: Circle,
 };
 
 const statusStyles = {
@@ -32,6 +43,21 @@ const statusStyles = {
     text: "text-[#92400E]",
     dot: "bg-[#F59E0B]",
   },
+  error: {
+    bg: "bg-[#FEE2E2]",
+    text: "text-[#991B1B]",
+    dot: "bg-[#EF4444]",
+  },
+  pending: {
+    bg: "bg-[#FEF3C7]",
+    text: "text-[#92400E]",
+    dot: "bg-[#F59E0B]",
+  },
+  default: {
+    bg: "bg-[#F1F5F9]",
+    text: "text-[#64748B]",
+    dot: "bg-[#94A3B8]",
+  },
 };
 
 const tabs = ["All", "Orders", "Projects"];
@@ -42,11 +68,14 @@ export default function RecentActivityStream({ activities }) {
   const filteredActivities =
     activeTab === "All"
       ? activities
-      : activities.filter((activity) => {
-          if (activeTab === "Orders") return activity.type === "Order";
-          if (activeTab === "Projects") return activity.type === "Project";
-          return true;
-        });
+      : activities?.items?.filter((activity) => {
+        if (activeTab === "Orders") return activity.type === "Order";
+        if (activeTab === "Projects") return activity.type === "Project";
+        return true;
+      });
+
+  console.log('filteredActivities', filteredActivities);
+
 
   return (
     <motion.div
@@ -61,28 +90,27 @@ export default function RecentActivityStream({ activities }) {
           <h2 className="font-manrope text-[18px] font-bold text-primary">
             Recent Activity Stream
           </h2>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`
+          {/* Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`
                 px-4 py-2 rounded-lg font-manrope text-[13px] font-medium whitespace-nowrap
                 transition-colors flex-shrink-0
-                ${
-                  activeTab === tab
+                ${activeTab === tab
                     ? "bg-primary text-white"
                     : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
-                }
+                  }
               `}
-            >
-              {tab}
-            </button>
-          ))}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
         </div>
+
       </div>
 
       {/* Table Header - Desktop only */}
@@ -111,9 +139,9 @@ export default function RecentActivityStream({ activities }) {
 
       {/* Activity Rows */}
       <div className="divide-y divide-[#E5E7EB]">
-        {filteredActivities.map((activity, index) => {
-          const Icon = activityIcons[activity.icon];
-          const statusStyle = statusStyles[activity.statusColor];
+        {filteredActivities?.items?.map((activity, index) => {
+          const Icon = activityIcons[activity.icon] || activityIcons[activity.type] || activityIcons.default;
+          const statusStyle = statusStyles[activity.statusColor] || statusStyles.default;
 
           return (
             <motion.div
