@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ordersAPI } from "@/lib/mock/orders";
+import { vendorOrdersAPI } from "@/lib/api/vendor/orders";
 
 // Query keys
 export const ORDERS_QUERY_KEYS = {
@@ -29,7 +30,7 @@ export function useOrders(filters = {}) {
       search,
     }),
     queryFn: () =>
-      ordersAPI.getOrders({ page, limit, status, type, dateRange, search }),
+      vendorOrdersAPI.getOrders({ page, limit, status, type, dateRange, search }),
     staleTime: 30 * 1000, // 30 seconds
     keepPreviousData: true, // Keep previous page data while fetching new page
   });
@@ -52,6 +53,19 @@ export function useRefreshOrders() {
   return useMutation({
     mutationFn: async () => {
       await queryClient.invalidateQueries({ queryKey: ORDERS_QUERY_KEYS.all });
+    },
+  });
+}
+
+// Hook to create order
+export function useCreateOrder() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderData) => vendorOrdersAPI.createOrder(orderData),
+    onSuccess: () => {
+      // Invalidate orders list to refetch with new order
+      queryClient.invalidateQueries({ queryKey: ORDERS_QUERY_KEYS.all });
     },
   });
 }

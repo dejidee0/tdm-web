@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -12,11 +12,15 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { useOrders } from "@/hooks/use-orders";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useOrders, useCreateOrder } from "@/hooks/use-orders";
 import OrdersTable from "@/components/shared/vendor/dashboard/table";
 import Pagination from "@/components/shared/vendor/dashboard/pagination";
+import CreateOrderModal from "@/components/shared/vendor/dashboard/create-order";
 
 export default function OrdersPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [filters, setFilters] = useState({
     page: 1,
     limit: 5,
@@ -28,8 +32,18 @@ export default function OrdersPage() {
 
   const [searchInput, setSearchInput] = useState("");
   const [activeFilters, setActiveFilters] = useState([]);
+  const [isCreateOrderModalOpen, setIsCreateOrderModalOpen] = useState(false);
 
   const { data, isLoading } = useOrders(filters);
+  const createOrder = useCreateOrder();
+
+  // Auto-open modal based on URL query parameter
+  useEffect(() => {
+    const openParam = searchParams.get("open");
+    if (openParam === "create-order") {
+      setIsCreateOrderModalOpen(true);
+    }
+  }, [searchParams]);
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -81,6 +95,23 @@ export default function OrdersPage() {
     setFilters((prev) => ({ ...prev, page }));
   };
 
+  const handleCloseModal = () => {
+    setIsCreateOrderModalOpen(false);
+    // Remove query parameter from URL when closing modal
+    const currentPath = window.location.pathname;
+    router.replace(currentPath);
+  };
+
+  const handleCreateOrder = async (orderData) => {
+    try {
+      await createOrder.mutateAsync(orderData);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error creating order:", error);
+      // Error will be handled by the mutation's error state
+    }
+  };
+
   return (
     <div className="max-w-[1440px] mx-auto">
       {/* Header */}
@@ -109,6 +140,10 @@ export default function OrdersPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setIsCreateOrderModalOpen(true);
+                router.push("/vendor/dashboard/orders?open=create-order");
+              }}
               className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
             >
               <Plus size={16} />
@@ -258,6 +293,15 @@ export default function OrdersPage() {
           onPageChange={handlePageChange}
         />
       )}
+
+      {/* Create Order Modal */}
+      <CreateOrderModal
+        isOpen={isCreateOrderModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleCreateOrder}
+        isLoading={createOrder.isPending}
+        error={createOrder.error}
+      />
     </div>
   );
 }

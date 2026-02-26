@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -11,14 +11,17 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
+import { useSearchParams, useRouter } from "next/navigation";
 import locationIcon from "@/public/assets/svgs/vendor/inventory/location.svg";
 import filterIcon from "@/public/assets/svgs/vendor/inventory/filter.svg";
-import { useInventoryProducts, useInventoryStats } from "@/hooks/use-inventory";
+import { useInventoryProducts, useInventoryStats, useAddProduct } from "@/hooks/use-inventory";
 import InventoryStatsCards from "@/components/shared/vendor/dashboard/inventory/stats";
 import InventoryProductsTable from "@/components/shared/vendor/dashboard/inventory/table";
 import AddProductModal from "@/components/shared/vendor/dashboard/add-product";
 
 export default function InventoryPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [filters, setFilters] = useState({
     page: 1,
     limit: 10,
@@ -33,6 +36,15 @@ export default function InventoryPage() {
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const { data: stats } = useInventoryStats();
   const { data, isLoading } = useInventoryProducts(filters);
+  const addProduct = useAddProduct();
+
+  // Auto-open modal based on URL query parameter
+  useEffect(() => {
+    const openParam = searchParams.get("open");
+    if (openParam === "add-product") {
+      setIsAddProductModalOpen(true);
+    }
+  }, [searchParams]);
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -72,10 +84,38 @@ export default function InventoryPage() {
     },
     { id: "archived", label: "Archived", count: data?.stats?.archived || 0 },
   ];
-  const handleAddProduct = (productData) => {
-    console.log("Adding product:", productData);
-    // TODO: Call API to add product
+  const handleCloseModal = () => {
     setIsAddProductModalOpen(false);
+    // Remove query parameter from URL when closing modal
+    const currentPath = window.location.pathname;
+    router.replace(currentPath);
+  };
+
+  const handleAddProduct = async (productData) => {
+    try {
+      // Map form data to match API schema from Swagger
+      const apiPayload = {
+        name: productData.productName,
+        description: productData.description || "",
+        shortDescription: productData.description || "",
+        categoryId: productData.category || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default category from Swagger
+        sku: productData.sku,
+        brandType: "", // Empty string as shown in Swagger
+        productType: "", // Empty string as shown in Swagger
+        price: Number(productData.unitPrice) || 0,
+        stockQuantity: Number(productData.initialQuantity) || 0,
+        lowStockThreshold: Number(productData.reorderPoint) || 0,
+        isActive: true,
+        trackInventory: true,
+      };
+
+      await addProduct.mutateAsync(apiPayload);
+      console.log("✅ Product added successfully");
+      handleCloseModal();
+    } catch (error) {
+      console.error("❌ Error adding product:", error);
+      // You can add toast notification here
+    }
   };
 
   return (
@@ -108,7 +148,10 @@ export default function InventoryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setIsAddProductModalOpen(true)}
+              onClick={() => {
+                setIsAddProductModalOpen(true);
+                router.push("/vendor/dashboard/inventory?open=add-product");
+              }}
               className="flex items-center gap-2 px-4 py-2.5 bg-[#273054] text-white rounded-[6.96px] font-inter text-[12.19px] font-medium hover:bg-[#273054]/90 transition-colors"
             >
               <Plus size={16} />
@@ -323,8 +366,9 @@ export default function InventoryPage() {
       )}
       <AddProductModal
         isOpen={isAddProductModalOpen}
-        onClose={() => setIsAddProductModalOpen(false)}
+        onClose={handleCloseModal}
         onSubmit={handleAddProduct}
+        isLoading={addProduct.isPending}
       />
     </div>
   );

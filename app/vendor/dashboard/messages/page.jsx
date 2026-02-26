@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -12,9 +12,9 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import {
-  useConversations,
-  useMessages,
-  useSendMessage,
+  useVendorConversations,
+  useVendorConversationMessages,
+  useSendConversationMessage,
 } from "@/hooks/use-messages";
 import { mockQuickReplies } from "@/lib/mock/messages";
 
@@ -24,13 +24,15 @@ export default function MessagesPage() {
     search: "",
   });
   const [searchInput, setSearchInput] = useState("");
-  const [activeConversation, setActiveConversation] = useState(1);
+  const [activeConversation, setActiveConversation] = useState(null); // Now stores contact email
   const [messageInput, setMessageInput] = useState("");
   const [showChat, setShowChat] = useState(false); // Mobile view toggle
 
-  const { data: conversationsData } = useConversations(filters);
-  const { data: messages } = useMessages(activeConversation);
-  const sendMessage = useSendMessage();
+  const { data: conversationsData, isLoading: loadingConversations } =
+    useVendorConversations(filters);
+  const { data: messages, isLoading: loadingMessages } =
+    useVendorConversationMessages(activeConversation);
+  const sendMessage = useSendConversationMessage();
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -42,9 +44,9 @@ export default function MessagesPage() {
   };
 
   const handleSendMessage = () => {
-    if (messageInput.trim()) {
+    if (messageInput.trim() && activeConversation) {
       sendMessage.mutate({
-        conversationId: activeConversation,
+        contactEmail: activeConversation,
         message: messageInput.trim(),
       });
       setMessageInput("");
@@ -55,8 +57,8 @@ export default function MessagesPage() {
     setMessageInput(reply);
   };
 
-  const handleSelectConversation = (id) => {
-    setActiveConversation(id);
+  const handleSelectConversation = (contactEmail) => {
+    setActiveConversation(contactEmail);
     setShowChat(true); // Show chat on mobile when conversation selected
   };
 
@@ -64,8 +66,18 @@ export default function MessagesPage() {
     setShowChat(false);
   };
 
+  // Set initial conversation if none selected
+  useEffect(() => {
+    if (
+      conversationsData?.conversations?.length > 0 &&
+      !activeConversation
+    ) {
+      setActiveConversation(conversationsData.conversations[0].id);
+    }
+  }, [conversationsData, activeConversation]);
+
   const activeConv = conversationsData?.conversations?.find(
-    (c) => c.id === activeConversation,
+    (c) => c.id === activeConversation
   );
 
   return (
@@ -166,7 +178,21 @@ export default function MessagesPage() {
 
           {/* Conversations List */}
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
-            {conversationsData?.conversations?.map((conversation, index) => (
+            {loadingConversations ? (
+              <div className="p-8 text-center">
+                <div className="w-8 h-8 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-[#64748B] font-manrope text-[13px]">
+                  Loading conversations...
+                </p>
+              </div>
+            ) : conversationsData?.conversations?.length === 0 ? (
+              <div className="p-8 text-center">
+                <p className="text-[#64748B] font-manrope text-[13px]">
+                  No conversations found
+                </p>
+              </div>
+            ) : (
+              conversationsData?.conversations?.map((conversation, index) => (
               <motion.button
                 key={conversation.id}
                 initial={{ opacity: 0, x: -10 }}
@@ -219,7 +245,8 @@ export default function MessagesPage() {
                   </p>
                 </div>
               </motion.button>
-            ))}
+            ))
+            )}
           </div>
         </div>
 
@@ -272,7 +299,16 @@ export default function MessagesPage() {
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-            {!messages || messages.length === 0 ? (
+            {loadingMessages ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <div className="w-10 h-10 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-3" />
+                  <p className="font-manrope text-[14px] text-[#64748B]">
+                    Loading messages...
+                  </p>
+                </div>
+              </div>
+            ) : !messages || messages.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <p className="font-manrope text-[14px] text-[#64748B]">
                   No messages yet. Start the conversation!

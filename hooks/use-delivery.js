@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deliveryAPI } from "@/lib/mock/delivery";
+import { vendorDeliveriesAPI } from "@/lib/api/vendor/deliveries";
 
 // Query keys
 export const DELIVERY_QUERY_KEYS = {
@@ -24,14 +24,26 @@ export function useDeliveryAssignments(filters = {}) {
       status,
       dateRange,
     }),
-    queryFn: () =>
-      deliveryAPI.getDeliveryAssignments({
+    queryFn: async () => {
+      const response = await vendorDeliveriesAPI.getDeliveries({
         page,
         limit,
         search,
         status,
         dateRange,
-      }),
+      });
+
+      // Transform backend response to match expected frontend structure
+      return {
+        assignments: response.items || [],
+        pagination: {
+          page,
+          limit,
+          total: response.totalCount || 0,
+          totalPages: Math.ceil((response.totalCount || 0) / limit),
+        },
+      };
+    },
     staleTime: 30 * 1000, // 30 seconds
     keepPreviousData: true,
   });
