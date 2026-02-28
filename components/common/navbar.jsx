@@ -208,14 +208,14 @@ export default function Navbar() {
                 </Link>
               )}
               <Link href="/cart">
-                <button className="relative p-2 text-gray-700">
+                <button className="relative p-2 cursor-pointer text-gray-700">
                   <CartIcon className="w-5 h-5" />
                   <CartBadge count={itemCount} />
                 </button>
               </Link>
               <button
                 onClick={() => setIsMenuOpen(true)}
-                className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                className="p-2 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors"
                 aria-label="Open menu"
               >
                 <Menu className="w-5 h-5" />
