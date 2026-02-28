@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/hooks/use-cart";
 import { useIsAuthenticated, useLogout } from "@/hooks/use-auth";
 import {
   Heart,
@@ -20,11 +19,9 @@ import {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { data: cart } = useCart();
   const { isAuthenticated, user, isLoading } = useIsAuthenticated();
   const logout = useLogout();
 
-  const itemCount = cart?.items?.length || 0;
   const displayName =
     user?.fullName ||
     `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
@@ -84,7 +81,13 @@ export default function Navbar() {
 
             {/* Desktop Right Actions */}
             <div className="hidden lg:flex items-center space-x-4">
-              {isAuthenticated ? (
+              {/* Show skeleton while auth state is loading */}
+              {isLoading ? (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 animate-pulse" />
+                  <div className="w-20 h-4 rounded bg-gray-100 animate-pulse" />
+                </div>
+              ) : isAuthenticated ? (
                 <>
                   <Link href="/dashboard/saved-items">
                     <button className="p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
@@ -95,7 +98,6 @@ export default function Navbar() {
                   <Link href="/cart">
                     <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
                       <CartIcon className="w-6 h-6" />
-                      <CartBadge count={itemCount} />
                     </button>
                   </Link>
 
@@ -179,7 +181,6 @@ export default function Navbar() {
                   <Link href="/cart">
                     <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
                       <CartIcon className="w-6 h-6" />
-                      <CartBadge count={itemCount} />
                     </button>
                   </Link>
                   <Link
@@ -200,7 +201,7 @@ export default function Navbar() {
 
             {/* Mobile Right Icons */}
             <div className="lg:hidden flex items-center gap-0.5">
-              {isAuthenticated && (
+              {!isLoading && isAuthenticated && (
                 <Link href="/dashboard/saved-items">
                   <button className="p-2 text-gray-700">
                     <Heart className="w-5 h-5" />
@@ -210,7 +211,6 @@ export default function Navbar() {
               <Link href="/cart">
                 <button className="relative p-2 cursor-pointer text-gray-700">
                   <CartIcon className="w-5 h-5" />
-                  <CartBadge count={itemCount} />
                 </button>
               </Link>
               <button
@@ -263,7 +263,7 @@ export default function Navbar() {
               {/* Scrollable Body */}
               <div className="flex-1 overflow-y-auto">
                 {/* User Profile Block */}
-                {isAuthenticated && user && (
+                {!isLoading && isAuthenticated && user && (
                   <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
                     <div className="flex items-center gap-3">
                       <Avatar
@@ -307,8 +307,8 @@ export default function Navbar() {
                   ))}
                 </div>
 
-                {/* Account Links */}
-                {isAuthenticated && (
+                {/* Account Links - only when authenticated */}
+                {!isLoading && isAuthenticated && (
                   <div className="py-3 px-3 border-t border-gray-100">
                     <p className="px-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
                       Account
@@ -343,7 +343,10 @@ export default function Navbar() {
 
               {/* Drawer Footer */}
               <div className="px-5 py-5 border-t border-gray-100 space-y-2.5 shrink-0">
-                {isAuthenticated ? (
+                {isLoading ? (
+                  // Skeleton while loading
+                  <div className="w-full h-12 rounded-xl bg-gray-100 animate-pulse" />
+                ) : isAuthenticated ? (
                   <button
                     onClick={handleLogout}
                     disabled={logout.isPending}
@@ -415,15 +418,6 @@ function CartIcon({ className = "w-6 h-6" }) {
     >
       <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
-  );
-}
-
-function CartBadge({ count }) {
-  if (!count || count === 0) return null;
-  return (
-    <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full">
-      {count > 9 ? "9+" : count}
-    </span>
   );
 }
 

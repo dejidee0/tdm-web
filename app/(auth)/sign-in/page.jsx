@@ -15,8 +15,8 @@ export default function SignInPage() {
 
   const formik = useFormik({
     initialValues: {
-      email: "Ifemicheal2@gmail.com",
-      password: "Nisotgreg0",
+      email: "aboderindaniel482@gmail.com",
+      password: "Password123@",
       rememberMe: true,
     },
     validationSchema: signInSchema,
@@ -56,7 +56,10 @@ export default function SignInPage() {
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm text-gray-600 mb-1.5">
+            <label
+              htmlFor="email"
+              className="block text-sm text-gray-600 mb-1.5"
+            >
               Email
             </label>
             <input
@@ -68,7 +71,9 @@ export default function SignInPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className={`w-full px-4 py-3 bg-white border ${
-                formik.errors.email && formik.touched.email ? "border-red-500" : "border-gray-200"
+                formik.errors.email && formik.touched.email
+                  ? "border-red-500"
+                  : "border-gray-200"
               } rounded-lg focus:outline-none focus:ring-2 placeholder:text-gray-300 text-primary focus:ring-blue-500 focus:border-transparent transition-all`}
             />
             {formik.errors.email && formik.touched.email && (
@@ -77,7 +82,10 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm text-gray-600 mb-1.5">
+            <label
+              htmlFor="password"
+              className="block text-sm text-gray-600 mb-1.5"
+            >
               Password
             </label>
             <div className="relative">
@@ -90,7 +98,9 @@ export default function SignInPage() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className={`w-full px-4 py-3 bg-white border ${
-                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-gray-200"
+                  formik.errors.password && formik.touched.password
+                    ? "border-red-500"
+                    : "border-gray-200"
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-300 text-primary transition-all pr-12`}
               />
               <button
@@ -106,12 +116,17 @@ export default function SignInPage() {
               </button>
             </div>
             {formik.errors.password && formik.touched.password && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </p>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer">
+            <label
+              htmlFor="rememberMe"
+              className="flex items-center gap-2 cursor-pointer"
+            >
               <input
                 id="rememberMe"
                 type="checkbox"
