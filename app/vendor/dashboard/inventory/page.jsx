@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -19,7 +19,7 @@ import InventoryStatsCards from "@/components/shared/vendor/dashboard/inventory/
 import InventoryProductsTable from "@/components/shared/vendor/dashboard/inventory/table";
 import AddProductModal from "@/components/shared/vendor/dashboard/add-product";
 
-export default function InventoryPage() {
+function InventoryContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [filters, setFilters] = useState({
@@ -371,5 +371,17 @@ export default function InventoryPage() {
         isLoading={addProduct.isPending}
       />
     </div>
+  );
+}
+
+export default function InventoryPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-8 h-8 border-4 border-[#273054] border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <InventoryContent />
+    </Suspense>
   );
 }
