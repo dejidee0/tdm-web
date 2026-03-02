@@ -1,26 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Search,
   SlidersHorizontal,
   Calendar,
   Package,
-  Download,
   Upload,
-  Plus,
   X,
 } from "lucide-react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useOrders, useCreateOrder } from "@/hooks/use-orders";
+import { useOrders, useImportOrders } from "@/hooks/use-orders";
 import OrdersTable from "@/components/shared/vendor/dashboard/table";
 import Pagination from "@/components/shared/vendor/dashboard/pagination";
-import CreateOrderModal from "@/components/shared/vendor/dashboard/create-order";
 
 export default function OrdersPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const [filters, setFilters] = useState({
     page: 1,
     limit: 5,
@@ -32,18 +26,9 @@ export default function OrdersPage() {
 
   const [searchInput, setSearchInput] = useState("");
   const [activeFilters, setActiveFilters] = useState([]);
-  const [isCreateOrderModalOpen, setIsCreateOrderModalOpen] = useState(false);
 
   const { data, isLoading } = useOrders(filters);
-  const createOrder = useCreateOrder();
-
-  // Auto-open modal based on URL query parameter
-  useEffect(() => {
-    const openParam = searchParams.get("open");
-    if (openParam === "create-order") {
-      setIsCreateOrderModalOpen(true);
-    }
-  }, [searchParams]);
+  const importOrders = useImportOrders();
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -95,20 +80,12 @@ export default function OrdersPage() {
     setFilters((prev) => ({ ...prev, page }));
   };
 
-  const handleCloseModal = () => {
-    setIsCreateOrderModalOpen(false);
-    // Remove query parameter from URL when closing modal
-    const currentPath = window.location.pathname;
-    router.replace(currentPath);
-  };
-
-  const handleCreateOrder = async (orderData) => {
-    try {
-      await createOrder.mutateAsync(orderData);
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error creating order:", error);
-      // Error will be handled by the mutation's error state
+  const handleImport = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      importOrders.mutate(file);
+      // Reset file input
+      e.target.value = '';
     }
   };
 
@@ -132,23 +109,24 @@ export default function OrdersPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              onClick={() => document.getElementById('import-orders-file')?.click()}
+              disabled={importOrders.isPending}
+              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Upload size={16} />
-              Import
+              {importOrders.isPending ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Upload size={16} />
+              )}
+              {importOrders.isPending ? "Importing..." : "Import"}
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                setIsCreateOrderModalOpen(true);
-                router.push("/vendor/dashboard/orders?open=create-order");
-              }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
-            >
-              <Plus size={16} />
-              Create Order
-            </motion.button>
+            <input
+              id="import-orders-file"
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              onChange={handleImport}
+              className="hidden"
+            />
           </div>
         </div>
       </div>
@@ -229,16 +207,6 @@ export default function OrdersPage() {
               <option value="e-commerce">E-commerce</option>
             </select>
           </div>
-
-          {/* Export Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors whitespace-nowrap"
-          >
-            <Download size={16} />
-            Export
-          </motion.button>
         </div>
       </motion.div>
 
@@ -293,15 +261,6 @@ export default function OrdersPage() {
           onPageChange={handlePageChange}
         />
       )}
-
-      {/* Create Order Modal */}
-      <CreateOrderModal
-        isOpen={isCreateOrderModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleCreateOrder}
-        isLoading={createOrder.isPending}
-        error={createOrder.error}
-      />
     </div>
   );
 }

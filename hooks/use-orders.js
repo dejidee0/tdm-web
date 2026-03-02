@@ -69,3 +69,33 @@ export function useCreateOrder() {
     },
   });
 }
+
+// Hook to export orders
+export function useExportOrders() {
+  return useMutation({
+    mutationFn: (filters) => vendorOrdersAPI.exportOrders(filters),
+    onSuccess: (data) => {
+      console.log('✅ Orders exported:', data?.filename);
+    },
+    onError: (error) => {
+      console.error('❌ Orders export failed:', error);
+    },
+  });
+}
+
+// Hook to import orders
+export function useImportOrders() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file) => vendorOrdersAPI.importOrders(file),
+    onSuccess: () => {
+      console.log('✅ Orders imported successfully');
+      // Invalidate orders list to refetch with imported orders
+      queryClient.invalidateQueries({ queryKey: ORDERS_QUERY_KEYS.all });
+    },
+    onError: (error) => {
+      console.error('❌ Orders import failed:', error);
+    },
+  });
+}

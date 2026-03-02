@@ -9,6 +9,8 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
     productName: "",
     sku: "",
     category: "",
+    brandType: "",
+    productType: "",
     description: "",
     warehouseLocation: "",
     initialQuantity: 0,
@@ -44,17 +46,38 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
     e.stopPropagation();
     setDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      // Handle file upload
-      console.log("Files dropped:", e.dataTransfer.files);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
     }
   };
 
   const handleFileSelect = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      // Handle file selection
-      console.log("Files selected:", e.target.files);
+    if (e.target.files && e.target.files.length > 0) {
+      handleFiles(e.target.files);
     }
+  };
+
+  const handleFiles = (files) => {
+    const fileArray = Array.from(files);
+    const imageFiles = fileArray.filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    // Create preview URLs for the images
+    const newImages = imageFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      name: file.name,
+    }));
+
+    handleChange("productImages", [...formData.productImages, ...newImages]);
+  };
+
+  const handleRemoveImage = (index) => {
+    const updatedImages = formData.productImages.filter((_, i) => i !== index);
+    // Revoke the URL to free up memory
+    URL.revokeObjectURL(formData.productImages[index].preview);
+    handleChange("productImages", updatedImages);
   };
 
   const handleSubmit = () => {
@@ -64,6 +87,8 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
       productName: "",
       sku: "",
       category: "",
+      brandType: "",
+      productType: "",
       description: "",
       warehouseLocation: "",
       initialQuantity: 0,
@@ -197,6 +222,41 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         </select>
                         <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Brand Type and Product Type Row */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    {/* Brand Type */}
+                    <div>
+                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                        Brand Type
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. TBM Premium"
+                        value={formData.brandType}
+                        onChange={(e) =>
+                          handleChange("brandType", e.target.value)
+                        }
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Product Type */}
+                    <div>
+                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                        Product Type
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Ceramic Tiles"
+                        value={formData.productType}
+                        onChange={(e) =>
+                          handleChange("productType", e.target.value)
+                        }
+                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                      />
                     </div>
                   </div>
 
@@ -363,6 +423,34 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </div>
                     </div>
                   </div>
+
+                  {/* Image Previews */}
+                  {formData.productImages.length > 0 && (
+                    <div className="mt-4 grid grid-cols-4 gap-3">
+                      {formData.productImages.map((image, index) => (
+                        <div
+                          key={index}
+                          className="relative group rounded-lg overflow-hidden border border-[#E5E7EB]"
+                        >
+                          <img
+                            src={image.preview}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-24 object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X size={14} />
+                          </button>
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] px-2 py-1 truncate">
+                            {image.name}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

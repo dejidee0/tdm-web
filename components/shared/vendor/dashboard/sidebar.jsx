@@ -4,39 +4,38 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  LayoutGrid,
-  ShoppingCart,
-  Package,
-  Truck,
-  MessageSquare,
-  Settings,
-} from "lucide-react";
+import { Settings } from "lucide-react";
+import dashboardIcon from "@/public/assets/svgs/vendor/sidebar/dashboard.svg";
+import ordersIcon from "@/public/assets/svgs/vendor/sidebar/orders.svg";
+import inventoryIcon from "@/public/assets/svgs/vendor/sidebar/inventory.svg";
+import deliveryIcon from "@/public/assets/svgs/vendor/sidebar/delivery.svg";
+import messagesIcon from "@/public/assets/svgs/vendor/sidebar/messages.svg";
+import notificationIcon from "@/public/assets/svgs/vendor/sidebar/notification.svg";
 
 const navItems = [
   {
     label: "Dashboard",
-    icon: LayoutGrid,
+    icon: dashboardIcon,
     href: "/vendor/dashboard",
   },
   {
     label: "Orders",
-    icon: ShoppingCart,
+    icon: ordersIcon,
     href: "/vendor/dashboard/orders",
   },
   {
     label: "Inventory",
-    icon: Package,
+    icon: inventoryIcon,
     href: "/vendor/dashboard/inventory",
   },
   {
     label: "Delivery",
-    icon: Truck,
+    icon: deliveryIcon,
     href: "/vendor/dashboard/delivery",
   },
   {
     label: "Messages",
-    icon: MessageSquare,
+    icon: messagesIcon,
     href: "/vendor/dashboard/messages",
     badge: 3,
   },
@@ -53,25 +52,39 @@ export default function VendorSidebar() {
     <div className="h-full flex flex-col">
       {/* Logo/Header */}
       <div className="p-6 border-b border-[#E5E7EB]">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
+              <Image
+                src="/logo.png" // change to your actual file name
+                alt="TBM Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div>
+              <h1 className="font-manrope font-bold text-[15px] text-primary">
+                TBM & Bogat
+              </h1>
+              <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
+                VENDOR PORTAL
+              </p>
+            </div>
+          </div>
+
+          {/* Notification Icon */}
+          <button className="relative p-2 hover:bg-[#F8FAFC] rounded-lg transition-colors">
             <Image
-              src="/logo.png" // change to your actual file name
-              alt="TBM Logo"
-              width={40}
-              height={40}
-              className="object-contain"
-              priority
+              src={notificationIcon}
+              alt="Notifications"
+              width={16}
+              height={16}
             />
-          </div>
-          <div>
-            <h1 className="font-manrope font-bold text-[15px] text-primary">
-              TBM & Bogat
-            </h1>
-            <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
-              VENDOR PORTAL
-            </p>
-          </div>
+            {/* Notification Badge */}
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#EF4444] rounded-full"></span>
+          </button>
         </div>
       </div>
 
@@ -80,7 +93,6 @@ export default function VendorSidebar() {
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = isActivePath(pathname, item.href);
-            const Icon = item.icon;
 
             return (
               <li key={item.href}>
@@ -98,7 +110,12 @@ export default function VendorSidebar() {
                       }
                     `}
                   >
-                    <Icon size={20} />
+                    <Image
+                      src={item.icon}
+                      alt={item.label}
+                      width={20}
+                      height={20}
+                    />
                     <span>{item.label}</span>
                     {item.badge && (
                       <motion.span
