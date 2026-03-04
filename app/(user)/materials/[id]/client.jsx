@@ -1,4 +1,3 @@
-// app/materials/[id]/client.jsx
 "use client";
 
 import { useState } from "react";
@@ -6,41 +5,65 @@ import { motion } from "framer-motion";
 import {
   Heart,
   Share2,
-  Star,
   ShoppingCart,
   CheckCircle,
+  XCircle,
   FolderPlus,
+  Package,
+  Tag,
+  Building2,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import { useAddToCart } from "@/hooks/use-cart";
 import { showToast } from "@/components/shared/toast";
 import Breadcrumb from "@/components/shared/materials/details/bread-crumb";
 import ImageGallery from "@/components/shared/materials/details/image-gallery";
-import QuantityCalculator from "@/components/shared/materials/details/quantity-calculator";
 import AIVisualizer from "@/components/shared/materials/details/visualizer";
 import ProjectCard from "@/components/shared/materials/details/card";
 import RatingsReviews from "@/components/shared/materials/details/reviews";
 import SimilarStyles from "@/components/shared/materials/details/similar";
 import ProductTabs from "@/components/shared/materials/details/tabs";
 
+const PLACEHOLDER =
+  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop";
+
 export default function MaterialDetailClient({
-  material = {},
-  similarMaterials = [],
+  product = {},
+  similarProducts = [],
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [quantity, setQuantity] = useState(200);
-  const router = useRouter();
+  const [quantity, setQuantity] = useState(1);
 
   const addToCart = useAddToCart();
 
+  // ── Normalise product shape from real API ─────────────────────────────────
+  const images = product.images?.length
+    ? product.images
+    : product.primaryImageUrl
+      ? [product.primaryImageUrl]
+      : [PLACEHOLDER];
+
+  const hasDiscount =
+    product.compareAtPrice && product.compareAtPrice > (product.price ?? 0);
+  const discountPct = hasDiscount
+    ? Math.round(
+        ((product.compareAtPrice - product.price) / product.compareAtPrice) *
+          100,
+      )
+    : 0;
+
+  const totalPrice = product.price != null ? product.price * quantity : null;
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleAddToCart = () => {
     addToCart.mutate(
-      { productId: material.id, quantity },
+      { product, quantity },
       {
         onSuccess: (data) => {
           showToast.success({
             title: "Added to Cart",
-            message: data.message || `${quantity} sq ft added successfully.`,
+            message: data.message || `${quantity}x added successfully.`,
           });
         },
         onError: (error) => {
@@ -57,8 +80,8 @@ export default function MaterialDetailClient({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: material?.name || "Product",
-          text: material?.description || "",
+          title: product?.name || "Product",
+          text: product?.shortDescription || product?.description || "",
           url: window.location.href,
         });
       } catch (error) {
@@ -88,24 +111,31 @@ export default function MaterialDetailClient({
   const toggleFavorite = () => {
     setIsFavorite((prev) => {
       const next = !prev;
-      if (next) {
+      if (next)
         showToast.success({
           title: "Saved",
           message: "Added to your saved items.",
         });
-      } else {
+      else
         showToast.info({
           title: "Removed",
           message: "Removed from your saved items.",
         });
-      }
       return next;
     });
   };
 
-  const boxSize = material?.boxSize || 10;
-  const boxes = Math.ceil(quantity / boxSize);
-  const totalPrice = quantity * (material?.pricePerSqFt || 0);
+  // ── Normalise similar products for SimilarStyles component ───────────────
+  const normalisedSimilar = similarProducts.map((p) => ({
+    id: p.id,
+    name: p.name,
+    subtitle: p.categoryName,
+    price: p.price,
+    priceDisplay: p.priceDisplay,
+    image: p.primaryImageUrl || p.images?.[0] || PLACEHOLDER,
+    inStock: p.inStock,
+    slug: p.slug,
+  }));
 
   return (
     <div className="min-h-screen bg-gray-50 font-manrope pt-20">
@@ -115,29 +145,52 @@ export default function MaterialDetailClient({
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "Materials", href: "/flooring" },
-              { label: material?.category || "Product", href: "#" },
+              { label: "Materials", href: "/materials" },
+              {
+                label: product?.categoryName || "Product",
+                href: `/materials?category=${product?.categoryId}`,
+              },
+              { label: product?.name || "Product", href: "#" },
             ]}
           />
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Column - Image Gallery */}
+          {/* Left — Image Gallery */}
           <ImageGallery
-            images={material?.images || []}
-            productName={material?.name || "Product"}
+            images={images}
+            productName={product?.name || "Product"}
           />
 
-          {/* Right Column - Product Details */}
+          {/* Right — Product Details */}
           <div className="w-full max-w-full overflow-hidden">
             <div className="space-y-6">
-              {/* Title & Favorite */}
+              {/* Badges row */}
+              <div className="flex flex-wrap gap-2">
+                {product.isFeatured && (
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary text-white">
+                    Featured
+                  </span>
+                )}
+                {hasDiscount && (
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500 text-white">
+                    -{discountPct}% OFF
+                  </span>
+                )}
+                {product.productTypeName === "Service" && (
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-600 text-white">
+                    Service
+                  </span>
+                )}
+              </div>
+
+              {/* Title & Favourite */}
               <div className="flex items-start justify-between gap-4">
                 <h1 className="text-3xl font-semibold text-primary leading-tight flex-1 min-w-0">
-                  {material?.name || "Product Name"}
+                  {product?.name || "Product Name"}
                 </h1>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
@@ -146,77 +199,131 @@ export default function MaterialDetailClient({
                   className="shrink-0 w-10 h-10 flex items-center justify-center hover:border-primary transition-colors"
                 >
                   <Heart
-                    className={`w-5 h-5 ${
-                      isFavorite ? "fill-primary text-primary" : "text-primary"
-                    }`}
+                    className={`w-5 h-5 ${isFavorite ? "fill-primary text-primary" : "text-primary"}`}
                   />
                 </motion.button>
               </div>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < Math.floor(material?.rating || 4.8)
-                          ? "fill-primary text-primary"
-                          : "fill-gray-200 text-gray-200"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-gray-600">
-                  {material?.reviewCount || 42} reviews
-                </span>
+              {/* Meta row — brand, category, SKU */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+                {product.brandName && (
+                  <span className="flex items-center gap-1">
+                    <Building2 className="w-3.5 h-3.5" />
+                    {product.brandName}
+                  </span>
+                )}
+                {product.categoryName && (
+                  <span className="flex items-center gap-1">
+                    <Tag className="w-3.5 h-3.5" />
+                    {product.categoryName}
+                  </span>
+                )}
+                {product.sku && product.sku !== "null" && (
+                  <span className="flex items-center gap-1">
+                    <Package className="w-3.5 h-3.5" />
+                    SKU: {product.sku}
+                  </span>
+                )}
               </div>
 
               {/* Price */}
               <div className="space-y-1">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-gray-900">
-                    ${material?.pricePerSqFt?.toFixed(2) || "8.50"}
+                {product.showPrice ? (
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-bold text-gray-900">
+                      {product.priceDisplay}
+                    </span>
+                    {hasDiscount && (
+                      <span className="text-base text-gray-400 line-through">
+                        ₦{product.compareAtPrice?.toLocaleString()}.00
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <span className="text-xl font-semibold text-primary">
+                    Request Price
                   </span>
-                  <span className="text-base text-gray-500">/ sq. ft</span>
-                </div>
-                <p className="text-sm text-gray-800">
-                  Sold in boxes of {boxSize} sq ft (
-                  {material?.boxSizeImperial || "900 BF / box"})
-                </p>
+                )}
               </div>
 
               {/* Stock Status */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
-                <CheckCircle className="text-primary w-5 h-5" />
-                <span className="text-sm font-medium text-primary">
-                  In Stock &amp; Ready to Ship
-                </span>
+                {product.inStock ? (
+                  <>
+                    <CheckCircle className="text-primary w-5 h-5" />
+                    <span className="text-sm font-medium text-primary">
+                      {product.trackInventory && product.stockQuantity != null
+                        ? `${product.stockQuantity} units in stock`
+                        : "In Stock & Ready to Ship"}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="text-red-500 w-5 h-5" />
+                    <span className="text-sm font-medium text-red-600">
+                      Out of Stock
+                    </span>
+                  </>
+                )}
               </div>
 
-              {/* Quantity Calculator */}
-              <div className="w-full">
-                <QuantityCalculator
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                  boxes={boxes}
-                  totalPrice={totalPrice}
-                />
-              </div>
+              {/* Quantity Selector */}
+              {product.showPrice && product.inStock && (
+                <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-medium text-gray-700">Quantity</p>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg font-medium"
+                      >
+                        −
+                      </button>
+                      <span className="w-12 text-center text-gray-900 font-semibold">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          setQuantity((q) =>
+                            product.stockQuantity
+                              ? Math.min(product.stockQuantity, q + 1)
+                              : q + 1,
+                          )
+                        }
+                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg font-medium"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {totalPrice != null && (
+                      <div className="text-sm text-gray-600">
+                        Total:{" "}
+                        <span className="font-semibold text-gray-900">
+                          ₦{totalPrice.toLocaleString()}.00
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
-              {/* Add to Cart Button */}
+              {/* Add to Cart */}
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleAddToCart}
-                disabled={addToCart.isPending}
+                disabled={addToCart.isPending || !product.inStock}
                 className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-5 h-5" />
-                {addToCart.isPending ? "Adding..." : "Add to Cart"}
+                {addToCart.isPending
+                  ? "Adding..."
+                  : product.inStock
+                    ? "Add to Cart"
+                    : "Out of Stock"}
               </motion.button>
 
-              {/* Share Button */}
+              {/* Share */}
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
@@ -224,7 +331,7 @@ export default function MaterialDetailClient({
                 className="w-full py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
               >
                 <Share2 className="w-4 h-4" />
-                Share Project
+                Share Product
               </motion.button>
 
               {/* AI Visualizer */}
@@ -244,30 +351,24 @@ export default function MaterialDetailClient({
           </div>
         </div>
 
-        {/* Product Information Tabs */}
+        {/* Product Tabs — description, specs, etc. */}
         <div className="mb-12">
-          <ProductTabs material={material} />
+          <ProductTabs material={product} />
         </div>
 
         {/* Ratings & Reviews */}
         <div className="mb-12">
           <RatingsReviews
-            averageRating={material?.rating || 4.8}
-            totalReviews={material?.reviewCount || 42}
+            averageRating={product?.rating || 4.5}
+            totalReviews={product?.reviewCount || 0}
             ratingDistribution={
-              material?.ratingDistribution || {
-                5: 78,
-                4: 15,
-                3: 5,
-                2: 2,
-                1: 0,
-              }
+              product?.ratingDistribution || { 5: 60, 4: 25, 3: 10, 2: 3, 1: 2 }
             }
           />
         </div>
 
-        {/* Similar Styles */}
-        <SimilarStyles materials={similarMaterials} />
+        {/* Similar Products */}
+        <SimilarStyles materials={normalisedSimilar} />
       </div>
     </div>
   );

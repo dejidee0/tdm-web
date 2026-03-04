@@ -4,7 +4,6 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-
 import { useCart } from "@/hooks/use-cart";
 import DeliveryEstimate from "@/components/shared/cart/delivery-estimate";
 import CartItemsList from "@/components/shared/cart/items-list";
@@ -13,6 +12,8 @@ import RelatedProducts from "@/components/shared/cart/related";
 
 export default function CartPage() {
   const { data: cart, isLoading } = useCart();
+
+  const itemCount = cart?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] pt-20">
@@ -48,7 +49,7 @@ export default function CartPage() {
             <p className="text-[15px] text-[#666666] mt-1">
               {isLoading
                 ? "Loading..."
-                : `${cart?.items?.length || 0} item${cart?.items?.length !== 1 ? "s" : ""} ready for secure checkout`}
+                : `${itemCount} item${itemCount !== 1 ? "s" : ""} ready for secure checkout`}
             </p>
           </div>
 
@@ -62,19 +63,16 @@ export default function CartPage() {
 
         {/* Cart Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 lg:gap-8">
-          {/* Left Column - Cart Items */}
           <div className="space-y-6">
             <CartItemsList cart={cart} isLoading={isLoading} />
             <DeliveryEstimate estimate={cart?.estimatedDelivery} />
           </div>
 
-          {/* Right Column - Order Summary */}
           <div className="lg:sticky lg:top-6 h-fit">
             <OrderSummary cart={cart} isLoading={isLoading} />
           </div>
         </div>
 
-        {/* Related Products */}
         <RelatedProducts />
       </div>
     </div>

@@ -7,7 +7,13 @@ import DesignCard from "./card";
 import CreateNewCard from "./create-new-card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function DesignsGrid({ designs, isLoading, isError, view }) {
+export default function DesignsGrid({
+  designs,
+  isLoading,
+  isError,
+  view,
+  onOpenModal,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 7 designs + 1 create new card
 
@@ -43,7 +49,7 @@ export default function DesignsGrid({ designs, isLoading, isError, view }) {
           Start creating AI-generated visualizations for your projects
         </p>
         <div className="max-w-sm mx-auto">
-          <CreateNewCard />
+          <CreateNewCard onOpenModal={onOpenModal} />
         </div>
       </motion.div>
     );
@@ -56,7 +62,6 @@ export default function DesignsGrid({ designs, isLoading, isError, view }) {
 
   // Add Create New card at the END of all designs
   const displayItems = [...designs, { id: "create-new", isCreateNew: true }];
-
   const currentItems = displayItems.slice(startIndex, endIndex);
 
   return (
@@ -71,7 +76,11 @@ export default function DesignsGrid({ designs, isLoading, isError, view }) {
             <AnimatePresence mode="popLayout">
               {currentItems.map((item, index) =>
                 item.isCreateNew ? (
-                  <CreateNewCard key="create-new" index={index} />
+                  <CreateNewCard
+                    key="create-new"
+                    index={index}
+                    onOpenModal={onOpenModal}
+                  />
                 ) : (
                   <DesignCard key={item.id} design={item} index={index} />
                 ),
@@ -83,7 +92,12 @@ export default function DesignsGrid({ designs, isLoading, isError, view }) {
             <AnimatePresence mode="popLayout">
               {currentItems.map((item, index) =>
                 item.isCreateNew ? (
-                  <CreateNewCard key="create-new" index={index} isList />
+                  <CreateNewCard
+                    key="create-new"
+                    index={index}
+                    isList
+                    onOpenModal={onOpenModal}
+                  />
                 ) : (
                   <DesignCard
                     key={item.id}

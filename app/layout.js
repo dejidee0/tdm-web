@@ -1,4 +1,4 @@
-import { Inter, Manrope, Titillium_Web } from "next/font/google";
+import { Inter, Manrope, Poppins, Titillium_Web } from "next/font/google";
 import "./globals.css";
 
 import Providers from "@/components/common/providers";
@@ -19,6 +19,12 @@ const manRope = Manrope({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "TDM ",
@@ -29,7 +35,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${titilum.variable} ${inter.variable} ${manRope.variable} antialiased`}
+        className={`${titilum.variable} ${inter.variable} ${manRope.variable} ${poppins.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/hooks/use-cart";
 import { useIsAuthenticated, useLogout } from "@/hooks/use-auth";
+import { useCartCount } from "@/hooks/use-cart";
 import {
   Heart,
   ChevronDown,
@@ -13,18 +13,16 @@ import {
   Menu,
   LogOut,
   User,
-  Package,
-  Settings,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { data: cart } = useCart();
   const { isAuthenticated, user, isLoading } = useIsAuthenticated();
   const logout = useLogout();
+  const cartCount = useCartCount();
 
-  const itemCount = cart?.items?.length || 0;
   const displayName =
     user?.fullName ||
     `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
@@ -84,7 +82,12 @@ export default function Navbar() {
 
             {/* Desktop Right Actions */}
             <div className="hidden lg:flex items-center space-x-4">
-              {isAuthenticated ? (
+              {isLoading ? (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 animate-pulse" />
+                  <div className="w-20 h-4 rounded bg-gray-100 animate-pulse" />
+                </div>
+              ) : isAuthenticated ? (
                 <>
                   <Link href="/dashboard/saved-items">
                     <button className="p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
@@ -95,7 +98,7 @@ export default function Navbar() {
                   <Link href="/cart">
                     <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
                       <CartIcon className="w-6 h-6" />
-                      <CartBadge count={itemCount} />
+                      <CartBadge count={cartCount} />
                     </button>
                   </Link>
 
@@ -121,55 +124,68 @@ export default function Navbar() {
 
                     <AnimatePresence>
                       {isProfileOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -8, scale: 0.97 }}
-                          transition={{ duration: 0.15 }}
-                          className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden"
-                        >
-                          <div className="px-4 py-3 border-b border-gray-100">
-                            <p className="text-sm font-semibold text-gray-900 truncate">
-                              {displayName}
-                            </p>
-                            <p className="text-xs text-gray-500 truncate mt-0.5">
-                              {user?.email}
-                            </p>
-                          </div>
-                          <DropdownLink
-                            href="/dashboard"
-                            icon={<User className="w-4 h-4" />}
-                            label="My Profile"
+                        <>
+                          {/* Click-outside backdrop */}
+                          <div
+                            className="fixed inset-0 z-40"
                             onClick={() => setIsProfileOpen(false)}
                           />
-                          <DropdownLink
-                            href="/dashboard/orders"
-                            icon={<Package className="w-4 h-4" />}
-                            label="Orders"
-                            onClick={() => setIsProfileOpen(false)}
-                          />
-                          <DropdownLink
-                            href="/dashboard/saved-items"
-                            icon={<Heart className="w-4 h-4" />}
-                            label="Saved Items"
-                            onClick={() => setIsProfileOpen(false)}
-                          />
-                          <DropdownLink
-                            href="/dashboard/settings"
-                            icon={<Settings className="w-4 h-4" />}
-                            label="Settings"
-                            onClick={() => setIsProfileOpen(false)}
-                          />
-                          <hr className="my-2 border-gray-100" />
-                          <button
-                            onClick={handleLogout}
-                            disabled={logout.isPending}
-                            className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                          <motion.div
+                            initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute right-0 mt-2 w-64 bg-[#f0f2f5] rounded-2xl shadow-xl overflow-hidden z-50"
                           >
-                            <LogOut className="w-4 h-4" />
-                            {logout.isPending ? "Logging out..." : "Logout"}
-                          </button>
-                        </motion.div>
+                            {/* Profile */}
+                            <Link
+                              href="/dashboard"
+                              onClick={() => setIsProfileOpen(false)}
+                              className="flex items-center gap-4 px-5 py-[18px] hover:bg-black/5 transition-colors"
+                            >
+                              <User
+                                className="w-7 h-7 text-gray-900 shrink-0"
+                                strokeWidth={1.8}
+                              />
+                              <span className="text-[17px] font-semibold text-gray-900">
+                                Profile
+                              </span>
+                            </Link>
+
+                            {/* Pro Dashboard */}
+                            <Link
+                              href="/dashboard"
+                              onClick={() => setIsProfileOpen(false)}
+                              className="flex items-center gap-4 px-5 py-[18px] hover:bg-black/5 transition-colors"
+                            >
+                              <LayoutDashboard
+                                className="w-7 h-7 text-gray-900 shrink-0"
+                                strokeWidth={1.8}
+                              />
+                              <span className="text-[17px] font-semibold text-gray-900">
+                                Pro Dashboard
+                              </span>
+                            </Link>
+
+                            {/* Divider */}
+                            <hr className="border-gray-300/70" />
+
+                            {/* Logout */}
+                            <button
+                              onClick={handleLogout}
+                              disabled={logout.isPending}
+                              className="flex items-center gap-4 w-full px-5 py-[18px] hover:bg-black/5 transition-colors disabled:opacity-50"
+                            >
+                              <LogOut
+                                className="w-7 h-7 text-gray-900 shrink-0"
+                                strokeWidth={1.8}
+                              />
+                              <span className="text-[17px] font-semibold text-gray-900">
+                                {logout.isPending ? "Logging out..." : "Logout"}
+                              </span>
+                            </button>
+                          </motion.div>
+                        </>
                       )}
                     </AnimatePresence>
                   </div>
@@ -179,7 +195,7 @@ export default function Navbar() {
                   <Link href="/cart">
                     <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
                       <CartIcon className="w-6 h-6" />
-                      <CartBadge count={itemCount} />
+                      <CartBadge count={cartCount} />
                     </button>
                   </Link>
                   <Link
@@ -200,7 +216,7 @@ export default function Navbar() {
 
             {/* Mobile Right Icons */}
             <div className="lg:hidden flex items-center gap-0.5">
-              {isAuthenticated && (
+              {!isLoading && isAuthenticated && (
                 <Link href="/dashboard/saved-items">
                   <button className="p-2 text-gray-700">
                     <Heart className="w-5 h-5" />
@@ -208,14 +224,14 @@ export default function Navbar() {
                 </Link>
               )}
               <Link href="/cart">
-                <button className="relative p-2 text-gray-700">
+                <button className="relative p-2 cursor-pointer text-gray-700">
                   <CartIcon className="w-5 h-5" />
-                  <CartBadge count={itemCount} />
+                  <CartBadge count={cartCount} />
                 </button>
               </Link>
               <button
                 onClick={() => setIsMenuOpen(true)}
-                className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                className="p-2 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors"
                 aria-label="Open menu"
               >
                 <Menu className="w-5 h-5" />
@@ -229,7 +245,6 @@ export default function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -239,7 +254,6 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             />
 
-            {/* Drawer */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -247,7 +261,6 @@ export default function Navbar() {
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
               className="fixed top-0 right-0 bottom-0 z-60 w-[78vw] max-w-[320px] bg-white shadow-2xl lg:hidden flex flex-col"
             >
-              {/* Header */}
               <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100 shrink-0">
                 <span className="text-sm font-semibold text-gray-900">
                   Menu
@@ -260,10 +273,8 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Scrollable Body */}
               <div className="flex-1 overflow-y-auto">
-                {/* User Profile Block */}
-                {isAuthenticated && user && (
+                {!isLoading && isAuthenticated && user && (
                   <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
                     <div className="flex items-center gap-3">
                       <Avatar
@@ -284,7 +295,6 @@ export default function Navbar() {
                   </div>
                 )}
 
-                {/* Main Nav Links */}
                 <div className="py-3 px-3">
                   <p className="px-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
                     Navigate
@@ -307,8 +317,7 @@ export default function Navbar() {
                   ))}
                 </div>
 
-                {/* Account Links */}
-                {isAuthenticated && (
+                {!isLoading && isAuthenticated && (
                   <div className="py-3 px-3 border-t border-gray-100">
                     <p className="px-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
                       Account
@@ -316,34 +325,23 @@ export default function Navbar() {
                     <MobileLink
                       href="/dashboard"
                       icon={<User className="w-4 h-4" />}
-                      label="My Profile"
+                      label="Profile"
                       onClick={() => setIsMenuOpen(false)}
                     />
                     <MobileLink
-                      href="/dashboard/orders"
-                      icon={<Package className="w-4 h-4" />}
-                      label="Orders"
-                      onClick={() => setIsMenuOpen(false)}
-                    />
-                    <MobileLink
-                      href="/dashboard/saved-items"
-                      icon={<Heart className="w-4 h-4" />}
-                      label="Saved Items"
-                      onClick={() => setIsMenuOpen(false)}
-                    />
-                    <MobileLink
-                      href="/dashboard/settings"
-                      icon={<Settings className="w-4 h-4" />}
-                      label="Settings"
+                      href="/dashboard"
+                      icon={<LayoutDashboard className="w-4 h-4" />}
+                      label="Pro Dashboard"
                       onClick={() => setIsMenuOpen(false)}
                     />
                   </div>
                 )}
               </div>
 
-              {/* Drawer Footer */}
               <div className="px-5 py-5 border-t border-gray-100 space-y-2.5 shrink-0">
-                {isAuthenticated ? (
+                {isLoading ? (
+                  <div className="w-full h-12 rounded-xl bg-gray-100 animate-pulse" />
+                ) : isAuthenticated ? (
                   <button
                     onClick={handleLogout}
                     disabled={logout.isPending}
@@ -381,6 +379,24 @@ export default function Navbar() {
 
 /* ── Sub-components ── */
 
+function CartBadge({ count }) {
+  if (!count || count === 0) return null;
+  return (
+    <AnimatePresence>
+      <motion.span
+        key={count}
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.5, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 leading-none"
+      >
+        {count > 99 ? "99+" : count}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
+
 function Avatar({ initial, avatar, name, size = 10 }) {
   const sizeClass = `w-${size} h-${size}`;
   return (
@@ -415,28 +431,6 @@ function CartIcon({ className = "w-6 h-6" }) {
     >
       <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
-  );
-}
-
-function CartBadge({ count }) {
-  if (!count || count === 0) return null;
-  return (
-    <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full">
-      {count > 9 ? "9+" : count}
-    </span>
-  );
-}
-
-function DropdownLink({ href, icon, label, onClick }) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-    >
-      <span className="text-gray-400">{icon}</span>
-      {label}
-    </Link>
   );
 }
 

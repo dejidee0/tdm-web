@@ -10,16 +10,18 @@ import Link from "next/link";
 export default function OrderSummary({ cart, isLoading }) {
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(null);
+  const [promoError, setPromoError] = useState("");
   const applyPromo = useApplyPromoCode();
 
   const handleApplyPromo = () => {
+    setPromoError("");
     applyPromo.mutate(promoCode, {
       onSuccess: (data) => {
         setAppliedPromo(data);
         setPromoCode("");
       },
       onError: () => {
-        alert("Invalid promo code");
+        setPromoError("Invalid promo code. Try SAVE10, FIRST20, or FLAT50.");
       },
     });
   };
@@ -31,9 +33,9 @@ export default function OrderSummary({ cart, isLoading }) {
           <div className="h-6 bg-gray-200 rounded w-1/2" />
           <div className="h-12 bg-gray-200 rounded" />
           <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded" />
-            <div className="h-4 bg-gray-200 rounded" />
-            <div className="h-4 bg-gray-200 rounded" />
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-4 bg-gray-200 rounded" />
+            ))}
           </div>
           <div className="h-12 bg-gray-200 rounded" />
         </div>
@@ -41,14 +43,22 @@ export default function OrderSummary({ cart, isLoading }) {
     );
   }
 
-  const subtotal = cart?.subtotal || 0;
-  const shipping = cart?.shipping || 0;
+  const subtotal = cart?.subtotal ?? 0;
+  const shipping = cart?.shipping ?? 0;
+  const taxRate = cart?.taxRate ?? 0.0875;
+
   const discount = appliedPromo
     ? appliedPromo.type === "percentage"
       ? subtotal * appliedPromo.discount
       : appliedPromo.discount
     : 0;
-  const total = subtotal + shipping - discount;
+
+  const discountedSubtotal = Math.max(0, subtotal - discount);
+  const tax = discountedSubtotal * taxRate;
+  const total = discountedSubtotal + shipping + tax;
+
+  const fmt = (n) =>
+    `₦${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   return (
     <motion.div
@@ -65,7 +75,13 @@ export default function OrderSummary({ cart, isLoading }) {
           <input
             type="text"
             value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+            onChange={(e) => {
+              setPromoCode(e.target.value.toUpperCase());
+              setPromoError("");
+            }}
+            onKeyDown={(e) =>
+              e.key === "Enter" && promoCode && handleApplyPromo()
+            }
             placeholder="Promo code"
             className="flex-1 px-4 py-2.5 bg-[#f8f8f8] border border-transparent rounded-lg text-[14px] focus:outline-none focus:border-[#3b82f6] focus:bg-white"
           />
@@ -74,14 +90,17 @@ export default function OrderSummary({ cart, isLoading }) {
             disabled={!promoCode || applyPromo.isPending}
             className="px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Apply
+            {applyPromo.isPending ? "…" : "Apply"}
           </button>
         </div>
         {appliedPromo && (
           <div className="mt-2 flex items-center gap-2 text-[13px] text-[#16a34a]">
             <CheckCircle className="w-4 h-4" />
-            <span>Promo code "{appliedPromo.code}" applied!</span>
+            <span>Code &quot;{appliedPromo.code}&quot; applied!</span>
           </div>
+        )}
+        {promoError && (
+          <p className="mt-2 text-[13px] text-[#ef4444]">{promoError}</p>
         )}
       </div>
 
@@ -89,32 +108,30 @@ export default function OrderSummary({ cart, isLoading }) {
       <div className="space-y-3 py-4 border-y border-[#e5e5e5]">
         <div className="flex justify-between text-[14px]">
           <span className="text-[#666666]">Subtotal</span>
-          <span className="font-medium text-primary">
-            ${subtotal.toFixed(2)}
-          </span>
+          <span className="font-medium text-primary">{fmt(subtotal)}</span>
         </div>
 
         <div className="flex justify-between text-[14px]">
           <span className="text-[#666666]">Shipping</span>
           <span className="font-medium text-[#16a34a]">
-            {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+            {shipping === 0 ? "Free" : fmt(shipping)}
           </span>
         </div>
 
         {discount > 0 && (
           <div className="flex justify-between text-[14px]">
-            <span className="text-[#666666]">Discount</span>
-            <span className="font-medium text-[#ef4444]">
-              -${discount.toFixed(2)}
+            <span className="text-[#666666]">
+              Discount ({appliedPromo.code})
             </span>
+            <span className="font-medium text-[#ef4444]">-{fmt(discount)}</span>
           </div>
         )}
 
         <div className="flex justify-between text-[14px]">
-          <span className="text-[#666666]">Tax Estimate</span>
-          <span className="text-[#666666] text-[13px]">
-            Calculated at checkout
+          <span className="text-[#666666]">
+            Tax ({(taxRate * 100).toFixed(2)}%)
           </span>
+          <span className="font-medium text-primary">{fmt(tax)}</span>
         </div>
       </div>
 
@@ -122,10 +139,8 @@ export default function OrderSummary({ cart, isLoading }) {
       <div className="flex justify-between items-baseline">
         <span className="text-[16px] font-semibold text-primary">Total</span>
         <div className="text-right">
-          <p className="text-[28px] font-bold text-primary">
-            ${total.toFixed(2)}
-          </p>
-          <p className="text-[12px] text-[#999999]">USD</p>
+          <p className="text-[28px] font-bold text-primary">{fmt(total)}</p>
+          <p className="text-[12px] text-[#999999]">NGN</p>
         </div>
       </div>
 
@@ -162,7 +177,6 @@ export default function OrderSummary({ cart, isLoading }) {
         </div>
       </div>
 
-      {/* Support Link */}
       <p className="text-[13px] text-center text-[#666666] pt-2">
         Need help?{" "}
         <Link

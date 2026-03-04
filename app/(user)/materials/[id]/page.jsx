@@ -1,81 +1,114 @@
-// app/materials/[id]/page.jsx
 import { notFound } from "next/navigation";
 import MaterialDetailClient from "./client";
-import { getProductById, getSimilarProducts } from "@/lib/data/products";
 
-async function getMaterial(id) {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  return getProductById(id);
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+
+// ─── Server-side fetchers ──────────────────────────────────────────────────────
+async function getProduct(id) {
+  try {
+    const res = await fetch(`${BASE_URL}/v1/Products/${id}`, {
+      next: { revalidate: 120 },
+      headers: {
+        "Content-Type": "application/json",
+        ...(process.env.API_KEY
+          ? { Authorization: `Bearer ${process.env.API_KEY}` }
+          : {}),
+      },
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data ?? json;
+  } catch {
+    return null;
+  }
 }
 
-async function getSimilarMaterialsData(categoryId, excludeId) {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return getSimilarProducts(categoryId, excludeId, 8).map((p) => ({
-    id: p.id,
-    name: p.name,
-    subtitle: p.materialType,
-    price: p.pricePerSqFt,
-    image: p.images[0],
-    rating: p.rating,
-    inStock: p.inStock,
-  }));
+async function getSimilarProducts(categoryId, excludeId) {
+  if (!categoryId) return [];
+  try {
+    const params = new URLSearchParams({
+      categoryId,
+      pageSize: "8",
+      ActiveOnly: "true",
+    });
+    const res = await fetch(`${BASE_URL}/v1/products?${params.toString()}`, {
+      next: { revalidate: 300 },
+      headers: {
+        "Content-Type": "application/json",
+        ...(process.env.API_KEY
+          ? { Authorization: `Bearer ${process.env.API_KEY}` }
+          : {}),
+      },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json.data?.items ?? []).filter((p) => p.id !== excludeId);
+  } catch {
+    return [];
+  }
 }
 
+// ─── SEO Metadata ─────────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const material = await getMaterial(resolvedParams.id);
+  const { id } = await params;
+  const product = await getProduct(id);
 
-  if (!material) {
+  if (!product) {
     return {
-      title: "Material Not Found",
+      title: "Material Not Found | TDM",
+      description: "The requested material could not be found.",
     };
   }
 
+  const imageUrl =
+    product.primaryImageUrl || product.images?.[0] || "/og-product.jpg";
+  const description =
+    product.shortDescription ||
+    product.description ||
+    `${product.name} — ${product.priceDisplay ?? "Request Price"}. ${product.inStock ? "In stock and ready to ship." : ""}`;
+
   return {
-    title: `${material.name} - ${material.size} | TBM Flooring`,
-    description:
-      material.description ||
-      `${material.name} - Premium quality flooring material. $${material.pricePerSqFt} per sq ft. In stock and ready to ship.`,
+    title: `${product.name} | TDM – Building & Construction`,
+    description,
+    keywords:
+      product.tags ||
+      `${product.categoryName}, ${product.brandName}, building materials`,
     openGraph: {
-      title: material.name,
-      description: material.description,
-      images: [
-        {
-          url: material.images?.[0] || "/placeholder-material.jpg",
-          width: 1200,
-          height: 630,
-          alt: material.name,
-        },
-      ],
+      title: product.name,
+      description,
+      type: "website",
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: product.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: `/materials/${product.slug || id}`,
     },
   };
 }
 
-export async function generateStaticParams() {
-  // Return IDs for static generation
-  return ["1", "2", "3", "4", "5", "6"].map((id) => ({ id }));
-}
-
+// ─── Page Component ───────────────────────────────────────────────────────────
 export default async function MaterialDetailPage({ params }) {
-  const resolvedParams = await params;
-  const material = await getMaterial(resolvedParams.id);
+  const { id } = await params;
 
-  if (!material) {
+  const product = await getProduct(id);
+
+  if (!product) {
     notFound();
   }
 
-  const similarMaterials = await getSimilarMaterialsData(
-    material.categoryId,
-    resolvedParams.id,
+  const similarProducts = await getSimilarProducts(
+    product.categoryId,
+    product.id,
   );
 
   return (
-    <MaterialDetailClient
-      material={material}
-      similarMaterials={similarMaterials}
-    />
+    <MaterialDetailClient product={product} similarProducts={similarProducts} />
   );
 }

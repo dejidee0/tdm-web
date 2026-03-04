@@ -20,14 +20,16 @@ Complete API specification for the TDM Admin Dashboard.
 **Authentication:** All endpoints require admin authentication via Bearer token
 
 **Headers:**
+
 ```json
 {
-  "Authorization": "Bearer {access_token}",
+  "Authorization": "Bearer {authToken}",
   "Content-Type": "application/json"
 }
 ```
 
 **Error Response Format:**
+
 ```json
 {
   "success": false,
@@ -48,6 +50,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/auth/login`
 
 **Request Payload:**
+
 ```json
 {
   "email": "admin@tbm-bogat.com",
@@ -57,6 +60,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -80,6 +84,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/auth/refresh`
 
 **Request Payload:**
+
 ```json
 {
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -87,6 +92,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -102,6 +108,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/auth/logout`
 
 **Request Payload:**
+
 ```json
 {
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -109,6 +116,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -125,9 +133,11 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/settings`
 
 **Query Parameters:**
+
 - `category` (optional): `payment`, `ai`, `notifications`, `general`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -148,7 +158,7 @@ Complete API specification for the TDM Admin Dashboard.
       ],
       "fees": {
         "basePlatformFee": 2.5,
-        "fixedFeePerTransaction": 0.30,
+        "fixedFeePerTransaction": 0.3,
         "defaultCurrency": "USD"
       }
     },
@@ -199,11 +209,12 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PUT /admin/settings/payment`
 
 **Request Payload:**
+
 ```json
 {
   "fees": {
     "basePlatformFee": 2.5,
-    "fixedFeePerTransaction": 0.30,
+    "fixedFeePerTransaction": 0.3,
     "defaultCurrency": "USD"
   },
   "gateways": [
@@ -221,6 +232,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -228,7 +240,7 @@ Complete API specification for the TDM Admin Dashboard.
   "data": {
     "fees": {
       "basePlatformFee": 2.5,
-      "fixedFeePerTransaction": 0.30,
+      "fixedFeePerTransaction": 0.3,
       "defaultCurrency": "USD"
     },
     "updatedAt": "2026-02-12T10:30:00Z"
@@ -241,6 +253,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/settings/payment/gateway/{gatewayId}/toggle`
 
 **Request Payload:**
+
 ```json
 {
   "enabled": true
@@ -248,6 +261,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -265,6 +279,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PUT /admin/settings/ai`
 
 **Request Payload:**
+
 ```json
 {
   "models": [
@@ -292,6 +307,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -308,6 +324,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/settings/ai/model/{modelId}/toggle`
 
 **Request Payload:**
+
 ```json
 {
   "enabled": false
@@ -315,6 +332,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -332,6 +350,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PUT /admin/settings/notifications`
 
 **Request Payload:**
+
 ```json
 {
   "email": {
@@ -354,6 +373,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -375,6 +395,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PUT /admin/settings/general`
 
 **Request Payload:**
+
 ```json
 {
   "platformName": "TBM & Bogat",
@@ -388,6 +409,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -408,6 +430,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/users`
 
 **Query Parameters:**
+
 - `page` (default: 1)
 - `limit` (default: 20, max: 100)
 - `search` (optional): Search by name or email
@@ -419,6 +442,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Example:** `GET /admin/users?page=1&limit=20&role=user&status=active`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -436,7 +460,7 @@ Complete API specification for the TDM Admin Dashboard.
         "lastLoginAt": "2026-02-12T08:15:00Z",
         "metadata": {
           "totalOrders": 5,
-          "totalSpent": 2500.00,
+          "totalSpent": 2500.0,
           "accountAge": "28 days"
         }
       }
@@ -458,6 +482,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/users/{userId}`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -491,9 +516,9 @@ Complete API specification for the TDM Admin Dashboard.
       "totalOrders": 5,
       "completedOrders": 4,
       "cancelledOrders": 1,
-      "totalSpent": 2500.00,
-      "averageOrderValue": 500.00,
-      "lifetimeValue": 2500.00
+      "totalSpent": 2500.0,
+      "averageOrderValue": 500.0,
+      "lifetimeValue": 2500.0
     },
     "recentActivity": [
       {
@@ -511,6 +536,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/users`
 
 **Request Payload:**
+
 ```json
 {
   "email": "newuser@example.com",
@@ -532,6 +558,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -552,6 +579,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PUT /admin/users/{userId}`
 
 **Request Payload:**
+
 ```json
 {
   "name": "Updated Name",
@@ -573,6 +601,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -590,6 +619,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/users/{userId}/suspend`
 
 **Request Payload:**
+
 ```json
 {
   "reason": "Violation of terms of service",
@@ -599,6 +629,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -617,6 +648,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/users/{userId}/reactivate`
 
 **Request Payload:**
+
 ```json
 {
   "notifyUser": true
@@ -624,6 +656,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -641,6 +674,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `DELETE /admin/users/{userId}`
 
 **Request Payload:**
+
 ```json
 {
   "permanentDelete": false,
@@ -651,6 +685,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -672,6 +707,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/orders`
 
 **Query Parameters:**
+
 - `page` (default: 1)
 - `limit` (default: 20, max: 100)
 - `search` (optional): Search by order ID, user name, or email
@@ -686,6 +722,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Example:** `GET /admin/orders?page=1&limit=20&status=pending&dateFrom=2026-02-01`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -704,15 +741,15 @@ Complete API specification for the TDM Admin Dashboard.
             "productId": "prod_789",
             "name": "Oak Flooring - Premium",
             "quantity": 100,
-            "unitPrice": 25.00,
-            "total": 2500.00
+            "unitPrice": 25.0,
+            "total": 2500.0
           }
         ],
-        "subtotal": 2500.00,
-        "tax": 200.00,
-        "shipping": 50.00,
-        "discount": 0.00,
-        "total": 2750.00,
+        "subtotal": 2500.0,
+        "tax": 200.0,
+        "shipping": 50.0,
+        "discount": 0.0,
+        "total": 2750.0,
         "status": "pending",
         "paymentMethod": "stripe",
         "paymentStatus": "pending",
@@ -737,8 +774,8 @@ Complete API specification for the TDM Admin Dashboard.
       "hasPreviousPage": false
     },
     "summary": {
-      "totalRevenue": 55000.00,
-      "averageOrderValue": 275.00,
+      "totalRevenue": 55000.0,
+      "averageOrderValue": 275.0,
       "totalOrders": 200
     }
   }
@@ -750,6 +787,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/orders/{orderId}`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -770,20 +808,20 @@ Complete API specification for the TDM Admin Dashboard.
           "name": "Oak Flooring - Premium",
           "sku": "OAK-PREM-001",
           "quantity": 100,
-          "unitPrice": 25.00,
-          "total": 2500.00,
+          "unitPrice": 25.0,
+          "total": 2500.0,
           "imageUrl": "https://..."
         }
       ],
       "pricing": {
-        "subtotal": 2500.00,
-        "tax": 200.00,
+        "subtotal": 2500.0,
+        "tax": 200.0,
         "taxRate": 0.08,
-        "shipping": 50.00,
-        "discount": 0.00,
+        "shipping": 50.0,
+        "discount": 0.0,
         "discountCode": null,
-        "platformFee": 62.50,
-        "total": 2750.00
+        "platformFee": 62.5,
+        "total": 2750.0
       },
       "status": "pending",
       "statusHistory": [
@@ -831,6 +869,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/orders/{orderId}/status`
 
 **Request Payload:**
+
 ```json
 {
   "status": "processing",
@@ -844,6 +883,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -863,6 +903,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/orders/{orderId}/tracking`
 
 **Request Payload:**
+
 ```json
 {
   "carrier": "FedEx",
@@ -874,6 +915,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -893,9 +935,10 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/orders/{orderId}/refund`
 
 **Request Payload:**
+
 ```json
 {
-  "amount": 2750.00,
+  "amount": 2750.0,
   "reason": "Customer requested cancellation",
   "refundShipping": true,
   "restockItems": true,
@@ -910,6 +953,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -917,7 +961,7 @@ Complete API specification for the TDM Admin Dashboard.
   "data": {
     "orderId": "order_123",
     "refundId": "refund_789",
-    "amount": 2750.00,
+    "amount": 2750.0,
     "status": "refunded",
     "refundedAt": "2026-02-12T10:30:00Z",
     "processedBy": "admin_456"
@@ -930,6 +974,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `PATCH /admin/orders/{orderId}/cancel`
 
 **Request Payload:**
+
 ```json
 {
   "reason": "Out of stock",
@@ -941,6 +986,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -964,6 +1010,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/analytics/overview`
 
 **Query Parameters:**
+
 - `period` (optional): `today`, `week`, `month`, `year`, `custom`
 - `startDate` (optional): ISO 8601 date (required if period=custom)
 - `endDate` (optional): ISO 8601 date (required if period=custom)
@@ -971,12 +1018,13 @@ Complete API specification for the TDM Admin Dashboard.
 **Example:** `GET /admin/analytics/overview?period=month`
 
 **Response:**
+
 ```json
 {
   "success": true,
   "data": {
     "summary": {
-      "totalRevenue": 125000.00,
+      "totalRevenue": 125000.0,
       "revenueGrowth": 15.5,
       "totalOrders": 450,
       "ordersGrowth": 8.2,
@@ -991,36 +1039,36 @@ Complete API specification for the TDM Admin Dashboard.
       "daily": [
         {
           "date": "2026-02-01",
-          "amount": 4500.00,
+          "amount": 4500.0,
           "orders": 16
         },
         {
           "date": "2026-02-02",
-          "amount": 5200.00,
+          "amount": 5200.0,
           "orders": 19
         }
       ],
       "byCategory": [
         {
           "category": "Flooring",
-          "revenue": 75000.00,
+          "revenue": 75000.0,
           "percentage": 60
         },
         {
           "category": "Lighting",
-          "revenue": 35000.00,
+          "revenue": 35000.0,
           "percentage": 28
         }
       ],
       "byPaymentMethod": [
         {
           "method": "stripe",
-          "revenue": 100000.00,
+          "revenue": 100000.0,
           "percentage": 80
         },
         {
           "method": "paypal",
-          "revenue": 25000.00,
+          "revenue": 25000.0,
           "percentage": 20
         }
       ]
@@ -1029,7 +1077,7 @@ Complete API specification for the TDM Admin Dashboard.
       {
         "productId": "prod_789",
         "name": "Oak Flooring - Premium",
-        "revenue": 25000.00,
+        "revenue": 25000.0,
         "quantitySold": 1000,
         "orders": 40
       }
@@ -1038,7 +1086,7 @@ Complete API specification for the TDM Admin Dashboard.
       {
         "userId": "user_456",
         "name": "John Doe",
-        "totalSpent": 5500.00,
+        "totalSpent": 5500.0,
         "orders": 8
       }
     ],
@@ -1055,22 +1103,24 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/analytics/revenue`
 
 **Query Parameters:**
+
 - `period`: `daily`, `weekly`, `monthly`, `yearly`
 - `startDate`: ISO 8601 date
 - `endDate`: ISO 8601 date
 - `groupBy` (optional): `day`, `week`, `month`, `category`, `product`
 
 **Response:**
+
 ```json
 {
   "success": true,
   "data": {
-    "total": 125000.00,
+    "total": 125000.0,
     "growth": 15.5,
     "breakdown": [
       {
         "period": "2026-02-01",
-        "revenue": 4500.00,
+        "revenue": 4500.0,
         "orders": 16,
         "averageOrderValue": 281.25
       }
@@ -1078,14 +1128,14 @@ Complete API specification for the TDM Admin Dashboard.
     "byCategory": [
       {
         "category": "Flooring",
-        "revenue": 75000.00,
+        "revenue": 75000.0,
         "orders": 300,
         "percentage": 60
       }
     ],
     "trends": {
       "moving Average": 4166.67,
-      "projected": 130000.00
+      "projected": 130000.0
     }
   }
 }
@@ -1096,9 +1146,11 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/analytics/users`
 
 **Query Parameters:**
+
 - `period`: `today`, `week`, `month`, `year`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1144,11 +1196,13 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/analytics/orders`
 
 **Query Parameters:**
+
 - `period`: `today`, `week`, `month`, `year`
 - `startDate` (optional): ISO 8601 date
 - `endDate` (optional): ISO 8601 date
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1201,6 +1255,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `GET /admin/products`
 
 **Query Parameters:**
+
 - `page` (default: 1)
 - `limit` (default: 20)
 - `category` (optional)
@@ -1209,6 +1264,7 @@ Complete API specification for the TDM Admin Dashboard.
 - `sortBy` (default: `createdAt`)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1219,7 +1275,7 @@ Complete API specification for the TDM Admin Dashboard.
         "name": "Oak Flooring - Premium",
         "sku": "OAK-PREM-001",
         "category": "Flooring",
-        "price": 25.00,
+        "price": 25.0,
         "stock": 5000,
         "status": "active",
         "imageUrl": "https://...",
@@ -1241,14 +1297,15 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `POST /admin/products`
 
 **Request Payload:**
+
 ```json
 {
   "name": "Oak Flooring - Premium",
   "sku": "OAK-PREM-001",
   "description": "High-quality oak flooring with premium finish",
   "category": "Flooring",
-  "price": 25.00,
-  "compareAtPrice": 30.00,
+  "price": 25.0,
+  "compareAtPrice": 30.0,
   "stock": 5000,
   "lowStockThreshold": 100,
   "status": "active",
@@ -1274,6 +1331,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1294,6 +1352,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Request Payload:** Same as Create Product
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1310,6 +1369,7 @@ Complete API specification for the TDM Admin Dashboard.
 **Endpoint:** `DELETE /admin/products/{productId}`
 
 **Request Payload:**
+
 ```json
 {
   "archive": true
@@ -1317,6 +1377,7 @@ Complete API specification for the TDM Admin Dashboard.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1333,17 +1394,20 @@ Complete API specification for the TDM Admin Dashboard.
 ## Validation Rules
 
 ### Payment Settings
+
 - `basePlatformFee`: Number, min: 0, max: 100
 - `fixedFeePerTransaction`: Number, min: 0
 - `defaultCurrency`: String, enum: ["USD", "EUR", "GBP", "CAD", "AUD"]
 
 ### User Management
+
 - `email`: Valid email format, unique
 - `password`: Min 8 characters, requires uppercase, lowercase, number, special character
 - `role`: enum: ["user", "admin", "super_admin"]
 - `status`: enum: ["active", "suspended", "pending"]
 
 ### Order Management
+
 - `status`: enum: ["pending", "processing", "shipped", "completed", "cancelled", "refunded"]
 - `paymentStatus`: enum: ["pending", "paid", "failed", "refunded"]
 - `refundAmount`: Number, min: 0, max: order total
@@ -1360,6 +1424,7 @@ All admin endpoints are rate-limited to prevent abuse:
 - **Bulk operations:** 50 requests per hour
 
 **Rate Limit Headers:**
+
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 995
@@ -1375,6 +1440,7 @@ Configure webhooks to receive real-time notifications:
 **Endpoint:** `POST /admin/webhooks`
 
 **Request Payload:**
+
 ```json
 {
   "url": "https://your-server.com/webhooks",
@@ -1390,6 +1456,7 @@ Configure webhooks to receive real-time notifications:
 ```
 
 **Webhook Payload Example:**
+
 ```json
 {
   "event": "order.completed",
@@ -1397,7 +1464,7 @@ Configure webhooks to receive real-time notifications:
   "data": {
     "orderId": "order_123",
     "userId": "user_456",
-    "total": 2750.00
+    "total": 2750.0
   },
   "signature": "sha256=..."
 }
@@ -1421,6 +1488,7 @@ Configure webhooks to receive real-time notifications:
 ## Support
 
 For API support and questions:
+
 - **Email:** api-support@tbm-bogat.com
 - **Documentation:** https://docs.tbm-bogat.com/api
 - **Status Page:** https://status.tbm-bogat.com

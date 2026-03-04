@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
 import { useLogin } from "@/hooks/use-auth";
 import { signInSchema } from "@/lib/validations/auth";
 
-export default function SignInPage() {
+// ── Inner component — allowed to use useSearchParams via useLogin ─────────────
+function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -15,15 +16,13 @@ export default function SignInPage() {
 
   const formik = useFormik({
     initialValues: {
-      email: "Ifemicheal2@gmail.com",
-      password: "Nisotgreg0",
+      email: "aboderindaniel482@gmail.com",
+      password: "Password123@",
       rememberMe: true,
     },
     validationSchema: signInSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitError("");
-
-      // Submit with React Query
       login(values, {
         onError: (error) => {
           setSubmitError(error.message);
@@ -56,7 +55,10 @@ export default function SignInPage() {
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm text-gray-600 mb-1.5">
+            <label
+              htmlFor="email"
+              className="block text-sm text-gray-600 mb-1.5"
+            >
               Email
             </label>
             <input
@@ -68,7 +70,9 @@ export default function SignInPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className={`w-full px-4 py-3 bg-white border ${
-                formik.errors.email && formik.touched.email ? "border-red-500" : "border-gray-200"
+                formik.errors.email && formik.touched.email
+                  ? "border-red-500"
+                  : "border-gray-200"
               } rounded-lg focus:outline-none focus:ring-2 placeholder:text-gray-300 text-primary focus:ring-blue-500 focus:border-transparent transition-all`}
             />
             {formik.errors.email && formik.touched.email && (
@@ -77,7 +81,10 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm text-gray-600 mb-1.5">
+            <label
+              htmlFor="password"
+              className="block text-sm text-gray-600 mb-1.5"
+            >
               Password
             </label>
             <div className="relative">
@@ -90,7 +97,9 @@ export default function SignInPage() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className={`w-full px-4 py-3 bg-white border ${
-                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-gray-200"
+                  formik.errors.password && formik.touched.password
+                    ? "border-red-500"
+                    : "border-gray-200"
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-300 text-primary transition-all pr-12`}
               />
               <button
@@ -106,12 +115,17 @@ export default function SignInPage() {
               </button>
             </div>
             {formik.errors.password && formik.touched.password && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </p>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer">
+            <label
+              htmlFor="rememberMe"
+              className="flex items-center gap-2 cursor-pointer"
+            >
               <input
                 id="rememberMe"
                 type="checkbox"
@@ -147,7 +161,7 @@ export default function SignInPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-gray-50 text-gray-500">Or</span>
@@ -203,5 +217,20 @@ export default function SignInPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// ── Page export — wraps form in Suspense to satisfy Next.js SSR requirement ───
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <SignInForm />
+    </Suspense>
   );
 }
