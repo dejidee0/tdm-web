@@ -11,17 +11,14 @@ export async function POST(request) {
   // Forward the multipart/form-data as-is
   const formData = await request.formData();
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/account/avatar`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // Do NOT set Content-Type — fetch sets it automatically with boundary for multipart
-      },
-      body: formData,
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/avatar`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Do NOT set Content-Type — fetch sets it automatically with boundary for multipart
     },
-  );
+    body: formData,
+  });
 
   const raw = await res.text();
   try {

@@ -14,7 +14,7 @@ async function getAuthHeaders() {
 }
 
 export async function GET() {
-  const res = await fetch(`${BASE}/v1/account/security`, {
+  const res = await fetch(`${BASE}/account/security`, {
     headers: await getAuthHeaders(),
   });
   const text = await res.text();

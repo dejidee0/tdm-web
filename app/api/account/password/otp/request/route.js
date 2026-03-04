@@ -15,7 +15,7 @@ async function getAuthHeaders() {
 
 export async function POST(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/v1/account/password/otp/request`, {
+  const res = await fetch(`${BASE}/account/password/otp/request`, {
     method: "POST",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

@@ -38,7 +38,7 @@ async function getInitialProducts() {
     const baseUrl =
       process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
     const res = await fetch(
-      `${baseUrl}/v1/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
+      `${baseUrl}/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
       {
         next: { revalidate: 60 },
       },

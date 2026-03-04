@@ -25,7 +25,7 @@ function VerifyEmailContent() {
     const verify = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/Auth/verify-email?token=${encodeURIComponent(token)}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/Auth/verify-email?token=${encodeURIComponent(token)}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

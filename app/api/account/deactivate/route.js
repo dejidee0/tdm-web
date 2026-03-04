@@ -14,7 +14,7 @@ async function getAuthHeaders() {
 }
 
 export async function POST() {
-  const res = await fetch(`${BASE}/v1/account/deactivate`, {
+  const res = await fetch(`${BASE}/account/deactivate`, {
     method: "POST",
     headers: await getAuthHeaders(),
   });

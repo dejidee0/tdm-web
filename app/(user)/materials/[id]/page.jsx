@@ -7,7 +7,7 @@ const BASE_URL =
 // ─── Server-side fetchers ──────────────────────────────────────────────────────
 async function getProduct(id) {
   try {
-    const res = await fetch(`${BASE_URL}/v1/Products/${id}`, {
+    const res = await fetch(`${BASE_URL}/Products/${id}`, {
       next: { revalidate: 120 },
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,7 @@ async function getSimilarProducts(categoryId, excludeId) {
       pageSize: "8",
       ActiveOnly: "true",
     });
-    const res = await fetch(`${BASE_URL}/v1/products?${params.toString()}`, {
+    const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
       next: { revalidate: 300 },
       headers: {
         "Content-Type": "application/json",

@@ -29,7 +29,7 @@ export async function GET(request) {
   if (activeOnly) params.set("ActiveOnly", activeOnly);
 
   try {
-    const res = await fetch(`${BASE_URL}/v1/products?${params.toString()}`, {
+    const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",
         ...(process.env.API_KEY

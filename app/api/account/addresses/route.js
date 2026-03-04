@@ -14,7 +14,7 @@ async function getAuthHeaders() {
 }
 
 export async function GET() {
-  const res = await fetch(`${BASE}/v1/account/addresses`, {
+  const res = await fetch(`${BASE}/account/addresses`, {
     headers: await getAuthHeaders(),
   });
   const text = await res.text();
@@ -25,7 +25,7 @@ export async function GET() {
 
 export async function POST(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/v1/account/addresses`, {
+  const res = await fetch(`${BASE}/account/addresses`, {
     method: "POST",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

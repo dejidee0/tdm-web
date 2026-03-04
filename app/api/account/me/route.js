@@ -14,7 +14,7 @@ async function getAuthHeaders() {
 }
 
 export async function GET() {
-  const res = await fetch(`${BASE}/v1/account/me`, {
+  const res = await fetch(`${BASE}/account/me`, {
     headers: await getAuthHeaders(),
   });
   // Read body ONCE as text, then parse
@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function PUT(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/v1/account/me`, {
+  const res = await fetch(`${BASE}/account/me`, {
     method: "PUT",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),
