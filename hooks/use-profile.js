@@ -1,152 +1,183 @@
-// hooks/useProfile.js
-
+// hooks/use-profile.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { profileApi } from "@/lib/api/profile";
 
-export function useProfile() {
+// ─── Keys ─────────────────────────────────────────────────────────────────────
+export const profileKeys = {
+  me: ["profile", "me"], // full { profile, addresses, notifications, security }
+  addresses: ["profile", "addresses"],
+  notifications: ["profile", "notifications"],
+  security: ["profile", "security"],
+};
+
+// ─── /account/me (full response) ─────────────────────────────────────────────
+function useMe() {
   return useQuery({
-    queryKey: ["profile"],
-    queryFn: profileApi.getProfile,
+    queryKey: profileKeys.me,
+    queryFn: profileApi.getMe,
     staleTime: 5 * 60 * 1000,
+    retry: (count, err) => err?.status !== 401 && count < 2,
   });
 }
 
-export function useUpdatePersonalInfo() {
-  const queryClient = useQueryClient();
+// ── Public hook: exposes data.profile fields directly ────────────────────────
+export function useProfile() {
+  const query = useMe();
+  return {
+    ...query,
+    // Flatten: callers get profile fields directly (firstName, email, etc.)
+    data: query.data?.profile ?? null,
+    raw: query.data, // full data object when needed
+  };
+}
 
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: profileApi.updatePersonalInfo,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
+    mutationFn: (data) => profileApi.updateMe(data),
+    onSuccess: (updated) => {
+      // Merge updated profile fields into cached me data
+      queryClient.setQueryData(profileKeys.me, (old) => ({
+        ...old,
+        profile: { ...old?.profile, ...(updated?.data?.profile ?? updated) },
+      }));
+      queryClient.invalidateQueries({ queryKey: profileKeys.me });
     },
   });
 }
 
-export function useUpdateEmail() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: profileApi.updateEmail,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
-  });
+// ─── Addresses ────────────────────────────────────────────────────────────────
+export function useAddresses() {
+  const query = useMe();
+  return {
+    ...query,
+    data: query.data?.addresses ?? [],
+  };
 }
 
-export function useUpdatePhone() {
+export function useCreateAddress() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: profileApi.updatePhone,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
-  });
-}
-
-export function useAddAddress() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: profileApi.addAddress,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
+    mutationFn: (data) => profileApi.createAddress(data),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
   });
 }
 
 export function useUpdateAddress() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ addressId, data }) =>
       profileApi.updateAddress(addressId, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
   });
 }
 
 export function useDeleteAddress() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: profileApi.deleteAddress,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
+    mutationFn: (addressId) => profileApi.deleteAddress(addressId),
+    onMutate: async (addressId) => {
+      await queryClient.cancelQueries({ queryKey: profileKeys.me });
+      const prev = queryClient.getQueryData(profileKeys.me);
+      queryClient.setQueryData(profileKeys.me, (old) => ({
+        ...old,
+        addresses: (old?.addresses ?? []).filter((a) => a.id !== addressId),
+      }));
+      return { prev };
     },
+    onError: (_e, _v, ctx) => {
+      queryClient.setQueryData(profileKeys.me, ctx?.prev);
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
   });
 }
 
-export function useSetDefaultAddress() {
-  const queryClient = useQueryClient();
-
+// ─── Password (3-step OTP flow) ───────────────────────────────────────────────
+export function useRequestPasswordOtp() {
   return useMutation({
-    mutationFn: profileApi.setDefaultAddress,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
+    mutationFn: (currentPassword) =>
+      profileApi.requestPasswordOtp(currentPassword),
+  });
+}
+
+export function useVerifyPasswordOtp() {
+  return useMutation({
+    mutationFn: (otpCode) => profileApi.verifyPasswordOtp(otpCode),
   });
 }
 
 export function useChangePassword() {
   return useMutation({
-    mutationFn: ({ currentPassword, newPassword }) =>
-      profileApi.changePassword(currentPassword, newPassword),
+    mutationFn: (data) => profileApi.changePassword(data),
   });
+}
+
+// ─── Notifications ────────────────────────────────────────────────────────────
+export function useNotifications() {
+  const query = useMe();
+  return {
+    ...query,
+    data: query.data?.notifications ?? null,
+  };
 }
 
 export function useUpdateNotifications() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: profileApi.updateNotifications,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["profile"]);
+    mutationFn: (prefs) => profileApi.updateNotifications(prefs),
+    onMutate: async (prefs) => {
+      await queryClient.cancelQueries({ queryKey: profileKeys.me });
+      const prev = queryClient.getQueryData(profileKeys.me);
+      queryClient.setQueryData(profileKeys.me, (old) => ({
+        ...old,
+        notifications: { ...old?.notifications, ...prefs },
+      }));
+      return { prev };
     },
+    onError: (_e, _v, ctx) => {
+      queryClient.setQueryData(profileKeys.me, ctx?.prev);
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
   });
 }
 
-export function useDeleteAccount() {
-  return useMutation({
-    mutationFn: profileApi.deleteAccount,
-  });
+// ─── Security ─────────────────────────────────────────────────────────────────
+export function useSecurity() {
+  const query = useMe();
+  return {
+    ...query,
+    data: query.data?.security ?? null,
+  };
 }
 
-export function useUploadAvatar() {
+export function useUpdate2fa() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: profileApi.uploadAvatar,
-    onMutate: async (file) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries(["profile"]);
-
-      // Snapshot the previous value
-      const previousProfile = queryClient.getQueryData(["profile"]);
-
-      // Optimistically update with preview
-      const previewUrl = URL.createObjectURL(file);
-      queryClient.setQueryData(["profile"], (old) => ({
+    mutationFn: (enabled) => profileApi.update2fa(enabled),
+    onMutate: async (enabled) => {
+      await queryClient.cancelQueries({ queryKey: profileKeys.me });
+      const prev = queryClient.getQueryData(profileKeys.me);
+      queryClient.setQueryData(profileKeys.me, (old) => ({
         ...old,
-        avatar: previewUrl,
+        security: { ...old?.security, twoFactorEnabled: enabled },
       }));
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      queryClient.setQueryData(profileKeys.me, ctx?.prev);
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
 
-      return { previousProfile };
-    },
-    onError: (err, newFile, context) => {
-      // Rollback on error
-      queryClient.setQueryData(["profile"], context.previousProfile);
-    },
-    onSuccess: (data) => {
-      // Update with actual uploaded URL
-      queryClient.setQueryData(["profile"], (old) => ({
-        ...old,
-        avatar: data.avatarUrl,
-      }));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(["profile"]);
-    },
+// ─── Deactivate ───────────────────────────────────────────────────────────────
+export function useDeactivateAccount() {
+  return useMutation({
+    mutationFn: profileApi.deactivateAccount,
   });
 }

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
 import { useLogin } from "@/hooks/use-auth";
 import { signInSchema } from "@/lib/validations/auth";
 
-export default function SignInPage() {
+// ── Inner component — allowed to use useSearchParams via useLogin ─────────────
+function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -22,8 +23,6 @@ export default function SignInPage() {
     validationSchema: signInSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitError("");
-
-      // Submit with React Query
       login(values, {
         onError: (error) => {
           setSubmitError(error.message);
@@ -162,7 +161,7 @@ export default function SignInPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-gray-50 text-gray-500">Or</span>
@@ -218,5 +217,20 @@ export default function SignInPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// ── Page export — wraps form in Suspense to satisfy Next.js SSR requirement ───
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <SignInForm />
+    </Suspense>
   );
 }

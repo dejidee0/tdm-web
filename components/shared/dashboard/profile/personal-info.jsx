@@ -1,156 +1,193 @@
-// components/dashboard/profile/PersonalInformation.jsx
+// components/shared/dashboard/profile/personal-info.jsx
 "use client";
 
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import {
-  useUpdatePersonalInfo,
-  useUpdateEmail,
-  useUpdatePhone,
-} from "@/hooks/use-profile";
+import { motion } from "framer-motion";
+import { User, Mail, Phone, Save, Loader2 } from "lucide-react";
+import { useUpdateProfile } from "@/hooks/use-profile";
+import { showToast } from "@/components/shared/toast";
 
-export default function PersonalInformation({
-  profile,
-  isLoading,
-  setHasChanges,
-}) {
-  const [formData, setFormData] = useState({
+export default function PersonalInformation({ profile, isLoading }) {
+  const update = useUpdateProfile();
+
+  const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
   });
-
-  const updatePersonalInfo = useUpdatePersonalInfo();
-  const updateEmail = useUpdateEmail();
-  const updatePhone = useUpdatePhone();
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     if (profile) {
-      setFormData({
+      setForm({
         firstName: profile.firstName || "",
         lastName: profile.lastName || "",
         email: profile.email || "",
-        phone: profile.phone || "",
+        phoneNumber: profile.phoneNumber || "",
       });
     }
   }, [profile]);
 
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setHasChanges(true);
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setIsDirty(true);
   };
 
   const handleSave = () => {
-    // Split updates based on what changed
-    const { firstName, lastName, email, phone } = formData;
-
-    if (firstName !== profile.firstName || lastName !== profile.lastName) {
-      updatePersonalInfo.mutate({ firstName, lastName });
-    }
-
-    if (email !== profile.email) {
-      updateEmail.mutate(email);
-    }
-
-    if (phone !== profile.phone) {
-      updatePhone.mutate(phone);
-    }
-
-    setHasChanges(false);
+    update.mutate(form, {
+      onSuccess: () => {
+        showToast.success({
+          title: "Saved",
+          message: "Personal details updated.",
+        });
+        setIsDirty(false);
+      },
+      onError: (err) => {
+        showToast.error({
+          title: "Error",
+          message: err.message || "Failed to update profile.",
+        });
+      },
+    });
   };
 
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
+  const handleCancel = () => {
+    if (profile) {
+      setForm({
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        email: profile.email || "",
+        phoneNumber: profile.phoneNumber || "",
+      });
+    }
+    setIsDirty(false);
+  };
+
+  if (isLoading) return <PersonalInfoSkeleton />;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="space-y-6"
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-2xl border border-[#e5e5e5] p-6 space-y-6"
     >
-      {/* Personal Information Section */}
-      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6">
-        <h3 className="text-[18px] font-semibold text-primary mb-6">
-          Personal Information
-        </h3>
-
-        <div className="space-y-5">
-          {/* First Name & Last Name */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-[13px] font-medium text-[#666666] mb-2">
-                First Name
-              </label>
-              <input
-                type="text"
-                value={formData.firstName}
-                onChange={(e) => handleChange("firstName", e.target.value)}
-                className="w-full px-4 py-3 bg-[#f8f8f8] border border-transparent rounded-lg text-[14px] text-primary focus:outline-none focus:border-[#3b82f6] focus:bg-white transition-all"
-                placeholder="Enter first name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[13px] font-medium text-[#666666] mb-2">
-                Last Name
-              </label>
-              <input
-                type="text"
-                value={formData.lastName}
-                onChange={(e) => handleChange("lastName", e.target.value)}
-                className="w-full px-4 py-3 bg-[#f8f8f8] border border-transparent rounded-lg text-[14px] text-primary focus:outline-none focus:border-[#3b82f6] focus:bg-white transition-all"
-                placeholder="Enter last name"
-              />
-            </div>
-          </div>
-
-          {/* Email Address */}
-          <div>
-            <label className="block text-[13px] font-medium text-[#666666] mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="w-full px-4 py-3 bg-[#f8f8f8] border border-transparent rounded-lg text-[14px] text-primary focus:outline-none focus:border-[#3b82f6] focus:bg-white transition-all"
-              placeholder="Enter email address"
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div>
-            <label className="block text-[13px] font-medium text-[#666666] mb-2">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
-              className="w-full px-4 py-3 bg-[#f8f8f8] border border-transparent rounded-lg text-[14px] text-primary focus:outline-none focus:border-[#3b82f6] focus:bg-white transition-all"
-              placeholder="Enter phone number"
-            />
-          </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-[18px] font-semibold text-primary">
+            Personal Details
+          </h2>
+          <p className="text-[13px] text-[#888] mt-0.5">
+            Update your name, email and phone number.
+          </p>
         </div>
       </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field
+          label="First Name"
+          icon={<User className="w-4 h-4" />}
+          value={form.firstName}
+          onChange={(v) => handleChange("firstName", v)}
+          placeholder="Enter first name"
+        />
+        <Field
+          label="Last Name"
+          icon={<User className="w-4 h-4" />}
+          value={form.lastName}
+          onChange={(v) => handleChange("lastName", v)}
+          placeholder="Enter last name"
+        />
+        <Field
+          label="Email Address"
+          icon={<Mail className="w-4 h-4" />}
+          value={form.email}
+          onChange={(v) => handleChange("email", v)}
+          placeholder="Enter email"
+          type="email"
+          className="sm:col-span-2"
+        />
+        <Field
+          label="Phone Number"
+          icon={<Phone className="w-4 h-4" />}
+          value={form.phoneNumber}
+          onChange={(v) => handleChange("phoneNumber", v)}
+          placeholder="+234 800 000 0000"
+          type="tel"
+          className="sm:col-span-2"
+        />
+      </div>
+
+      {isDirty && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-end gap-3 pt-2 border-t border-[#f0f0f0]"
+        >
+          <button
+            onClick={handleCancel}
+            className="px-4 py-2 text-[14px] font-medium text-[#666] border border-[#e5e5e5] rounded-lg hover:bg-[#f8f8f8] transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={update.isPending}
+            className="flex items-center gap-2 px-4 py-2 text-[14px] font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-60"
+          >
+            {update.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            {update.isPending ? "Saving..." : "Save Changes"}
+          </button>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
 
-function LoadingSkeleton() {
+function Field({
+  label,
+  icon,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  className = "",
+}) {
   return (
-    <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6">
-      <div className="animate-pulse space-y-5">
-        <div className="h-6 bg-gray-200 rounded w-48" />
-        <div className="grid grid-cols-2 gap-5">
-          <div className="h-12 bg-gray-200 rounded-lg" />
-          <div className="h-12 bg-gray-200 rounded-lg" />
-        </div>
-        <div className="h-12 bg-gray-200 rounded-lg" />
-        <div className="h-12 bg-gray-200 rounded-lg" />
+    <div className={`space-y-1.5 ${className}`}>
+      <label className="text-[13px] font-medium text-[#555]">{label}</label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#aaa]">
+          {icon}
+        </span>
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="w-full pl-9 pr-4 py-2.5 text-[14px] text-primary border border-[#e5e5e5] rounded-lg bg-[#fafafa] focus:outline-none focus:border-primary focus:bg-white transition-colors placeholder:text-[#ccc]"
+        />
+      </div>
+    </div>
+  );
+}
+
+function PersonalInfoSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 space-y-6 animate-pulse">
+      <div className="h-5 w-40 bg-gray-200 rounded" />
+      <div className="grid grid-cols-2 gap-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className={`space-y-2 ${i >= 2 ? "col-span-2" : ""}`}>
+            <div className="h-3 w-24 bg-gray-200 rounded" />
+            <div className="h-10 bg-gray-200 rounded-lg" />
+          </div>
+        ))}
       </div>
     </div>
   );

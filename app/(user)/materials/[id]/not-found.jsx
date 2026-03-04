@@ -1,4 +1,3 @@
-// app/materials/[id]/not-found.jsx
 "use client";
 
 import Link from "next/link";
@@ -22,7 +21,7 @@ export default function MaterialNotFound() {
             Material Not Found
           </h1>
           <p className="text-gray-600 leading-relaxed">
-            We couldn&#39;t find the material you&lsquo;re looking for. It may
+            We couldn&apos;t find the material you&apos;re looking for. It may
             have been removed or the link might be incorrect.
           </p>
         </div>

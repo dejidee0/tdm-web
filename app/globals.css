@@ -17,6 +17,7 @@
   --font-primary: var(--font-titilum);
   --font-inter: var(--font-inter);
   --font-manrope: var(--font-manrope);
+  --font-poppins: var(--font-poppins);
 }
 
 @media (prefers-color-scheme: dark) {

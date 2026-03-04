@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import CartItem from "./item";
+import Link from "next/link";
 
 export default function CartItemsList({ cart, isLoading }) {
   if (isLoading) {
@@ -30,9 +31,15 @@ export default function CartItemsList({ cart, isLoading }) {
         <p className="text-[16px] font-medium text-primary mb-2">
           Your cart is empty
         </p>
-        <p className="text-[14px] text-[#666666]">
-          Add items to get started with your project
+        <p className="text-[14px] text-[#666666] mb-6">
+          Browse our materials and add items to get started
         </p>
+        <Link
+          href="/materials"
+          className="inline-block px-6 py-3 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors"
+        >
+          Browse Materials
+        </Link>
       </div>
     );
   }
@@ -50,7 +57,7 @@ export default function CartItemsList({ cart, isLoading }) {
         <div className="text-[12px] font-semibold text-[#999999] uppercase tracking-wider text-right">
           Price
         </div>
-        <div /> {/* Delete column */}
+        <div />
       </div>
 
       {/* Cart Items */}

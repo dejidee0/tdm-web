@@ -10,6 +10,7 @@ import {
   Heart,
   User,
   Sparkles,
+  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,6 +22,7 @@ const navItems = [
   { icon: Package, label: "Orders", href: "/dashboard/orders" },
   { icon: Layers, label: "AI Designs", href: "/dashboard/ai-designs" },
   { icon: Heart, label: "Saved Items", href: "/dashboard/saved-items" },
+  { icon: Calendar, label: "Project", href: "/dashboard/project" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
 ];
 
@@ -107,7 +109,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 ${
                   isActive
                     ? "bg-primary/20 text-primary font-semibold"
-                    : "text-[#666666] hover:bg-primary/10 hover:text-primary"
+                    : "text-primary/60 hover:bg-primary/10 hover:text-primary"
                 }
               `}
             >
