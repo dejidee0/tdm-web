@@ -110,3 +110,6 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.hide {
+  background-color: #171717;
+}
