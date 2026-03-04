@@ -16,7 +16,7 @@ async function getAuthHeaders() {
 export async function PUT(request, { params }) {
   const { addressId } = await params;
   const body = await request.json();
-  const res = await fetch(`${BASE}/v1/account/addresses/${addressId}`, {
+  const res = await fetch(`${BASE}/account/addresses/${addressId}`, {
     method: "PUT",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),
@@ -29,7 +29,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const { addressId } = await params;
-  const res = await fetch(`${BASE}/v1/account/addresses/${addressId}`, {
+  const res = await fetch(`${BASE}/account/addresses/${addressId}`, {
     method: "DELETE",
     headers: await getAuthHeaders(),
   });

@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   const { id } = await params;
 
   try {
-    const res = await fetch(`${BASE_URL}/v1/Products/${id}`, {
+    const res = await fetch(`${BASE_URL}/Products/${id}`, {
       headers: {
         "Content-Type": "application/json",
         ...(process.env.API_KEY

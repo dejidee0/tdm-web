@@ -13,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const raw = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/account/profile`,
+    `${process.env.NEXT_PUBLIC_API_URL}/account/profile`,
     {
       headers: { Authorization: `Bearer ${token}` },
     },

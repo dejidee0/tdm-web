@@ -206,7 +206,7 @@ export default function ProfileTestPage() {
             </h1>
             <p className="text-[13px] text-[#999] mt-0.5">
               <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">
-                GET /api/v1/account/profile
+                GET /api/account/profile
               </code>
             </p>
           </div>
