@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
 import { useLogin } from "@/hooks/use-auth";
@@ -44,8 +45,20 @@ function SignInForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope pt-32">
-      <div className="w-full max-w-md">
+    <div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope pt-32 overflow-hidden">
+      {/* Faded background image */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Image
+          src="/auth.svg"
+          alt=""
+          fill
+          className="object-cover scale-120 opacity-10"
+          priority
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">
             Welcome Back!

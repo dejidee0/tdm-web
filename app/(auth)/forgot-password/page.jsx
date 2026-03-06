@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Lock } from "lucide-react";
 import { useForgotPassword } from "@/hooks/use-auth";
 
@@ -33,8 +34,20 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope">
-      <div className="w-full max-w-md">
+    <div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope overflow-hidden">
+      {/* Faded background image */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Image
+          src="/auth.svg"
+          alt=""
+          fill
+          className="object-cover opacity-10"
+          priority
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
             <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
