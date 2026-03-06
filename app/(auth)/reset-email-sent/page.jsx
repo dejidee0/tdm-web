@@ -18,7 +18,6 @@ function ResetEmailSentContent() {
         },
         body: JSON.stringify({ email }),
       });
-      // Show success message or notification
       alert("Reset email sent successfully!");
     } catch (error) {
       alert("Failed to resend email. Please try again.");
@@ -26,8 +25,20 @@ function ResetEmailSentContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope">
-      <div className="w-full max-w-md text-center">
+    <div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope overflow-hidden">
+      {/* Faded background image */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Image
+          src="/auth.svg"
+          alt=""
+          fill
+          className="object-cover opacity-10"
+          priority
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md text-center">
         {/* Email Icon with Next.js Image */}
         <div className="flex justify-center mb-6">
           <div className="relative w-36 h-36">

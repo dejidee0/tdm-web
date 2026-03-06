@@ -28,7 +28,6 @@ const navItems = [
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
-  // ✅ Reads from React Query cache — zero extra fetch, already fetched by Navbar
   const { user } = useDashboardUser();
 
   const displayName =
@@ -46,7 +45,6 @@ export default function Sidebar({ isOpen, onClose }) {
       <div className="p-6 border-b border-[#e5e5e5]">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            {/* Avatar */}
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
               {user?.avatar ? (
                 <Image
@@ -73,7 +71,6 @@ export default function Sidebar({ isOpen, onClose }) {
                   </p>
                 </>
               ) : (
-                // Skeleton while user loads
                 <>
                   <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
                   <div className="h-3 w-20 bg-gray-100 rounded animate-pulse mt-1.5" />
@@ -93,7 +90,7 @@ export default function Sidebar({ isOpen, onClose }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -146,11 +143,11 @@ export default function Sidebar({ isOpen, onClose }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-96 h-screen sticky top-0 border-r border-[#e5e5e5]">
+      <aside className="hidden lg:block w-80 h-screen sticky top-0 border-r border-[#e5e5e5]">
         {sidebarContent}
       </aside>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar — starts at top-16 to sit below the fixed Navbar */}
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -158,7 +155,7 @@ export default function Sidebar({ isOpen, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="lg:hidden fixed left-0 top-0 w-70 h-screen border-r border-[#e5e5e5] z-50"
+            className="lg:hidden fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 border-r border-[#e5e5e5] z-50 overflow-y-auto"
           >
             {sidebarContent}
           </motion.aside>
