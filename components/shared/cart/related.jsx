@@ -55,7 +55,7 @@ export default function RelatedProducts() {
             className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden hover:shadow-lg transition-all group"
           >
             {/* Image */}
-            <Link href={`/materials/${product.id}`}>
+            <Link href={`/materials/${product.slug}`}>
               <div className="relative aspect-square bg-[#f5f5f5] overflow-hidden">
                 <Image
                   src={
@@ -72,7 +72,7 @@ export default function RelatedProducts() {
             </Link>
 
             <div className="p-4">
-              <Link href={`/materials/${product.id}`}>
+              <Link href={`/materials/${product.slug}`}>
                 <h3 className="text-[15px] font-semibold text-primary mb-1 line-clamp-2 min-h-[40px] hover:underline">
                   {product.name}
                 </h3>

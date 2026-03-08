@@ -630,7 +630,7 @@ export default function MasterpiecesGallery() {
 
   return (
     <section className="w-full bg-background pb-20">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-8">
         {/* Search and Filters */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
           {/* Search */}

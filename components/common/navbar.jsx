@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useIsAuthenticated, useLogout } from "@/hooks/use-auth";
 import { useCartCount } from "@/hooks/use-cart";
+import { useSavedItems } from "@/hooks/use-saved";
 import {
   Heart,
   ChevronDown,
@@ -22,6 +24,11 @@ export default function Navbar() {
   const { isAuthenticated, user, isLoading } = useIsAuthenticated();
   const logout = useLogout();
   const cartCount = useCartCount();
+  const pathname = usePathname();
+
+  // Saved items count — only fetched when authenticated
+  const { data: savedItems = [] } = useSavedItems();
+  const savedCount = isAuthenticated ? savedItems.length : 0;
 
   const displayName =
     user?.fullName ||
@@ -39,6 +46,11 @@ export default function Navbar() {
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
+
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   const handleLogout = () => {
     logout.mutate();
@@ -68,16 +80,29 @@ export default function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="px-4 py-2 text-[15px] font-manrope font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 relative group"
-                >
-                  {link.name}
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-gray-900 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`relative px-4 py-2 text-[15px] font-manrope font-medium transition-colors duration-200 group ${
+                      active
+                        ? "text-primary"
+                        : "text-gray-700 hover:text-gray-900"
+                    }`}
+                  >
+                    {link.name}
+                    <span
+                      className={`absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full transition-transform duration-300 origin-left ${
+                        active
+                          ? "scale-x-100"
+                          : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Desktop Right Actions */}
@@ -89,14 +114,31 @@ export default function Navbar() {
                 </div>
               ) : isAuthenticated ? (
                 <>
-                  <Link href="/dashboard/saved-items">
-                    <button className="p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
-                      <Heart className="w-6 h-6" />
+                  {/* Heart / Saved */}
+                  <Link href="/dashboard/saved">
+                    <button
+                      className={`relative p-2 transition-colors duration-200 ${
+                        isActive("/dashboard/saved")
+                          ? "text-primary"
+                          : "text-gray-700 hover:text-gray-900"
+                      }`}
+                    >
+                      <Heart
+                        className={`w-6 h-6 ${isActive("/dashboard/saved") ? "fill-primary" : ""}`}
+                      />
+                      <SavedBadge count={savedCount} />
                     </button>
                   </Link>
 
+                  {/* Cart */}
                   <Link href="/cart">
-                    <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <button
+                      className={`relative p-2 transition-colors duration-200 ${
+                        isActive("/cart")
+                          ? "text-primary"
+                          : "text-gray-700 hover:text-gray-900"
+                      }`}
+                    >
                       <CartIcon className="w-6 h-6" />
                       <CartBadge count={cartCount} />
                     </button>
@@ -125,7 +167,6 @@ export default function Navbar() {
                     <AnimatePresence>
                       {isProfileOpen && (
                         <>
-                          {/* Click-outside backdrop */}
                           <div
                             className="fixed inset-0 z-40"
                             onClick={() => setIsProfileOpen(false)}
@@ -137,50 +178,55 @@ export default function Navbar() {
                             transition={{ duration: 0.15 }}
                             className="absolute right-0 mt-2 w-64 bg-[#f0f2f5] rounded-2xl shadow-xl overflow-hidden z-50"
                           >
-                            {/* Profile */}
                             <Link
-                              href="/dashboard"
+                              href="/dashboard/profile"
                               onClick={() => setIsProfileOpen(false)}
-                              className="flex items-center gap-4 px-5 py-[18px] hover:bg-black/5 transition-colors"
+                              className={`flex items-center gap-4 px-5 py-[18px] transition-colors ${
+                                isActive("/dashboard/profile")
+                                  ? "bg-primary/10 text-primary"
+                                  : "hover:bg-black/5 text-gray-900"
+                              }`}
                             >
                               <User
-                                className="w-7 h-7 text-gray-900 shrink-0"
+                                className="w-7 h-7 shrink-0"
                                 strokeWidth={1.8}
                               />
-                              <span className="text-[17px] font-semibold text-gray-900">
+                              <span className="text-[17px] font-semibold">
                                 Profile
                               </span>
                             </Link>
 
-                            {/* Pro Dashboard */}
                             <Link
                               href="/dashboard"
                               onClick={() => setIsProfileOpen(false)}
-                              className="flex items-center gap-4 px-5 py-[18px] hover:bg-black/5 transition-colors"
+                              className={`flex items-center gap-4 px-5 py-[18px] transition-colors ${
+                                isActive("/dashboard") &&
+                                !isActive("/dashboard/profile")
+                                  ? "bg-primary/10 text-primary"
+                                  : "hover:bg-black/5 text-gray-900"
+                              }`}
                             >
                               <LayoutDashboard
-                                className="w-7 h-7 text-gray-900 shrink-0"
+                                className="w-7 h-7 shrink-0"
                                 strokeWidth={1.8}
                               />
-                              <span className="text-[17px] font-semibold text-gray-900">
+                              <span className="text-[17px] font-semibold">
                                 Pro Dashboard
                               </span>
                             </Link>
 
-                            {/* Divider */}
                             <hr className="border-gray-300/70" />
 
-                            {/* Logout */}
                             <button
                               onClick={handleLogout}
                               disabled={logout.isPending}
-                              className="flex items-center gap-4 w-full px-5 py-[18px] hover:bg-black/5 transition-colors disabled:opacity-50"
+                              className="flex items-center gap-4 w-full px-5 py-[18px] hover:bg-black/5 text-gray-900 transition-colors disabled:opacity-50"
                             >
                               <LogOut
-                                className="w-7 h-7 text-gray-900 shrink-0"
+                                className="w-7 h-7 shrink-0"
                                 strokeWidth={1.8}
                               />
-                              <span className="text-[17px] font-semibold text-gray-900">
+                              <span className="text-[17px] font-semibold">
                                 {logout.isPending ? "Logging out..." : "Logout"}
                               </span>
                             </button>
@@ -193,7 +239,13 @@ export default function Navbar() {
               ) : (
                 <>
                   <Link href="/cart">
-                    <button className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <button
+                      className={`relative p-2 transition-colors duration-200 ${
+                        isActive("/cart")
+                          ? "text-primary"
+                          : "text-gray-700 hover:text-gray-900"
+                      }`}
+                    >
                       <CartIcon className="w-6 h-6" />
                       <CartBadge count={cartCount} />
                     </button>
@@ -217,14 +269,25 @@ export default function Navbar() {
             {/* Mobile Right Icons */}
             <div className="lg:hidden flex items-center gap-0.5">
               {!isLoading && isAuthenticated && (
-                <Link href="/dashboard/saved-items">
-                  <button className="p-2 text-gray-700">
-                    <Heart className="w-5 h-5" />
+                <Link href="/dashboard/saved">
+                  <button
+                    className={`relative p-2 ${
+                      isActive("/dashboard/saved")
+                        ? "text-primary"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    <Heart
+                      className={`w-5 h-5 ${isActive("/dashboard/saved") ? "fill-primary" : ""}`}
+                    />
+                    <SavedBadge count={savedCount} />
                   </button>
                 </Link>
               )}
               <Link href="/cart">
-                <button className="relative p-2 cursor-pointer text-gray-700">
+                <button
+                  className={`relative p-2 cursor-pointer ${isActive("/cart") ? "text-primary" : "text-gray-700"}`}
+                >
                   <CartIcon className="w-5 h-5" />
                   <CartBadge count={cartCount} />
                 </button>
@@ -241,7 +304,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Slide-in Drawer */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -299,22 +362,32 @@ export default function Navbar() {
                   <p className="px-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
                     Navigate
                   </p>
-                  {navLinks.map((link, i) => (
-                    <motion.div
-                      key={link.name}
-                      initial={{ opacity: 0, x: 16 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 + 0.08 }}
-                    >
-                      <Link
-                        href={link.href}
-                        className="flex items-center px-3 py-3 text-[15px] font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors"
-                        onClick={() => setIsMenuOpen(false)}
+                  {navLinks.map((link, i) => {
+                    const active = isActive(link.href);
+                    return (
+                      <motion.div
+                        key={link.name}
+                        initial={{ opacity: 0, x: 16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.05 + 0.08 }}
                       >
-                        {link.name}
-                      </Link>
-                    </motion.div>
-                  ))}
+                        <Link
+                          href={link.href}
+                          className={`flex items-center justify-between px-3 py-3 text-[15px] font-medium rounded-lg transition-colors ${
+                            active
+                              ? "bg-primary/8 text-primary"
+                              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                          }`}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {link.name}
+                          {active && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          )}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
                 {!isLoading && isAuthenticated && (
@@ -323,15 +396,36 @@ export default function Navbar() {
                       Account
                     </p>
                     <MobileLink
-                      href="/dashboard"
+                      href="/dashboard/saved"
+                      icon={
+                        <span className="relative">
+                          <Heart className="w-4 h-4" />
+                          {savedCount > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-[14px] bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5 leading-none">
+                              {savedCount > 99 ? "99+" : savedCount}
+                            </span>
+                          )}
+                        </span>
+                      }
+                      label="Saved Items"
+                      active={isActive("/dashboard/saved")}
+                      onClick={() => setIsMenuOpen(false)}
+                    />
+                    <MobileLink
+                      href="/dashboard/profile"
                       icon={<User className="w-4 h-4" />}
                       label="Profile"
+                      active={isActive("/dashboard/profile")}
                       onClick={() => setIsMenuOpen(false)}
                     />
                     <MobileLink
                       href="/dashboard"
                       icon={<LayoutDashboard className="w-4 h-4" />}
                       label="Pro Dashboard"
+                      active={
+                        isActive("/dashboard") &&
+                        !isActive("/dashboard/profile")
+                      }
                       onClick={() => setIsMenuOpen(false)}
                     />
                   </div>
@@ -377,7 +471,25 @@ export default function Navbar() {
   );
 }
 
-/* ── Sub-components ── */
+/* ── Sub-components ──────────────────────────────────────────────────────── */
+
+function SavedBadge({ count }) {
+  if (!count || count === 0) return null;
+  return (
+    <AnimatePresence>
+      <motion.span
+        key={count}
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.5, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 leading-none"
+      >
+        {count > 99 ? "99+" : count}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
 
 function CartBadge({ count }) {
   if (!count || count === 0) return null;
@@ -434,15 +546,24 @@ function CartIcon({ className = "w-6 h-6" }) {
   );
 }
 
-function MobileLink({ href, icon, label, onClick }) {
+function MobileLink({ href, icon, label, active, onClick }) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className="flex items-center gap-3 px-3 py-3 text-[15px] font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+      className={`flex items-center justify-between px-3 py-3 text-[15px] font-medium rounded-lg transition-colors ${
+        active ? "bg-primary/8 text-primary" : "text-gray-700 hover:bg-gray-50"
+      }`}
     >
-      <span className="text-gray-400">{icon}</span>
-      {label}
+      <div className="flex items-center gap-3">
+        <span className={active ? "text-primary" : "text-gray-400"}>
+          {icon}
+        </span>
+        {label}
+      </div>
+      {active && (
+        <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+      )}
     </Link>
   );
 }

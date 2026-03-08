@@ -8,7 +8,6 @@ export async function GET(request) {
 
   const params = new URLSearchParams();
 
-  // Map frontend query params to API params
   const pageNumber = searchParams.get("pageNumber") || "1";
   const pageSize = searchParams.get("pageSize") || "12";
   const brandType = searchParams.get("brandType");
@@ -17,6 +16,8 @@ export async function GET(request) {
   const searchTerm = searchParams.get("searchTerm");
   const isFeatured = searchParams.get("isFeatured");
   const activeOnly = searchParams.get("activeOnly") ?? "true";
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
 
   params.set("pageNumber", pageNumber);
   params.set("pageSize", pageSize);
@@ -27,6 +28,10 @@ export async function GET(request) {
   if (isFeatured !== null && isFeatured !== undefined)
     params.set("isFeatured", isFeatured);
   if (activeOnly) params.set("ActiveOnly", activeOnly);
+  if (minPrice !== null && minPrice !== undefined)
+    params.set("MinPrice", minPrice);
+  if (maxPrice !== null && maxPrice !== undefined)
+    params.set("MaxPrice", maxPrice);
 
   try {
     const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
@@ -36,7 +41,7 @@ export async function GET(request) {
           ? { Authorization: `Bearer ${process.env.API_KEY}` }
           : {}),
       },
-      next: { revalidate: 60 }, // ISR: revalidate every 60s
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {

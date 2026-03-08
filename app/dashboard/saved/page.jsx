@@ -5,12 +5,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FolderPlus, ShoppingBag } from "lucide-react";
 
-import {
-  useBuyAll,
-  useCreateBoard,
-  useSavedItems,
-} from "@/hooks/use-saved-items";
-
+import { useSavedItems, useBuyAll, useCreateBoard } from "@/hooks/use-saved";
 import DashboardLayout from "@/components/shared/dashboard/layout";
 import SavedItemsFilters from "@/components/shared/dashboard/saved-items/filters";
 import SavedItemsGrid from "@/components/shared/dashboard/saved-items/grid";
@@ -21,18 +16,15 @@ export default function SavedItemsPage() {
     category: "all",
     sortBy: "date-added",
   });
-
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const { data: items, isLoading, isError } = useSavedItems(filters);
+  const { data: items = [], isLoading, isError } = useSavedItems(filters);
   const createBoard = useCreateBoard();
   const buyAll = useBuyAll();
 
   const handleCreateBoard = () => {
     const itemIds =
-      selectedItems.length > 0
-        ? selectedItems
-        : items?.map((item) => item.id) || [];
+      selectedItems.length > 0 ? selectedItems : items.map((item) => item.id);
     if (itemIds.length === 0) return;
 
     const boardName = prompt("Enter board name:");
@@ -40,37 +32,26 @@ export default function SavedItemsPage() {
       createBoard.mutate(
         { itemIds, boardName },
         {
-          onSuccess: (data) => {
-            alert(
-              `Board "${data.boardName}" created with ${data.itemCount} items!`,
-            );
-            setSelectedItems([]);
-          },
+          onSuccess: () => setSelectedItems([]),
         },
       );
     }
   };
 
   const handleBuyAll = () => {
-    const purchasableItems =
-      items?.filter((item) => item.price && !item.isInspirationBoard) || [];
-    const itemIds = purchasableItems.map((item) => item.id);
+    // Use selected items if any, otherwise all items
+    const targetItems =
+      selectedItems.length > 0
+        ? items.filter((item) => selectedItems.includes(item.id))
+        : items;
 
-    if (itemIds.length === 0) {
-      alert("No purchasable items in your saved list");
-      return;
-    }
+    const itemIds = targetItems.map((item) => item.id);
+    if (itemIds.length === 0) return;
 
-    buyAll.mutate(itemIds, {
-      onSuccess: (data) => {
-        alert(
-          `${data.itemCount} items added to cart. Total: $${data.total.toFixed(2)}`,
-        );
-      },
-    });
+    buyAll.mutate(itemIds);
   };
 
-  const totalItems = items?.length || 0;
+  const totalItems = items.length;
 
   return (
     <DashboardLayout>
@@ -92,11 +73,10 @@ export default function SavedItemsPage() {
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={handleCreateBoard}
-              disabled={totalItems === 0}
+              disabled={totalItems === 0 || createBoard.isPending}
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-primary hover:bg-[#f8f8f8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FolderPlus className="w-4 h-4" />
@@ -104,11 +84,15 @@ export default function SavedItemsPage() {
             </button>
             <button
               onClick={handleBuyAll}
-              disabled={totalItems === 0}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={totalItems === 0 || buyAll.isPending}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ShoppingBag className="w-4 h-4" />
-              Buy All
+              {buyAll.isPending
+                ? "Adding..."
+                : selectedItems.length > 0
+                  ? `Buy Selected (${selectedItems.length})`
+                  : "Buy All"}
             </button>
           </div>
         </motion.div>

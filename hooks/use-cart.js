@@ -7,16 +7,44 @@ export function useCart() {
   return useQuery({
     queryKey: ["cart"],
     queryFn: cartApi.getCart,
-    staleTime: Infinity, // localStorage never goes stale on its own
+    staleTime: 30 * 1000, // 30s — re-fetch if stale (backend may change)
     gcTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnMount: true, // re-read localStorage when component mounts
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  });
+}
+
+// ─── Merge guest cart after login ─────────────────────────────────────────────
+// Call this once immediately after successful login.
+// It POSTs local guest items to /api/v1/Cart/merge, clears localStorage,
+// then invalidates the cart query so the page re-fetches fresh from the backend.
+//
+// Usage:
+//   const mergeCart = useMergeGuestCart();
+//   // inside login onSuccess:
+//   await mergeCart.mutateAsync();
+export function useMergeGuestCart() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: cartApi.mergeGuestCart,
+    onSuccess: (result) => {
+      // Log any merge warnings from the backend (stock caps, duplicates, etc.)
+      if (result.warnings?.length) {
+        console.info("[cart] merge warnings:", result.warnings);
+      }
+      // Force a fresh fetch from the backend
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: (err) => {
+      // Non-fatal — cart will re-fetch from backend anyway
+      console.warn("[cart] merge error:", err.message);
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 }
 
 // ─── Add to cart ──────────────────────────────────────────────────────────────
-// NOTE: caller must pass the full product object, not just a productId.
-// Usage: addToCart.mutate({ product, quantity })
 export function useAddToCart() {
   const queryClient = useQueryClient();
 

@@ -13,9 +13,9 @@ import {
   Tag,
   Building2,
 } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import { useAddToCart } from "@/hooks/use-cart";
+import { useIsAuthenticated } from "@/hooks/use-auth";
+import { useIsSaved, useToggleSave } from "@/hooks/use-saved";
 import { showToast } from "@/components/shared/toast";
 import Breadcrumb from "@/components/shared/materials/details/bread-crumb";
 import ImageGallery from "@/components/shared/materials/details/image-gallery";
@@ -32,12 +32,13 @@ export default function MaterialDetailClient({
   product = {},
   similarProducts = [],
 }) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const addToCart = useAddToCart();
+  const { isAuthenticated } = useIsAuthenticated();
+  const { isSaved, savedId, isLoading: savedLoading } = useIsSaved(product.id);
+  const toggleSave = useToggleSave();
 
-  // ── Normalise product shape from real API ─────────────────────────────────
   const images = product.images?.length
     ? product.images
     : product.primaryImageUrl
@@ -55,23 +56,20 @@ export default function MaterialDetailClient({
 
   const totalPrice = product.price != null ? product.price * quantity : null;
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleAddToCart = () => {
     addToCart.mutate(
       { product, quantity },
       {
-        onSuccess: (data) => {
+        onSuccess: (data) =>
           showToast.success({
             title: "Added to Cart",
             message: data.message || `${quantity}x added successfully.`,
-          });
-        },
-        onError: (error) => {
+          }),
+        onError: (error) =>
           showToast.error({
             title: "Couldn't Add to Cart",
-            message: error.message || "Something went wrong. Please try again.",
-          });
-        },
+            message: error.message || "Something went wrong.",
+          }),
       },
     );
   };
@@ -81,16 +79,15 @@ export default function MaterialDetailClient({
       try {
         await navigator.share({
           title: product?.name || "Product",
-          text: product?.shortDescription || product?.description || "",
+          text: product?.shortDescription || "",
           url: window.location.href,
         });
       } catch (error) {
-        if (error.name !== "AbortError") {
+        if (error.name !== "AbortError")
           showToast.error({
             title: "Share Failed",
-            message: "Unable to share. Please try again.",
+            message: "Unable to share.",
           });
-        }
       }
     } else {
       try {
@@ -108,24 +105,15 @@ export default function MaterialDetailClient({
     }
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite((prev) => {
-      const next = !prev;
-      if (next)
-        showToast.success({
-          title: "Saved",
-          message: "Added to your saved items.",
-        });
-      else
-        showToast.info({
-          title: "Removed",
-          message: "Removed from your saved items.",
-        });
-      return next;
-    });
+  const handleToggleSave = () => {
+    if (!isAuthenticated) {
+      window.location.href =
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
+      return;
+    }
+    toggleSave.mutate({ productId: product.id, savedId, isSaved });
   };
 
-  // ── Normalise similar products for SimilarStyles component ───────────────
   const normalisedSimilar = similarProducts.map((p) => ({
     id: p.id,
     name: p.name,
@@ -139,7 +127,6 @@ export default function MaterialDetailClient({
 
   return (
     <div className="min-h-screen bg-gray-50 font-manrope pt-20">
-      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb
@@ -156,19 +143,16 @@ export default function MaterialDetailClient({
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left — Image Gallery */}
           <ImageGallery
             images={images}
             productName={product?.name || "Product"}
           />
 
-          {/* Right — Product Details */}
           <div className="w-full max-w-full overflow-hidden">
             <div className="space-y-6">
-              {/* Badges row */}
+              {/* Badges */}
               <div className="flex flex-wrap gap-2">
                 {product.isFeatured && (
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary text-white">
@@ -187,24 +171,32 @@ export default function MaterialDetailClient({
                 )}
               </div>
 
-              {/* Title & Favourite */}
+              {/* Title & Save */}
               <div className="flex items-start justify-between gap-4">
                 <h1 className="text-3xl font-semibold text-primary leading-tight flex-1 min-w-0">
                   {product?.name || "Product Name"}
                 </h1>
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={toggleFavorite}
-                  className="shrink-0 w-10 h-10 flex items-center justify-center hover:border-primary transition-colors"
+                  whileHover={{ scale: savedLoading ? 1 : 1.1 }}
+                  whileTap={{ scale: savedLoading ? 1 : 0.95 }}
+                  onClick={handleToggleSave}
+                  disabled={savedLoading || toggleSave.isPending}
+                  className="shrink-0 w-10 h-10 flex items-center justify-center transition-colors disabled:opacity-60"
+                  aria-label={isSaved ? "Remove from saved" : "Save product"}
                 >
                   <Heart
-                    className={`w-5 h-5 ${isFavorite ? "fill-primary text-primary" : "text-primary"}`}
+                    className={`w-5 h-5 transition-colors duration-200 ${
+                      savedLoading
+                        ? "text-gray-300"
+                        : isSaved
+                          ? "fill-primary text-primary"
+                          : "text-primary"
+                    }`}
                   />
                 </motion.button>
               </div>
 
-              {/* Meta row — brand, category, SKU */}
+              {/* Meta */}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
                 {product.brandName && (
                   <span className="flex items-center gap-1">
@@ -246,7 +238,7 @@ export default function MaterialDetailClient({
                 )}
               </div>
 
-              {/* Stock Status */}
+              {/* Stock */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
                 {product.inStock ? (
                   <>
@@ -267,7 +259,7 @@ export default function MaterialDetailClient({
                 )}
               </div>
 
-              {/* Quantity Selector */}
+              {/* Quantity */}
               {product.showPrice && product.inStock && (
                 <div className="border border-gray-200 rounded-lg p-4 space-y-3">
                   <p className="text-sm font-medium text-gray-700">Quantity</p>
@@ -334,12 +326,9 @@ export default function MaterialDetailClient({
                 Share Product
               </motion.button>
 
-              {/* AI Visualizer */}
               <div className="w-full">
                 <AIVisualizer />
               </div>
-
-              {/* Project Card */}
               <div className="w-full">
                 <ProjectCard
                   title="Master Bath Renovation"
@@ -351,12 +340,9 @@ export default function MaterialDetailClient({
           </div>
         </div>
 
-        {/* Product Tabs — description, specs, etc. */}
         <div className="mb-12">
           <ProductTabs material={product} />
         </div>
-
-        {/* Ratings & Reviews */}
         <div className="mb-12">
           <RatingsReviews
             averageRating={product?.rating || 4.5}
@@ -366,8 +352,6 @@ export default function MaterialDetailClient({
             }
           />
         </div>
-
-        {/* Similar Products */}
         <SimilarStyles materials={normalisedSimilar} />
       </div>
     </div>
