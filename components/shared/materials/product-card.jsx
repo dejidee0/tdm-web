@@ -2,15 +2,64 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { useIsAuthenticated } from "@/hooks/use-auth";
+import { useIsSaved, useToggleSave } from "@/hooks/use-saved";
 
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop";
 
-export default function ProductCard({ product, viewMode = "grid" }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+function HeartIcon({ filled, loading, className = "w-4 h-4" }) {
+  return (
+    <svg
+      className={`${className} transition-colors duration-200 ${
+        loading
+          ? "fill-none text-gray-300"
+          : filled
+            ? "fill-red-500 text-red-500"
+            : "fill-none text-gray-400"
+      }`}
+      stroke="currentColor"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+      />
+    </svg>
+  );
+}
 
+function SaveButton({ productId, className = "", iconClass = "w-4 h-4" }) {
+  const { isAuthenticated } = useIsAuthenticated();
+  const { isSaved, savedId, isLoading } = useIsSaved(productId);
+  const toggleSave = useToggleSave();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      window.location.href =
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
+      return;
+    }
+    toggleSave.mutate({ productId, savedId, isSaved });
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={isLoading || toggleSave.isPending}
+      className={`flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-60 ${className}`}
+      aria-label={isSaved ? "Remove from saved" : "Save item"}
+    >
+      <HeartIcon filled={isSaved} loading={isLoading} className={iconClass} />
+    </button>
+  );
+}
+
+export default function ProductCard({ product, viewMode = "grid" }) {
   const imageUrl =
     product.primaryImageUrl || product.images?.[0] || PLACEHOLDER;
   const hasDiscount =
@@ -22,8 +71,7 @@ export default function ProductCard({ product, viewMode = "grid" }) {
       )
     : 0;
 
-  // Always use product.id as the canonical route identifier
-  const detailHref = `/materials/${product.id}`;
+  const detailHref = `/materials/${product.slug || product.id}`;
 
   if (viewMode === "list") {
     return (
@@ -51,26 +99,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
                 <p className="text-xs text-primary font-semibold uppercase tracking-wide">
                   {product.categoryName} · {product.brandName}
                 </p>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsFavorite(!isFavorite);
-                  }}
-                  className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:scale-110 transition-transform shrink-0"
-                >
-                  <svg
-                    className={`w-4 h-4 ${isFavorite ? "fill-red-500 text-red-500" : "fill-none text-gray-400"}`}
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                </button>
+                <SaveButton
+                  productId={product.id}
+                  className="w-8 h-8 bg-gray-100 rounded-full shrink-0"
+                  iconClass="w-4 h-4"
+                />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">
                 {product.name}
@@ -100,7 +133,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
               </div>
               <div className="flex items-center gap-2">
                 <span
-                  className={`text-xs font-medium px-2 py-1 rounded-full ${product.inStock ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                  className={`text-xs font-medium px-2 py-1 rounded-full ${
+                    product.inStock
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
                 >
                   {product.inStock
                     ? `${product.stockQuantity ?? "✓"} in stock`
@@ -145,7 +182,6 @@ export default function ProductCard({ product, viewMode = "grid" }) {
         whileHover={{ y: -4 }}
         className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer h-full flex flex-col"
       >
-        {/* Image */}
         <div className="relative h-48 sm:h-56 lg:h-64 bg-gray-100 shrink-0">
           <Image
             src={imageUrl}
@@ -154,7 +190,6 @@ export default function ProductCard({ product, viewMode = "grid" }) {
             className="object-cover"
           />
 
-          {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5">
             {product.isFeatured && (
               <span className="text-xs font-medium px-2 py-1 rounded bg-primary text-white">
@@ -173,46 +208,24 @@ export default function ProductCard({ product, viewMode = "grid" }) {
             )}
           </div>
 
-          {/* Favorite */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setIsFavorite(!isFavorite);
-            }}
-            className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform"
-          >
-            <svg
-              className={`w-4 h-4 ${isFavorite ? "fill-red-500 text-red-500" : "fill-none text-gray-400"}`}
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
+          <SaveButton
+            productId={product.id}
+            className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full shadow-md"
+            iconClass="w-4 h-4"
+          />
         </div>
 
-        {/* Info */}
         <div className="p-4 flex flex-col flex-1">
-          <div className="flex justify-between items-start mb-1">
-            <p className="text-xs text-primary font-semibold uppercase tracking-wide">
-              {product.categoryName} · {product.brandName}
-            </p>
-          </div>
-
+          <p className="text-xs text-primary font-semibold uppercase tracking-wide mb-1">
+            {product.categoryName} · {product.brandName}
+          </p>
           <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 flex-1">
             {product.name}
           </h3>
-
           <p className="text-sm text-gray-500 mb-3 line-clamp-2">
             {product.shortDescription || product.description}
           </p>
 
-          {/* Stock */}
           <div className="flex items-center gap-1.5 mb-3">
             {product.inStock ? (
               <>
@@ -238,7 +251,6 @@ export default function ProductCard({ product, viewMode = "grid" }) {
             )}
           </div>
 
-          {/* Price + CTA */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto">
             <div>
               {product.showPrice ? (

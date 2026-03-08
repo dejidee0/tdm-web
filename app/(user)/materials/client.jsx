@@ -10,7 +10,7 @@ import ProductGrid from "@/components/shared/materials/product-grid";
 import Pagination from "@/components/shared/materials/pagination";
 import { productKeys } from "@/hooks/use-products";
 
-// ─── Sort helper (client-side) ────────────────────────────────────────────────
+// ─── Sort helper (client-side, price sorts now just UI order fallback) ────────
 function sortItems(items = [], sortBy) {
   const arr = [...items];
   switch (sortBy) {
@@ -24,7 +24,6 @@ function sortItems(items = [], sortBy) {
       );
     case "popular":
     default:
-      // Keep original API order (popularity/recency from server)
       return arr;
   }
 }
@@ -43,9 +42,14 @@ async function fetchProducts(filters, page, pageSize = 12) {
   if (filters.productTypes?.length === 1)
     params.set("productType", String(filters.productTypes[0]));
   if (filters.searchTerm) params.set("searchTerm", filters.searchTerm);
-  // "featured" sort uses isFeatured=true filter on the API
+
+  // ── Server-side filters (previously client-side or missing) ──────────────
   if (filters.isFeatured != null)
     params.set("isFeatured", String(filters.isFeatured));
+  if (filters.minPrice != null)
+    params.set("minPrice", String(filters.minPrice));
+  if (filters.maxPrice != null)
+    params.set("maxPrice", String(filters.maxPrice));
 
   const res = await fetch(`/api/products?${params.toString()}`);
   if (!res.ok) throw new Error(`Products fetch failed: ${res.status}`);
@@ -86,6 +90,8 @@ export default function MaterialsClient({ initialData }) {
     productTypes: [],
     searchTerm: "",
     isFeatured: null,
+    minPrice: null,
+    maxPrice: null,
   });
   const [sortBy, setSortBy] = useState("popular");
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,8 +117,7 @@ export default function MaterialsClient({ initialData }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Main Query — sortBy intentionally excluded from queryKey so changing
-  //    sort doesn't trigger a refetch; sorting is done client-side below ──────
+  // ── Main Query ────────────────────────────────────────────────────────────
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: productKeys.list({ filters: activeFilters, page: currentPage }),
     queryFn: () => fetchProducts(activeFilters, currentPage, PAGE_SIZE),
@@ -175,6 +180,9 @@ export default function MaterialsClient({ initialData }) {
           ...prev,
           productTypes: prev.productTypes.filter((p) => p !== value),
         };
+      if (filterType === "minPrice") return { ...prev, minPrice: null };
+      if (filterType === "maxPrice") return { ...prev, maxPrice: null };
+      if (filterType === "isFeatured") return { ...prev, isFeatured: null };
       return prev;
     });
     setCurrentPage(1);
@@ -187,6 +195,8 @@ export default function MaterialsClient({ initialData }) {
       productTypes: [],
       searchTerm: "",
       isFeatured: null,
+      minPrice: null,
+      maxPrice: null,
     });
     setCurrentPage(1);
   }, []);
@@ -196,7 +206,6 @@ export default function MaterialsClient({ initialData }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // Reset to page 1 when sort changes
   const handleSortChange = useCallback((value) => {
     setSortBy(value);
     setCurrentPage(1);
@@ -394,7 +403,7 @@ export default function MaterialsClient({ initialData }) {
               </div>
             )}
 
-            {/* Grid — uses sortedItems instead of data.items */}
+            {/* Grid */}
             <ProductGrid
               products={sortedItems}
               isLoading={isLoading}

@@ -5,9 +5,9 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
 
 // ─── Server-side fetchers ──────────────────────────────────────────────────────
-async function getProduct(id) {
+async function getProduct(slug) {
   try {
-    const res = await fetch(`${BASE_URL}/Products/${id}`, {
+    const res = await fetch(`${BASE_URL}/Products/slug/${slug}`, {
       next: { revalidate: 120 },
       headers: {
         "Content-Type": "application/json",
@@ -52,8 +52,8 @@ async function getSimilarProducts(categoryId, excludeId) {
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  const { slug } = await params;
+  const product = await getProduct(slug);
 
   if (!product) {
     return {
@@ -88,16 +88,16 @@ export async function generateMetadata({ params }) {
       images: [imageUrl],
     },
     alternates: {
-      canonical: `/materials/${product.slug || id}`,
+      canonical: `/materials/${product.slug || slug}`,
     },
   };
 }
 
 // ─── Page Component ───────────────────────────────────────────────────────────
 export default async function MaterialDetailPage({ params }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const product = await getProduct(id);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();

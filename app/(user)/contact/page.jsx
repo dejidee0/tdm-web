@@ -9,6 +9,10 @@ import {
   SendHorizonal,
 } from "lucide-react";
 import Image from "next/image";
+import { showToast } from "@/components/shared/toast";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
 
 export default function ContactPage() {
   const [selectedService, setSelectedService] = useState(
@@ -20,6 +24,121 @@ export default function ContactPage() {
   const [selectedMethod, setSelectedMethod] = useState("");
   const [isMethodOpen, setIsMethodOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.fullName.trim()) {
+      showToast.error({
+        title: "Missing Info",
+        message: "Please enter your full name.",
+      });
+      return;
+    }
+    if (!formData.email.trim()) {
+      showToast.error({
+        title: "Missing Info",
+        message: "Please enter your email address.",
+      });
+      return;
+    }
+    if (!formData.message.trim()) {
+      showToast.error({
+        title: "Missing Info",
+        message: "Please tell us about your project.",
+      });
+      return;
+    }
+
+    const payload = {
+      fullName: formData.fullName.trim(),
+      email: formData.email.trim(),
+      phoneNumber: formData.phoneNumber.trim(),
+      subject: selectedService,
+      message: formData.message.trim(),
+    };
+
+    console.log("📤 [Contact] Submitting to:", `${BASE_URL}/contact`);
+    console.log("📦 [Contact] Payload:", JSON.stringify(payload, null, 2));
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${BASE_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("📬 [Contact] Response status:", res.status, res.statusText);
+      console.log(
+        "📬 [Contact] Response headers:",
+        Object.fromEntries(res.headers.entries()),
+      );
+
+      const rawText = await res.text();
+      console.log("📬 [Contact] Raw response body:", rawText);
+
+      let json = null;
+      try {
+        json = JSON.parse(rawText);
+        console.log("✅ [Contact] Parsed JSON:", json);
+      } catch (parseErr) {
+        console.warn(
+          "⚠️ [Contact] Response is not valid JSON:",
+          parseErr.message,
+        );
+      }
+
+      if (!res.ok) {
+        const errMsg =
+          json?.message ||
+          json?.title ||
+          json?.errors?.[0] ||
+          rawText ||
+          `Server returned ${res.status}`;
+        console.error("❌ [Contact] Submission failed:", errMsg);
+        showToast.error({ title: `Error ${res.status}`, message: errMsg });
+        return;
+      }
+
+      console.log("🎉 [Contact] Submission successful!");
+      showToast.success({
+        title: "Message Sent!",
+        message: json?.message || "We'll get back to you within 5 minutes.",
+      });
+
+      // Reset form
+      setFormData({ fullName: "", email: "", phoneNumber: "", message: "" });
+      setSelectedService("Consultation for Home Renovation");
+      setSelectedBudget("");
+      setSelectedMethod("");
+    } catch (err) {
+      console.error("🔥 [Contact] Network/fetch exception:", err);
+      console.error("🔥 [Contact] Error name:", err.name);
+      console.error("🔥 [Contact] Error message:", err.message);
+      console.error("🔥 [Contact] Error stack:", err.stack);
+      showToast.error({
+        title: "Network Error",
+        message:
+          err.message ||
+          "Unable to send message. Please check your connection.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const services = [
     "Consultation for Home Renovation",
@@ -129,6 +248,7 @@ export default function ContactPage() {
 
             {/* Form */}
             <motion.form
+              onSubmit={handleSubmit}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
@@ -180,17 +300,34 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Full Name"
+                  required
                   className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Email Address"
+                  required
                   className="bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
-              {/* Budget and Method */}
+              {/* Phone, Budget and Method */}
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="Phone Number (Optional)"
+                className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative">
                   <button
@@ -198,7 +335,9 @@ export default function ContactPage() {
                     onClick={() => setIsBudgetOpen(!isBudgetOpen)}
                     className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-left text-[#94a3b8] text-sm sm:text-base shadow-sm flex items-center justify-between"
                   >
-                    <span className="truncate">
+                    <span
+                      className={`truncate ${selectedBudget ? "text-primary" : ""}`}
+                    >
                       {selectedBudget || "Project Budget (Optional)"}
                     </span>
                     <ChevronDown
@@ -236,7 +375,9 @@ export default function ContactPage() {
                     onClick={() => setIsMethodOpen(!isMethodOpen)}
                     className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-left text-[#94a3b8] text-sm sm:text-base shadow-sm flex items-center justify-between"
                   >
-                    <span className="truncate">
+                    <span
+                      className={`truncate ${selectedMethod ? "text-primary" : ""}`}
+                    >
                       {selectedMethod || "Preferred Contact Method"}
                     </span>
                     <ChevronDown
@@ -271,20 +412,42 @@ export default function ContactPage() {
 
               {/* Message */}
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Tell us about your project..."
                 rows={5}
+                required
                 className="w-full bg-white rounded-xl px-4 py-3 sm:py-4 text-sm sm:text-base text-primary placeholder:text-[#94a3b8] shadow-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               ></textarea>
 
               {/* Submit Button */}
               <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.99 }}
                 type="submit"
-                className="w-full bg-primary text-white rounded-xl py-3 sm:py-4 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 shadow-lg"
+                disabled={isSubmitting}
+                className="w-full bg-primary text-white rounded-xl py-3 sm:py-4 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 shadow-lg disabled:opacity-70 disabled:cursor-not-allowed transition-opacity"
               >
-                Send Message
-                <SendHorizonal className="w-4 h-4 sm:w-5 sm:h-5" />
+                {isSubmitting ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full"
+                    />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <SendHorizonal className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </>
+                )}
               </motion.button>
 
               <p className="text-[#94a3b8] text-xs text-center mt-4">
@@ -353,10 +516,9 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative h-[500px] sm:h-[600px] lg:h-full lg:min-h-[700px] lg:mt-[72px]"
           >
-            <div className="relative h-[94%]  overflow-hidden">
-              {/* Replaced img with Next.js Image */}
+            <div className="relative h-[94%] overflow-hidden">
               <Image
-                src="/contact.svg" // make sure this is in the public folder
+                src="/contact.svg"
                 alt="Luxury interior"
                 fill
                 className="object-cover w-full h-full"
@@ -447,10 +609,7 @@ export default function ContactPage() {
                 transition={{ delay: 1.2 }}
                 className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 right-4 sm:right-auto rounded-xl overflow-hidden text-white text-xs sm:text-sm font-medium flex items-center gap-2 sm:gap-3 px-3 py-6 sm:px-4 sm:py-3 bg-black/60 backdrop-blur-sm shadow-lg"
               >
-                {/* Optional: background gradient overlay */}
                 <div className="absolute inset-0 bg-linear-to-r from-white/10 via-gray-400/20 to-black/50 pointer-events-none" />
-
-                {/* Content */}
                 <div className="relative z-10 flex items-center gap-2 sm:gap-3">
                   <svg
                     className="w-3 h-3 sm:w-4 sm:h-4 shrink-0"

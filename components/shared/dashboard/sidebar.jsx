@@ -21,7 +21,7 @@ const navItems = [
   { icon: LayoutGrid, label: "Overview", href: "/dashboard" },
   { icon: Package, label: "Orders", href: "/dashboard/orders" },
   { icon: Layers, label: "AI Designs", href: "/dashboard/ai-designs" },
-  { icon: Heart, label: "Saved Items", href: "/dashboard/saved-items" },
+  { icon: Heart, label: "Saved Items", href: "/dashboard/saved" },
   { icon: Calendar, label: "Project", href: "/dashboard/project" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
 ];

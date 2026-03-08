@@ -171,7 +171,7 @@ export default function SimilarStyles({ materials = [] }) {
                   <div className="flex items-center justify-between">
                     <div className="flex items-baseline gap-1">
                       <span className="text-lg font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
+                        ${product.price?.toFixed(2)}
                       </span>
                       <span className="text-sm text-gray-500">/ sq ft</span>
                     </div>

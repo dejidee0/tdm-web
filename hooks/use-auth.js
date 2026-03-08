@@ -1,4 +1,4 @@
-// hooks/use-auth.js — updated useLogin to handle ?from= redirect
+// hooks/use-auth.js
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import {
   resendVerificationCode,
 } from "@/lib/actions/auth";
 import { removeToken } from "@/lib/client-auth";
+import { cartApi } from "@/lib/api/cart";
 
 export const authKeys = {
   all: ["auth"],
@@ -63,11 +64,29 @@ export function useLogin() {
       if (!result.success) throw new Error(result.error);
       return result.data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      // 1. Update auth state
       queryClient.setQueryData(authKeys.user(), data.user);
       queryClient.invalidateQueries({ queryKey: authKeys.user() });
 
-      // Redirect back to the page they were trying to visit, or home
+      // 2. Merge guest cart → backend (non-blocking, non-fatal)
+      //    Fire-and-forget: don't await, don't let it block the redirect
+      cartApi
+        .mergeGuestCart()
+        .then((result) => {
+          if (result.warnings?.length) {
+            console.info("[cart] merge warnings:", result.warnings);
+          }
+          // Refresh cart from backend after merge
+          queryClient.invalidateQueries({ queryKey: ["cart"] });
+        })
+        .catch((err) => {
+          // Non-fatal — user still logs in successfully
+          console.warn("[cart] merge failed:", err.message);
+          queryClient.invalidateQueries({ queryKey: ["cart"] });
+        });
+
+      // 3. Redirect
       const from = searchParams.get("from") || "/";
       router.push(from);
       router.refresh();
@@ -92,6 +111,15 @@ export function useLogout() {
       removeToken();
       queryClient.setQueryData(authKeys.user(), null);
       queryClient.removeQueries({ queryKey: authKeys.all });
+      // Reset cart to empty so guest sees a fresh cart
+      queryClient.setQueryData(["cart"], {
+        items: [],
+        subtotal: 0,
+        tax: 0,
+        total: 0,
+        shipping: 0,
+        taxRate: 0.0875,
+      });
 
       if (typeof window !== "undefined") {
         localStorage.removeItem("verificationEmail");
