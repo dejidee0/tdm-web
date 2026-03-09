@@ -23,12 +23,12 @@ export default function CartPage() {
           <div className="flex items-center gap-2 text-[13px]">
             <Link
               href="/"
-              className="text-[#666666] hover:text-[#1a1a1a] transition-colors"
+              className="text-[#666666] hover:text-primary transition-colors"
             >
               Home
             </Link>
             <ChevronRight className="w-4 h-4 text-[#999999]" />
-            <span className="text-[#1a1a1a] font-medium">Shopping Cart</span>
+            <span className="text-primary font-medium">Shopping Cart</span>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@ export default function CartPage() {
           className="flex items-center justify-between mb-8"
         >
           <div>
-            <h1 className="text-[32px] md:text-[40px] font-bold text-[#1a1a1a] leading-tight">
+            <h1 className="text-[32px] md:text-[40px] font-bold text-primary leading-tight">
               Your Shopping Cart
             </h1>
             <p className="text-[15px] text-[#666666] mt-1">

@@ -100,7 +100,7 @@ export default function OrderDetailsPage({ params }) {
               Invoice
             </button>
             <Link
-              href="/support"
+              href="/contact"
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors"
             >
               <Headphones className="w-4 h-4" />

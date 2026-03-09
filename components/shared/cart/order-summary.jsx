@@ -180,7 +180,7 @@ export default function OrderSummary({ cart, isLoading }) {
       <p className="text-[13px] text-center text-[#666666] pt-2">
         Need help?{" "}
         <Link
-          href="/support"
+          href="/contact"
           className="text-[#3b82f6] hover:text-[#2563eb] font-medium"
         >
           Contact Support
