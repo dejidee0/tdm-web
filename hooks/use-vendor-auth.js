@@ -25,7 +25,11 @@ export function useVendorLogin() {
 
   return useMutation({
     mutationFn: async (credentials) => {
+      console.log('credentials', credentials);
+      
       const result = await vendorLogin(credentials);
+      console.log('result', result);
+      
 
       if (!result.success) {
         throw new Error(result.error);

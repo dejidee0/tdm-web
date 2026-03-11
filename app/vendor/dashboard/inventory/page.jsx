@@ -100,8 +100,8 @@ function InventoryContent() {
         shortDescription: productData.description || "",
         categoryId: productData.category || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default category from Swagger
         sku: productData.sku,
-        brandType: "", // Empty string as shown in Swagger
-        productType: "", // Empty string as shown in Swagger
+        brandType: productData.brandType, // Empty string as shown in Swagger
+        productType: productData.productType, // Empty string as shown in Swagger
         price: Number(productData.unitPrice) || 0,
         stockQuantity: Number(productData.initialQuantity) || 0,
         lowStockThreshold: Number(productData.reorderPoint) || 0,
