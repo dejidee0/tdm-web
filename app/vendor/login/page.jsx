@@ -16,7 +16,7 @@ export default function VendorLoginPage() {
     initialValues: {
       email: "Ifemicheal2@gmail.com",
       password: "Nisotgreg0",
-      rememberMe: true,
+      // rememberMe: true,
     },
     validationSchema: signInSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -101,7 +101,7 @@ export default function VendorLoginPage() {
             )}
           </div>
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer">
               <input
                 id="rememberMe"
@@ -114,7 +114,7 @@ export default function VendorLoginPage() {
               />
               <span className="text-sm text-gray-600">Remember me</span>
             </label>
-          </div>
+          </div> */}
 
           {submitError && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">

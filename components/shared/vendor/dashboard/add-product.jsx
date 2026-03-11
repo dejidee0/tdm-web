@@ -3,32 +3,124 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, RefreshCw, ChevronDown } from "lucide-react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { showToast } from "@/components/shared/toast";
+
+// Validation Schema
+const validationSchema = Yup.object({
+  productName: Yup.string()
+    .required("Product name is required")
+    .min(3, "Product name must be at least 3 characters"),
+  sku: Yup.string()
+    .required("SKU is required"),
+  categoryId: Yup.string()
+    .required("Category is required"),
+  brandType: Yup.number()
+    .required("Brand type is required")
+    .min(0, "Brand type must be 0 or greater"),
+  productType: Yup.number()
+    .required("Product type is required")
+    .min(0, "Product type must be 0 or greater"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+  shortDescription: Yup.string()
+    .required("Short description is required")
+    .min(5, "Short description must be at least 5 characters"),
+  unitPrice: Yup.number()
+    .required("Unit price is required")
+    .min(0, "Price must be greater than or equal to 0"),
+  initialQuantity: Yup.number()
+    .required("Initial quantity is required")
+    .min(0, "Quantity must be greater than or equal to 0"),
+  reorderPoint: Yup.number()
+    .required("Reorder point is required")
+    .min(0, "Reorder point must be greater than or equal to 0"),
+});
 
 export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading = false }) {
-  const [formData, setFormData] = useState({
-    productName: "",
-    sku: "",
-    category: "",
-    brandType: "",
-    productType: "",
-    description: "",
-    warehouseLocation: "",
-    initialQuantity: 0,
-    reorderPoint: 10,
-    unitPrice: 0,
-    productImages: [],
-  });
-
-  const [isAutoSKU, setIsAutoSKU] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  const formik = useFormik({
+    initialValues: {
+      productName: "",
+      sku: "",
+      category: "",
+      categoryId: "",
+      brandType: 0,
+      productType: 0,
+      description: "",
+      shortDescription: "",
+      warehouseLocation: "",
+      initialQuantity: 0,
+      reorderPoint: 10,
+      unitPrice: 0,
+      isActive: true,
+      trackInventory: true,
+      productImages: [],
+    },
+    validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const payload = {
+          name: values.productName,
+          description: values.description,
+          shortDescription: values.shortDescription,
+          categoryId: values.categoryId || values.category,
+          sku: values.sku,
+          brandType: values.brandType,
+          productType: values.productType,
+          price: values.unitPrice,
+          stockQuantity: values.initialQuantity,
+          lowStockThreshold: values.reorderPoint,
+          isActive: values.isActive,
+          trackInventory: values.trackInventory,
+        };
+
+        // Call the parent onSubmit function
+        const response = await onSubmit(payload, values.productImages);
+
+        // Check if response contains an error
+        if (response?.error || response?.errors) {
+          const errorMessage = response.error ||
+                             (response.errors && typeof response.errors === 'object'
+                               ? Object.values(response.errors).flat().join(', ')
+                               : 'An error occurred while adding the product.');
+
+          throw new Error(errorMessage);
+        }
+
+        // Show success toast
+        showToast.success({
+          title: "Product Added!",
+          message: `${values.productName} has been successfully added to inventory.`
+        });
+
+        // Reset form after successful submission
+        resetForm();
+
+        // Close modal
+        onClose();
+      } catch (error) {
+        // If it's an authentication error (401), re-throw to allow logout/redirect
+        if (error.status === 401 || error.message?.includes('401') || error.message?.toLowerCase().includes('unauthorized')) {
+          throw error; // Let the parent handle authentication
+        }
+
+        // Show error toast for other errors
+        showToast.error({
+          title: "Failed to Add Product",
+          message: error.message || "An error occurred while adding the product. Please try again."
+        });
+        console.error("Error adding product:", error);
+      }
+    },
+  });
 
   const handleGenerateSKU = () => {
     const randomSKU = `SKU-${Math.floor(Math.random() * 9000) + 1000}`;
-    handleChange("sku", randomSKU);
+    formik.setFieldValue("sku", randomSKU);
   };
 
   const handleDrag = (e) => {
@@ -70,32 +162,22 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
       name: file.name,
     }));
 
-    handleChange("productImages", [...formData.productImages, ...newImages]);
+    formik.setFieldValue("productImages", [...formik.values.productImages, ...newImages]);
   };
 
   const handleRemoveImage = (index) => {
-    const updatedImages = formData.productImages.filter((_, i) => i !== index);
+    const updatedImages = formik.values.productImages.filter((_, i) => i !== index);
     // Revoke the URL to free up memory
-    URL.revokeObjectURL(formData.productImages[index].preview);
-    handleChange("productImages", updatedImages);
+    URL.revokeObjectURL(formik.values.productImages[index].preview);
+    formik.setFieldValue("productImages", updatedImages);
   };
 
-  const handleSubmit = () => {
-    onSubmit(formData);
-    // Reset form
-    setFormData({
-      productName: "",
-      sku: "",
-      category: "",
-      brandType: "",
-      productType: "",
-      description: "",
-      warehouseLocation: "",
-      initialQuantity: 0,
-      reorderPoint: 10,
-      unitPrice: 0,
-      productImages: [],
-    });
+
+  // Error message component
+  const ErrorMessage = ({ name }) => {
+    return formik.touched[name] && formik.errors[name] ? (
+      <p className="text-red-500 text-[11px] mt-1 font-manrope">{formik.errors[name]}</p>
+    ) : null;
   };
 
   return (
@@ -113,12 +195,13 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <motion.div
+            <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
+              onSubmit={formik.handleSubmit}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-[640px] max-h-[90vh] overflow-hidden pointer-events-auto"
             >
               {/* Header */}
@@ -162,13 +245,18 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                     </label>
                     <input
                       type="text"
+                      name="productName"
                       placeholder="e.g. Industrial Hydraulic Pump V4"
-                      value={formData.productName}
-                      onChange={(e) =>
-                        handleChange("productName", e.target.value)
-                      }
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                      value={formik.values.productName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                        formik.touched.productName && formik.errors.productName
+                          ? "border-red-500"
+                          : "border-[#E5E7EB]"
+                      }`}
                     />
+                    <ErrorMessage name="productName" />
                   </div>
 
                   {/* SKU and Category Row */}
@@ -179,15 +267,24 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         SKU
                       </label>
                       <div className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          placeholder="SKU-0000"
-                          value={formData.sku}
-                          onChange={(e) => handleChange("sku", e.target.value)}
-                          disabled={isAutoSKU}
-                          className="flex-1 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent disabled:bg-[#F8FAFC] disabled:text-[#94A3B8]"
-                        />
+                        <div className="flex-1">
+                          <input
+                            type="text"
+                            name="sku"
+                            placeholder="SKU-0000"
+                            value={formik.values.sku}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                              formik.touched.sku && formik.errors.sku
+                                ? "border-red-500"
+                                : "border-[#E5E7EB]"
+                            }`}
+                          />
+                          <ErrorMessage name="sku" />
+                        </div>
                         <motion.button
+                          type="button"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handleGenerateSKU}
@@ -208,11 +305,15 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </label>
                       <div className="relative">
                         <select
-                          value={formData.category}
-                          onChange={(e) =>
-                            handleChange("category", e.target.value)
-                          }
-                          className="w-full px-4 py-2.5 pr-10 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                          name="categoryId"
+                          value={formik.values.categoryId}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                            formik.touched.categoryId && formik.errors.categoryId
+                              ? "border-red-500"
+                              : "border-[#E5E7EB]"
+                          }`}
                         >
                           <option value="">Select Category</option>
                           <option value="industrial">Industrial Grade</option>
@@ -222,6 +323,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         </select>
                         <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
                       </div>
+                      <ErrorMessage name="categoryId" />
                     </div>
                   </div>
 
@@ -233,14 +335,20 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         Brand Type
                       </label>
                       <input
-                        type="text"
-                        placeholder="e.g. TBM Premium"
-                        value={formData.brandType}
-                        onChange={(e) =>
-                          handleChange("brandType", e.target.value)
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        type="number"
+                        name="brandType"
+                        min="0"
+                        placeholder="0"
+                        value={formik.values.brandType}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                          formik.touched.brandType && formik.errors.brandType
+                            ? "border-red-500"
+                            : "border-[#E5E7EB]"
+                        }`}
                       />
+                      <ErrorMessage name="brandType" />
                     </div>
 
                     {/* Product Type */}
@@ -249,31 +357,63 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         Product Type
                       </label>
                       <input
-                        type="text"
-                        placeholder="e.g. Ceramic Tiles"
-                        value={formData.productType}
-                        onChange={(e) =>
-                          handleChange("productType", e.target.value)
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        type="number"
+                        name="productType"
+                        min="0"
+                        placeholder="0"
+                        value={formik.values.productType}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                          formik.touched.productType && formik.errors.productType
+                            ? "border-red-500"
+                            : "border-[#E5E7EB]"
+                        }`}
                       />
+                      <ErrorMessage name="productType" />
                     </div>
                   </div>
 
                   {/* Description */}
-                  <div>
+                  <div className="mb-4">
                     <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                       Description
                     </label>
                     <textarea
+                      name="description"
                       placeholder="Provide a detailed product description..."
-                      value={formData.description}
-                      onChange={(e) =>
-                        handleChange("description", e.target.value)
-                      }
+                      value={formik.values.description}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none"
+                      className={`w-full px-4 py-3 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none ${
+                        formik.touched.description && formik.errors.description
+                          ? "border-red-500"
+                          : "border-[#E5E7EB]"
+                      }`}
                     />
+                    <ErrorMessage name="description" />
+                  </div>
+
+                  {/* Short Description */}
+                  <div>
+                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      Short Description
+                    </label>
+                    <textarea
+                      name="shortDescription"
+                      placeholder="Provide a brief product summary..."
+                      value={formik.values.shortDescription}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      rows={2}
+                      className={`w-full px-4 py-3 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none ${
+                        formik.touched.shortDescription && formik.errors.shortDescription
+                          ? "border-red-500"
+                          : "border-[#E5E7EB]"
+                      }`}
+                    />
+                    <ErrorMessage name="shortDescription" />
                   </div>
                 </div>
 
@@ -295,10 +435,10 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </label>
                       <div className="relative">
                         <select
-                          value={formData.warehouseLocation}
-                          onChange={(e) =>
-                            handleChange("warehouseLocation", e.target.value)
-                          }
+                          name="warehouseLocation"
+                          value={formik.values.warehouseLocation}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           className="w-full px-4 py-2.5 pr-10 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
                         >
                           <option value="">Select Warehouse</option>
@@ -318,17 +458,19 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </label>
                       <input
                         type="number"
+                        name="initialQuantity"
                         min="0"
                         placeholder="0"
-                        value={formData.initialQuantity}
-                        onChange={(e) =>
-                          handleChange(
-                            "initialQuantity",
-                            parseInt(e.target.value) || 0,
-                          )
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        value={formik.values.initialQuantity}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                          formik.touched.initialQuantity && formik.errors.initialQuantity
+                            ? "border-red-500"
+                            : "border-[#E5E7EB]"
+                        }`}
                       />
+                      <ErrorMessage name="initialQuantity" />
                     </div>
 
                     {/* Reorder Point */}
@@ -338,22 +480,24 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </label>
                       <input
                         type="number"
+                        name="reorderPoint"
                         min="0"
                         placeholder="10"
-                        value={formData.reorderPoint}
-                        onChange={(e) =>
-                          handleChange(
-                            "reorderPoint",
-                            parseInt(e.target.value) || 10,
-                          )
-                        }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        value={formik.values.reorderPoint}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                          formik.touched.reorderPoint && formik.errors.reorderPoint
+                            ? "border-red-500"
+                            : "border-[#E5E7EB]"
+                        }`}
                       />
+                      <ErrorMessage name="reorderPoint" />
                     </div>
                   </div>
 
                   {/* Unit Price */}
-                  <div>
+                  <div className="mb-4">
                     <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                       Unit Price ($)
                     </label>
@@ -363,17 +507,50 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       </span>
                       <input
                         type="number"
+                        name="unitPrice"
                         min="0"
                         step="0.01"
                         placeholder="0.00"
-                        value={formData.unitPrice}
-                        onChange={(e) =>
-                          handleChange(
-                            "unitPrice",
-                            parseFloat(e.target.value) || 0,
-                          )
-                        }
-                        className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent"
+                        value={formik.values.unitPrice}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full pl-8 pr-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                          formik.touched.unitPrice && formik.errors.unitPrice
+                            ? "border-red-500"
+                            : "border-[#E5E7EB]"
+                        }`}
+                      />
+                    </div>
+                    <ErrorMessage name="unitPrice" />
+                  </div>
+
+                  {/* Toggles Row */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Is Active Toggle */}
+                    <div className="flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg">
+                      <label className="font-manrope text-[13px] font-medium text-[#1E293B] cursor-pointer">
+                        Active
+                      </label>
+                      <input
+                        type="checkbox"
+                        name="isActive"
+                        checked={formik.values.isActive}
+                        onChange={formik.handleChange}
+                        className="w-4 h-4 text-[#1E293B] bg-white border-[#E5E7EB] rounded focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+                      />
+                    </div>
+
+                    {/* Track Inventory Toggle */}
+                    <div className="flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg">
+                      <label className="font-manrope text-[13px] font-medium text-[#1E293B] cursor-pointer">
+                        Track Inventory
+                      </label>
+                      <input
+                        type="checkbox"
+                        name="trackInventory"
+                        checked={formik.values.trackInventory}
+                        onChange={formik.handleChange}
+                        className="w-4 h-4 text-[#1E293B] bg-white border-[#E5E7EB] rounded focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
                       />
                     </div>
                   </div>
@@ -425,9 +602,9 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                   </div>
 
                   {/* Image Previews */}
-                  {formData.productImages.length > 0 && (
+                  {formik.values.productImages.length > 0 && (
                     <div className="mt-4 grid grid-cols-4 gap-3">
-                      {formData.productImages.map((image, index) => (
+                      {formik.values.productImages.map((image, index) => (
                         <div
                           key={index}
                           className="relative group rounded-lg overflow-hidden border border-[#E5E7EB]"
@@ -457,6 +634,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
               {/* Footer */}
               <div className="px-8 py-5 border-t border-[#E5E7EB] flex items-center justify-end gap-3">
                 <motion.button
+                  type="button"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
@@ -465,10 +643,10 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                   Cancel
                 </motion.button>
                 <motion.button
+                  type="submit"
                   whileHover={{ scale: isLoading ? 1 : 1.02 }}
                   whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                  onClick={handleSubmit}
-                  disabled={isLoading}
+                  disabled={isLoading || !formik.isValid}
                   className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isLoading && (
@@ -477,7 +655,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                   {isLoading ? "Adding..." : "Add Product"}
                 </motion.button>
               </div>
-            </motion.div>
+            </motion.form>
           </div>
         </>
       )}
