@@ -30,10 +30,9 @@ export default function DesignsFilters({ filters, setFilters }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      {/* Single Row: Room Type Tabs + Sort + View Toggle */}
-      <div className="flex items-center justify-between gap-4">
-        {/* Room Type Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1">
+      <div className="flex flex-col gap-3">
+        {/* Row 1: Room Type Tabs — full width, horizontally scrollable */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           {roomTypes.map((room) => (
             <button
               key={room.value}
@@ -52,65 +51,41 @@ export default function DesignsFilters({ filters, setFilters }) {
           ))}
         </div>
 
-        {/* Sort and View Controls */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        {/* Row 2: Sort + View Toggle */}
+        <div className="flex items-center justify-between gap-3">
           {/* Sort Dropdown */}
-          <div className="relative">
-            <select
-              value={filters.sortBy}
-              onChange={(e) => handleFilterChange("sortBy", e.target.value)}
-              className="pl-4 pr-10 py-2 bg-white border-none text-[14px] text-[#666666] focus:outline-none cursor-pointer appearance-none"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "right 0.5rem center",
-              }}
-            >
-              {sortOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  Sort by: {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={filters.sortBy}
+            onChange={(e) => handleFilterChange("sortBy", e.target.value)}
+            className="flex-1 sm:flex-none pl-3 pr-8 py-2 bg-white border border-[#e5e5e5] rounded-lg text-[14px] text-[#666666] focus:outline-none cursor-pointer appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 0.75rem center",
+            }}
+          >
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                Sort: {option.label}
+              </option>
+            ))}
+          </select>
 
           {/* View Toggle */}
-          <div className="flex items-center gap-1 bg-white rounded-lg border border-[#e5e5e5] p-1">
+          <div className="flex items-center gap-1 bg-white rounded-lg border border-[#e5e5e5] p-1 shrink-0">
             <button
               onClick={() => handleFilterChange("view", "grid")}
-              className={`
-                p-1.5 rounded transition-all
-                ${
-                  filters.view === "grid"
-                    ? "bg-[#f5f5f5]"
-                    : "hover:bg-[#f5f5f5]/50"
-                }
-              `}
+              className={`p-1.5 rounded transition-all ${filters.view === "grid" ? "bg-[#f5f5f5]" : "hover:bg-[#f5f5f5]/50"}`}
               aria-label="Grid view"
             >
-              <Grid3x3
-                className={`w-[18px] h-[18px] ${
-                  filters.view === "grid" ? "text-primary" : "text-[#999999]"
-                }`}
-              />
+              <Grid3x3 className={`w-4.5 h-4.5 ${filters.view === "grid" ? "text-primary" : "text-[#999999]"}`} />
             </button>
             <button
               onClick={() => handleFilterChange("view", "list")}
-              className={`
-                p-1.5 rounded transition-all
-                ${
-                  filters.view === "list"
-                    ? "bg-[#f5f5f5]"
-                    : "hover:bg-[#f5f5f5]/50"
-                }
-              `}
+              className={`p-1.5 rounded transition-all ${filters.view === "list" ? "bg-[#f5f5f5]" : "hover:bg-[#f5f5f5]/50"}`}
               aria-label="List view"
             >
-              <List
-                className={`w-[18px] h-[18px] ${
-                  filters.view === "list" ? "text-primary" : "text-[#999999]"
-                }`}
-              />
+              <List className={`w-4.5 h-4.5 ${filters.view === "list" ? "text-primary" : "text-[#999999]"}`} />
             </button>
           </div>
         </div>

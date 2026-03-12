@@ -14,7 +14,7 @@ import { authKeys } from "@/hooks/use-auth";
 export const dashboardKeys = {
   all: ["dashboard"],
   recentOrder: () => [...dashboardKeys.all, "recent-order"],
-  orders: (filters) => [...dashboardKeys.all, "orders", filters],
+  orders: () => [...dashboardKeys.all, "orders"],
   order: (id) => [...dashboardKeys.all, "order", id],
   designs: (filters) => [...dashboardKeys.all, "designs", filters],
   latestDesign: () => [...dashboardKeys.all, "latest-design"],
@@ -24,25 +24,35 @@ export const dashboardKeys = {
 };
 
 /**
- * Base hook — reads from the auth cache that the Navbar already populated.
- * ZERO extra fetches: if useCurrentUser already ran, this is instant.
+ * Base hook — subscribes to the auth cache so the component re-renders
+ * as soon as the user data resolves (fixes stuck loading on first navigation).
  */
 function useAuthGuard() {
-  const queryClient = useQueryClient();
   const router = useRouter();
 
-  // Read directly from cache — no network call
-  const user = queryClient.getQueryData(authKeys.user());
+  const { data: user, status } = useQuery({
+    queryKey: authKeys.user(),
+    queryFn: async () => {
+      const response = await fetch("/api/auth/me");
+      if (!response.ok) {
+        if (response.status === 401) return null;
+        throw new Error("Failed to fetch user");
+      }
+      return response.json();
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+    refetchOnWindowFocus: true,
+  });
+
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    // Only redirect if cache is settled and user is not authenticated
-    const state = queryClient.getQueryState(authKeys.user());
-    const settled = state?.status === "success" || state?.status === "error";
+    const settled = status === "success" || status === "error";
     if (settled && !isAuthenticated) {
       router.replace("/sign-in");
     }
-  }, [isAuthenticated, queryClient, router]);
+  }, [isAuthenticated, status, router]);
 
   return { user, isAuthenticated };
 }

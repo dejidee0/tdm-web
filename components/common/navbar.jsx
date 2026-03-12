@@ -181,7 +181,7 @@ export default function Navbar() {
                             <Link
                               href="/dashboard/profile"
                               onClick={() => setIsProfileOpen(false)}
-                              className={`flex items-center gap-4 px-5 py-[18px] transition-colors ${
+                              className={`flex items-center gap-4 px-5 py-4.5 transition-colors ${
                                 isActive("/dashboard/profile")
                                   ? "bg-primary/10 text-primary"
                                   : "hover:bg-black/5 text-gray-900"
@@ -189,9 +189,9 @@ export default function Navbar() {
                             >
                               <User
                                 className="w-7 h-7 shrink-0"
-                                strokeWidth={1.8}
+                                strokeWidth={1.5}
                               />
-                              <span className="text-[17px] font-semibold">
+                              <span className="text-[17px] font-medium">
                                 Profile
                               </span>
                             </Link>
@@ -199,7 +199,7 @@ export default function Navbar() {
                             <Link
                               href="/dashboard"
                               onClick={() => setIsProfileOpen(false)}
-                              className={`flex items-center gap-4 px-5 py-[18px] transition-colors ${
+                              className={`flex items-center gap-4 px-5 py-4.5 transition-colors ${
                                 isActive("/dashboard") &&
                                 !isActive("/dashboard/profile")
                                   ? "bg-primary/10 text-primary"
@@ -208,9 +208,9 @@ export default function Navbar() {
                             >
                               <LayoutDashboard
                                 className="w-7 h-7 shrink-0"
-                                strokeWidth={1.8}
+                                strokeWidth={1.5}
                               />
-                              <span className="text-[17px] font-semibold">
+                              <span className="text-[17px] font-medium">
                                 Pro Dashboard
                               </span>
                             </Link>
