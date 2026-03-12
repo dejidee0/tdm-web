@@ -18,16 +18,40 @@ export default function OrdersPage() {
     sortBy: "newest",
   });
 
-  const { data: orders, isLoading, isError } = useOrders(filters);
+  const { data: orders, isLoading, isError } = useOrders();
 
   const handleExport = () => {
-    // Export functionality
-    console.log("Exporting orders...");
+    if (!orders || orders.length === 0) return;
+
+    const rows = [
+      ["Order ID", "Date", "Items", "Total", "Status"],
+      ...orders.map((order) => [
+        order.id,
+        order.date,
+        order.items.map((i) => i.name).join(" | "),
+        order.total.toFixed(2),
+        order.status,
+      ]),
+    ];
+
+    const csv = rows
+      .map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
+      )
+      .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 pt-4 md:pt-0  md:w-[60vw] w-full">
+      <div className="space-y-6 pt-10 md:pt-0  md:w-[60vw] w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -47,7 +71,8 @@ export default function OrdersPage() {
           {/* Export Button */}
           <button
             onClick={handleExport}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-[#1a1a1a] hover:bg-[#f8f8f8] transition-colors self-start sm:self-auto"
+            disabled={!orders || orders.length === 0}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-[#1a1a1a] hover:bg-[#f8f8f8] transition-colors self-start sm:self-auto disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
             Export
