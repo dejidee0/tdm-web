@@ -43,7 +43,7 @@ export default function FinancialReportPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-[1440px] mx-auto">
+      <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#D1D5DB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
@@ -58,8 +58,8 @@ export default function FinancialReportPage() {
 
   // Helper function to format currency
   const formatCurrency = (value) => {
-    const num = typeof value === 'string' ? parseFloat(value) : value;
-    if (isNaN(num) || num === 0) return '$0';
+    const num = typeof value === "string" ? parseFloat(value) : value;
+    if (isNaN(num) || num === 0) return "$0";
     if (num >= 1000000) {
       return `$${(num / 1000000).toFixed(1)}M`;
     } else if (num >= 1000) {
@@ -69,48 +69,75 @@ export default function FinancialReportPage() {
   };
 
   // Transform backend response to UI format
-  const statsData = stats ? [
-    {
-      key: "totalRevenue",
-      label: "Total Revenue",
-      value: formatCurrency(stats?.totalRevenue || stats?.total_revenue || 0),
-      change: stats?.revenueGrowth || stats?.revenue_growth || 0,
-      subtitle: "vs last month",
-      changeType: (stats?.revenueGrowth || stats?.revenue_growth || 0) >= 0 ? "increase" : "decrease",
-    },
-    {
-      key: "avgTransaction",
-      label: "Avg Transaction",
-      value: formatCurrency(stats?.avgTransaction || stats?.avg_transaction || stats?.averageTransaction || 0),
-      change: stats?.avgTransactionGrowth || stats?.avg_transaction_growth || 0,
-      subtitle: "vs last month",
-      changeType: (stats?.avgTransactionGrowth || stats?.avg_transaction_growth || 0) >= 0 ? "increase" : "decrease",
-    },
-    {
-      key: "netProfit",
-      label: "Net Profit",
-      value: formatCurrency(stats?.netProfit || stats?.net_profit || 0),
-      change: stats?.netProfitGrowth || stats?.net_profit_growth || 0,
-      subtitle: "vs last month",
-      changeType: (stats?.netProfitGrowth || stats?.net_profit_growth || 0) >= 0 ? "increase" : "decrease",
-    },
-    {
-      key: "pending",
-      label: "Pending",
-      value: stats?.pendingTransactions || stats?.pending_transactions || stats?.pending || 0,
-      change: stats?.pendingGrowth || stats?.pending_growth || 0,
-      subtitle: "vs last month",
-      changeType: (stats?.pendingGrowth || stats?.pending_growth || 0) >= 0 ? "increase" : "decrease",
-      isNegative: true,
-    },
-  ] : [];
+  const statsData = stats
+    ? [
+        {
+          key: "totalRevenue",
+          label: "Total Revenue",
+          value: formatCurrency(
+            stats?.totalRevenue || stats?.total_revenue || 0,
+          ),
+          change: stats?.revenueGrowth || stats?.revenue_growth || 0,
+          subtitle: "vs last month",
+          changeType:
+            (stats?.revenueGrowth || stats?.revenue_growth || 0) >= 0
+              ? "increase"
+              : "decrease",
+        },
+        {
+          key: "avgTransaction",
+          label: "Avg Transaction",
+          value: formatCurrency(
+            stats?.avgTransaction ||
+              stats?.avg_transaction ||
+              stats?.averageTransaction ||
+              0,
+          ),
+          change:
+            stats?.avgTransactionGrowth || stats?.avg_transaction_growth || 0,
+          subtitle: "vs last month",
+          changeType:
+            (stats?.avgTransactionGrowth ||
+              stats?.avg_transaction_growth ||
+              0) >= 0
+              ? "increase"
+              : "decrease",
+        },
+        {
+          key: "netProfit",
+          label: "Net Profit",
+          value: formatCurrency(stats?.netProfit || stats?.net_profit || 0),
+          change: stats?.netProfitGrowth || stats?.net_profit_growth || 0,
+          subtitle: "vs last month",
+          changeType:
+            (stats?.netProfitGrowth || stats?.net_profit_growth || 0) >= 0
+              ? "increase"
+              : "decrease",
+        },
+        {
+          key: "pending",
+          label: "Pending",
+          value:
+            stats?.pendingTransactions ||
+            stats?.pending_transactions ||
+            stats?.pending ||
+            0,
+          change: stats?.pendingGrowth || stats?.pending_growth || 0,
+          subtitle: "vs last month",
+          changeType:
+            (stats?.pendingGrowth || stats?.pending_growth || 0) >= 0
+              ? "increase"
+              : "decrease",
+          isNegative: true,
+        },
+      ]
+    : [];
 
-  console.log('stats', stats);
-  console.log('statsData', statsData);
-  
+  console.log("stats", stats);
+  console.log("statsData", statsData);
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-360 mx-auto">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
@@ -135,7 +162,7 @@ export default function FinancialReportPage() {
               />
               <select className="appearance-none w-full bg-white border border-[#D1D5DB] rounded-lg pl-10 pr-10 py-2.5 font-inter text-[14px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors cursor-pointer">
                 <option>Last 7 Days</option>
-                <option selected>Last 30 Days</option>
+                <option defaultValue="selected">Last 30 Days</option>
                 <option>Last 90 Days</option>
                 <option>Last 6 Months</option>
                 <option>Last Year</option>
@@ -180,17 +207,17 @@ export default function FinancialReportPage() {
               <div className="absolute top-6 right-6">
                 <Image
                   src={stat?.isNegative ? pendingIcon : netProfitIcon}
-                  alt={stat?.label || 'Stat'}
+                  alt={stat?.label || "Stat"}
                   width={26}
                   height={26}
                 />
               </div>
 
               <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">
-                {stat?.label || 'N/A'}
+                {stat?.label || "N/A"}
               </p>
               <h3 className="font-inter text-[32px] font-bold text-primary leading-none mb-2">
-                {stat?.value || 'N/A'}
+                {stat?.value || "N/A"}
               </h3>
               <div className="flex items-center gap-2">
                 <div className={`flex items-center gap-1 ${changeColor}`}>
@@ -200,7 +227,7 @@ export default function FinancialReportPage() {
                   </span>
                 </div>
                 <p className="font-inter text-[12px] text-[#9CA3AF]">
-                  {stat?.subtitle || ''}
+                  {stat?.subtitle || ""}
                 </p>
               </div>
             </motion.div>
@@ -231,9 +258,10 @@ export default function FinancialReportPage() {
             <div className="relative w-32 sm:w-40 md:w-48 h-32 sm:h-40 md:h-48 mb-6">
               <svg viewBox="0 0 100 100" className="-rotate-90">
                 {revenueByService?.services?.map((service, i) => {
-                  const prevPercentages = revenueByService?.services
-                    ?.slice(0, i)
-                    .reduce((sum, s) => sum + (s?.percentage || 0), 0) || 0;
+                  const prevPercentages =
+                    revenueByService?.services
+                      ?.slice(0, i)
+                      .reduce((sum, s) => sum + (s?.percentage || 0), 0) || 0;
                   const circumference = 2 * Math.PI * 40;
                   const offset = (prevPercentages / 100) * circumference;
                   const dashArray = `${((service?.percentage || 0) / 100) * circumference} ${circumference}`;
@@ -245,7 +273,7 @@ export default function FinancialReportPage() {
                       cy="50"
                       r="40"
                       fill="none"
-                      stroke={service?.color || '#ccc'}
+                      stroke={service?.color || "#ccc"}
                       strokeWidth="20"
                       strokeDasharray={dashArray}
                       strokeDashoffset={-offset}
@@ -269,11 +297,11 @@ export default function FinancialReportPage() {
                 <div key={i} className="flex items-center gap-2">
                   <div
                     className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: service?.color || '#ccc' }}
+                    style={{ backgroundColor: service?.color || "#ccc" }}
                   />
                   <div>
                     <p className="font-inter text-[12px] font-medium text-[#6B7280]">
-                      {service?.name || 'N/A'}
+                      {service?.name || "N/A"}
                     </p>
                     <p className="font-inter text-[14px] font-bold text-[#111827]">
                       {service?.percentage || 0}%
@@ -348,14 +376,14 @@ export default function FinancialReportPage() {
               {transactions?.transactions?.map((txn, index) => (
                 <tr key={txn?.id || index} className="hover:bg-[#F8FAFC]">
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[14px] font-medium text-[#273054]">
-                    #{txn?.id || 'N/A'}
+                    #{txn?.id || "N/A"}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
                     <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#64748B]">
-                      {txn?.date || 'N/A'}
+                      {txn?.date || "N/A"}
                     </p>
                     <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-[#9CA3AF]">
-                      {txn?.time || ''}
+                      {txn?.time || ""}
                     </p>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
@@ -363,40 +391,42 @@ export default function FinancialReportPage() {
                       <div
                         className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[10px] sm:text-[12px]"
                         style={{
-                          backgroundColor: txn?.user?.colorScheme?.bg || '#ccc',
-                          color: txn?.user?.colorScheme?.text || '#000',
+                          backgroundColor: txn?.user?.colorScheme?.bg || "#ccc",
+                          color: txn?.user?.colorScheme?.text || "#000",
                         }}
                       >
-                        {txn?.user?.initials || '?'}
+                        {txn?.user?.initials || "?"}
                       </div>
                       <div>
                         <p className="font-inter text-[12px] sm:text-[14px] font-medium text-[#111827]">
-                          {txn?.user?.name || 'N/A'}
+                          {txn?.user?.name || "N/A"}
                         </p>
                         <p className="font-inter text-[10px] sm:text-[12px] text-[#6B7280]">
-                          {txn?.user?.type || ''}
+                          {txn?.user?.type || ""}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[14px] text-[#374151] hidden md:table-cell">
-                    {txn?.serviceType || 'N/A'}
+                    {txn?.serviceType || "N/A"}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-inter text-[12px] sm:text-[13px] md:text-[14px] font-semibold text-[#111827]">
-                    ${txn?.amount?.toLocaleString() || '0'}
+                    ${txn?.amount?.toLocaleString() || "0"}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
                     <span
-                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[10px] sm:text-[11px] md:text-[12px] font-medium ${txn?.statusColor?.bg || 'bg-gray-100'} ${txn?.statusColor?.text || 'text-gray-600'}`}
+                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[10px] sm:text-[11px] md:text-[12px] font-medium ${txn?.statusColor?.bg || "bg-gray-100"} ${txn?.statusColor?.text || "text-gray-600"}`}
                     >
                       <span
                         className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
                         style={{
                           backgroundColor:
-                            txn?.statusColor?.text?.match(/#[0-9A-Fa-f]{6}/)?.[0] || '#ccc',
+                            txn?.statusColor?.text?.match(
+                              /#[0-9A-Fa-f]{6}/,
+                            )?.[0] || "#ccc",
                         }}
                       ></span>
-                      {txn?.status || 'N/A'}
+                      {txn?.status || "N/A"}
                     </span>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
