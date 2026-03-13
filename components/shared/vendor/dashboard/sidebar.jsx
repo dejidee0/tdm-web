@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Settings } from "lucide-react";
+import { Settings, ExternalLink } from "lucide-react";
 import dashboardIcon from "@/public/assets/svgs/vendor/sidebar/dashboard.svg";
 import ordersIcon from "@/public/assets/svgs/vendor/sidebar/orders.svg";
 import inventoryIcon from "@/public/assets/svgs/vendor/sidebar/inventory.svg";
@@ -134,8 +134,8 @@ export default function VendorSidebar() {
         </ul>
       </nav>
 
-      {/* Settings */}
-      <div className="p-4 border-t border-[#E5E7EB]">
+      {/* Settings + Back to Site */}
+      <div className="p-4 border-t border-[#E5E7EB] space-y-1">
         <Link href="/vendor/dashboard/account-settings">
           <motion.div
             whileHover={{ x: 4 }}
@@ -144,6 +144,16 @@ export default function VendorSidebar() {
           >
             <Settings size={20} />
             <span>Settings</span>
+          </motion.div>
+        </Link>
+        <Link href="/" target="_blank" rel="noopener noreferrer">
+          <motion.div
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#64748B] hover:bg-[#F8FAFC] font-manrope text-[14px] transition-colors"
+          >
+            <ExternalLink size={20} />
+            <span>Back to Main Site</span>
           </motion.div>
         </Link>
       </div>

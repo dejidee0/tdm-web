@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { LogOut } from "lucide-react";
+import { LogOut, ExternalLink } from "lucide-react";
 import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
 import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
 import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
@@ -143,12 +143,22 @@ export default function AdminSidebar() {
             </p>
           </div>
         </div>
+        <Link href="/" target="_blank" rel="noopener noreferrer">
+          <motion.div
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-primary hover:bg-[#2730541A] font-manrope text-[13px] transition-colors mb-1"
+          >
+            <ExternalLink size={16} />
+            <span>Back to Main Site</span>
+          </motion.div>
+        </Link>
         <motion.button
           onClick={() => logout()}
           disabled={isLoggingOut}
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[#273054] hover:bg-[#2730541A] font-manrope text-[13px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-primary hover:bg-[#2730541A] font-manrope text-[13px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LogOut size={16} />
           <span>{isLoggingOut ? "Logging out..." : "Log Out"}</span>
