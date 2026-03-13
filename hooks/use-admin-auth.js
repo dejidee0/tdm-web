@@ -1,56 +1,49 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import {
-  adminLogin,
-  adminLogout,
-  adminRefreshToken,
-} from "@/lib/actions/admin-auth";
+import { adminLogin, adminLogout, adminRefreshToken } from "@/lib/actions/admin-auth";
 
-/**
- * Query key factory for admin auth
- */
-export const adminAuthKeys = {
-  all: ["adminAuth"],
-  admin: () => [...adminAuthKeys.all, "admin"],
-};
+export const ADMIN_ME_KEY = ["auth", "admin", "me"];
 
-/**
- * Hook for admin login
- */
+// ---------------------------------------------------------------------------
+// Auth state — source of truth for all admin data hooks
+// ---------------------------------------------------------------------------
+
+export function useAdminUser() {
+  return useQuery({
+    queryKey: ADMIN_ME_KEY,
+    queryFn: () =>
+      fetch("/api/auth/admin/me")
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useIsAdminAuthed() {
+  const { data } = useAdminUser();
+  return !!data;
+}
+
+// ---------------------------------------------------------------------------
+// Login
+// ---------------------------------------------------------------------------
+
 export function useAdminLogin() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials) => {
-      const result = await adminLogin(credentials);
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result.data;
-    },
+    mutationFn: (credentials) =>
+      adminLogin(credentials).then((result) => {
+        if (!result.success) throw new Error(result.error);
+        return result.data;
+      }),
     onSuccess: (data) => {
-      console.log('🎉 Admin login success! Data received:', data);
-      console.log('🔑 Token from response:', data.token ? 'TOKEN EXISTS' : 'NO TOKEN IN RESPONSE');
-
-      // Store token in localStorage as adminToken
-      if (data.token) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("adminToken", data.token);
-          console.log('✅ Admin token stored in localStorage');
-        }
-      } else {
-        console.error('❌ NO TOKEN in response data - cannot authenticate!');
-      }
-
-      // Update admin cache
-      queryClient.setQueryData(adminAuthKeys.admin(), data.admin);
-
-      // Redirect to admin dashboard
+      // Seed the /me cache immediately so dashboard queries fire without waiting
+      queryClient.setQueryData(ADMIN_ME_KEY, data.admin);
       router.push("/admin/dashboard");
       router.refresh();
     },
@@ -60,35 +53,23 @@ export function useAdminLogin() {
   });
 }
 
-/**
- * Hook for admin logout
- */
+// ---------------------------------------------------------------------------
+// Logout
+// ---------------------------------------------------------------------------
+
 export function useAdminLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async () => {
-      const result = await adminLogout();
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result;
-    },
+    mutationFn: () =>
+      adminLogout().then((result) => {
+        if (!result.success) throw new Error(result.error);
+        return result;
+      }),
     onSuccess: () => {
-      // Remove admin token from localStorage
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("adminToken");
-      }
-
-      // Clear all admin-related cache
-      queryClient.setQueryData(adminAuthKeys.admin(), null);
-      queryClient.removeQueries({ queryKey: adminAuthKeys.all });
-      queryClient.removeQueries({ queryKey: ["admin"] }); // Clear all admin data
-
-      // Redirect to admin login
+      queryClient.setQueryData(ADMIN_ME_KEY, null);
+      queryClient.removeQueries({ queryKey: ["admin"] });
       router.push("/admin/login");
       router.refresh();
     },
@@ -98,20 +79,17 @@ export function useAdminLogout() {
   });
 }
 
-/**
- * Hook for token refresh
- */
+// ---------------------------------------------------------------------------
+// Token refresh
+// ---------------------------------------------------------------------------
+
 export function useAdminRefreshToken() {
   return useMutation({
-    mutationFn: async (refreshToken) => {
-      const result = await adminRefreshToken(refreshToken);
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result.data;
-    },
+    mutationFn: (refreshToken) =>
+      adminRefreshToken(refreshToken).then((result) => {
+        if (!result.success) throw new Error(result.error);
+        return result.data;
+      }),
     onError: (error) => {
       console.error("Admin token refresh failed:", error);
     },

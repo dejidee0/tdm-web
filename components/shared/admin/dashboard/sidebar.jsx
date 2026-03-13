@@ -1,12 +1,11 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { LogOut } from "lucide-react";
-import { useState } from "react";
-import { adminLogout } from "@/lib/actions/admin-auth";
+import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
 import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
 import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
 import financialReportIcon from "@/public/assets/svgs/sidebars/financialReport.svg";
@@ -52,38 +51,19 @@ const isActivePath = (pathname, href) => {
 
 export default function AdminSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { data: adminUser } = useAdminUser();
+  const { mutate: logout, isPending: isLoggingOut } = useAdminLogout();
 
-  const handleLogout = async () => {
-    if (isLoggingOut) return;
-
-    setIsLoggingOut(true);
-    try {
-      // Clear localStorage token
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("adminToken");
-      }
-
-      // Call server action to clear cookies
-      const result = await adminLogout();
-
-      if (result.success) {
-        // Redirect to admin login page
-        router.push("/admin/login");
-      } else {
-        console.error("Logout failed:", result.error);
-        // Still redirect even if server logout fails
-        router.push("/admin/login");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Redirect anyway to ensure user is logged out
-      router.push("/admin/login");
-    } finally {
-      setIsLoggingOut(false);
-    }
-  };
+  const displayName = adminUser?.name || adminUser?.email?.split("@")[0] || "Admin";
+  const displayRole = adminUser?.role || "SUPER ADMIN";
+  const initials =
+    displayName
+      .split(" ")
+      .filter(Boolean)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "A";
 
   return (
     <div className="h-full flex flex-col">
@@ -152,19 +132,19 @@ export default function AdminSidebar() {
       <div className="p-4 border-t border-[#E5E7EB]">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 bg-[#3B82F6] rounded-full flex items-center justify-center text-white font-manrope font-bold text-[14px]">
-            AU
+            {initials}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-manrope font-medium text-[14px] text-primary truncate">
-              Admin User
+              {displayName}
             </p>
-            <p className="font-manrope text-[12px] text-[#64748B] truncate">
-              SUPER ADMIN
+            <p className="font-manrope text-[12px] text-[#64748B] truncate uppercase">
+              {displayRole}
             </p>
           </div>
         </div>
         <motion.button
-          onClick={handleLogout}
+          onClick={() => logout()}
           disabled={isLoggingOut}
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}

@@ -57,7 +57,7 @@ export default function SystemLogPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-[1440px] mx-auto">
+      <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
@@ -129,7 +129,7 @@ export default function SystemLogPage() {
   ];
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-360 mx-auto">
       {/* Header */}
       <div className="mb-6 sm:mb-8 pb-6 border-b border-[#314368]/50">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">

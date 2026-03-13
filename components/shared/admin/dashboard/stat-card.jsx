@@ -27,8 +27,8 @@ export default function AdminStatCard({ data, statKey, index }) {
 
   const changeColors = {
     increase: "text-[#22C55E]",
-    decrease: "text-[#22C55E]",
-    steadyIncrease: "text-[#22C55E]",
+    decrease: "text-red-500",
+    steadyIncrease: "text-green-400",
   };
 
   const TrendIcon = {
@@ -50,7 +50,7 @@ export default function AdminStatCard({ data, statKey, index }) {
     >
       {/* Header: Label + Status Icon */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-[#273054] font-manrope text-[13px] font-[500]">
+        <h3 className="text-primary font-manrope text-[13px] font-medium">
           {label}
         </h3>
         {iconPath && (
@@ -62,7 +62,7 @@ export default function AdminStatCard({ data, statKey, index }) {
               alt={label}
               width={26}
               height={26}
-              className="flex-shrink-0"
+              className="shrink-0"
             />
           </div>
         )}

@@ -26,67 +26,115 @@ export default function AdminDashboardPage() {
   const [showError, setShowError] = useState(true);
 
   // Real API endpoints
-  const { data: analyticsOverview, isLoading: overviewLoading, error: overviewError } = useAnalyticsOverview();
-  const { data: monthlyRevenue, isLoading: monthlyRevenueLoading, error: revenueError } = useMonthlyRevenue();
-  const { data: dashboardStats, isLoading: statsLoading, error: statsError } = useDashboardStats();
-  const { data: dashboardRevenue, isLoading: dashboardRevenueLoading, error: dashboardRevenueError } = useDashboardRevenue("30d");
-  const { data: serverLoad, isLoading: serverLoading, error: serverLoadError } = useServerLoad();
-  const { data: alerts, isLoading: alertsLoading, error: alertsError } = useAdminAlerts();
-  const { data: quickActions, isLoading: actionsLoading, error: quickActionsError } = useAdminQuickActions();
-  const { mutate: refreshDashboard, isPending: isRefreshing } = useRefreshAdminDashboard();
+  const {
+    data: analyticsOverview,
+    isLoading: overviewLoading,
+    error: overviewError,
+  } = useAnalyticsOverview();
+  const {
+    data: monthlyRevenue,
+    isLoading: monthlyRevenueLoading,
+    error: revenueError,
+  } = useMonthlyRevenue();
+  const {
+    data: dashboardStats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useDashboardStats();
+  console.log("[dashboard] dashboardStats:", dashboardStats);
+  console.log("[dashboard] statsLoading:", statsLoading);
+  console.log("[dashboard] statsError:", statsError);
+  console.log("[dashboard] analyticsOverview:", analyticsOverview);
+  console.log("[dashboard] overviewError:", overviewError);
+
+  const {
+    data: dashboardRevenue,
+    isLoading: dashboardRevenueLoading,
+    error: dashboardRevenueError,
+  } = useDashboardRevenue("30d");
+  const {
+    data: serverLoad,
+    isLoading: serverLoading,
+    error: serverLoadError,
+  } = useServerLoad();
+  const {
+    data: alerts,
+    isLoading: alertsLoading,
+    error: alertsError,
+  } = useAdminAlerts();
+  const {
+    data: quickActions,
+    isLoading: actionsLoading,
+    error: quickActionsError,
+  } = useAdminQuickActions();
+  const { mutate: refreshDashboard, isPending: isRefreshing } =
+    useRefreshAdminDashboard();
   const { mutate: exportReport, isPending: isExporting } = useExportReport();
 
   // Combine analytics overview and dashboard stats
-  const stats = (analyticsOverview || dashboardStats) ? {
-    totalRevenue: {
-      label: "Total Revenue",
-      value: analyticsOverview?.totalRevenue ? `$${analyticsOverview.totalRevenue.toLocaleString()}` : "Loading...",
-      change: analyticsOverview?.revenueGrowth || 0,
-      trend: (analyticsOverview?.revenueGrowth || 0) >= 0 ? "up" : "down",
-    },
-    activeOrders: {
-      label: "Total Orders",
-      value: analyticsOverview?.totalOrders?.toLocaleString() || "Loading...",
-      change: analyticsOverview?.ordersGrowth || 0,
-      trend: (analyticsOverview?.ordersGrowth || 0) >= 0 ? "up" : "down",
-    },
-    activeUsers: {
-      label: "Active Users",
-      value: dashboardStats?.activeUsers?.toLocaleString() || analyticsOverview?.activeUsers?.toLocaleString() || "Loading...",
-      change: 12.3,
-      trend: "up",
-    },
-  } : {
-    totalRevenue: {
-      label: "Total Revenue",
-      value: "Loading...",
-      change: 0,
-      trend: "up",
-    },
-    activeOrders: {
-      label: "Total Orders",
-      value: "Loading...",
-      change: 0,
-      trend: "up",
-    },
-    activeUsers: {
-      label: "Active Users",
-      value: "Loading...",
-      change: 0,
-      trend: "up",
-    },
-  };
+  const stats =
+    analyticsOverview || dashboardStats
+      ? {
+          totalRevenue: {
+            label: "Total Revenue",
+            value: analyticsOverview?.totalRevenue
+              ? `$${analyticsOverview.totalRevenue.toLocaleString()}`
+              : "Loading...",
+            change: analyticsOverview?.revenueGrowth || 0,
+            trend: (analyticsOverview?.revenueGrowth || 0) >= 0 ? "up" : "down",
+          },
+          activeOrders: {
+            label: "Total Orders",
+            value:
+              analyticsOverview?.totalOrders?.toLocaleString() || "Loading...",
+            change: analyticsOverview?.ordersGrowth || 0,
+            trend: (analyticsOverview?.ordersGrowth || 0) >= 0 ? "up" : "down",
+          },
+          activeUsers: {
+            label: "Active Users",
+            value:
+              dashboardStats?.activeUsers?.toLocaleString() ||
+              analyticsOverview?.activeUsers?.toLocaleString() ||
+              "Loading...",
+            change: 12.3,
+            trend: "up",
+          },
+        }
+      : {
+          totalRevenue: {
+            label: "Total Revenue",
+            value: "Loading...",
+            change: 0,
+            trend: "up",
+          },
+          activeOrders: {
+            label: "Total Orders",
+            value: "Loading...",
+            change: 0,
+            trend: "up",
+          },
+          activeUsers: {
+            label: "Active Users",
+            value: "Loading...",
+            change: 0,
+            trend: "up",
+          },
+        };
 
   // Use dashboard revenue if available, fallback to monthly revenue from analytics
   const revenueData = dashboardRevenue || monthlyRevenue || null;
 
   // Update server load with real data
-  const realServerLoad = serverLoad || (dashboardStats ? {
-    cpu: 0,
-    memory: 0,
-    uptime: dashboardStats.platformUptime,
-    latency: dashboardStats.avgLatency,
-  } : null);
+  const realServerLoad =
+    serverLoad ||
+    (dashboardStats
+      ? {
+          cpu: 0,
+          memory: 0,
+          uptime: dashboardStats.platformUptime,
+          latency: dashboardStats.avgLatency,
+        }
+      : null);
 
   const isLoading =
     overviewLoading ||
@@ -97,9 +145,25 @@ export default function AdminDashboardPage() {
     alertsLoading ||
     actionsLoading;
 
-  const hasError = overviewError || revenueError || statsError || dashboardRevenueError || serverLoadError || alertsError || quickActionsError;
-  const errorMessage = overviewError?.message || revenueError?.message || statsError?.message || dashboardRevenueError?.message || serverLoadError?.message || alertsError?.message || quickActionsError?.message || '';
-  const isCorsError = errorMessage.includes('CORS') || errorMessage.includes('fetch');
+  const hasError =
+    overviewError ||
+    revenueError ||
+    statsError ||
+    dashboardRevenueError ||
+    serverLoadError ||
+    alertsError ||
+    quickActionsError;
+  const errorMessage =
+    overviewError?.message ||
+    revenueError?.message ||
+    statsError?.message ||
+    dashboardRevenueError?.message ||
+    serverLoadError?.message ||
+    alertsError?.message ||
+    quickActionsError?.message ||
+    "";
+  const isCorsError =
+    errorMessage.includes("CORS") || errorMessage.includes("fetch");
 
   if (isLoading) {
     return (
@@ -115,12 +179,12 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-360 mx-auto">
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <h1 className="font-manrope text-[24px] sm:text-[28px] md:text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-inter text-[24px] sm:text-[28px] md:text-[32px] font-bold text-primary mb-2">
               Dashboard Overview
             </h1>
             <p className="font-manrope text-[13px] sm:text-[14px] text-[#64748B]">
@@ -162,16 +226,18 @@ export default function AdminDashboardPage() {
           className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4"
         >
           <div className="flex items-start gap-3">
-            <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={20} />
+            <AlertCircle
+              className="text-red-600 flex-shrink-0 mt-0.5"
+              size={20}
+            />
             <div className="flex-1">
               <h3 className="font-manrope text-[14px] font-semibold text-red-800 mb-1">
-                {isCorsError ? 'API Connection Issue' : 'Error Loading Data'}
+                {isCorsError ? "API Connection Issue" : "Error Loading Data"}
               </h3>
               <p className="font-manrope text-[13px] text-red-700">
                 {isCorsError
-                  ? 'Unable to connect to the backend API due to CORS configuration. Contact your backend developer to update CORS settings.'
-                  : errorMessage
-                }
+                  ? "Unable to connect to the backend API due to CORS configuration. Contact your backend developer to update CORS settings."
+                  : errorMessage}
               </p>
             </div>
             <button

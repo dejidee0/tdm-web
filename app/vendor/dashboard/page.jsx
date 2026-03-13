@@ -78,7 +78,7 @@ export default function VendorDashboardPage() {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-360 mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">

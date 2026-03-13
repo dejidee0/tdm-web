@@ -1,60 +1,52 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import {
-  vendorLogin,
-  vendorLogout,
-  vendorRefreshToken,
-} from "@/lib/actions/vendor-auth";
+import { vendorLogin, vendorLogout, vendorRefreshToken } from "@/lib/actions/vendor-auth";
 
-/**
- * Query key factory for vendor auth
- */
-export const vendorAuthKeys = {
-  all: ["vendorAuth"],
-  vendor: () => [...vendorAuthKeys.all, "vendor"],
-};
+export const VENDOR_ME_KEY = ["auth", "vendor", "me"];
 
-/**
- * Hook for vendor login
- */
+// ---------------------------------------------------------------------------
+// Auth state — source of truth for all vendor data hooks
+// ---------------------------------------------------------------------------
+
+export function useVendorUser() {
+  return useQuery({
+    queryKey: VENDOR_ME_KEY,
+    queryFn: () =>
+      fetch("/api/auth/vendor/me")
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useIsVendorAuthed() {
+  const { data } = useVendorUser();
+  return !!data;
+}
+
+// ---------------------------------------------------------------------------
+// Login
+// ---------------------------------------------------------------------------
+
 export function useVendorLogin() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials) => {
-      console.log('credentials', credentials);
-      
-      const result = await vendorLogin(credentials);
-      console.log('result', result);
-      
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result.data;
+    mutationFn: (credentials) => {
+      console.log("credentials", credentials);
+      return vendorLogin(credentials).then((result) => {
+        console.log("result", result);
+        if (!result.success) throw new Error(result.error);
+        return result.data;
+      });
     },
     onSuccess: (data) => {
-      console.log('🎉 Vendor login success! Data received:', data);
-      console.log('🔑 Token from response:', data.token ? 'TOKEN EXISTS' : 'NO TOKEN IN RESPONSE');
-
-      // Store token in localStorage as vendorToken
-      if (data.token) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("vendorToken", data.token);
-          console.log('✅ Vendor token stored in localStorage');
-        }
-      } else {
-        console.error('❌ NO TOKEN in response data - cannot authenticate!');
-      }
-
-      // Update vendor cache
-      queryClient.setQueryData(vendorAuthKeys.vendor(), data.vendor);
-
-      // Redirect to vendor dashboard
+      // Seed the /me cache immediately so dashboard queries fire without waiting
+      queryClient.setQueryData(VENDOR_ME_KEY, data.vendor);
       router.push("/vendor/dashboard");
       router.refresh();
     },
@@ -64,35 +56,23 @@ export function useVendorLogin() {
   });
 }
 
-/**
- * Hook for vendor logout
- */
+// ---------------------------------------------------------------------------
+// Logout
+// ---------------------------------------------------------------------------
+
 export function useVendorLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async () => {
-      const result = await vendorLogout();
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result;
-    },
+    mutationFn: () =>
+      vendorLogout().then((result) => {
+        if (!result.success) throw new Error(result.error);
+        return result;
+      }),
     onSuccess: () => {
-      // Remove vendor token from localStorage
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("vendorToken");
-      }
-
-      // Clear all vendor-related cache
-      queryClient.setQueryData(vendorAuthKeys.vendor(), null);
-      queryClient.removeQueries({ queryKey: vendorAuthKeys.all });
-      queryClient.removeQueries({ queryKey: ["vendor"] }); // Clear all vendor data
-
-      // Redirect to vendor login
+      queryClient.setQueryData(VENDOR_ME_KEY, null);
+      queryClient.removeQueries({ queryKey: ["vendor"] });
       router.push("/vendor/login");
       router.refresh();
     },
@@ -102,20 +82,17 @@ export function useVendorLogout() {
   });
 }
 
-/**
- * Hook for token refresh
- */
+// ---------------------------------------------------------------------------
+// Token refresh
+// ---------------------------------------------------------------------------
+
 export function useVendorRefreshToken() {
   return useMutation({
-    mutationFn: async (refreshToken) => {
-      const result = await vendorRefreshToken(refreshToken);
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      return result.data;
-    },
+    mutationFn: (refreshToken) =>
+      vendorRefreshToken(refreshToken).then((result) => {
+        if (!result.success) throw new Error(result.error);
+        return result.data;
+      }),
     onError: (error) => {
       console.error("Vendor token refresh failed:", error);
     },

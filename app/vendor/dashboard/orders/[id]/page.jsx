@@ -76,7 +76,7 @@ export default function OrderDetailPage() {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-360 mx-auto">
       {/* Back Button */}
       <motion.button
         initial={{ opacity: 0, x: -10 }}

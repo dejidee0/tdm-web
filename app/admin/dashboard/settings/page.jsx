@@ -126,7 +126,7 @@ export default function PlatformSettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-[1440px] mx-auto">
+      <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
@@ -140,7 +140,7 @@ export default function PlatformSettingsPage() {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">

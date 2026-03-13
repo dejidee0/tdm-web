@@ -11,7 +11,6 @@ import {
   verifyEmail,
   resendVerificationCode,
 } from "@/lib/actions/auth";
-import { removeToken } from "@/lib/client-auth";
 import { cartApi } from "@/lib/api/cart";
 
 export const authKeys = {
@@ -108,7 +107,6 @@ export function useLogout() {
       return result;
     },
     onSuccess: () => {
-      removeToken();
       queryClient.setQueryData(authKeys.user(), null);
       queryClient.removeQueries({ queryKey: authKeys.all });
       // Reset cart to empty so guest sees a fresh cart
@@ -179,4 +177,9 @@ export function useResendVerification() {
 export function useIsAuthenticated() {
   const { data: user, isLoading } = useCurrentUser();
   return { isAuthenticated: !!user, isLoading, user };
+}
+
+export function useIsUserAuthed() {
+  const { data } = useCurrentUser();
+  return !!data;
 }
