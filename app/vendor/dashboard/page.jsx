@@ -28,11 +28,11 @@ export default function VendorDashboardPage() {
     
 
   // Transform backend stats to UI format
-  const stats = rawStats ? {
+  const stats = {
     newOrders: {
       label: "New Orders",
       category: "ORDERS",
-      value: rawStats.assignedOrders || 0,
+      value: rawStats?.assignedOrders || 0,
       change: 0,
       changeType: "neutral",
       subtitle: "Total assigned orders",
@@ -40,7 +40,7 @@ export default function VendorDashboardPage() {
     pendingEnquiries: {
       label: "Pending Orders",
       category: "ORDERS",
-      value: rawStats.pendingOrders || 0,
+      value: rawStats?.pendingOrders || 0,
       change: 0,
       changeType: "neutral",
       subtitle: "Awaiting processing",
@@ -48,7 +48,7 @@ export default function VendorDashboardPage() {
     activeProjects: {
       label: "In Progress",
       category: "ORDERS",
-      value: rawStats.inProgressOrders || 0,
+      value: rawStats?.inProgressOrders || 0,
       change: 0,
       changeType: "neutral",
       subtitle: "Currently being fulfilled",
@@ -56,12 +56,12 @@ export default function VendorDashboardPage() {
     pendingDeliveries: {
       label: "Products",
       category: "INVENTORY",
-      value: rawStats.ownedProducts || 0,
+      value: rawStats?.ownedProducts || 0,
       change: 0,
       changeType: "neutral",
-      subtitle: `${rawStats.lowStockProducts || 0} low stock`,
+      subtitle: `${rawStats?.lowStockProducts || 0} low stock`,
     },
-  } : null;
+  };
   
 
   if (statsLoading || alertsLoading || activitiesLoading) {
