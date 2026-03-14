@@ -69,13 +69,22 @@ export default function RecentActivityStream({ activities }) {
     activeTab === "All"
       ? activities
       : activities?.items?.filter((activity) => {
-        if (activeTab === "Orders") return activity.type === "Order";
-        if (activeTab === "Projects") return activity.type === "Project";
-        return true;
-      });
+          if (activeTab === "Orders") return activity.type === "Order";
+          if (activeTab === "Projects") return activity.type === "Project";
+          return true;
+        });
 
-  console.log('filteredActivities', filteredActivities);
+  console.log("filteredActivities", filteredActivities);
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
 
   return (
     <motion.div
@@ -99,10 +108,11 @@ export default function RecentActivityStream({ activities }) {
                 className={`
                 px-4 py-2 rounded-lg font-manrope text-[13px] font-medium whitespace-nowrap
                 transition-colors flex-shrink-0
-                ${activeTab === tab
+                ${
+                  activeTab === tab
                     ? "bg-primary text-white"
                     : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
-                  }
+                }
               `}
               >
                 {tab}
@@ -110,7 +120,6 @@ export default function RecentActivityStream({ activities }) {
             ))}
           </div>
         </div>
-
       </div>
 
       {/* Table Header - Desktop only */}
@@ -125,7 +134,7 @@ export default function RecentActivityStream({ activities }) {
           <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
             STATUS
           </span>
-          <span className="font-manrope text-[#11px] font-bold text-[#64748B] uppercase tracking-wider">
+          <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
             CUSTOMER
           </span>
           <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
@@ -140,8 +149,12 @@ export default function RecentActivityStream({ activities }) {
       {/* Activity Rows */}
       <div className="divide-y divide-[#E5E7EB]">
         {filteredActivities?.items?.map((activity, index) => {
-          const Icon = activityIcons[activity.icon] || activityIcons[activity.type] || activityIcons.default;
-          const statusStyle = statusStyles[activity.statusColor] || statusStyles.default;
+          const Icon =
+            activityIcons[activity.icon] ||
+            activityIcons[activity.type] ||
+            activityIcons.default;
+          const statusStyle =
+            statusStyles[activity.statusColor] || statusStyles.default;
 
           return (
             <motion.div
@@ -159,13 +172,13 @@ export default function RecentActivityStream({ activities }) {
                     <Icon size={16} />
                   </div>
                   <span className="font-manrope text-[13px] font-medium text-primary">
-                    {activity.type}
+                    {activity.activityType}
                   </span>
                 </div>
 
                 {/* Reference */}
                 <span className="font-manrope text-[13px] text-[#64748B] font-mono">
-                  {activity.reference}
+                  {activity.id}
                 </span>
 
                 {/* Status */}
@@ -188,7 +201,7 @@ export default function RecentActivityStream({ activities }) {
 
                 {/* Date */}
                 <span className="font-manrope text-[13px] text-[#64748B]">
-                  {activity.date}
+                  {formatDate(activity.createdAtUtc)}
                 </span>
 
                 {/* Action */}
@@ -206,10 +219,10 @@ export default function RecentActivityStream({ activities }) {
                     </div>
                     <div>
                       <span className="font-manrope text-[13px] font-medium text-primary block">
-                        {activity.type}
+                        {activity.activityType}
                       </span>
                       <span className="font-manrope text-[11px] text-[#64748B] font-mono">
-                        {activity.reference}
+                        {activity.id}
                       </span>
                     </div>
                   </div>
@@ -233,7 +246,7 @@ export default function RecentActivityStream({ activities }) {
                     </span>
                   </div>
                   <span className="font-manrope text-[12px] text-[#64748B]">
-                    {activity.date}
+                    {formatDate(activity.createdAtUtc)}
                   </span>
                 </div>
 
