@@ -30,6 +30,9 @@ export default function OrdersPage() {
   const { data, isLoading } = useOrders(filters);
   const importOrders = useImportOrders();
 
+  // DATA CHECKS
+  // console.log("orders: ", data)
+
   const handleSearch = (value) => {
     setSearchInput(value);
     if (value.trim()) {

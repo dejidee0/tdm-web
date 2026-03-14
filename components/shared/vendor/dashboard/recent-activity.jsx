@@ -107,7 +107,7 @@ export default function RecentActivityStream({ activities }) {
                 onClick={() => setActiveTab(tab)}
                 className={`
                 px-4 py-2 rounded-lg font-manrope text-[13px] font-medium whitespace-nowrap
-                transition-colors flex-shrink-0
+                transition-colors shrink-0
                 ${
                   activeTab === tab
                     ? "bg-primary text-white"
@@ -177,7 +177,7 @@ export default function RecentActivityStream({ activities }) {
                 </div>
 
                 {/* Reference */}
-                <span className="font-manrope text-[13px] text-[#64748B] font-mono">
+                <span className="font-manrope text-[13px] text-[#64748B]">
                   {activity.id}
                 </span>
 
@@ -221,12 +221,12 @@ export default function RecentActivityStream({ activities }) {
                       <span className="font-manrope text-[13px] font-medium text-primary block">
                         {activity.activityType}
                       </span>
-                      <span className="font-manrope text-[11px] text-[#64748B] font-mono">
+                      <span className="font-manrope text-[11px] text-[#64748B]">
                         {activity.id}
                       </span>
                     </div>
                   </div>
-                  <button className="text-[#64748B] hover:text-primary transition-colors flex-shrink-0">
+                  <button className="text-[#64748B] hover:text-primary transition-colors shrink-0">
                     <MoreVertical size={18} />
                   </button>
                 </div>
