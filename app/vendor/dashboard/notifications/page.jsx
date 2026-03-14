@@ -18,6 +18,9 @@ export default function NotificationsPage() {
   const { data, isLoading, refetch } = useNotifications(filters);
   const markAllRead = useMarkAllRead();
 
+  // DATA CHECKS
+  console.log("notifications: ", data)
+
   const handleSearch = (value) => {
     setSearchInput(value);
     setFilters((prev) => ({ ...prev, search: value }));
