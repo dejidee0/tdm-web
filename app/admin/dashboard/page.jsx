@@ -15,7 +15,6 @@ import {
   useDashboardRevenue,
   useServerLoad,
   useAdminAlerts,
-  useAdminQuickActions,
   useRefreshAdminDashboard,
   useExportReport,
 } from "@/hooks/use-admin";
@@ -62,79 +61,115 @@ export default function AdminDashboardPage() {
     isLoading: alertsLoading,
     error: alertsError,
   } = useAdminAlerts();
-  const {
-    data: quickActions,
-    isLoading: actionsLoading,
-    error: quickActionsError,
-  } = useAdminQuickActions();
   const { mutate: refreshDashboard, isPending: isRefreshing } =
     useRefreshAdminDashboard();
   const { mutate: exportReport, isPending: isExporting } = useExportReport();
 
-  // Combine analytics overview and dashboard stats
-  const stats =
-    analyticsOverview || dashboardStats
-      ? {
-          totalRevenue: {
-            label: "Total Revenue",
-            value: analyticsOverview?.totalRevenue
-              ? `$${analyticsOverview.totalRevenue.toLocaleString()}`
-              : "Loading...",
-            change: analyticsOverview?.revenueGrowth || 0,
-            trend: (analyticsOverview?.revenueGrowth || 0) >= 0 ? "up" : "down",
-          },
-          activeOrders: {
-            label: "Total Orders",
-            value:
-              analyticsOverview?.totalOrders?.toLocaleString() || "Loading...",
-            change: analyticsOverview?.ordersGrowth || 0,
-            trend: (analyticsOverview?.ordersGrowth || 0) >= 0 ? "up" : "down",
-          },
-          activeUsers: {
-            label: "Active Users",
-            value:
-              dashboardStats?.activeUsers?.toLocaleString() ||
-              analyticsOverview?.activeUsers?.toLocaleString() ||
-              "Loading...",
-            change: 12.3,
-            trend: "up",
-          },
-        }
-      : {
-          totalRevenue: {
-            label: "Total Revenue",
-            value: "Loading...",
-            change: 0,
-            trend: "up",
-          },
-          activeOrders: {
-            label: "Total Orders",
-            value: "Loading...",
-            change: 0,
-            trend: "up",
-          },
-          activeUsers: {
-            label: "Active Users",
-            value: "Loading...",
-            change: 0,
-            trend: "up",
-          },
-        };
+  console.log("[dashboard] dashboardRevenue:", dashboardRevenue);
+  console.log("[dashboard] dashboardRevenueError:", dashboardRevenueError);
+  console.log("[dashboard] serverLoad:", serverLoad);
+  console.log("[dashboard] serverLoadError:", serverLoadError);
+  console.log("[dashboard] alerts:", alerts);
+  console.log("[dashboard] alertsError:", alertsError);
+
+  // Build stats from dashboardStats API response
+  const stats = dashboardStats
+    ? {
+        platformUptime: {
+          label: "Platform Uptime",
+          value: dashboardStats.platformUptime || "N/A",
+          change: 0,
+          changeType: "steadyIncrease",
+          subtitle: "System availability",
+        },
+        activeUsers: {
+          label: "Active Users",
+          value: dashboardStats.activeUsers?.toLocaleString() || "N/A",
+          change: 0,
+          changeType: "increase",
+          subtitle: "Currently online",
+        },
+        avgApiLatency: {
+          label: "Avg API Latency",
+          value:
+            dashboardStats.avgApiLatency != null
+              ? `${dashboardStats.avgApiLatency}ms`
+              : "N/A",
+          change: 0,
+          changeType: "steadyIncrease",
+          subtitle: "Response time",
+        },
+      }
+    : {
+        platformUptime: {
+          label: "Platform Uptime",
+          value: "Loading...",
+          change: 0,
+          changeType: "steadyIncrease",
+          subtitle: "",
+        },
+        activeUsers: {
+          label: "Active Users",
+          value: "Loading...",
+          change: 0,
+          changeType: "increase",
+          subtitle: "",
+        },
+        avgApiLatency: {
+          label: "Avg API Latency",
+          value: "Loading...",
+          change: 0,
+          changeType: "steadyIncrease",
+          subtitle: "",
+        },
+      };
+
+  // Build analytics overview stats with correct field names
+  const analyticsStats = analyticsOverview
+    ? {
+        totalRevenue: {
+          label: "Total Revenue",
+          value: `$${(analyticsOverview.totalRevenue ?? 0).toLocaleString()}`,
+          change: Math.abs(
+            analyticsOverview.revenueGrowthPercentage ?? 0,
+          ).toFixed(1),
+          changeType:
+            (analyticsOverview.revenueGrowthPercentage ?? 0) >= 0
+              ? "increase"
+              : "decrease",
+          subtitle: "vs last period",
+        },
+        totalOrders: {
+          label: "Total Orders",
+          value: (analyticsOverview.totalOrders ?? 0).toLocaleString(),
+          change: Math.abs(
+            analyticsOverview.ordersGrowthPercentage ?? 0,
+          ).toFixed(1),
+          changeType:
+            (analyticsOverview.ordersGrowthPercentage ?? 0) >= 0
+              ? "increase"
+              : "decrease",
+          subtitle: "vs last period",
+        },
+        totalUsers: {
+          label: "Total Users",
+          value: (analyticsOverview.totalUsers ?? 0).toLocaleString(),
+          change: Math.abs(
+            analyticsOverview.usersGrowthPercentage ?? 0,
+          ).toFixed(1),
+          changeType:
+            (analyticsOverview.usersGrowthPercentage ?? 0) >= 0
+              ? "increase"
+              : "decrease",
+          subtitle: "vs last period",
+        },
+      }
+    : null;
 
   // Use dashboard revenue if available, fallback to monthly revenue from analytics
   const revenueData = dashboardRevenue || monthlyRevenue || null;
 
-  // Update server load with real data
-  const realServerLoad =
-    serverLoad ||
-    (dashboardStats
-      ? {
-          cpu: 0,
-          memory: 0,
-          uptime: dashboardStats.platformUptime,
-          latency: dashboardStats.avgLatency,
-        }
-      : null);
+  const realServerLoad = serverLoad || null;
 
   const isLoading =
     overviewLoading ||
@@ -142,8 +177,7 @@ export default function AdminDashboardPage() {
     statsLoading ||
     dashboardRevenueLoading ||
     serverLoading ||
-    alertsLoading ||
-    actionsLoading;
+    alertsLoading;
 
   const hasError =
     overviewError ||
@@ -151,8 +185,7 @@ export default function AdminDashboardPage() {
     statsError ||
     dashboardRevenueError ||
     serverLoadError ||
-    alertsError ||
-    quickActionsError;
+    alertsError;
   const errorMessage =
     overviewError?.message ||
     revenueError?.message ||
@@ -160,19 +193,73 @@ export default function AdminDashboardPage() {
     dashboardRevenueError?.message ||
     serverLoadError?.message ||
     alertsError?.message ||
-    quickActionsError?.message ||
     "";
   const isCorsError =
     errorMessage.includes("CORS") || errorMessage.includes("fetch");
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
-            Loading dashboard...
-          </p>
+      <div className="max-w-360 mx-auto animate-pulse">
+        {/* Header skeleton */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
+          <div>
+            <div className="h-8 w-56 bg-[#E5E7EB] rounded-lg mb-3" />
+            <div className="h-4 w-80 bg-[#E5E7EB] rounded" />
+          </div>
+          <div className="flex gap-3">
+            <div className="h-10 w-36 bg-[#E5E7EB] rounded-lg" />
+            <div className="h-10 w-36 bg-[#E5E7EB] rounded-lg" />
+          </div>
+        </div>
+
+        {/* Stat cards skeleton — 6 cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-4 w-28 bg-[#E5E7EB] rounded" />
+                <div className="h-9 w-9 bg-[#E5E7EB] rounded-lg" />
+              </div>
+              <div className="h-8 w-24 bg-[#E5E7EB] rounded mb-3" />
+              <div className="h-3 w-32 bg-[#E5E7EB] rounded" />
+            </div>
+          ))}
+        </div>
+
+        {/* Revenue chart + right column skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2 bg-white rounded-xl p-5 border border-[#E5E7EB]">
+            <div className="h-5 w-40 bg-[#E5E7EB] rounded mb-6" />
+            <div className="h-52 bg-[#E5E7EB] rounded-lg" />
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
+              <div className="h-5 w-32 bg-[#E5E7EB] rounded mb-4" />
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-9 bg-[#E5E7EB] rounded-lg mb-3 last:mb-0" />
+              ))}
+            </div>
+            <div className="bg-linear-to-br from-primary to-[#0F172A] rounded-xl p-5">
+              <div className="h-5 w-28 bg-white/10 rounded mb-4" />
+              <div className="h-8 w-20 bg-white/10 rounded mb-3" />
+              <div className="h-2 w-full bg-white/10 rounded-full" />
+            </div>
+          </div>
+        </div>
+
+        {/* Alerts table skeleton */}
+        <div className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
+          <div className="h-5 w-32 bg-[#E5E7EB] rounded mb-6" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex gap-4 mb-4 last:mb-0">
+              <div className="h-4 w-4 bg-[#E5E7EB] rounded-full mt-0.5 shrink-0" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-3/4 bg-[#E5E7EB] rounded" />
+                <div className="h-3 w-1/2 bg-[#E5E7EB] rounded" />
+              </div>
+              <div className="h-6 w-16 bg-[#E5E7EB] rounded-full shrink-0" />
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -227,7 +314,7 @@ export default function AdminDashboardPage() {
         >
           <div className="flex items-start gap-3">
             <AlertCircle
-              className="text-red-600 flex-shrink-0 mt-0.5"
+              className="text-red-600 shrink-0 mt-0.5"
               size={20}
             />
             <div className="flex-1">
@@ -242,7 +329,7 @@ export default function AdminDashboardPage() {
             </div>
             <button
               onClick={() => setShowError(false)}
-              className="text-red-600 hover:text-red-800 transition-colors flex-shrink-0"
+              className="text-red-600 hover:text-red-800 transition-colors shrink-0"
             >
               <X size={18} />
             </button>
@@ -261,6 +348,15 @@ export default function AdminDashboardPage() {
               index={index}
             />
           ))}
+        {analyticsStats &&
+          Object.keys(analyticsStats).map((key, index) => (
+            <AdminStatCard
+              key={key}
+              data={analyticsStats[key]}
+              statKey={key}
+              index={index + 3}
+            />
+          ))}
       </div>
 
       {/* Revenue Summary + Right Column (Quick Actions + Server Load) */}
@@ -272,7 +368,12 @@ export default function AdminDashboardPage() {
 
         {/* Right Column - 1/3 width */}
         <div className="space-y-6">
-          <AdminQuickActions actions={quickActions} />
+          <AdminQuickActions
+            onClearCache={() => refreshDashboard()}
+            onGenerateAudit={() => exportReport()}
+            isClearingCache={isRefreshing}
+            isGeneratingAudit={isExporting}
+          />
           <ServerLoad data={realServerLoad} />
         </div>
       </div>
