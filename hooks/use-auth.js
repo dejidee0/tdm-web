@@ -68,24 +68,28 @@ export function useLogin() {
       queryClient.setQueryData(authKeys.user(), data.user);
       queryClient.invalidateQueries({ queryKey: authKeys.user() });
 
-      // 2. Merge guest cart → backend (non-blocking, non-fatal)
-      //    Fire-and-forget: don't await, don't let it block the redirect
+      // 2. Role-based redirect — vendors go to their dashboard
+      if (data.role === "Vendor") {
+        router.push("/vendor/dashboard");
+        router.refresh();
+        return;
+      }
+
+      // 3. Merge guest cart → backend (non-blocking, non-fatal)
       cartApi
         .mergeGuestCart()
         .then((result) => {
           if (result.warnings?.length) {
             console.info("[cart] merge warnings:", result.warnings);
           }
-          // Refresh cart from backend after merge
           queryClient.invalidateQueries({ queryKey: ["cart"] });
         })
         .catch((err) => {
-          // Non-fatal — user still logs in successfully
           console.warn("[cart] merge failed:", err.message);
           queryClient.invalidateQueries({ queryKey: ["cart"] });
         });
 
-      // 3. Redirect
+      // 4. Redirect regular users
       const from = searchParams.get("from") || "/";
       router.push(from);
       router.refresh();
