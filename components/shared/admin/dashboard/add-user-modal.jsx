@@ -34,7 +34,7 @@ export default function AddUserModal({
         email: editUser.email || "",
         role: Array.isArray(editUser.roles)
           ? editUser.roles[0]
-          : (editUser.role || ""),
+          : editUser.role || "",
         isActive: editUser.status
           ? editUser.status.toLowerCase() === "active"
           : (editUser.isActive ?? true),
@@ -254,7 +254,9 @@ export default function AddUserModal({
                 {/* Initial Password */}
                 <div className="mb-6">
                   <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
-                    {isEditMode ? "New Password (optional)" : "Initial Password"}
+                    {isEditMode
+                      ? "New Password (optional)"
+                      : "Initial Password"}
                   </label>
                   <div className="flex gap-3">
                     <input
@@ -287,7 +289,7 @@ export default function AddUserModal({
                   <p className="font-manrope text-[12px] text-[#94A3B8] italic mt-2">
                     {isEditMode
                       ? "Only enter a new password if you want to change it."
-                      : "The user will be prompted to change this password on their first login."}
+                      : ""}
                   </p>
                 </div>
 

@@ -14,6 +14,14 @@ import {
 } from "@/hooks/use-financial";
 import netProfitIcon from "@/public/assets/svgs/financialReport/netProfit.svg";
 import pendingIcon from "@/public/assets/svgs/financialReport/pending.svg";
+import {
+  TrendingUp,
+  TrendingDown,
+  CreditCard,
+  CheckCircle,
+  RefreshCw,
+  DollarSign,
+} from "lucide-react";
 import calendarIcon from "@/public/assets/svgs/financialReport/calendarIcon.svg";
 import filterIcon from "@/public/assets/svgs/financialReport/filter.svg";
 import searchIcon from "@/public/assets/svgs/financialReport/searchIcon.svg";
@@ -68,73 +76,62 @@ export default function FinancialReportPage() {
     return `$${num.toLocaleString()}`;
   };
 
-  // Transform backend response to UI format
+  // Map API response fields directly to stat cards
   const statsData = stats
     ? [
         {
           key: "totalRevenue",
           label: "Total Revenue",
-          value: formatCurrency(
-            stats?.totalRevenue || stats?.total_revenue || 0,
-          ),
-          change: stats?.revenueGrowth || stats?.revenue_growth || 0,
-          subtitle: "vs last month",
-          changeType:
-            (stats?.revenueGrowth || stats?.revenue_growth || 0) >= 0
-              ? "increase"
-              : "decrease",
+          value: formatCurrency(stats.totalRevenue),
+          icon: DollarSign,
+          color: "text-[#16A34A]",
+          bg: "bg-[#DCFCE7]",
         },
         {
-          key: "avgTransaction",
-          label: "Avg Transaction",
-          value: formatCurrency(
-            stats?.avgTransaction ||
-              stats?.avg_transaction ||
-              stats?.averageTransaction ||
-              0,
-          ),
-          change:
-            stats?.avgTransactionGrowth || stats?.avg_transaction_growth || 0,
-          subtitle: "vs last month",
-          changeType:
-            (stats?.avgTransactionGrowth ||
-              stats?.avg_transaction_growth ||
-              0) >= 0
-              ? "increase"
-              : "decrease",
+          key: "revenueThisMonth",
+          label: "Revenue This Month",
+          value: formatCurrency(stats.revenueThisMonth),
+          icon: TrendingUp,
+          color: "text-[#2563EB]",
+          bg: "bg-[#DBEAFE]",
         },
         {
-          key: "netProfit",
-          label: "Net Profit",
-          value: formatCurrency(stats?.netProfit || stats?.net_profit || 0),
-          change: stats?.netProfitGrowth || stats?.net_profit_growth || 0,
-          subtitle: "vs last month",
-          changeType:
-            (stats?.netProfitGrowth || stats?.net_profit_growth || 0) >= 0
-              ? "increase"
-              : "decrease",
+          key: "totalTransactions",
+          label: "Total Transactions",
+          value: stats.totalTransactions.toLocaleString(),
+          icon: CreditCard,
+          color: "text-[#7C3AED]",
+          bg: "bg-[#EDE9FE]",
         },
         {
-          key: "pending",
-          label: "Pending",
-          value:
-            stats?.pendingTransactions ||
-            stats?.pending_transactions ||
-            stats?.pending ||
-            0,
-          change: stats?.pendingGrowth || stats?.pending_growth || 0,
-          subtitle: "vs last month",
-          changeType:
-            (stats?.pendingGrowth || stats?.pending_growth || 0) >= 0
-              ? "increase"
-              : "decrease",
-          isNegative: true,
+          key: "successfulTransactions",
+          label: "Successful",
+          value: stats.successfulTransactions.toLocaleString(),
+          icon: CheckCircle,
+          color: "text-[#16A34A]",
+          bg: "bg-[#DCFCE7]",
+        },
+        {
+          key: "refundedTransactions",
+          label: "Refunded Transactions",
+          value: stats.refundedTransactions.toLocaleString(),
+          icon: RefreshCw,
+          color: "text-[#DC2626]",
+          bg: "bg-[#FEE2E2]",
+        },
+        {
+          key: "refundedAmount",
+          label: "Refunded Amount",
+          value: formatCurrency(stats.refundedAmount),
+          icon: TrendingDown,
+          color: "text-[#DC2626]",
+          bg: "bg-[#FEE2E2]",
         },
       ]
     : [];
 
   console.log("stats", stats);
-  console.log("statsData", statsData);
+  console.log("revenueByService", revenueByService);
 
   return (
     <div className="max-w-360 mx-auto">
@@ -188,47 +185,29 @@ export default function FinancialReportPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {statsData?.map((stat, index) => {
-          const changeColor =
-            stat?.changeType === "increase"
-              ? "text-[#16A34A]"
-              : "text-[#EF4444]";
-
+          const Icon = stat.icon;
           return (
             <motion.div
-              key={stat?.key || index}
+              key={stat.key}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl p-6 border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] relative overflow-hidden"
+              className="bg-white rounded-xl p-6 border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] flex items-start justify-between"
             >
-              {/* Icon in top right */}
-              <div className="absolute top-6 right-6">
-                <Image
-                  src={stat?.isNegative ? pendingIcon : netProfitIcon}
-                  alt={stat?.label || "Stat"}
-                  width={26}
-                  height={26}
-                />
-              </div>
-
-              <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">
-                {stat?.label || "N/A"}
-              </p>
-              <h3 className="font-inter text-[32px] font-bold text-primary leading-none mb-2">
-                {stat?.value || "N/A"}
-              </h3>
-              <div className="flex items-center gap-2">
-                <div className={`flex items-center gap-1 ${changeColor}`}>
-                  <span className="font-inter text-[12px] font-medium">
-                    {(stat?.change || 0) > 0 ? "+" : ""}
-                    {stat?.change || 0}%
-                  </span>
-                </div>
-                <p className="font-inter text-[12px] text-[#9CA3AF]">
-                  {stat?.subtitle || ""}
+              <div>
+                <p className="font-inter text-[14px] font-medium text-[#6B7280] mb-2">
+                  {stat.label}
                 </p>
+                <h3 className="font-inter text-[32px] font-bold text-primary leading-none">
+                  {stat.value}
+                </h3>
+              </div>
+              <div
+                className={`w-10 h-10 rounded-lg ${stat.bg} flex items-center justify-center shrink-0`}
+              >
+                <Icon size={20} className={stat.color} />
               </div>
             </motion.div>
           );
@@ -241,8 +220,8 @@ export default function FinancialReportPage() {
         <div className="lg:col-span-2">
           <RevenueChart
             data={{
-              totalRevenue: 4250000,
-              monthlyRecurring: 355000,
+              totalRevenue: stats?.totalRevenue ?? 0,
+              monthlyRecurring: stats?.revenueThisMonth ?? 0,
               chartData: monthlyRevenue,
             }}
           />
@@ -286,7 +265,7 @@ export default function FinancialReportPage() {
                   Total
                 </p>
                 <p className="font-inter text-[20px] font-bold text-[#111827]">
-                  $1.2M
+                  {formatCurrency(stats?.totalRevenue ?? 0)}
                 </p>
               </div>
             </div>

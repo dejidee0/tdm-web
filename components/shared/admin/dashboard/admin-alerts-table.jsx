@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, ChevronDown } from "lucide-react";
+import { AlertTriangle, ChevronDown, CheckCircle } from "lucide-react";
 
 const severityStyles = {
   critical: {
@@ -19,7 +19,28 @@ const severityStyles = {
     text: "text-[#EAB308]",
     badge: "bg-[#EAB3081A]",
   },
+  warning: {
+    dot: "bg-[#EAB308]",
+    text: "text-[#EAB308]",
+    badge: "bg-[#EAB3081A]",
+  },
+  low: {
+    dot: "bg-[#22C55E]",
+    text: "text-[#22C55E]",
+    badge: "bg-[#22C55E1A]",
+  },
+  info: {
+    dot: "bg-[#3B82F6]",
+    text: "text-[#3B82F6]",
+    badge: "bg-[#3B82F61A]",
+  },
 };
+
+function formatTimestamp(value) {
+  if (!value) return "N/A";
+  const d = new Date(value);
+  return isNaN(d) ? value : d.toLocaleString();
+}
 
 const getActionButtonStyle = (action) => {
   if (action === "Resolve") {
@@ -29,9 +50,35 @@ const getActionButtonStyle = (action) => {
 };
 
 export default function AdminAlertsTable({ alerts }) {
-  if (!alerts || alerts.length === 0) {
-    return null;
+  // API may return a single object or an array — normalise to array
+  const alertList = Array.isArray(alerts) ? alerts : alerts ? [alerts] : [];
+
+  // "info" severity means no real alerts — show all-clear state
+  const realAlerts = alertList.filter((a) => a.severity !== "info");
+
+  if (alertList.length === 0) return null;
+
+  if (realAlerts.length === 0) {
+    const infoMsg = alertList[0]?.message || "No operational alerts right now.";
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="bg-white rounded-xl border border-[#E5E7EB] px-6 py-8 flex flex-col items-center gap-3 text-center"
+      >
+        <div className="w-10 h-10 bg-[#22C55E1A] rounded-full flex items-center justify-center">
+          <CheckCircle size={20} className="text-[#22C55E]" />
+        </div>
+        <h3 className="font-manrope text-[16px] font-bold text-primary">
+          All Systems Operational
+        </h3>
+        <p className="font-manrope text-[13px] text-[#64748B]">{infoMsg}</p>
+      </motion.div>
+    );
   }
+
+  const displayAlerts = realAlerts;
 
   return (
     <motion.div
@@ -84,9 +131,8 @@ export default function AdminAlertsTable({ alerts }) {
 
         {/* Alert Rows */}
         <div className="divide-y divide-[#E5E7EB]">
-          {alerts?.map((alert, index) => {
-            // Normalize severity to lowercase and provide fallback for unknown values
-            const severityKey = alert?.severity?.toLowerCase() || 'medium';
+          {displayAlerts.map((alert, index) => {
+            const severityKey = alert?.severity?.toLowerCase() || "medium";
             const severity = severityStyles[severityKey] || severityStyles.medium;
 
             return (
@@ -117,7 +163,7 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Issue Description */}
                   <div>
                     <p className="font-manrope text-[14px] font-medium text-primary">
-                      {alert?.issue || 'No description'}
+                      {alert?.message || alert?.issue || "No description"}
                     </p>
                     {alert?.description && (
                       <p className="font-manrope text-[12px] text-[#64748B] mt-1">
@@ -128,7 +174,7 @@ export default function AdminAlertsTable({ alerts }) {
 
                   {/* Timestamp */}
                   <span className="font-manrope text-[13px] text-[#64748B]">
-                    {alert?.timestamp || 'N/A'}
+                    {formatTimestamp(alert?.createdAt || alert?.timestamp)}
                   </span>
 
                   {/* Action Button */}
@@ -150,8 +196,8 @@ export default function AdminAlertsTable({ alerts }) {
 
       {/* Mobile Card View */}
       <div className="md:hidden divide-y divide-[#E5E7EB]">
-        {alerts?.map((alert, index) => {
-          const severityKey = alert?.severity?.toLowerCase() || 'medium';
+        {displayAlerts.map((alert, index) => {
+          const severityKey = alert?.severity?.toLowerCase() || "medium";
           const severity = severityStyles[severityKey] || severityStyles.medium;
 
           return (
@@ -175,13 +221,13 @@ export default function AdminAlertsTable({ alerts }) {
                   </span>
                 </span>
                 <span className="ml-auto font-manrope text-[12px] text-[#64748B]">
-                  {alert?.timestamp || 'N/A'}
+                  {formatTimestamp(alert?.createdAt || alert?.timestamp)}
                 </span>
               </div>
 
               {/* Issue */}
               <p className="font-manrope text-[14px] font-medium text-primary mb-1">
-                {alert?.issue || 'No description'}
+                {alert?.message || alert?.issue || "No description"}
               </p>
               {alert?.description && (
                 <p className="font-manrope text-[12px] text-[#64748B] mb-3">

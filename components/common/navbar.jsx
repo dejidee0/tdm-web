@@ -6,6 +6,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useIsAuthenticated, useLogout } from "@/hooks/use-auth";
+import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
+import { useVendorUser, useVendorLogout } from "@/hooks/use-vendor-auth";
 import { useCartCount } from "@/hooks/use-cart";
 import { useSavedItems } from "@/hooks/use-saved";
 import {
@@ -21,8 +23,45 @@ import {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { isAuthenticated, user, isLoading } = useIsAuthenticated();
-  const logout = useLogout();
+
+  const { isAuthenticated: isUserAuthed, user: regularUser, isLoading: userLoading } = useIsAuthenticated();
+  const { data: adminUser, isLoading: adminLoading } = useAdminUser();
+  const { data: vendorUser, isLoading: vendorLoading } = useVendorUser();
+
+  const userLogout = useLogout();
+  const adminLogout = useAdminLogout();
+  const vendorLogout = useVendorLogout();
+
+  // Determine active session: admin > vendor > regular user
+  const isAuthenticated = !!(adminUser || vendorUser || isUserAuthed);
+  const isLoading = adminLoading || vendorLoading || userLoading;
+
+  // Normalize user object for display
+  const activeUser = adminUser
+    ? { ...adminUser, fullName: adminUser.name || `${adminUser.firstName || ""} ${adminUser.lastName || ""}`.trim() }
+    : vendorUser
+    ? { ...vendorUser, fullName: vendorUser.name || `${vendorUser.firstName || ""} ${vendorUser.lastName || ""}`.trim() }
+    : regularUser;
+
+  // Dashboard destination based on active session
+  const dashboardHref = adminUser
+    ? "/admin/dashboard"
+    : vendorUser
+    ? "/vendor/dashboard"
+    : "/dashboard";
+  const dashboardLabel = adminUser
+    ? "Admin Dashboard"
+    : vendorUser
+    ? "Vendor Dashboard"
+    : "Pro Dashboard";
+
+  // Profile destination based on active session
+  const profileHref = adminUser
+    ? "/admin/dashboard/settings"
+    : vendorUser
+    ? "/vendor/dashboard/account-settings"
+    : "/dashboard/profile";
+
   const cartCount = useCartCount();
   const pathname = usePathname();
 
@@ -31,12 +70,12 @@ export default function Navbar() {
   const savedCount = isAuthenticated ? savedItems.length : 0;
 
   const displayName =
-    user?.fullName ||
-    `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
+    activeUser?.fullName ||
+    `${activeUser?.firstName || ""} ${activeUser?.lastName || ""}`.trim() ||
     "User";
   const avatarInitial =
-    user?.firstName?.charAt(0)?.toUpperCase() ||
-    user?.fullName?.charAt(0)?.toUpperCase() ||
+    activeUser?.firstName?.charAt(0)?.toUpperCase() ||
+    activeUser?.fullName?.charAt(0)?.toUpperCase() ||
     "U";
 
   const navLinks = [
@@ -53,10 +92,13 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logout.mutate();
+    if (adminUser) adminLogout.mutate();
+    else if (vendorUser) vendorLogout.mutate();
+    else userLogout.mutate();
     setIsProfileOpen(false);
     setIsMenuOpen(false);
   };
+  const isLogoutPending = adminLogout.isPending || vendorLogout.isPending || userLogout.isPending;
 
   return (
     <>
@@ -152,7 +194,7 @@ export default function Navbar() {
                     >
                       <Avatar
                         initial={avatarInitial}
-                        avatar={user?.avatar}
+                        avatar={activeUser?.avatar}
                         name={displayName}
                         size={10}
                       />
@@ -179,10 +221,10 @@ export default function Navbar() {
                             className="absolute right-0 mt-2 w-64 bg-[#f0f2f5] rounded-2xl shadow-xl overflow-hidden z-50"
                           >
                             <Link
-                              href="/dashboard/profile"
+                              href={profileHref}
                               onClick={() => setIsProfileOpen(false)}
                               className={`flex items-center gap-4 px-5 py-4.5 transition-colors ${
-                                isActive("/dashboard/profile")
+                                isActive(profileHref)
                                   ? "bg-primary/10 text-primary"
                                   : "hover:bg-black/5 text-gray-900"
                               }`}
@@ -197,11 +239,11 @@ export default function Navbar() {
                             </Link>
 
                             <Link
-                              href="/dashboard"
+                              href={dashboardHref}
                               onClick={() => setIsProfileOpen(false)}
                               className={`flex items-center gap-4 px-5 py-4.5 transition-colors ${
-                                isActive("/dashboard") &&
-                                !isActive("/dashboard/profile")
+                                isActive(dashboardHref) &&
+                                !isActive(profileHref)
                                   ? "bg-primary/10 text-primary"
                                   : "hover:bg-black/5 text-gray-900"
                               }`}
@@ -211,7 +253,7 @@ export default function Navbar() {
                                 strokeWidth={1.5}
                               />
                               <span className="text-[17px] font-medium">
-                                Pro Dashboard
+                                {dashboardLabel}
                               </span>
                             </Link>
 
@@ -219,7 +261,7 @@ export default function Navbar() {
 
                             <button
                               onClick={handleLogout}
-                              disabled={logout.isPending}
+                              disabled={isLogoutPending}
                               className="flex items-center gap-4 w-full px-5 py-[18px] hover:bg-black/5 text-gray-900 transition-colors disabled:opacity-50"
                             >
                               <LogOut
@@ -227,7 +269,7 @@ export default function Navbar() {
                                 strokeWidth={1.8}
                               />
                               <span className="text-[17px] font-semibold">
-                                {logout.isPending ? "Logging out..." : "Logout"}
+                                {isLogoutPending ? "Logging out..." : "Logout"}
                               </span>
                             </button>
                           </motion.div>
@@ -337,12 +379,12 @@ export default function Navbar() {
               </div>
 
               <div className="flex-1 overflow-y-auto">
-                {!isLoading && isAuthenticated && user && (
+                {!isLoading && isAuthenticated && activeUser && (
                   <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
                     <div className="flex items-center gap-3">
                       <Avatar
                         initial={avatarInitial}
-                        avatar={user?.avatar}
+                        avatar={activeUser?.avatar}
                         name={displayName}
                         size={11}
                       />
@@ -351,7 +393,7 @@ export default function Navbar() {
                           {displayName}
                         </p>
                         <p className="text-xs text-gray-400 truncate">
-                          {user.email}
+                          {activeUser.email}
                         </p>
                       </div>
                     </div>
@@ -412,19 +454,19 @@ export default function Navbar() {
                       onClick={() => setIsMenuOpen(false)}
                     />
                     <MobileLink
-                      href="/dashboard/profile"
+                      href={profileHref}
                       icon={<User className="w-4 h-4" />}
                       label="Profile"
-                      active={isActive("/dashboard/profile")}
+                      active={isActive(profileHref)}
                       onClick={() => setIsMenuOpen(false)}
                     />
                     <MobileLink
-                      href="/dashboard"
+                      href={dashboardHref}
                       icon={<LayoutDashboard className="w-4 h-4" />}
-                      label="Pro Dashboard"
+                      label={dashboardLabel}
                       active={
-                        isActive("/dashboard") &&
-                        !isActive("/dashboard/profile")
+                        isActive(dashboardHref) &&
+                        !isActive(profileHref)
                       }
                       onClick={() => setIsMenuOpen(false)}
                     />
@@ -438,11 +480,11 @@ export default function Navbar() {
                 ) : isAuthenticated ? (
                   <button
                     onClick={handleLogout}
-                    disabled={logout.isPending}
+                    disabled={isLogoutPending}
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 text-[15px] font-medium text-white bg-red-500 rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50"
                   >
                     <LogOut className="w-4 h-4" />
-                    {logout.isPending ? "Logging out..." : "Logout"}
+                    {isLogoutPending ? "Logging out..." : "Logout"}
                   </button>
                 ) : (
                   <>

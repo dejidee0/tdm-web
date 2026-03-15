@@ -39,7 +39,7 @@ export default function RevenueChart({ data }) {
             Total Revenue (YTD)
           </p>
           <p className="font-inter text-[28px] font-bold text-primary">
-            ${data?.totalRevenue?.toLocaleString() || "4,250,000"}
+            ${data?.totalRevenue != null ? data.totalRevenue.toLocaleString() : "—"}
           </p>
         </div>
         <div>
@@ -47,7 +47,7 @@ export default function RevenueChart({ data }) {
             Monthly Recurring (MRR)
           </p>
           <p className="font-inter text-[28px] font-bold text-primary">
-            ${data?.monthlyRecurring?.toLocaleString() || "355,000"}
+            ${data?.monthlyRecurring != null ? data.monthlyRecurring.toLocaleString() : "—"}
           </p>
         </div>
       </div>
