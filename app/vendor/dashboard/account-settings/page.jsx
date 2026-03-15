@@ -44,6 +44,12 @@ export default function SettingsPage() {
   const { data: notifications } = useNotificationSettings();
   const { data: brandAccess } = useBrandAccess();
 
+  // DATA CHECKS
+  // console.log("profile: ", profile)
+  // console.log("security: ", security)
+  // console.log("notifications: ", notifications)
+  // console.log("brandAccess: ", brandAccess)
+
   const updateProfile = useUpdateProfile();
   const changePassword = useChangePassword();
   const toggle2FA = useToggle2FA();

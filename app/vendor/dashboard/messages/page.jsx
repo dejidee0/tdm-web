@@ -34,6 +34,9 @@ export default function MessagesPage() {
     useVendorConversationMessages(activeConversation);
   const sendMessage = useSendConversationMessage();
 
+  console.log("messages: ",messages)
+  console.log("conversationData: ",conversationsData)
+
   const handleSearch = (value) => {
     setSearchInput(value);
     setFilters((prev) => ({ ...prev, search: value }));

@@ -19,6 +19,9 @@ export default function DeliveryPage() {
 
   const { data, isLoading } = useDeliveryAssignments(filters);
 
+  // DATA CHECKS
+  // console.log("delivery assignments: ", data)
+
   const handleSearch = (value) => {
     setSearchInput(value);
     setFilters((prev) => ({ ...prev, search: value, page: 1 }));

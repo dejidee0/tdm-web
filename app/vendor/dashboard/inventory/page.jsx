@@ -38,6 +38,10 @@ function InventoryContent() {
   const { data, isLoading } = useInventoryProducts(filters);
   const addProduct = useAddProduct();
 
+  // DATA CHECKS
+  console.log("stats: ",stats)
+  console.log("inventoryProducts: ",data)
+
   // Auto-open modal based on URL query parameter
   useEffect(() => {
     const openParam = searchParams.get("open");

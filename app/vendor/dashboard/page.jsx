@@ -24,8 +24,10 @@ export default function VendorDashboardPage() {
   const { data: activities, isLoading: activitiesLoading } =
     useVendorActivity();
 
-    console.log('activities', activities);
-    
+    // DATA CHECK
+    // console.log('activities', activities);
+    // console.log('stats: ', rawStats)
+    // console.log('alerts: ', alerts)
 
   // Transform backend stats to UI format
   const stats = {
