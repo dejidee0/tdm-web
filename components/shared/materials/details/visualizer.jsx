@@ -25,7 +25,7 @@ export default function AIVisualizer() {
       {/* Title & Description */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Visualize this tile in your own room with AI.
+          Visualize this tile in your own room with Ziora.
         </h3>
       </div>
 
@@ -36,7 +36,7 @@ export default function AIVisualizer() {
         className="w-full py-3.5 bg-white border border-gray-300 text-primary font-semibold rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mb-6"
       >
         <Sparkles className="w-5 h-5 text-primary" />
-        Launch AI Visualizer
+        Design with Ziora
       </motion.button>
 
       {/* Consultant Card */}

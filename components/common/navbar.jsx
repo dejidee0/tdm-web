@@ -80,8 +80,8 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Materials", href: "/materials" },
-    { name: "AI Visualizer", href: "/ai-visualizer" },
-    { name: "Project", href: "/project" },
+    { name: "Design with Ziora", href: "/ai-visualizer" },
+    { name: "Projects", href: "/project" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

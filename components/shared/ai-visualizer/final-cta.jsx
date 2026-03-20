@@ -38,7 +38,7 @@ const FinalCTA = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Turn Your AI Vision into Reality
+            Turn Your Ziora Vision into Reality
           </motion.h2>
 
           {/* Subtitle */}
@@ -53,7 +53,7 @@ const FinalCTA = () => {
             <span className="font-semibold text-primary">
               free detailed material list
             </span>{" "}
-            based on your AI visualization.
+            based on your Ziora design.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -77,7 +77,7 @@ const FinalCTA = () => {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-white text-[#2d3e54] border-2 border-gray-300 rounded-xl font-semibold text-base hover:border-gray-400 hover:bg-gray-50 transition-colors"
             >
-              Try Visualizer Again
+              Design with Ziora Again
             </motion.button>
           </motion.div>
 

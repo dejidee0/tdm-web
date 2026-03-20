@@ -77,7 +77,7 @@ export default function CTACards() {
                 Unsure of your style?
               </h3>
               <p className="text-gray-700 mb-2 leading-relaxed max-w-md">
-                Take our 2-minute style quiz and let our AI suggest the perfect
+                Take our 2-minute style quiz and let Ziora suggest the perfect
                 palette for you.
               </p>
               <button className="inline-flex items-center gap-2 bg-gray-900 text-white font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-800 transition-colors">

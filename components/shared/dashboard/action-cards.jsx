@@ -18,7 +18,7 @@ const cards = [
     icon: Wand2,
     iconBg: "bg-[#a855f7]/10",
     iconColor: "text-[#a855f7]",
-    title: "Try AI Visualizer",
+    title: "Design with Ziora",
     description: "See your room with new styles instantly.",
     href: "/visualizer",
   },

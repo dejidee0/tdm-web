@@ -8,26 +8,26 @@ const ServicesSection = () => {
   const services = [
     {
       icon: Store,
-      title: "Shop Premium Materials",
+      title: "Bogat Materials",
       description:
-        "Browse a curated selection of high-quality materials from top brands.",
+        "Source certified renovation and construction materials — tiles, plumbing, electrical, and more — delivered directly to your site.",
     },
     {
       icon: Sparkles,
-      title: "Visualize with AI",
+      title: "Design with Ziora",
       description:
-        "See your design come to life. Upload a photo and let our AI show you the possibilities.",
+        "Upload your space, choose a style, and let Ziora Intelligence generate a premium design vision before you spend a single naira.",
     },
     {
       icon: Users,
-      title: "Expert Consultations",
+      title: "TBM Project Execution",
       description:
-        "Connect with our experienced designers for personalized guidance and project planning.",
+        "From estimate to completion — TBM connects you with verified contractors and manages your renovation or construction project end-to-end.",
     },
   ];
 
   return (
-    <section className="py-16 sm:py-20 md:py-16 bg-[#FFFFFF]">
+    <section className="py-12 sm:py-14 lg:py-16 bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -44,7 +44,7 @@ const ServicesSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary mb-4 sm:mb-6"
           >
-            Everything You Need to Transform Your Home
+            One Platform. Design. Materials. Execution.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -53,8 +53,7 @@ const ServicesSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl font-inter text-gray-600 max-w-4xl mx-auto"
           >
-            From high-quality materials to cutting-edge technology and expert
-            advice, we provide a complete solution for your renovation journey.
+            TBM Building Services brings together Ziora AI planning, Bogat materials supply, and expert project execution — guiding you from first design to finished build.
           </motion.p>
         </motion.div>
 

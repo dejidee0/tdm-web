@@ -32,21 +32,21 @@ export default function AIVisualizerPromo({ items }) {
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-5 h-5" />
           <span className="text-[12px] font-semibold uppercase tracking-wide">
-            AI Design
+            Ziora
           </span>
         </div>
 
         <h3 className="text-[20px] font-bold mb-2">Visualize your space</h3>
         <p className="text-[14px] text-white/90 mb-6 leading-relaxed">
           While you wait, see how the Italian Carrara Marble looks in your
-          actual kitchen using our AI tool.
+          actual kitchen using Ziora.
         </p>
 
         <Link
           href="/visualizer"
           className="block w-full bg-white text-primary text-center py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors"
         >
-          Try AI Visualization
+          Design with Ziora
         </Link>
       </div>
     </motion.div>

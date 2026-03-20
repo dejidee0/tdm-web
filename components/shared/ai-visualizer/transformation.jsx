@@ -8,7 +8,7 @@ const paths = [
     icon: ImageIcon,
     title: "Image to Image",
     description:
-      "Upload a photo of your current room. Our AI re-skins the existing geometry with your chosen styles.",
+      "Upload a photo of your current room. Ziora re-skins the existing geometry with your chosen styles.",
     features: ["Preserves room layout", "Swap furniture and materials"],
   },
   {
