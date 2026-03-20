@@ -1,36 +1,38 @@
 import CTASection from "@/components/shared/home/cta";
 import CustomizeSection from "@/components/shared/home/customize";
 import HeroSection from "@/components/shared/home/hero";
+import ProcessSection from "@/components/shared/home/process";
 import ServicesSection from "@/components/shared/home/services";
 import TrendingSection from "@/components/shared/home/trending";
 
 export const metadata = {
   title:
-    "TBM - Transform Your Dream Home with Premium Materials & AI Visualization",
+    "TBM Building Services – Design with Ziora, Build with TBM, Source from Bogat",
   description:
-    "Discover premium materials, visualize your space with AI technology, and connect with expert designers. Shop high-quality furniture, get expert consultations, and transform your home renovation journey with TBM.",
+    "TBM Building Services powers your renovation and construction journey. Design with Ziora AI intelligence, source certified materials through Bogat, and execute your project with TBM's expert team.",
   keywords: [
-    "premium materials",
-    "AI home visualization",
-    "furniture shopping",
-    "interior design",
-    "home renovation",
-    "expert consultation",
-    "custom furniture",
-    "home transformation",
-    "TBM",
+    "TBM Building Services",
+    "Ziora AI design",
+    "Bogat materials",
+    "renovation Nigeria",
+    "construction materials",
+    "building project estimate",
+    "tiles plumbing electrical",
+    "home renovation Lagos",
+    "AI visualization",
+    "project execution",
   ],
-  authors: [{ name: "TBM" }],
-  creator: "TBM",
-  publisher: "TBM",
+  authors: [{ name: "TBM Building Services" }],
+  creator: "TBM Building Services",
+  publisher: "TBM Building Services",
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: "https://yourdomain.com",
-    siteName: "TBM - Transform Your Home",
-    title: "TBM - Transform Your Dream Home with Premium Materials & AI",
+    siteName: "TBM Building Services",
+    title: "TBM Building Services – Design. Materials. Execution.",
     description:
-      "Discover premium materials, visualize your space with AI, and connect with expert designers to bring your vision to life.",
+      "Design with Ziora Intelligence, source certified materials through Bogat, and let TBM manage your renovation or construction project end-to-end.",
   },
 
   robots: {
@@ -53,6 +55,7 @@ export default function Home() {
       <ServicesSection />
       <CustomizeSection />
       <TrendingSection />
+      <ProcessSection />
       <CTASection />
     </div>
   );

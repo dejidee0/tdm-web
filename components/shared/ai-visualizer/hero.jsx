@@ -51,7 +51,7 @@ export default function Hero() {
                 className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl font-inter"
               >
                 Don&lsquo;t just imagine it — see it. Upload a photo, choose a
-                style, and watch our AI transform your space instantly.
+                style, and watch Ziora transform your space instantly.
               </motion.p>
 
               {/* CTA Buttons */}
@@ -98,7 +98,7 @@ export default function Hero() {
                     <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840]" />
                   </div>
                   <span className="text-gray-500 text-xs sm:text-sm font-normal font-inter">
-                    TBM Visualizer 2.0
+                    Ziora 2.0
                   </span>
                   <div className="w-8 sm:w-16" />
                 </div>
@@ -117,7 +117,7 @@ export default function Hero() {
                     />
                     <div className="font-inter">
                       <p className="font-semibold text-gray-900 text-xs sm:text-sm">
-                        AI Suggestion
+                        Ziora Suggestion
                       </p>
                       <p className="text-gray-600 text-[10px] sm:text-xs mt-0.5 sm:mt-1">
                         Try &quot;Scandi-Boho&quot; for this light.

@@ -96,11 +96,10 @@ export default function TBMJourney() {
                     2025
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    AI Integration
+                    Ziora Launch
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Launched our proprietary AI visualizer, allowing clients to
-                    see their rooms transformed instantly.
+                    Launched Ziora, our proprietary design intelligence system, allowing clients to see their spaces transformed instantly.
                   </p>
                 </div>
               </div>

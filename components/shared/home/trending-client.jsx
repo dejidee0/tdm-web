@@ -46,7 +46,7 @@ export default function TrendingClient({ products = [] }) {
   if (!products.length) return null;
 
   return (
-    <section className="py-16 sm:py-20 bg-white font-manrope">
+    <section className="py-12 sm:py-14 lg:py-16 bg-white font-manrope">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -57,11 +57,10 @@ export default function TrendingClient({ products = [] }) {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-5">
-            Top Trending
+            Featured Materials
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Find a bright ideal to suit your taste with our great selection of
-            suspension, wall, floor and table lights.
+            Explore our most popular renovation and construction materials — quality-certified and sourced through Bogat for every stage of your project.
           </p>
           <div className="flex justify-center mt-4">
             <div className="w-20 h-1 bg-primary rounded-full" />

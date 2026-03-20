@@ -34,10 +34,10 @@ export default function DesignsPage() {
         >
           <div>
             <h1 className="text-[28px] md:text-[32px] font-extrabold text-text-black leading-tight">
-              My AI Designs
+              My Ziora Designs
             </h1>
             <p className="text-[15px] text-[#666666] font-medium mt-1 max-w-2xl">
-              Browse, edit, and organize your AI-generated interior
+              Browse, edit, and organize your Ziora-generated interior
               visualizations. All your creative ideas in one place.
             </p>
           </div>

@@ -8,7 +8,7 @@ const HowItWorks = () => {
       number: "1.",
       title: "Upload Your Space",
       description:
-        "Take a photo of your room. Our AI identifies walls, furniture, and lighting.",
+        "Take a photo of your room. Ziora identifies walls, furniture, and lighting.",
       icon: (
         <svg
           width="24"

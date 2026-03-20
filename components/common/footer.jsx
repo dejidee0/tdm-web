@@ -30,18 +30,18 @@ const Footer = () => {
             </h3>
             <ul className="space-y-4">
               {[
-                "Strategy Design",
-                "Product Design",
-                "Content Strategy",
-                "Brand Strategy",
-                "Development",
+                { label: "Renovation", href: "/project" },
+                { label: "Construction", href: "/project" },
+                { label: "Bogat Materials", href: "/materials" },
+                { label: "Design with Ziora", href: "/ai-visualizer" },
+                { label: "Get Estimate", href: "/contact" },
               ].map((item) => (
-                <li key={item}>
+                <li key={item.label}>
                   <Link
-                    href="#"
+                    href={item.href}
                     className="text-white/70 hover:text-white transition-colors text-sm"
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -54,13 +54,18 @@ const Footer = () => {
               Company
             </h3>
             <ul className="space-y-4">
-              {["About", "Blog", "Contact", "Jobs"].map((item) => (
-                <li key={item}>
+              {[
+                { label: "About TBM", href: "/about" },
+                { label: "Projects", href: "/project" },
+                { label: "Contact", href: "/contact" },
+                { label: "Sign Up", href: "/sign-up" },
+              ].map((item) => (
+                <li key={item.label}>
                   <Link
-                    href="#"
+                    href={item.href}
                     className="text-white/70 hover:text-white transition-colors text-sm"
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -76,7 +81,7 @@ const Footer = () => {
               Get In Touch
             </h3>
             <p className="text-white/70 text-sm leading-relaxed mb-4">
-              Feel free to get in touch with us via email
+              Ready to start your renovation or construction project? Reach out to TBM Building Services.
             </p>
             <a
               href="mailto:info@tbmbuilding.com"
@@ -161,7 +166,7 @@ const Footer = () => {
         {/* Copyright — right-aligned matching design */}
         <div className="flex justify-end">
           <p className="text-white/60 text-sm">
-            © 2025@TBM Digitals. All Rights Reserved.
+            © 2025 TBM Building Services. All Rights Reserved.
           </p>
         </div>
       </div>

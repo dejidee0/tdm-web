@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const CustomizeSection = () => {
   return (
-    <section className="py-16 sm:py-20 md:py-16 bg-gray-50">
+    <section className="py-12 sm:py-14 lg:py-16 bg-gray-50">
       <div className="">
         <div className="bg-slate-400 overflow-hidden relative min-h-[200px] sm:min-h-[450px] md:min-h-[300px]">
           {/* Overlay for better text readability */}
@@ -16,25 +16,31 @@ const CustomizeSection = () => {
             <div className="w-full md:w-1/2 px-8 sm:px-12 md:px-16 lg:px-20 py-12 sm:py-16">
               {/* Heading */}
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-primary font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Customize your furniture and build your space with TBM
+                Plan your renovation with Ziora, build it with TBM
               </h2>
 
               {/* Description */}
               <p className="text-base sm:text-lg md:text-xl font-inter text-white/90 mb-8 sm:mb-10 max-w-xl">
-                Allows you to view our showrooms containing our latest furniture
-                collections
+                Get a full project estimate, source materials from Bogat, and
+                let TBM manage your renovation or construction from start to
+                finish.
               </p>
 
-              {/* CTA Button */}
-              <button className="bg-blue-900 hover:bg-blue-800 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg transition-colors duration-200 text-base sm:text-lg shadow-lg">
-                Browse Materials
-              </button>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg transition-colors duration-200 text-base sm:text-lg shadow-lg">
+                  Get Project Estimate
+                </button>
+                <button className="bg-white/20 hover:bg-white/30 border border-white/40 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg transition-colors duration-200 text-base sm:text-lg shadow-lg backdrop-blur-sm">
+                  Browse Bogat Materials
+                </button>
+              </div>
             </div>
 
             {/* Chair Image - Hidden on mobile, visible on larger screens */}
             <div className="hidden md:block absolute right-12 lg:right-20 -bottom-10 w-[400px] lg:w-[500px] h-[400px] lg:h-[500px]">
               <Image
-                src="/chair.png" // Replace with your chair image path
+                src="/chair.png"
                 alt="Modern green chair"
                 fill
                 className="object-contain"

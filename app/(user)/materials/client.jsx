@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ThumbsUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -83,12 +84,13 @@ function extractCategories(items = []) {
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function MaterialsClient({ initialData }) {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
 
   const [activeFilters, setActiveFilters] = useState({
     categoryIds: [],
     brandTypes: [],
     productTypes: [],
-    searchTerm: "",
+    searchTerm: searchParams.get("search") || "",
     isFeatured: null,
     minPrice: null,
     maxPrice: null,
