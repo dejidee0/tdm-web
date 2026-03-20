@@ -19,7 +19,7 @@ export default function NotificationsPage() {
   const markAllRead = useMarkAllRead();
 
   // DATA CHECKS
-  console.log("notifications: ", data)
+  // console.log("notifications: ", data)
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -49,7 +49,7 @@ export default function NotificationsPage() {
   ];
 
   return (
-    <div className="max-w-[1200px] mx-auto">
+    <div className="max-w-300 mx-auto">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
@@ -103,7 +103,7 @@ export default function NotificationsPage() {
               onClick={() => handleTabChange(tab.id)}
               className={`
                 flex items-center gap-2 px-4 py-2 rounded-lg font-manrope text-[13px] font-medium
-                whitespace-nowrap transition-colors flex-shrink-0
+                whitespace-nowrap transition-colors shrink-0
                 ${
                   activeTab === tab.id
                     ? "bg-primary text-white"

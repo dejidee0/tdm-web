@@ -34,8 +34,9 @@ export default function MessagesPage() {
     useVendorConversationMessages(activeConversation);
   const sendMessage = useSendConversationMessage();
 
-  console.log("messages: ",messages)
-  console.log("conversationData: ",conversationsData)
+  // DATA CHECKS
+  // console.log("messages: ",messages)
+  // console.log("conversationData: ",conversationsData)
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -115,7 +116,7 @@ export default function MessagesPage() {
         {/* Left Sidebar - Conversations List */}
         <div
           className={`
-          w-full md:w-[340px] bg-white border-r border-[#E5E7EB] flex flex-col
+          w-full md:w-85 bg-white border-r border-[#E5E7EB] flex flex-col
           ${showChat ? "hidden md:flex" : "flex"}
         `}
         >
@@ -141,7 +142,7 @@ export default function MessagesPage() {
             <button
               onClick={() => handleFilterChange("active")}
               className={`
-                px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap flex-shrink-0
+                px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "active"
                     ? "bg-primary text-white"
@@ -154,7 +155,7 @@ export default function MessagesPage() {
             <button
               onClick={() => handleFilterChange("pending")}
               className={`
-                px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap flex-shrink-0
+                px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "pending"
                     ? "bg-primary text-white"
@@ -167,7 +168,7 @@ export default function MessagesPage() {
             <button
               onClick={() => handleFilterChange("closed")}
               className={`
-                px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap flex-shrink-0
+                px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "closed"
                     ? "bg-primary text-white"
@@ -212,7 +213,7 @@ export default function MessagesPage() {
                 `}
               >
                 {/* Avatar */}
-                <div className="relative flex-shrink-0">
+                <div className="relative shrink-0">
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center font-manrope text-[14px] font-bold"
                     style={{
@@ -233,7 +234,7 @@ export default function MessagesPage() {
                     <h3 className="font-manrope text-[14px] font-bold text-primary truncate">
                       {conversation.contactName}
                     </h3>
-                    <span className="font-manrope text-[12px] text-[#64748B] flex-shrink-0 ml-2">
+                    <span className="font-manrope text-[12px] text-[#64748B] shrink-0 ml-2">
                       {conversation.timestamp}
                     </span>
                   </div>
@@ -265,7 +266,7 @@ export default function MessagesPage() {
             <div className="p-4 md:p-6 border-b border-[#E5E7EB] flex items-center justify-between">
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-manrope text-[14px] md:text-[16px] font-bold relative flex-shrink-0"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-manrope text-[14px] md:text-[16px] font-bold relative shrink-0"
                   style={{
                     backgroundColor: activeConv.contactColor + "20",
                     color: activeConv.contactColor,
@@ -279,12 +280,12 @@ export default function MessagesPage() {
                       {activeConv.contactName}
                     </h2>
                     {activeConv.contactRole && (
-                      <span className="px-2 py-0.5 bg-[#10B981] text-white rounded font-manrope text-[10px] font-bold flex-shrink-0">
+                      <span className="px-2 py-0.5 bg-[#10B981] text-white rounded font-manrope text-[10px] font-bold shrink-0">
                         {activeConv.contactRole}
                       </span>
                     )}
                     {activeConv.orderId && (
-                      <span className="px-2 py-0.5 bg-primary text-white rounded font-manrope text-[10px] font-bold flex-shrink-0">
+                      <span className="px-2 py-0.5 bg-primary text-white rounded font-manrope text-[10px] font-bold shrink-0">
                         {activeConv.orderId}
                       </span>
                     )}
@@ -294,7 +295,7 @@ export default function MessagesPage() {
                   </p>
                 </div>
               </div>
-              <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors flex-shrink-0">
+              <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors shrink-0">
                 <MoreVertical size={20} />
               </button>
             </div>
@@ -337,7 +338,7 @@ export default function MessagesPage() {
                   >
                     {message.sender === "customer" && (
                       <div
-                        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold flex-shrink-0"
+                        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold shrink-0"
                         style={{
                           backgroundColor: message.color + "20",
                           color: message.color,
@@ -349,7 +350,7 @@ export default function MessagesPage() {
 
                     <div
                       className={`
-                        max-w-[85%] md:max-w-[500px] px-3 md:px-4 py-2 md:py-3 rounded-2xl
+                        max-w-[85%] md:max-w-125 px-3 md:px-4 py-2 md:py-3 rounded-2xl
                         ${
                           message.sender === "vendor"
                             ? "bg-[#F8FAFC] text-primary"
@@ -357,7 +358,7 @@ export default function MessagesPage() {
                         }
                       `}
                     >
-                      <p className="font-manrope text-[13px] md:text-[14px] leading-relaxed break-words">
+                      <p className="font-manrope text-[13px] md:text-[14px] leading-relaxed wrap-break-word">
                         {message.message}
                       </p>
                       <p className="font-manrope text-[10px] md:text-[11px] text-[#64748B] mt-1">
@@ -367,7 +368,7 @@ export default function MessagesPage() {
 
                     {message.sender === "vendor" && (
                       <div
-                        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold flex-shrink-0"
+                        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold shrink-0"
                         style={{
                           backgroundColor: message.color + "20",
                           color: message.color,
@@ -384,14 +385,14 @@ export default function MessagesPage() {
 
           {/* Quick Replies */}
           <div className="px-4 md:px-6 py-3 border-t border-[#E5E7EB]">
-            <div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
+            <div className="flex flex-wrap md:flex-nowrap gap-1 md:gap-2 overflow-x-auto pb-2 -mb-2">
               {mockQuickReplies.map((reply, index) => (
                 <motion.button
                   key={index}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleQuickReply(reply)}
-                  className="px-4 py-2 bg-white border border-[#E5E7EB] rounded-full font-manrope text-[13px] text-[#64748B] hover:bg-[#F8FAFC] hover:border-primary hover:text-primary transition-colors whitespace-nowrap flex-shrink-0"
+                  className="px-2 md:px-4 py-1 md:py-2 bg-white border border-[#E5E7EB] rounded-full font-manrope text-xs md:text-[13px] text-[#64748B] hover:bg-[#F8FAFC] hover:border-primary hover:text-primary transition-colors whitespace-nowrap shrink-0"
                 >
                   {reply}
                 </motion.button>
@@ -401,7 +402,7 @@ export default function MessagesPage() {
 
           {/* Message Input */}
           <div className="p-4 md:p-6 border-t border-[#E5E7EB]">
-            <div className="flex items-end gap-2 md:gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               {/* Attachment buttons - Hidden on mobile */}
               <div className="hidden sm:flex gap-2">
                 <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors">
@@ -416,7 +417,7 @@ export default function MessagesPage() {
               </div>
 
               {/* Text input */}
-              <div className="flex-1">
+              <div className="md:flex-1">
                 <textarea
                   placeholder="Type your message..."
                   value={messageInput}
@@ -428,7 +429,7 @@ export default function MessagesPage() {
                     }
                   }}
                   rows={1}
-                  className="w-full px-3 md:px-4 py-2 md:py-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] md:text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                  className="md:w-full px-3 md:px-4 py-2 md:py-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] md:text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 />
               </div>
 
