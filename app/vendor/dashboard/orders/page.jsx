@@ -140,7 +140,7 @@ export default function OrdersPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
           {/* Search */}
           <div className="flex-1 relative">
             <Search

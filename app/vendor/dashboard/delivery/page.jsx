@@ -35,7 +35,7 @@ export default function DeliveryPage() {
     <div className="max-w-360 mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-start justify-between mb-2">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-start justify-between mb-2">
           <div>
             <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
               Delivery Assignment
@@ -46,11 +46,11 @@ export default function DeliveryPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
             >
               <RefreshCw size={16} />
               Refresh Data
@@ -58,7 +58,7 @@ export default function DeliveryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
             >
               <Download size={16} />
               Export CSV
@@ -66,7 +66,7 @@ export default function DeliveryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
             >
               <Package size={16} />
               Bulk Assign
@@ -81,7 +81,7 @@ export default function DeliveryPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
       >
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative">
             <label className="block font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-2">
