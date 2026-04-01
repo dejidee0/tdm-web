@@ -1,21 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, RefreshCw, ChevronDown } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { showToast } from "@/components/shared/toast";
+import { lookupsAPI } from "@/lib/api/lookups";
 
 // Validation Schema
 const validationSchema = Yup.object({
   productName: Yup.string()
     .required("Product name is required")
     .min(3, "Product name must be at least 3 characters"),
-  sku: Yup.string()
-    .required("SKU is required"),
-  categoryId: Yup.string()
-    .required("Category is required"),
+  sku: Yup.string().required("SKU is required"),
+  categoryId: Yup.string().required("Category is required"),
   brandType: Yup.number()
     .required("Brand type is required")
     .min(0, "Brand type must be 0 or greater"),
@@ -39,8 +38,53 @@ const validationSchema = Yup.object({
     .min(0, "Reorder point must be greater than or equal to 0"),
 });
 
-export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading = false }) {
+export default function AddProductModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  isLoading = false,
+}) {
   const [dragActive, setDragActive] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [productTypeEnum, setProductTypeEnum] = useState([]);
+
+  // useEffect(()=>{
+  //   const categoryData = lookupsAPI.getMaterialTypes()
+  //   setCategories(categoryData?.data);
+  //      console.log("categoryData: ", categories)
+  // },[])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoryData = await lookupsAPI.getMaterialTypes();
+
+        setCategories(categoryData?.data || []);
+
+        // console.log("categoryData:", categoryData?.data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchProductTypes = async () => {
+      try {
+        const productTypeData = await lookupsAPI.getProductTypes();
+
+        setProductTypeEnum(productTypeData?.data || []);
+
+        // console.log("categoryData:", categoryData?.data);
+      } catch (error) {
+        console.error("Failed to fetch productTypes:", error);
+      }
+    };
+
+    fetchProductTypes();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -83,10 +127,11 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
 
         // Check if response contains an error
         if (response?.error || response?.errors) {
-          const errorMessage = response.error ||
-                             (response.errors && typeof response.errors === 'object'
-                               ? Object.values(response.errors).flat().join(', ')
-                               : 'An error occurred while adding the product.');
+          const errorMessage =
+            response.error ||
+            (response.errors && typeof response.errors === "object"
+              ? Object.values(response.errors).flat().join(", ")
+              : "An error occurred while adding the product.");
 
           throw new Error(errorMessage);
         }
@@ -94,7 +139,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
         // Show success toast
         showToast.success({
           title: "Product Added!",
-          message: `${values.productName} has been successfully added to inventory.`
+          message: `${values.productName} has been successfully added to inventory.`,
         });
 
         // Reset form after successful submission
@@ -104,14 +149,20 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
         onClose();
       } catch (error) {
         // If it's an authentication error (401), re-throw to allow logout/redirect
-        if (error.status === 401 || error.message?.includes('401') || error.message?.toLowerCase().includes('unauthorized')) {
+        if (
+          error.status === 401 ||
+          error.message?.includes("401") ||
+          error.message?.toLowerCase().includes("unauthorized")
+        ) {
           throw error; // Let the parent handle authentication
         }
 
         // Show error toast for other errors
         showToast.error({
           title: "Failed to Add Product",
-          message: error.message || "An error occurred while adding the product. Please try again."
+          message:
+            error.message ||
+            "An error occurred while adding the product. Please try again.",
         });
         console.error("Error adding product:", error);
       }
@@ -152,7 +203,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
   const handleFiles = (files) => {
     const fileArray = Array.from(files);
     const imageFiles = fileArray.filter((file) =>
-      file.type.startsWith("image/")
+      file.type.startsWith("image/"),
     );
 
     // Create preview URLs for the images
@@ -162,21 +213,27 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
       name: file.name,
     }));
 
-    formik.setFieldValue("productImages", [...formik.values.productImages, ...newImages]);
+    formik.setFieldValue("productImages", [
+      ...formik.values.productImages,
+      ...newImages,
+    ]);
   };
 
   const handleRemoveImage = (index) => {
-    const updatedImages = formik.values.productImages.filter((_, i) => i !== index);
+    const updatedImages = formik.values.productImages.filter(
+      (_, i) => i !== index,
+    );
     // Revoke the URL to free up memory
     URL.revokeObjectURL(formik.values.productImages[index].preview);
     formik.setFieldValue("productImages", updatedImages);
   };
 
-
   // Error message component
   const ErrorMessage = ({ name }) => {
     return formik.touched[name] && formik.errors[name] ? (
-      <p className="text-red-500 text-[11px] mt-1 font-manrope">{formik.errors[name]}</p>
+      <p className="text-red-500 text-[11px] mt-1 font-manrope">
+        {formik.errors[name]}
+      </p>
     ) : null;
   };
 
@@ -202,7 +259,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
               onSubmit={formik.handleSubmit}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-[640px] max-h-[90vh] overflow-hidden pointer-events-auto"
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-160 max-h-[90vh] overflow-hidden pointer-events-auto"
             >
               {/* Header */}
               <div className="px-8 py-6 border-b border-[#E5E7EB]">
@@ -232,7 +289,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                 {/* General Information Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <img src="/assets/svgs/vendor/inventory/addNewProduct/generalInformation.svg" alt="" width={20} height={20} />
+                    <img
+                      src="/assets/svgs/vendor/inventory/addNewProduct/generalInformation.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       General Information
                     </h3>
@@ -310,18 +372,23 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
-                            formik.touched.categoryId && formik.errors.categoryId
+                            formik.touched.categoryId &&
+                            formik.errors.categoryId
                               ? "border-red-500"
                               : "border-[#E5E7EB]"
                           }`}
                         >
                           <option value="">Select Category</option>
-                          <option value="industrial">Industrial Grade</option>
-                          <option value="electronics">Electronics</option>
-                          <option value="logistics">Logistics</option>
-                          <option value="hardware">Hardware</option>
+                          {categories?.map((cat, index) => (
+                            <option key={index} value={cat.value}>
+                              {cat.label}
+                            </option>
+                          ))}
                         </select>
-                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                        <ChevronDown
+                          size={16}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                        />
                       </div>
                       <ErrorMessage name="categoryId" />
                     </div>
@@ -352,7 +419,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                     </div>
 
                     {/* Product Type */}
-                    <div>
+                    {/* <div>
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         Product Type
                       </label>
@@ -365,11 +432,43 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
-                          formik.touched.productType && formik.errors.productType
+                          formik.touched.productType &&
+                          formik.errors.productType
                             ? "border-red-500"
                             : "border-[#E5E7EB]"
                         }`}
                       />
+                      <ErrorMessage name="productType" />
+                    </div> */}
+                    <div>
+                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                        Product Type
+                      </label>
+                      <div className="relative">
+                        <select
+                          name="productType"
+                          value={formik.values.productType}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                            formik.touched.productType &&
+                            formik.errors.productType
+                              ? "border-red-500"
+                              : "border-[#E5E7EB]"
+                          }`}
+                        >
+                          <option value="">Select Product Type</option>
+                          {productTypeEnum?.map((product, index) => (
+                            <option key={index} value={product.value}>
+                              {product.name}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          size={16}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                        />
+                      </div>
                       <ErrorMessage name="productType" />
                     </div>
                   </div>
@@ -408,7 +507,8 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       onBlur={formik.handleBlur}
                       rows={2}
                       className={`w-full px-4 py-3 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none ${
-                        formik.touched.shortDescription && formik.errors.shortDescription
+                        formik.touched.shortDescription &&
+                        formik.errors.shortDescription
                           ? "border-red-500"
                           : "border-[#E5E7EB]"
                       }`}
@@ -420,7 +520,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                 {/* Inventory & Pricing Section */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <img src="/assets/svgs/vendor/inventory/addNewProduct/inventoryPricing.svg" alt="" width={20} height={20} />
+                    <img
+                      src="/assets/svgs/vendor/inventory/addNewProduct/inventoryPricing.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       Inventory & Pricing
                     </h3>
@@ -447,7 +552,10 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                           <option value="warehouse-c">Warehouse C</option>
                           <option value="warehouse-d">Warehouse D</option>
                         </select>
-                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                        <ChevronDown
+                          size={16}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                        />
                       </div>
                     </div>
 
@@ -465,7 +573,8 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
-                          formik.touched.initialQuantity && formik.errors.initialQuantity
+                          formik.touched.initialQuantity &&
+                          formik.errors.initialQuantity
                             ? "border-red-500"
                             : "border-[#E5E7EB]"
                         }`}
@@ -487,7 +596,8 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
-                          formik.touched.reorderPoint && formik.errors.reorderPoint
+                          formik.touched.reorderPoint &&
+                          formik.errors.reorderPoint
                             ? "border-red-500"
                             : "border-[#E5E7EB]"
                         }`}
@@ -559,7 +669,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                 {/* Product Images Section */}
                 <div className="mb-2">
                   <div className="flex items-center gap-2 mb-4">
-                    <img src="/assets/svgs/vendor/inventory/addNewProduct/productImages.svg" alt="" width={20} height={20} />
+                    <img
+                      src="/assets/svgs/vendor/inventory/addNewProduct/productImages.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
                       Product Images
                     </h3>
@@ -573,7 +688,7 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                     onDrop={handleDrop}
                     className={`
                       relative border-[1.19px] border-dashed rounded-[7.15px] p-12 text-center
-                      transition-colors cursor-pointer bg-[#273054]/10
+                      transition-colors cursor-pointer bg-primary/10
                       ${
                         dragActive
                           ? "border-[#1E293B]"
@@ -589,7 +704,12 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, isLoading =
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center gap-3">
-                      <img src="/assets/svgs/vendor/inventory/addNewProduct/clickToUpload.svg" alt="" width={48} height={48} />
+                      <img
+                        src="/assets/svgs/vendor/inventory/addNewProduct/clickToUpload.svg"
+                        alt=""
+                        width={48}
+                        height={48}
+                      />
                       <div>
                         <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
                           Click to upload or drag and drop
