@@ -39,8 +39,8 @@ function InventoryContent() {
   const addProduct = useAddProduct();
 
   // DATA CHECKS
-  // console.log("stats: ",stats)
-  // console.log("inventoryProducts: ",data)
+  console.log("stats: ",stats)
+  console.log("inventoryProducts: ",data)
 
   // Auto-open modal based on URL query parameter
   useEffect(() => {
@@ -99,10 +99,10 @@ function InventoryContent() {
     try {
       // Map form data to match API schema from Swagger
       const apiPayload = {
-        name: productData.productName,
+        name: productData.name,
         description: productData.description || "",
         shortDescription: productData.description || "",
-        categoryId: productData.category || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default category from Swagger
+        categoryId: productData.categoryID,
         sku: productData.sku,
         brandType: productData.brandType, // Empty string as shown in Swagger
         productType: productData.productType, // Empty string as shown in Swagger
@@ -112,7 +112,7 @@ function InventoryContent() {
         isActive: true,
         trackInventory: true,
       };
-
+      // console.log("payload form formik: ", productData)
       await addProduct.mutateAsync(apiPayload);
       console.log("✅ Product added successfully");
       handleCloseModal();
