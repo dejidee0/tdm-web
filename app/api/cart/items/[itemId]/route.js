@@ -1,4 +1,4 @@
-// app/api/v1/Cart/items/[itemId]/route.js
+// app/api/v1/cart/items/[itemId]/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -10,12 +10,12 @@ async function authHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// PUT /api/v1/Cart/items/{itemId}  { quantity }
+// PUT /api/v1/cart/items/{itemId}  { quantity }
 export async function PUT(req, { params }) {
   try {
     const { itemId } = await params;
     const body = await req.json();
-    const res = await fetch(`${BASE_URL}/Cart/items/${itemId}`, {
+    const res = await fetch(`${BASE_URL}/cart/items/${itemId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
       body: JSON.stringify(body),
@@ -31,11 +31,11 @@ export async function PUT(req, { params }) {
   }
 }
 
-// DELETE /api/v1/Cart/items/{itemId}
+// DELETE /api/v1/cart/items/{itemId}
 export async function DELETE(_req, { params }) {
   try {
     const { itemId } = await params;
-    const res = await fetch(`${BASE_URL}/Cart/items/${itemId}`, {
+    const res = await fetch(`${BASE_URL}/cart/items/${itemId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });

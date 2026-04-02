@@ -1,14 +1,56 @@
-// hooks/useDesigns.js
+// hooks/use-designs.js
+"use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { designsApi } from "@/lib/api/designs";
+import { designsApi, designSessionsApi } from "@/lib/api/designs";
 
-export function useDesigns(filters) {
+// ─── Saved Designs ────────────────────────────────────────────────────────────
+
+export function useDesigns(filters = {}) {
+  const { page, pageSize, search, roomType, sortBy } = filters;
+
   return useQuery({
-    queryKey: ["designs", filters],
-    queryFn: () => designsApi.getDesigns(filters),
-    staleTime: 3 * 60 * 1000, // 3 minutes
+    // Only pagination in the cache key so filters don't cause extra fetches
+    queryKey: ["designs", { page, pageSize }],
+    queryFn: () => designsApi.getDesigns({ page, pageSize }),
+    staleTime: 3 * 60 * 1000,
     refetchOnWindowFocus: false,
+    select: (res) => {
+      // Normalise to array
+      let items = res?.data?.items ?? res?.data ?? res?.items ?? res ?? [];
+      if (!Array.isArray(items)) items = [];
+
+      // Client-side filtering (backend doesn't support these params)
+      if (search) {
+        const q = search.toLowerCase();
+        items = items.filter(
+          (d) =>
+            d.name?.toLowerCase().includes(q) ||
+            d.projectName?.toLowerCase().includes(q) ||
+            d.roomType?.toLowerCase().includes(q),
+        );
+      }
+      if (roomType && roomType !== "all") {
+        items = items.filter(
+          (d) => d.roomType?.toLowerCase() === roomType.toLowerCase(),
+        );
+      }
+      if (sortBy) {
+        items = [...items].sort((a, b) => {
+          switch (sortBy) {
+            case "oldest":
+              return new Date(a.createdAt) - new Date(b.createdAt);
+            case "alphabetical":
+              return (a.name || a.projectName || "").localeCompare(
+                b.name || b.projectName || "",
+              );
+            default: // newest
+              return new Date(b.createdAt) - new Date(a.createdAt);
+          }
+        });
+      }
+      return items;
+    },
   });
 }
 
@@ -18,55 +60,116 @@ export function useDesignDetails(designId) {
     queryFn: () => designsApi.getDesignDetails(designId),
     enabled: !!designId,
     staleTime: 5 * 60 * 1000,
+    select: (res) => res?.data ?? res,
   });
 }
 
 export function useToggleFavorite() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: designsApi.toggleFavorite,
-    onSuccess: (data, designId) => {
-      // Update cache for designs list
-      queryClient.setQueriesData(["designs"], (oldData) => {
-        if (!oldData) return oldData;
-        return oldData.map((design) =>
-          design.id === designId
-            ? { ...design, isFavorite: data.isFavorite }
-            : design,
-        );
-      });
-
-      // Update cache for single design
-      queryClient.setQueryData(["design", designId], (oldData) => {
-        if (!oldData) return oldData;
-        return { ...oldData, isFavorite: data.isFavorite };
-      });
+    mutationFn: (designId) => designsApi.toggleFavorite(designId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
   });
 }
 
 export function useDeleteDesign() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: designsApi.deleteDesign,
+    mutationFn: (designId) => designsApi.deleteDesign(designId),
     onSuccess: () => {
-      // Invalidate designs list to refetch
-      queryClient.invalidateQueries(["designs"]);
+      queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
   });
 }
 
 export function useDownloadDesign() {
   return useMutation({
-    mutationFn: ({ designId, quality }) =>
-      designsApi.downloadDesign(designId, quality),
+    mutationFn: (designId) => designsApi.downloadDesign(designId),
   });
 }
 
 export function useShareDesign() {
   return useMutation({
-    mutationFn: designsApi.shareDesign,
+    mutationFn: (designId) => designsApi.shareDesign(designId),
+  });
+}
+
+// ─── Design Sessions ──────────────────────────────────────────────────────────
+
+export function useDesignSessions() {
+  return useQuery({
+    queryKey: ["design-sessions"],
+    queryFn: designSessionsApi.getSessions,
+    staleTime: 2 * 60 * 1000,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useDesignSession(sessionId) {
+  return useQuery({
+    queryKey: ["design-session", sessionId],
+    queryFn: () => designSessionsApi.getSession(sessionId),
+    enabled: !!sessionId,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useDesignSessionStatus(sessionId, { enabled = true } = {}) {
+  return useQuery({
+    queryKey: ["design-session-status", sessionId],
+    queryFn: () => designSessionsApi.pollStatus(sessionId),
+    enabled: !!sessionId && enabled,
+    refetchInterval: (query) => {
+      const status = query.state.data?.data?.status ?? query.state.data?.status;
+      // Stop polling when generation is complete or failed
+      if (status === "Generated" || status === "Failed" || status === "Ordered") return false;
+      return 3000; // Poll every 3s while processing
+    },
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useCreateDesignSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => designSessionsApi.createSession(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["design-sessions"] });
+    },
+  });
+}
+
+export function useUploadSessionPhoto() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ sessionId, file }) =>
+      designSessionsApi.uploadPhoto(sessionId, file),
+    onSuccess: (_data, { sessionId }) => {
+      queryClient.invalidateQueries({ queryKey: ["design-session", sessionId] });
+    },
+  });
+}
+
+export function useGenerateDesign() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (sessionId) => designSessionsApi.generate(sessionId),
+    onSuccess: (_data, sessionId) => {
+      queryClient.invalidateQueries({
+        queryKey: ["design-session-status", sessionId],
+      });
+    },
+  });
+}
+
+export function useAddBomToCart() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (sessionId) => designSessionsApi.addBomToCart(sessionId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 }
