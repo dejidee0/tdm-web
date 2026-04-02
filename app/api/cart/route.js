@@ -1,4 +1,4 @@
-// app/api/v1/Cart/route.js
+// app/api/v1/cart/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -10,10 +10,10 @@ async function authHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// GET /api/v1/Cart
+// GET /api/v1/cart
 export async function GET() {
   try {
-    const res = await fetch(`${BASE_URL}/Cart`, {
+    const res = await fetch(`${BASE_URL}/cart`, {
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });
     const text = await res.text();
@@ -27,10 +27,10 @@ export async function GET() {
   }
 }
 
-// DELETE /api/v1/Cart  (clear cart)
+// DELETE /api/v1/cart  (clear cart)
 export async function DELETE() {
   try {
-    const res = await fetch(`${BASE_URL}/Cart`, {
+    const res = await fetch(`${BASE_URL}/cart`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });

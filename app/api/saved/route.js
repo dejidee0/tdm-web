@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL_WV1 || "https://api.yourbackend.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
 
 async function getAuthHeader() {
   const cookieStore = await cookies();
@@ -11,9 +11,11 @@ async function getAuthHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export async function GET() {
+export async function GET(req) {
   try {
-    const res = await fetch(`${BASE_URL}/saved`, {
+    // Forward supported query params to the backend (category, search, sortBy, page, limit)
+    const { search } = new URL(req.url);
+    const res = await fetch(`${BASE_URL}/saved${search}`, {
       headers: {
         "Content-Type": "application/json",
         ...(await getAuthHeader()),
@@ -24,8 +26,12 @@ export async function GET() {
     try {
       json = JSON.parse(text);
     } catch {}
+    if (!res.ok) {
+      console.error(`[/api/saved GET] backend ${res.status}:`, text.slice(0, 300));
+    }
     return NextResponse.json(json ?? {}, { status: res.status });
   } catch (err) {
+    console.error("[/api/saved GET] fetch error:", err.message);
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

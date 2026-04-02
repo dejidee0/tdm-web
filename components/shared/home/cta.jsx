@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { ArrowRight, Link } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const CTASection = () => {
   return (
@@ -14,12 +15,10 @@ const CTASection = () => {
           </h2>
 
           {/* CTA Button */}
-          <Link href="/ai-design">
-            <button className="group inline-flex items-center gap-3 bg-transparent hover:bg-gray-900/5 text-gray-500 font-semibold px-0 py-2 transition-all duration-200  border-gray-900">
-              <span className="text-base sm:text-lg md:text-lg tracking-wide uppercase font-inter">
-                LET&apos;S GET STARTED
-              </span>
-            </button>
+          <Link href="/ai-design" className="group inline-flex items-center gap-3 bg-transparent hover:bg-gray-900/5 text-gray-500 font-semibold px-0 py-2 transition-all duration-200 border-gray-900">
+            <span className="text-base sm:text-lg md:text-lg tracking-wide uppercase font-inter">
+              LET&apos;S GET STARTED
+            </span>
           </Link>
         </div>
       </div>
