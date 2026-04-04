@@ -1,26 +1,33 @@
 import CTASection from "@/components/shared/home/cta";
-import CustomizeSection from "@/components/shared/home/customize";
+import FAQ from "@/components/shared/home/faq";
+import FeaturedProjects from "@/components/shared/home/featured-projects";
 import HeroSection from "@/components/shared/home/hero";
 import ProcessSection from "@/components/shared/home/process";
 import ServicesSection from "@/components/shared/home/services";
+import ShopCategories from "@/components/shared/home/shop-categories";
+import Testimonials from "@/components/shared/home/testimonials";
+import TrustStrip from "@/components/shared/home/trust-strip";
 import TrendingSection from "@/components/shared/home/trending";
+import WhyTBM from "@/components/shared/home/why-tbm";
+import ZioraTeaser from "@/components/shared/home/ziora-teaser";
 
 export const metadata = {
-  title:
-    "TBM Building Services – Design with Ziora, Build with TBM, Source from Bogat",
+  title: "TBM Building Services – Design. Price. Build. All in one place.",
   description:
-    "TBM Building Services powers your renovation and construction journey. Design with Ziora AI intelligence, source certified materials through Bogat, and execute your project with TBM's expert team.",
+    "Premium renovation, construction materials, and AI-powered space visualization for homes, apartments, and commercial spaces across Abuja and Lagos.",
   keywords: [
     "TBM Building Services",
     "Ziora AI design",
     "Bogat materials",
     "renovation Nigeria",
-    "construction materials",
+    "bathroom renovation Abuja",
+    "kitchen remodeling Abuja",
+    "construction materials Nigeria",
     "building project estimate",
-    "tiles plumbing electrical",
     "home renovation Lagos",
     "AI visualization",
-    "project execution",
+    "interior fit-out Abuja",
+    "premium bathroom fixtures Nigeria",
   ],
   authors: [{ name: "TBM Building Services" }],
   creator: "TBM Building Services",
@@ -28,13 +35,12 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://yourdomain.com",
+    url: "https://tbmbuilding.com",
     siteName: "TBM Building Services",
-    title: "TBM Building Services – Design. Materials. Execution.",
+    title: "TBM Building Services – Design. Price. Build. All in one place.",
     description:
-      "Design with Ziora Intelligence, source certified materials through Bogat, and let TBM manage your renovation or construction project end-to-end.",
+      "Premium renovation, AI-powered design with Ziora, and certified materials from Bogat — all in one platform.",
   },
-
   robots: {
     index: true,
     follow: true,
@@ -51,11 +57,29 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="min-h-screen bg-white relative">
+      {/* 1. Hero */}
       <HeroSection />
-      <ServicesSection />
-      <CustomizeSection />
-      <TrendingSection />
+      {/* 2. Trust strip */}
+      <TrustStrip />
+      {/* 3. How TBM Works — 4 steps */}
       <ProcessSection />
+      {/* 4. TBM / Bogat / Ziora pillars */}
+      <ServicesSection />
+      {/* 5. Featured transformations */}
+      <FeaturedProjects />
+      {/* 6. Shop categories */}
+      <ShopCategories />
+      {/* 7. Featured products */}
+      <TrendingSection />
+      {/* 8. Ziora AI teaser */}
+      <ZioraTeaser />
+      {/* 9. Why Choose TBM */}
+      <WhyTBM />
+      {/* 10. Testimonials */}
+      <Testimonials />
+      {/* 11. FAQ */}
+      <FAQ />
+      {/* 12. Final CTA */}
       <CTASection />
     </div>
   );

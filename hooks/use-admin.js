@@ -1,4 +1,9 @@
-import { adminDashboardAPI, adminAnalyticsAPI } from "@/lib/api/admin";
+import {
+  adminDashboardAPI,
+  adminAnalyticsAPI,
+  adminAIUsageAPI,
+  adminObservabilityAPI,
+} from "@/lib/api/admin";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useIsAdminAuthed } from "@/hooks/use-admin-auth";
 
@@ -12,6 +17,14 @@ export const ADMIN_QUERY_KEYS = {
   serverLoad: ["admin", "dashboard", "server-load"],
   alerts: ["admin", "dashboard", "alerts"],
   quickActions: ["admin", "dashboard", "quick-actions"],
+  // AI usage
+  aiUsageMonthly: (months) => ["admin", "ai", "usage", "monthly", months],
+  aiUsageByType: ["admin", "ai", "usage", "by-type"],
+  aiUsageOverview: ["admin", "ai", "usage", "overview"],
+  // Observability
+  health: ["admin", "observability", "health"],
+  metrics: ["admin", "observability", "metrics"],
+  recentErrors: ["admin", "observability", "recent-errors"],
 };
 
 export function useAnalyticsOverview() {
@@ -127,5 +140,71 @@ export function useExportReport() {
     onError: (error) => {
       console.error("Export failed:", error);
     },
+  });
+}
+
+// ─── Admin AI Usage ────────────────────────────────────────────────────────────
+
+export function useAdminAIUsageMonthly(months = 12) {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.aiUsageMonthly(months),
+    queryFn: () => adminAIUsageAPI.getMonthlyUsage(months),
+    enabled: authed,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useAdminAIUsageByType() {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.aiUsageByType,
+    queryFn: adminAIUsageAPI.getUsageByType,
+    enabled: authed,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useAdminAIUsageOverview() {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.aiUsageOverview,
+    queryFn: adminAIUsageAPI.getUsageOverview,
+    enabled: authed,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+// ─── Admin Observability ───────────────────────────────────────────────────────
+
+export function useAdminHealth() {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.health,
+    queryFn: adminObservabilityAPI.getHealth,
+    enabled: authed,
+    staleTime: 30 * 1000,
+    refetchInterval: 60 * 1000, // auto-refresh every minute
+  });
+}
+
+export function useAdminMetrics() {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.metrics,
+    queryFn: adminObservabilityAPI.getMetrics,
+    enabled: authed,
+    staleTime: 60 * 1000,
+  });
+}
+
+export function useAdminRecentErrors() {
+  const authed = useIsAdminAuthed();
+  return useQuery({
+    queryKey: ADMIN_QUERY_KEYS.recentErrors,
+    queryFn: adminObservabilityAPI.getRecentErrors,
+    enabled: authed,
+    staleTime: 30 * 1000,
+    refetchOnWindowFocus: true,
   });
 }
