@@ -132,9 +132,12 @@ export default function Sidebar({ isOpen, onClose }) {
           <p className="text-[13px] text-white/70 mb-4 leading-relaxed">
             Get unlimited AI renders and priority support.
           </p>
-          <button className="w-full bg-white text-[#1a1a1a] text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-white/90 transition-colors">
+          <Link
+            href="/ai-visualizer#pricing"
+            className="block w-full text-center bg-white text-[#1a1a1a] text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-white/90 transition-colors"
+          >
             Upgrade Plan
-          </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -185,7 +185,7 @@ const HeroSection = () => {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 h-full flex flex-col justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-24 pb-16 sm:pb-20 md:pb-20">
+          <div className="relative z-10 h-full flex flex-col justify-center md:justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-20 pb-10 sm:pb-16 md:pb-20">
             {/* Ziora badge */}
             <div className="mb-3 sm:mb-4">
               <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-inter font-medium px-3 py-1.5 rounded-full">
