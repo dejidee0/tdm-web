@@ -118,7 +118,7 @@ const HeroSection = () => {
     <div className="bg-background overflow-visible relative">
       {/* Container with max-width for content constraint */}
       <div className="max-w-325 mx-auto flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[92vh]">
-        {/* Blue background section with image slider */}
+        {/* Architectural image hero */}
         <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 top-4 rounded-xl md:rounded-2xl overflow-hidden">
           {/* Image Slider with crossfade */}
           <div className="absolute inset-0">
@@ -138,8 +138,8 @@ const HeroSection = () => {
                   className="object-cover"
                   priority
                 />
-                {/* Navy blue tint overlay */}
-                <div className="absolute inset-0 bg-blue-950/60" />
+                {/* Deep dark overlay for luxury premium feel */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/45 to-black/20" />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -185,16 +185,16 @@ const HeroSection = () => {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 h-full flex flex-col justify-center md:justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-20 pb-10 sm:pb-16 md:pb-20">
+          <div className="relative z-10 h-full flex flex-col justify-center md:justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-20 pb-10 sm:pb-16 md:pb-24">
             {/* Ziora badge */}
-            <div className="mb-3 sm:mb-4">
-              <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-inter font-medium px-3 py-1.5 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" />
+            <div className="mb-4 sm:mb-5">
+              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-manrope font-medium px-4 py-2 rounded-full tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
                 Powered by Ziora Intelligence
               </span>
             </div>
             {/* Heading */}
-            <div className="mb-3 sm:mb-4">
+            <div className="mb-4 sm:mb-5">
               <AnimatePresence mode="wait">
                 <motion.h1
                   key={currentSlide}
@@ -202,7 +202,7 @@ const HeroSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.45 }}
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-primary font-bold text-white leading-tight"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-primary font-bold text-white leading-[1.05] tracking-tight"
                 >
                   {slides[currentSlide].title}
                 </motion.h1>
@@ -210,7 +210,7 @@ const HeroSection = () => {
             </div>
 
             {/* Subheading */}
-            <div className="mb-6 sm:mb-8 max-w-xl">
+            <div className="mb-8 sm:mb-10 max-w-xl">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={currentSlide}
@@ -218,7 +218,7 @@ const HeroSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -14 }}
                   transition={{ duration: 0.4, delay: 0.08 }}
-                  className="text-sm sm:text-base md:text-lg font-manrope text-white/85 leading-relaxed"
+                  className="text-sm sm:text-base md:text-lg font-manrope text-white/75 leading-relaxed"
                 >
                   {slides[currentSlide].description}
                 </motion.p>
@@ -233,17 +233,17 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.4, delay: 0.15 }}
-                className="flex flex-col sm:flex-row gap-4"
+                className="flex flex-col sm:flex-row gap-3"
               >
                 {slides[currentSlide].ctas.map((cta) => (
                   <Link key={cta.label} href={cta.href}>
                     <motion.button
-                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`font-semibold px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 text-base sm:text-lg font-manrope cursor-pointer shadow-lg hover:shadow-xl ${
+                      className={`font-semibold px-8 py-3.5 sm:py-4 rounded-none transition-all duration-200 text-sm sm:text-base font-manrope cursor-pointer tracking-widest uppercase ${
                         cta.primary
-                          ? "bg-white hover:bg-gray-100 text-primary"
-                          : "bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-sm"
+                          ? "bg-white hover:bg-[#FAF8F5] text-[#0A0A0A] shadow-lg"
+                          : "bg-transparent hover:bg-white/10 border border-white/40 text-white"
                       }`}
                     >
                       {cta.label}
@@ -255,12 +255,12 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Category Navigation Bar - centered at bottom of blue section */}
+        {/* Category Navigation Bar */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-16 left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] h-24 sm:h-32 md:h-32 bg-white z-30 rounded-lg md:rounded-xl shadow-2xl"
+          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-16 left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] h-24 sm:h-32 md:h-32 bg-[#FAF8F5] z-30 rounded-none shadow-2xl border-b-2 border-gold"
         >
           <div className="h-full flex items-center justify-around px-4 sm:px-6 md:px-8 lg:px-12">
             {categories.map((category, index) => {
@@ -274,28 +274,26 @@ const HeroSection = () => {
                   whileHover={{ y: -4, scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push(`/materials?search=${encodeURIComponent(category.label)}`)}
-                  className={`flex flex-col items-center justify-center gap-2 sm:gap-2 transition-all duration-200 group cursor-pointer ${
-                    category.active ? "" : "opacity-70 hover:opacity-100"
+                  className={`flex flex-col items-center justify-center gap-2 transition-all duration-200 group cursor-pointer ${
+                    category.active ? "" : "opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <motion.div
-                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                    transition={{ duration: 0.5 }}
-                    className={`w-10 h-10 sm:w-14 sm:h-14 md:w-14 md:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center transition-colors duration-200 ${
+                  <div
+                    className={`w-10 h-10 sm:w-12 sm:h-12 md:w-12 md:h-12 flex items-center justify-center transition-colors duration-200 ${
                       category.active
-                        ? "bg-primary text-white"
-                        : "bg-gray-100 text-gray-600 group-hover:bg-gray-200"
+                        ? "text-[#0A0A0A]"
+                        : "text-[#7A736C] group-hover:text-[#0A0A0A]"
                     }`}
                   >
                     <Icon
-                      className="w-5 h-5 sm:w-7 sm:h-7 md:w-7 md:h-7"
+                      className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6"
                       strokeWidth={1.5}
                     />
-                  </motion.div>
+                  </div>
 
                   <span
-                    className={`text-xs sm:text-sm md:text-base font-medium ${
-                      category.active ? "text-gray-900" : "text-gray-600"
+                    className={`text-[10px] sm:text-xs font-manrope font-semibold tracking-wide uppercase ${
+                      category.active ? "text-[#0A0A0A]" : "text-[#7A736C] group-hover:text-[#0A0A0A]"
                     }`}
                   >
                     {category.label}
@@ -307,10 +305,10 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Features Section */}
-      <div className="bg-background py-10 sm:py-12 lg:py-14 mt-12 sm:mt-14 lg:mt-16">
+      {/* Features strip */}
+      <div className="bg-[#0A0A0A] py-10 sm:py-12 lg:py-14 mt-12 sm:mt-14 lg:mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -320,27 +318,19 @@ const HeroSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className="flex items-start gap-4 sm:gap-5"
+                  className="flex items-start gap-4"
                 >
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{ rotate: 360, scale: 1.1 }}
-                    transition={{ duration: 0.6 }}
-                    className="shrink-0"
-                  >
+                  <div className="shrink-0 mt-0.5">
                     <Icon
-                      className="w-10 h-10 sm:w-10 sm:h-10 text-gray-700"
+                      className="w-8 h-8 text-gold"
                       strokeWidth={1.5}
                     />
-                  </motion.div>
-
-                  {/* Text content */}
+                  </div>
                   <div className="flex flex-col">
-                    <h3 className="text-base sm:text-base font-semibold text-gray-900 mb-1">
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1 tracking-wide">
                       {feature.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-500">
+                    <p className="text-xs sm:text-sm text-white/50 font-manrope">
                       {feature.description}
                     </p>
                   </div>

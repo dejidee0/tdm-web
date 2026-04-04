@@ -222,7 +222,7 @@ const CATEGORIES = [
 // ─── Section ─────────────────────────────────────────────────────────────────
 export default function ShopCategories() {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gray-50">
+    <section className="py-20 sm:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -230,22 +230,22 @@ export default function ShopCategories() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14"
         >
           <div>
-            <span className="inline-block text-primary text-xs font-inter font-semibold uppercase tracking-widest mb-2">
+            <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
               Bogat Store
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] leading-tight tracking-tight">
               Shop by Category
             </h2>
-            <p className="mt-3 text-base text-gray-500 font-inter max-w-xl">
+            <p className="mt-4 text-base text-[#7A736C] font-manrope max-w-xl">
               Premium building and finishing materials sourced from certified suppliers — delivered to your site.
             </p>
           </div>
           <Link
             href="/materials"
-            className="group inline-flex items-center gap-2 text-primary font-inter font-semibold text-sm hover:gap-3 transition-all duration-200 shrink-0"
+            className="group inline-flex items-center gap-2 text-[#0A0A0A] font-manrope font-semibold text-sm hover:gap-3 transition-all duration-200 shrink-0"
           >
             View all materials
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -253,7 +253,7 @@ export default function ShopCategories() {
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-stone">
           {CATEGORIES.map(({ slug, Icon, label }, index) => {
             return (
               <motion.div
@@ -265,12 +265,12 @@ export default function ShopCategories() {
               >
                 <Link
                   href={`/materials?category=${slug}`}
-                  className="group flex flex-col items-center justify-center gap-3 bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-center h-full"
+                  className="group flex flex-col items-start gap-4 bg-white p-6 sm:p-7 hover:bg-warm transition-colors duration-200 h-full"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-gray-50 group-hover:bg-primary/5 flex items-center justify-center transition-colors duration-200">
-                    <Icon className="w-7 h-7 text-gray-600 group-hover:text-primary transition-colors duration-200" />
+                  <div className="w-11 h-11 flex items-center justify-center border border-stone group-hover:border-gold transition-colors duration-200">
+                    <Icon className="w-5 h-5 text-[#3D3833] group-hover:text-[#0A0A0A] transition-colors duration-200" />
                   </div>
-                  <span className="text-xs sm:text-sm font-inter font-semibold text-gray-700 group-hover:text-primary transition-colors leading-snug">
+                  <span className="text-xs sm:text-sm font-manrope font-semibold text-[#3D3833] group-hover:text-[#0A0A0A] transition-colors leading-snug tracking-wide">
                     {label}
                   </span>
                 </Link>

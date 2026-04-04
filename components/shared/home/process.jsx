@@ -37,7 +37,7 @@ const steps = [
 
 const ProcessSection = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-background">
+    <section className="py-20 sm:py-24 lg:py-32 bg-[#FAF8F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -45,15 +45,15 @@ const ProcessSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 sm:mb-20"
+          className="mb-16 sm:mb-20"
         >
-          <span className="inline-block text-primary text-xs sm:text-sm font-inter font-semibold uppercase tracking-widest mb-3">
+          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
             Simple process
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary leading-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] leading-tight tracking-tight">
             How TBM Works
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-gray-500 font-inter max-w-2xl mx-auto">
+          <p className="mt-5 text-base sm:text-lg text-[#7A736C] font-manrope max-w-xl">
             From first idea to final build — every step is guided, transparent, and designed around you.
           </p>
         </motion.div>
@@ -61,7 +61,7 @@ const ProcessSection = () => {
         {/* Steps */}
         <div className="relative">
           {/* connector line — desktop only */}
-          <div className="hidden lg:block absolute top-10 left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-px bg-gray-200 z-0" />
+          <div className="hidden lg:block absolute top-9 left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-px bg-stone z-0" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-8 relative z-10">
             {steps.map((step, index) => {
@@ -73,27 +73,27 @@ const ProcessSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.55, delay: index * 0.15 }}
-                  className="flex flex-col items-center text-center group"
+                  className="flex flex-col group"
                 >
-                  {/* icon ring */}
+                  {/* icon */}
                   <motion.div
-                    whileHover={{ scale: 1.08, y: -4 }}
+                    whileHover={{ scale: 1.06, y: -4 }}
                     transition={{ duration: 0.25 }}
-                    className="relative mb-6"
+                    className="relative mb-7 self-start"
                   >
-                    <div className="w-20 h-20 rounded-2xl bg-white shadow-lg border border-gray-100 flex items-center justify-center group-hover:border-primary/20 group-hover:shadow-xl transition-all duration-300">
-                      <Icon className="w-9 h-9 text-primary" strokeWidth={1.5} />
+                    <div className="w-18 h-18 bg-white border border-stone flex items-center justify-center group-hover:border-gold group-hover:shadow-lg transition-all duration-300">
+                      <Icon className="w-8 h-8 text-[#0A0A0A]" strokeWidth={1.4} />
                     </div>
                     {/* number badge */}
-                    <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-primary text-white text-xs font-bold font-inter flex items-center justify-center">
+                    <span className="absolute -top-2.5 -right-2.5 w-6 h-6 bg-[#0A0A0A] text-white text-xs font-bold font-manrope flex items-center justify-center">
                       {index + 1}
                     </span>
                   </motion.div>
 
-                  <h3 className="text-base sm:text-lg font-inter font-bold text-gray-900 mb-3">
+                  <h3 className="text-base sm:text-lg font-manrope font-bold text-[#0A0A0A] mb-3 leading-snug">
                     {step.title}
                   </h3>
-                  <p className="text-gray-500 font-inter text-sm leading-relaxed max-w-55">
+                  <p className="text-[#7A736C] font-manrope text-sm leading-relaxed">
                     {step.description}
                   </p>
                 </motion.div>

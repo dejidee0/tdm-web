@@ -67,7 +67,7 @@ export default function FeaturedProjects() {
   const next = () => setCurrent((c) => (c + 1) % PROJECTS.length);
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="py-20 sm:py-24 lg:py-32 bg-warm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -75,19 +75,19 @@ export default function FeaturedProjects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14"
         >
           <div>
-            <span className="inline-block text-primary text-xs font-inter font-semibold uppercase tracking-widest mb-2">
+            <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
               Featured transformations
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary leading-tight">
-              Real Spaces. Real Results.
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] leading-tight tracking-tight">
+              Real Spaces.<br className="hidden sm:block" /> Real Results.
             </h2>
           </div>
           <Link
             href="/project"
-            className="group inline-flex items-center gap-2 text-primary font-inter font-semibold text-sm hover:gap-3 transition-all duration-200"
+            className="group inline-flex items-center gap-2 text-[#0A0A0A] font-manrope font-semibold text-sm hover:gap-3 transition-all duration-200 shrink-0"
           >
             View all projects
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -95,19 +95,19 @@ export default function FeaturedProjects() {
         </motion.div>
 
         {/* Slider */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Image panel */}
           <div className="relative">
             {/* Before / After toggle */}
-            <div className="absolute top-4 left-4 z-20 flex rounded-lg overflow-hidden shadow-lg">
+            <div className="absolute top-4 left-4 z-20 flex overflow-hidden">
               {["before", "after"].map((v) => (
                 <button
                   key={v}
                   onClick={() => setView(v)}
-                  className={`px-4 py-2 text-xs font-inter font-semibold uppercase tracking-wide transition-colors ${
+                  className={`px-5 py-2 text-xs font-manrope font-semibold uppercase tracking-widest transition-colors ${
                     view === v
-                      ? "bg-primary text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
+                      ? "bg-[#0A0A0A] text-white"
+                      : "bg-white/90 text-[#5C5550] hover:bg-white"
                   }`}
                 >
                   {v}
@@ -117,13 +117,13 @@ export default function FeaturedProjects() {
 
             {/* Tag */}
             <div className="absolute top-4 right-4 z-20">
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs font-inter font-medium px-3 py-1.5 rounded-full">
+              <span className="bg-black/70 text-white text-xs font-manrope font-medium px-3 py-1.5 tracking-widest uppercase">
                 {project.tag}
               </span>
             </div>
 
             {/* Image */}
-            <div className="relative w-full aspect-4/3 rounded-2xl overflow-hidden bg-gray-100">
+            <div className="relative w-full aspect-4/3 overflow-hidden bg-stone">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${project.id}-${view}`}
@@ -139,7 +139,7 @@ export default function FeaturedProjects() {
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -148,15 +148,15 @@ export default function FeaturedProjects() {
             <div className="absolute bottom-4 right-4 z-20 flex gap-2">
               <button
                 onClick={prev}
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-colors"
+                className="w-9 h-9 bg-white/90 hover:bg-white flex items-center justify-center transition-colors"
               >
-                <ChevronLeft className="w-4 h-4 text-gray-800" />
+                <ChevronLeft className="w-4 h-4 text-[#0A0A0A]" />
               </button>
               <button
                 onClick={next}
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-colors"
+                className="w-9 h-9 bg-white/90 hover:bg-white flex items-center justify-center transition-colors"
               >
-                <ChevronRight className="w-4 h-4 text-gray-800" />
+                <ChevronRight className="w-4 h-4 text-[#0A0A0A]" />
               </button>
             </div>
 
@@ -166,8 +166,8 @@ export default function FeaturedProjects() {
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === current ? "w-6 bg-primary" : "w-1.5 bg-white/60"
+                  className={`h-1 transition-all duration-300 ${
+                    i === current ? "w-8 bg-gold" : "w-2 bg-white/50"
                   }`}
                 />
               ))}
@@ -185,37 +185,37 @@ export default function FeaturedProjects() {
               className="flex flex-col gap-6"
             >
               <div>
-                <h3 className="text-2xl sm:text-3xl font-primary font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl sm:text-3xl font-primary font-bold text-[#0A0A0A] mb-2 tracking-tight">
                   {project.title}
                 </h3>
-                <div className="flex items-center gap-1.5 text-gray-500">
-                  <MapPin className="w-4 h-4 text-primary shrink-0" />
-                  <span className="text-sm font-inter">{project.location}</span>
+                <div className="flex items-center gap-1.5 text-[#7A736C]">
+                  <MapPin className="w-4 h-4 text-gold shrink-0" />
+                  <span className="text-sm font-manrope">{project.location}</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-xs text-gray-400 font-inter uppercase tracking-wide mb-1">Scope</p>
-                  <p className="text-sm font-inter font-semibold text-gray-800">{project.scope}</p>
+              <div className="grid grid-cols-2 gap-px bg-stone">
+                <div className="bg-white p-4">
+                  <p className="text-[10px] text-[#7A736C] font-manrope uppercase tracking-[0.15em] mb-2">Scope</p>
+                  <p className="text-sm font-manrope font-semibold text-[#0A0A0A]">{project.scope}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <Clock className="w-3.5 h-3.5 text-primary" />
-                    <p className="text-xs text-gray-400 font-inter uppercase tracking-wide">Duration</p>
+                <div className="bg-white p-4">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Clock className="w-3 h-3 text-gold" />
+                    <p className="text-[10px] text-[#7A736C] font-manrope uppercase tracking-[0.15em]">Duration</p>
                   </div>
-                  <p className="text-sm font-inter font-semibold text-gray-800">{project.duration}</p>
+                  <p className="text-sm font-manrope font-semibold text-[#0A0A0A]">{project.duration}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <Banknote className="w-3.5 h-3.5 text-primary" />
-                    <p className="text-xs text-gray-400 font-inter uppercase tracking-wide">Budget Band</p>
+                <div className="bg-white p-4">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Banknote className="w-3 h-3 text-gold" />
+                    <p className="text-[10px] text-[#7A736C] font-manrope uppercase tracking-[0.15em]">Budget Band</p>
                   </div>
-                  <p className="text-sm font-inter font-semibold text-gray-800">{project.budget}</p>
+                  <p className="text-sm font-manrope font-semibold text-[#0A0A0A]">{project.budget}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-xs text-gray-400 font-inter uppercase tracking-wide mb-1">Key Finishes</p>
-                  <p className="text-sm font-inter font-medium text-gray-700 leading-snug">{project.finishes}</p>
+                <div className="bg-white p-4">
+                  <p className="text-[10px] text-[#7A736C] font-manrope uppercase tracking-[0.15em] mb-2">Key Finishes</p>
+                  <p className="text-sm font-manrope font-medium text-[#3D3833] leading-snug">{project.finishes}</p>
                 </div>
               </div>
 
@@ -223,7 +223,7 @@ export default function FeaturedProjects() {
                 <motion.button
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-inter font-semibold px-8 py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl group"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#0A0A0A] hover:bg-[#1C1C1C] text-white font-manrope font-semibold px-8 py-4 rounded-none transition-all duration-200 group tracking-wide"
                 >
                   View Project
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

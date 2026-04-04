@@ -17,7 +17,7 @@ export default function ActiveFilterTags({
         <button
           key={`category-${category}`}
           onClick={() => onRemoveFilter("category", category)}
-          className="inline-flex items-center gap-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1 bg-stone text-[#0A0A0A] rounded-none text-xs hover:bg-warm transition-colors font-manrope"
         >
           <span>{category}</span>
           <svg
@@ -40,7 +40,7 @@ export default function ActiveFilterTags({
         <button
           key={`material-${materialType}`}
           onClick={() => onRemoveFilter("materialType", materialType)}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 bg-stone text-[#0A0A0A] rounded-none text-sm hover:bg-warm transition-colors font-manrope"
         >
           <span>{materialType.split("_").join(" ")}</span>
           <svg
@@ -61,7 +61,7 @@ export default function ActiveFilterTags({
 
       <button
         onClick={onClearAll}
-        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+        className="text-sm text-[#0A0A0A] hover:text-gold font-medium font-manrope underline transition-colors"
       >
         Clear All
       </button>

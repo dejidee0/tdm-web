@@ -17,29 +17,23 @@ const TRACK = [...ITEMS, ...ITEMS];
 
 export default function TrustStrip() {
   return (
-    <section className="bg-primary py-3.5 overflow-hidden">
-      {/*
-        The marquee is two identical tracks side by side animated together.
-        CSS animation scrolls the whole strip one full "track width" to the left,
-        then snaps back — creating a seamless infinite loop.
-      */}
+    <section className="bg-[#0A0A0A] py-4 overflow-hidden border-b border-white/5">
       <div
         className="flex w-max animate-marquee whitespace-nowrap"
-        style={{ "--marquee-speed": "30s" }}
+        style={{ "--marquee-speed": "32s" }}
       >
         {TRACK.map((item, i) => {
           const Icon = item.icon;
           return (
             <span
               key={i}
-              className="inline-flex items-center gap-2 text-white px-8"
+              className="inline-flex items-center gap-2.5 text-white/70 px-10"
             >
-              <Icon className="w-3.5 h-3.5 text-white/60 shrink-0" strokeWidth={2} />
-              <span className="text-xs sm:text-sm font-manrope font-medium tracking-wide">
+              <Icon className="w-3.5 h-3.5 text-gold shrink-0" strokeWidth={1.8} />
+              <span className="text-xs font-manrope font-medium tracking-[0.15em] uppercase">
                 {item.label}
               </span>
-              {/* Separator dot */}
-              <span className="ml-8 w-1 h-1 rounded-full bg-white/25 shrink-0" />
+              <span className="ml-10 w-px h-3 bg-white/15 shrink-0" />
             </span>
           );
         })}
