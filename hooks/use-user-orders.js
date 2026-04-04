@@ -1,7 +1,8 @@
 // hooks/use-user-orders.js
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { dashboardApi } from "@/lib/api/user-dashboard";
+import { ordersApi } from "@/lib/api/orders";
 import { dashboardKeys } from "@/hooks/use-user-dashboard";
 
 export function useOrders() {
@@ -23,5 +24,17 @@ export function useOrderDetails(orderId) {
     queryFn: () => dashboardApi.getOrder(orderId),
     enabled: !!orderId,
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+/** POST /api/v1/orders — create order directly from cart */
+export function useCreateOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => ordersApi.createOrder(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.orders() });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { productsApi, materialsApi, flooringApi, categoriesApi } from "@/lib/api/products";
 
 // ─── Query Key Factory ───────────────────────────────────────────────────────
 export const productKeys = {
@@ -78,6 +79,106 @@ export function useProducts(filters = {}) {
   };
 
   return { ...query, prefetchNextPage };
+}
+
+// ─── Featured Products ────────────────────────────────────────────────────────
+export function useFeaturedProducts() {
+  return useQuery({
+    queryKey: ["products", "featured"],
+    queryFn: productsApi.getFeatured,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.items ?? res?.data ?? res?.items ?? [],
+  });
+}
+
+// ─── Materials ────────────────────────────────────────────────────────────────
+export function useMaterials(params = {}) {
+  return useQuery({
+    queryKey: ["materials", params],
+    queryFn: () => materialsApi.getMaterials(params),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useMaterialsList(params = {}) {
+  return useQuery({
+    queryKey: ["materials", "list", params],
+    queryFn: () => materialsApi.getMaterialsList(params),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useMaterial(idOrSlug) {
+  return useQuery({
+    queryKey: ["material", idOrSlug],
+    queryFn: () => materialsApi.getMaterial(idOrSlug),
+    enabled: !!idOrSlug,
+    staleTime: 5 * 60 * 1000,
+    retry: (count, err) => err?.status !== 404 && count < 2,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+// ─── Flooring ─────────────────────────────────────────────────────────────────
+export function useFlooring(params = {}) {
+  return useQuery({
+    queryKey: ["flooring", params],
+    queryFn: () => flooringApi.getFlooring(params),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+// ─── Categories ───────────────────────────────────────────────────────────────
+export function useCategories() {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: categoriesApi.getCategories,
+    staleTime: 15 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useCategory(id) {
+  return useQuery({
+    queryKey: ["category", id],
+    queryFn: () => categoriesApi.getCategoryById(id),
+    enabled: !!id,
+    staleTime: 15 * 60 * 1000,
+    retry: (count, err) => err?.status !== 404 && count < 2,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useCategoryBySlug(slug) {
+  return useQuery({
+    queryKey: ["category", "slug", slug],
+    queryFn: () => categoriesApi.getCategoryBySlug(slug),
+    enabled: !!slug,
+    staleTime: 15 * 60 * 1000,
+    retry: (count, err) => err?.status !== 404 && count < 2,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useCategoriesByBrand(brandType) {
+  return useQuery({
+    queryKey: ["categories", "brand", brandType],
+    queryFn: () => categoriesApi.getCategoriesByBrand(brandType),
+    enabled: brandType != null,
+    staleTime: 15 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
 }
 
 // ─── Categories / Filters Hook (derived from product data) ────────────────────

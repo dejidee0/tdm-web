@@ -27,21 +27,33 @@ const HeroSection = () => {
   const slides = [
     {
       image: "/hero/slide1.png",
-      title: "Transform Your Space, into Luxury",
+      title: "Design. Price. Build. All in one place.",
       description:
-        "Source certified renovation and construction materials, visualize your project with Ziora Intelligence, and connect with expert contractors.",
+        "Premium renovation, construction materials, and AI-powered space visualization for homes, apartments, and commercial spaces.",
+      ctas: [
+        { label: "Get Estimate", href: "/contact?type=estimate", primary: true },
+        { label: "Try Ziora AI", href: "/ai-visualizer", primary: false },
+      ],
     },
     {
       image: "/product-1.jpg",
-      title: "Your Renovation, Starts Here",
+      title: "Your Renovation, Starts Here.",
       description:
         "From tiles to electrical fittings — everything your construction project needs, all in one place. Delivered directly to site.",
+      ctas: [
+        { label: "Shop Materials", href: "/materials", primary: true },
+        { label: "Get Estimate", href: "/contact?type=estimate", primary: false },
+      ],
     },
     {
       image: "/product-2.jpg",
-      title: "Certified Materials, Built to Last",
+      title: "Certified Materials, Built to Last.",
       description:
         "Browse thousands of quality-assured building materials from trusted suppliers. Reliable stock for every stage of your project.",
+      ctas: [
+        { label: "View Projects", href: "/project", primary: true },
+        { label: "Shop Materials", href: "/materials", primary: false },
+      ],
     },
   ];
 
@@ -103,11 +115,11 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background md:min-h-[90vh] overflow-visible relative">
+    <div className="bg-background overflow-visible relative">
       {/* Container with max-width for content constraint */}
-      <div className="max-w-325 mx-auto h-full flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[90vh]">
+      <div className="max-w-325 mx-auto flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[92vh]">
         {/* Blue background section with image slider */}
-        <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 h-[85%] sm:h-[85%] rounded-xl md:rounded-2xl overflow-hidden">
+        <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 top-4 rounded-xl md:rounded-2xl overflow-hidden">
           {/* Image Slider with crossfade */}
           <div className="absolute inset-0">
             <AnimatePresence initial={false}>
@@ -156,7 +168,7 @@ const HeroSection = () => {
           </div>
 
           {/* Slide Indicators */}
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+          <div className="absolute bottom-4 right-6 sm:right-8 z-10 flex items-center gap-2">
             {slides.map((_, index) => (
               <motion.button
                 key={index}
@@ -172,70 +184,74 @@ const HeroSection = () => {
             ))}
           </div>
 
-          {/* Content - Now stays persistent with only text changing */}
-          <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-8 md:px-12 lg:px-16 pt-8 pb-20 sm:pb-24 md:pb-20">
+          {/* Content */}
+          <div className="relative z-10 h-full flex flex-col justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-24 pb-16 sm:pb-20 md:pb-20">
             {/* Ziora badge */}
-            <div className="mb-4 sm:mb-5">
-              <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs sm:text-sm font-inter font-medium px-4 py-1.5 rounded-full">
+            <div className="mb-3 sm:mb-4">
+              <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-inter font-medium px-3 py-1.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" />
                 Powered by Ziora Intelligence
               </span>
             </div>
             {/* Heading */}
-            <div className="mb-4 sm:mb-6 overflow-hidden">
+            <div className="mb-3 sm:mb-4">
               <AnimatePresence mode="wait">
                 <motion.h1
                   key={currentSlide}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-4xl sm:text-5xl font-primary md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.45 }}
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-primary font-bold text-white leading-tight"
                 >
-                  {slides[currentSlide].title.split(",")[0]},
-                  <br />
-                  {slides[currentSlide].title.split(",")[1]}
+                  {slides[currentSlide].title}
                 </motion.h1>
               </AnimatePresence>
             </div>
 
             {/* Subheading */}
-            <div className="mb-8 sm:mb-10 md:mb-12 max-w-2xl overflow-hidden">
+            <div className="mb-6 sm:mb-8 max-w-xl">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={currentSlide}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-base sm:text-lg md:text-xl font-manrope text-white/90"
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.4, delay: 0.08 }}
+                  className="text-sm sm:text-base md:text-lg font-manrope text-white/85 leading-relaxed"
                 >
                   {slides[currentSlide].description}
                 </motion.p>
               </AnimatePresence>
             </div>
 
-            {/* CTA Buttons - Stay persistent */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-              <Link href="/ai-visualizer">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 text-base sm:text-lg font-manrope cursor-pointer shadow-lg hover:shadow-xl"
-                >
-                  Design with Ziora
-                </motion.button>
-              </Link>
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white hover:bg-gray-100 text-primary font-semibold px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 text-base sm:text-lg font-manrope cursor-pointer shadow-lg hover:shadow-xl"
-                >
-                  Get Project Estimate
-                </motion.button>
-              </Link>
-            </div>
+            {/* CTAs — per slide */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`ctas-${currentSlide}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                {slides[currentSlide].ctas.map((cta) => (
+                  <Link key={cta.label} href={cta.href}>
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`font-semibold px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 text-base sm:text-lg font-manrope cursor-pointer shadow-lg hover:shadow-xl ${
+                        cta.primary
+                          ? "bg-white hover:bg-gray-100 text-primary"
+                          : "bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-sm"
+                      }`}
+                    >
+                      {cta.label}
+                    </motion.button>
+                  </Link>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 

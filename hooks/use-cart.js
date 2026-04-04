@@ -222,6 +222,17 @@ export function useApplyPromoCode() {
   });
 }
 
+// ─── Related products for cart ────────────────────────────────────────────────
+export function useCartRelated() {
+  return useQuery({
+    queryKey: ["cart", "related"],
+    queryFn: cartApi.getCartRelated,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (data) => (Array.isArray(data) ? data : []),
+  });
+}
+
 // ─── Cart item count (for navbar badge) ──────────────────────────────────────
 export function useCartCount() {
   const { data } = useCart();

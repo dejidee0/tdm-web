@@ -10,6 +10,7 @@ import {
   forgotPassword,
   verifyEmail,
   resendVerificationCode,
+  resetPassword,
 } from "@/lib/actions/auth";
 import { cartApi } from "@/lib/api/cart";
 
@@ -175,6 +176,34 @@ export function useResendVerification() {
       if (!result.success) throw new Error(result.error);
       return result.data;
     },
+  });
+}
+
+// POST /auth/reset-password — token-based password reset from email link
+export function useResetPassword() {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: async (data) => {
+      const result = await resetPassword(data);
+      if (!result.success) throw new Error(result.error);
+      return result.data;
+    },
+    onSuccess: () => {
+      router.push("/sign-in?reset=true");
+    },
+  });
+}
+
+// GET /auth/providers — list available OAuth providers (public, client-side fetch)
+export function useAuthProviders() {
+  return useQuery({
+    queryKey: ["auth", "providers"],
+    queryFn: async () => {
+      const res = await fetch("/api/proxy/v1/auth/providers");
+      if (!res.ok) throw new Error(`Failed to fetch providers: ${res.status}`);
+      return res.json();
+    },
+    staleTime: 10 * 60 * 1000, // providers rarely change
   });
 }
 

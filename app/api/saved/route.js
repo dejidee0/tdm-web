@@ -15,23 +15,37 @@ export async function GET(req) {
   try {
     // Forward supported query params to the backend (category, search, sortBy, page, limit)
     const { search } = new URL(req.url);
-    const res = await fetch(`${BASE_URL}/saved${search}`, {
+    const authHeader = await getAuthHeader();
+    const targetUrl = `${BASE_URL}/saved${search}`;
+
+    console.log("[/api/saved GET] BASE_URL:", BASE_URL);
+    console.log("[/api/saved GET] target URL:", targetUrl);
+    console.log("[/api/saved GET] auth header present:", !!authHeader.Authorization);
+
+    const res = await fetch(targetUrl, {
       headers: {
         "Content-Type": "application/json",
-        ...(await getAuthHeader()),
+        ...authHeader,
       },
     });
+
+    console.log("[/api/saved GET] upstream status:", res.status, res.statusText);
+
     const text = await res.text();
+    console.log("[/api/saved GET] upstream body (first 300):", text.slice(0, 300));
+
     let json = null;
     try {
       json = JSON.parse(text);
-    } catch {}
+    } catch (parseErr) {
+      console.error("[/api/saved GET] JSON parse failed:", parseErr.message);
+    }
     if (!res.ok) {
       console.error(`[/api/saved GET] backend ${res.status}:`, text.slice(0, 300));
     }
     return NextResponse.json(json ?? {}, { status: res.status });
   } catch (err) {
-    console.error("[/api/saved GET] fetch error:", err.message);
+    console.error("[/api/saved GET] fetch error:", err.message, err.stack);
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

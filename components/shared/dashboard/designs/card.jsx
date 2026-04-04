@@ -24,6 +24,21 @@ export default function DesignCard({ design, index, isList = false }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const menuRef = useRef(null);
 
+  // Normalise API response field names
+  const imageUrl =
+    design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
+  const title = design.projectName ?? design.name ?? design.title ?? "Untitled";
+  const room = design.roomType ?? design.room ?? "";
+  const isFavorite = design.isFavorited ?? design.isFavorite ?? false;
+  const isHighRes = design.isHighRes ?? false;
+  const createdAt = design.createdAt
+    ? new Date(design.createdAt).toLocaleDateString("en-NG", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
+
   const toggleFavorite = useToggleFavorite();
   const deleteDesign = useDeleteDesign();
   const downloadDesign = useDownloadDesign();
@@ -87,13 +102,13 @@ export default function DesignCard({ design, index, isList = false }) {
           {/* Image */}
           <div className="relative w-28 h-24 shrink-0 bg-[#f5f5f5] rounded-lg overflow-hidden">
             <Image
-              src={design.image}
-              alt={design.title}
+              src={imageUrl}
+              alt={title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               sizes="112px"
             />
-            {design.isHighRes && (
+            {isHighRes && (
               <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded">
                 HIGH RES
               </div>
@@ -103,14 +118,14 @@ export default function DesignCard({ design, index, isList = false }) {
           {/* Info */}
           <div className="flex-1 min-w-0">
             <h3 className="text-[15px] font-semibold text-[#1a1a1a] mb-1 truncate">
-              {design.title}
+              {title}
             </h3>
             <div className="flex items-center gap-2 text-[13px] text-[#666666]">
               <span className="w-2 h-2 rounded-full bg-[#ef4444]" />
-              <span>{design.room}</span>
+              <span>{room}</span>
             </div>
             <p className="text-[12px] text-[#999999] mt-1">
-              {design.createdAt}
+              {createdAt}
             </p>
           </div>
 
@@ -121,7 +136,7 @@ export default function DesignCard({ design, index, isList = false }) {
               className="p-2 hover:bg-[#f5f5f5] rounded-lg transition-colors"
             >
               <Heart
-                className={`w-5 h-5 ${design.isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#999999]"}`}
+                className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#999999]"}`}
               />
             </button>
             <button
@@ -152,17 +167,17 @@ export default function DesignCard({ design, index, isList = false }) {
       className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/3] bg-[#f5f5f5] overflow-hidden">
+      <div className="relative aspect-4/3 bg-[#f5f5f5] overflow-hidden">
         <Image
-          src={design.image}
-          alt={design.title}
+          src={imageUrl}
+          alt={title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         />
 
         {/* High Res Badge */}
-        {design.isHighRes && (
+        {isHighRes && (
           <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md">
             HIGH RES
           </div>
@@ -174,7 +189,7 @@ export default function DesignCard({ design, index, isList = false }) {
           className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white transition-colors"
         >
           <Heart
-            className={`w-5 h-5 ${design.isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#666666]"}`}
+            className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#666666]"}`}
           />
         </button>
       </div>
@@ -184,7 +199,7 @@ export default function DesignCard({ design, index, isList = false }) {
         {/* Title and Menu */}
         <div className="flex items-start justify-between mb-2">
           <h3 className="text-[15px] font-semibold text-[#1a1a1a] line-clamp-1 flex-1 pr-2">
-            {design.title}
+            {title}
           </h3>
 
           {/* More Menu */}
@@ -194,7 +209,7 @@ export default function DesignCard({ design, index, isList = false }) {
                 e.stopPropagation();
                 setShowMenu(!showMenu);
               }}
-              className="p-1 hover:bg-[#f5f5f5] rounded-md transition-colors flex-shrink-0"
+              className="p-1 hover:bg-[#f5f5f5] rounded-md transition-colors shrink-0"
             >
               <MoreVertical className="w-5 h-5 text-[#666666]" />
             </button>
@@ -250,12 +265,12 @@ export default function DesignCard({ design, index, isList = false }) {
         {/* Room Info */}
         <div className="flex items-center gap-2 text-[13px] text-[#666666] mb-3">
           <span className="w-2 h-2 rounded-full bg-[#ef4444]" />
-          <span>{design.room}</span>
+          <span>{room}</span>
         </div>
 
         {/* Footer Actions */}
         <div className="flex items-center justify-between pt-3 border-t border-[#e5e5e5]">
-          <span className="text-[12px] text-[#999999]">{design.createdAt}</span>
+          <span className="text-[12px] text-[#999999]">{createdAt}</span>
 
           <div className="flex items-center gap-1">
             <button

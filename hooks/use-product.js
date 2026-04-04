@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { productsApi } from "@/lib/api/products";
 
 // ─── Fetchers ─────────────────────────────────────────────────────────────────
 async function fetchProductById(id) {
@@ -37,6 +38,31 @@ export function useProduct(id) {
     retry: (count, err) => err?.status !== 404 && count < 2,
     refetchOnWindowFocus: false,
     enabled: !!id,
+  });
+}
+
+export function useProductBySlug(slug) {
+  return useQuery({
+    queryKey: ["product", "slug", slug],
+    queryFn: () => productsApi.getBySlug(slug),
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
+    retry: (count, err) => err?.status !== 404 && count < 2,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data ?? res,
+  });
+}
+
+export function useRelatedProducts(productId) {
+  return useQuery({
+    queryKey: ["products", "related", productId],
+    queryFn: () => productsApi.getRelated(productId),
+    enabled: !!productId,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.items ?? res?.data ?? res?.items ?? [],
   });
 }
 

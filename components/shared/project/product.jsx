@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Search, Heart, ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useMemo, useEffect, useRef } from "react";
 
 const MOCK_PROJECTS = [
@@ -20,7 +21,7 @@ const MOCK_PROJECTS = [
     hasGetLook: true,
     category: "living-room",
     style: "industrial",
-    budgetValue: 90000,
+    budgetValue: 8000000,
   },
   {
     id: 2,
@@ -41,9 +42,9 @@ const MOCK_PROJECTS = [
     image: "/product-main.svg",
     title: "FULL HOME RENO",
     variant: "dark",
-    category: "all",
+    category: "full-home",
     style: "modern",
-    budgetValue: 5000000,
+    budgetValue: 25000000,
   },
   {
     id: 4,
@@ -92,9 +93,9 @@ const MOCK_PROJECTS = [
     tag: "Bathroom",
     title: "Modern Bathroom Oasis",
     variant: "dark",
-    category: "all",
+    category: "bathroom",
     style: "modern",
-    budgetValue: 1500000,
+    budgetValue: 4500000,
   },
   {
     id: 8,
@@ -116,17 +117,20 @@ const MOCK_PROJECTS = [
     title: "Outdoor Patio",
     subtitle: "Lush, modern living",
     isFeatured: true,
-    category: "all",
+    category: "commercial",
     style: "modern",
-    budgetValue: 3500000,
+    budgetValue: 12000000,
   },
 ];
 
 const FILTERS = [
   { id: "all", label: "All Projects" },
-  { id: "living-room", label: "Living Room" },
-  { id: "kitchen", label: "Kitchen" },
-  { id: "bedroom", label: "Bedroom" },
+  { id: "bathroom", label: "Bathrooms" },
+  { id: "kitchen", label: "Kitchens" },
+  { id: "living-room", label: "Living Rooms" },
+  { id: "full-home", label: "Full Home Renovation" },
+  { id: "commercial", label: "Commercial" },
+  { id: "construction", label: "Construction" },
 ];
 
 const BUDGET_RANGES = [
@@ -327,9 +331,11 @@ export default function MasterpiecesGallery() {
                   </div>
                 </div>
               </div>
-              <button className="w-full py-3 bg-[#1E3A5F] text-white text-sm font-medium rounded hover:bg-[#2d5080] transition-colors mt-auto">
-                Book Similar Project
-              </button>
+              <Link href="/contact?type=consultation" className="mt-auto block">
+                <button className="w-full py-3 bg-[#1E3A5F] text-white text-sm font-medium rounded hover:bg-[#2d5080] transition-colors">
+                  Start Similar Project
+                </button>
+              </Link>
             </div>
           </motion.div>
         );
@@ -465,9 +471,11 @@ export default function MasterpiecesGallery() {
               <p className="text-sm text-gray-600 mb-4 flex-1">
                 {project.description}
               </p>
-              <button className="w-full py-3 bg-[#1E3A5F] text-white text-sm font-medium rounded hover:bg-[#2d5080] transition-colors mt-auto">
-                Book Similar Project
-              </button>
+              <Link href="/contact?type=consultation" className="mt-auto block">
+                <button className="w-full py-3 bg-[#1E3A5F] text-white text-sm font-medium rounded hover:bg-[#2d5080] transition-colors">
+                  Start Similar Project
+                </button>
+              </Link>
             </div>
           </motion.div>
         );

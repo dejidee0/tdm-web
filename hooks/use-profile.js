@@ -175,6 +175,77 @@ export function useUpdate2fa() {
   });
 }
 
+// ─── Full profile update (PUT /account/profile) ──────────────────────────────
+export function useUpdateFullProfile() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => profileApi.updateProfile(data),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
+
+// ─── Change email ─────────────────────────────────────────────────────────────
+export function useUpdateEmail() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => profileApi.updateEmail(data),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
+
+// ─── Change phone ─────────────────────────────────────────────────────────────
+export function useUpdatePhone() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => profileApi.updatePhone(data),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
+
+// ─── Direct password change (no OTP) ─────────────────────────────────────────
+export function useChangePasswordDirect() {
+  return useMutation({
+    mutationFn: (data) => profileApi.changePasswordDirect(data),
+  });
+}
+
+// ─── OTP-based password change (POST /account/password/change) ───────────────
+export function useChangePasswordOtp() {
+  return useMutation({
+    mutationFn: (data) => profileApi.changePasswordOtp(data),
+  });
+}
+
+// ─── Set default address ──────────────────────────────────────────────────────
+export function useSetDefaultAddress() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (addressId) => profileApi.setDefaultAddress(addressId),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
+
+// ─── Upload avatar ────────────────────────────────────────────────────────────
+export function useUploadAvatar() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (file) => profileApi.uploadAvatar(file),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: profileKeys.me }),
+  });
+}
+
+// ─── Permanent account deletion ───────────────────────────────────────────────
+export function useDeleteAccount() {
+  return useMutation({
+    mutationFn: profileApi.deleteAccount,
+  });
+}
+
 // ─── Deactivate ───────────────────────────────────────────────────────────────
 export function useDeactivateAccount() {
   return useMutation({

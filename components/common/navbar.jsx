@@ -79,9 +79,10 @@ export default function Navbar() {
     "U";
 
   const navLinks = [
-    { name: "Materials", href: "/materials" },
-    { name: "Design with Ziora", href: "/ai-visualizer" },
+    { name: "Services", href: "/services" },
     { name: "Projects", href: "/project" },
+    { name: "Shop", href: "/materials" },
+    { name: "Ziora AI", href: "/ai-visualizer" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -293,14 +294,20 @@ export default function Navbar() {
                     </button>
                   </Link>
                   <Link
+                    href="/contact?type=estimate"
+                    className="px-4 py-2 text-[14px] font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  >
+                    Get Estimate
+                  </Link>
+                  <Link
                     href="/sign-in"
-                    className="px-5 py-2 text-[15px] font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                    className="px-4 py-2 text-[14px] font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                   >
                     Login
                   </Link>
                   <Link
-                    href="/consultation"
-                    className="px-5 py-2 text-[15px] font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                    href="/contact?type=consultation"
+                    className="px-4 py-2 text-[14px] font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     Book Consultation
                   </Link>
@@ -489,6 +496,13 @@ export default function Navbar() {
                 ) : (
                   <>
                     <Link
+                      href="/contact?type=estimate"
+                      className="flex items-center justify-center w-full px-4 py-3 text-[15px] font-medium text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Get Estimate
+                    </Link>
+                    <Link
                       href="/sign-in"
                       className="flex items-center justify-center w-full px-4 py-3 text-[15px] font-medium text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
@@ -496,7 +510,7 @@ export default function Navbar() {
                       Login
                     </Link>
                     <Link
-                      href="/consultation"
+                      href="/contact?type=consultation"
                       className="flex items-center justify-center w-full px-4 py-3 text-[15px] font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
