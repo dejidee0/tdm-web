@@ -33,6 +33,20 @@ body {
   font-family: var(--font-inter), sans-serif;
 }
 
+/* Marquee / infinite ticker */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-speed, 30s) linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Custom scrollbar styles for tables */
 
 /* For Webkit browsers (Chrome, Safari, Edge) */
