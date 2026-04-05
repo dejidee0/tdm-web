@@ -28,25 +28,24 @@ const ACTIONS = [
 
 export default function CTASection() {
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-[#F5F5F0]">
+    <section className="py-20 sm:py-24 lg:py-28 bg-warm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main card */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-primary rounded-3xl overflow-hidden"
+          className="bg-[#0A0A0A] overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left — copy */}
-            <div className="px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 flex flex-col justify-center">
+            <div className="px-8 py-14 sm:px-12 lg:px-16 lg:py-20 flex flex-col justify-center">
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-white/60 font-inter text-xs font-semibold uppercase tracking-widest mb-4"
+                className="text-gold font-manrope text-xs font-semibold uppercase tracking-[0.2em] mb-5"
               >
                 Ready when you are
               </motion.p>
@@ -55,7 +54,7 @@ export default function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: 0.15 }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-primary font-bold text-white leading-tight mb-5"
+                className="text-4xl sm:text-5xl lg:text-6xl font-primary font-bold text-white leading-tight tracking-tight mb-6"
               >
                 Ready to transform your space?
               </motion.h2>
@@ -64,7 +63,7 @@ export default function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-white/70 font-inter text-base sm:text-lg max-w-md mb-10"
+                className="text-white/50 font-manrope text-base sm:text-lg max-w-md mb-10"
               >
                 Book a consultation, get a free project estimate, or start shopping premium materials — all in one place.
               </motion.p>
@@ -77,9 +76,9 @@ export default function CTASection() {
               >
                 <Link href="/contact?type=consultation">
                   <motion.button
-                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 bg-white text-primary font-inter font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group"
+                    className="inline-flex items-center gap-3 bg-white text-[#0A0A0A] font-manrope font-bold px-8 py-4 rounded-none hover:bg-[#FAF8F5] transition-all duration-200 group tracking-wide"
                   >
                     Book Consultation
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -89,7 +88,7 @@ export default function CTASection() {
             </div>
 
             {/* Right — action cards */}
-            <div className="bg-white/5 border-l border-white/10 px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 flex flex-col justify-center gap-4">
+            <div className="border-l border-white/8 px-8 py-14 sm:px-12 lg:px-16 lg:py-20 flex flex-col justify-center gap-3">
               {ACTIONS.map((action, i) => {
                 const Icon = action.icon;
                 return (
@@ -102,21 +101,21 @@ export default function CTASection() {
                   >
                     <Link href={action.href}>
                       <motion.div
-                        whileHover={{ x: 6, backgroundColor: "rgba(255,255,255,0.12)" }}
-                        className="flex items-center gap-5 p-5 rounded-2xl border border-white/10 bg-white/5 cursor-pointer transition-colors duration-200 group"
+                        whileHover={{ x: 4 }}
+                        className="flex items-center gap-5 p-5 border border-white/8 hover:border-white/20 cursor-pointer transition-colors duration-200 group"
                       >
-                        <div className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
-                          <Icon className="w-5 h-5 text-white" strokeWidth={1.8} />
+                        <div className="w-10 h-10 border border-white/10 group-hover:border-gold flex items-center justify-center shrink-0 transition-colors">
+                          <Icon className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" strokeWidth={1.5} />
                         </div>
                         <div className="flex-1">
-                          <p className="font-inter font-bold text-white text-sm sm:text-base">
+                          <p className="font-manrope font-bold text-white text-sm sm:text-base tracking-wide">
                             {action.label}
                           </p>
-                          <p className="text-white/50 text-xs sm:text-sm font-inter mt-0.5">
+                          <p className="text-white/40 text-xs sm:text-sm font-manrope mt-0.5">
                             {action.desc}
                           </p>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-white/70 group-hover:translate-x-1 transition-all duration-200" />
+                        <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-white/60 group-hover:translate-x-1 transition-all duration-200" />
                       </motion.div>
                     </Link>
                   </motion.div>

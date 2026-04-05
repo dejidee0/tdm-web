@@ -33,16 +33,15 @@ function AccordionSection({ title, links }) {
 
   return (
     <div className="border-b border-white/10 md:border-none">
-      {/* Header — clickable on mobile, static on desktop */}
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between py-4 md:py-0 md:cursor-default md:pointer-events-none"
       >
-        <h3 className="text-white text-xs font-bold tracking-[0.18em] uppercase">
+        <h3 className="text-white text-[10px] font-bold tracking-[0.25em] uppercase">
           {title}
         </h3>
         <ChevronDown
-          className={`w-4 h-4 text-white/50 transition-transform duration-300 md:hidden ${
+          className={`w-4 h-4 text-white/40 transition-transform duration-300 md:hidden ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -63,7 +62,7 @@ function AccordionSection({ title, links }) {
               <li key={item.label} className="list-none">
                 <Link
                   href={item.href}
-                  className="text-white/65 hover:text-white transition-colors text-sm"
+                  className="text-white/50 hover:text-white transition-colors text-sm font-manrope"
                 >
                   {item.label}
                 </Link>
@@ -79,7 +78,7 @@ function AccordionSection({ title, links }) {
           <li key={item.label}>
             <Link
               href={item.href}
-              className="text-white/70 hover:text-white transition-colors text-sm"
+              className="text-white/50 hover:text-white transition-colors text-sm font-manrope"
             >
               {item.label}
             </Link>
@@ -120,15 +119,15 @@ const Footer = () => {
 
           {/* Get In Touch — always fully visible, no accordion needed */}
           <div className="pt-4 md:pt-0">
-            <h3 className="text-white text-xs font-bold mb-4 md:mb-7 tracking-[0.18em] uppercase">
+            <h3 className="text-white text-[10px] font-bold mb-4 md:mb-7 tracking-[0.25em] uppercase">
               Get In Touch
             </h3>
-            <p className="text-white/70 text-sm leading-relaxed mb-3">
+            <p className="text-white/50 text-sm font-manrope leading-relaxed mb-3">
               Ready to start your renovation or construction project?
             </p>
             <a
               href="mailto:info@tbmbuilding.com"
-              className="text-white text-base md:text-xl font-bold hover:text-white/90 transition-colors block mb-5 md:mb-7 break-all"
+              className="text-white text-base md:text-xl font-bold hover:text-gold transition-colors block mb-5 md:mb-7 break-all font-manrope"
             >
               info@tbmbuilding.com
             </a>
@@ -176,7 +175,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="flex justify-end">
-          <p className="text-white/60 text-sm">
+          <p className="text-white/30 text-xs font-manrope tracking-wide">
             © 2025 TBM Building Services. All Rights Reserved.
           </p>
         </div>

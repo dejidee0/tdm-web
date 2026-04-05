@@ -42,7 +42,7 @@ const CheckIcon = () => (
 
 export default function WhyChooseTBM() {
   return (
-    <section className="bg-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 font-manrope">
+    <section className="bg-[#FAF8F5] py-20 sm:py-24 px-4 sm:px-6 lg:px-8 font-manrope">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -50,12 +50,15 @@ export default function WhyChooseTBM() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-10 sm:mb-12"
+          className="mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 font-primary">
+          <span className="inline-block text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">
+            The TBM difference
+          </span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0A0A0A] font-primary tracking-tight">
             Why Choose TBM?
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-[#7A736C] text-sm sm:text-base mt-4 max-w-lg">
             See how we stack up against traditional renovation services.
           </p>
         </motion.div>
@@ -66,22 +69,22 @@ export default function WhyChooseTBM() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="hidden md:block border border-gray-100 rounded-3xl overflow-hidden"
+          className="hidden md:block border border-stone overflow-hidden"
         >
           {/* Table Header */}
           <div className="grid grid-cols-3">
-            <div className="p-5 lg:p-6 border-b border-gray-100">
-              <span className="text-xs font-bold text-gray-900 uppercase tracking-widest">
+            <div className="p-5 lg:p-6 border-b border-stone">
+              <span className="text-xs font-bold text-[#7A736C] uppercase tracking-[0.15em]">
                 Feature
               </span>
             </div>
-            <div className="p-5 lg:p-6 bg-primary/10 border-b border-primary/10">
-              <span className="text-sm lg:text-base font-bold text-gray-900">
+            <div className="p-5 lg:p-6 bg-[#0A0A0A] border-b border-[#0A0A0A]">
+              <span className="text-sm lg:text-base font-bold text-white tracking-wide">
                 TBM Platform
               </span>
             </div>
-            <div className="p-5 lg:p-6 border-b border-gray-100">
-              <span className="text-sm lg:text-base font-semibold text-gray-500">
+            <div className="p-5 lg:p-6 border-b border-stone">
+              <span className="text-sm lg:text-base font-semibold text-[#7A736C]">
                 Traditional Services
               </span>
             </div>
@@ -95,26 +98,21 @@ export default function WhyChooseTBM() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
               viewport={{ once: true }}
-              className={`grid grid-cols-3 ${index !== features.length - 1 ? "border-b border-gray-100" : ""}`}
+              className={`grid grid-cols-3 ${index !== features.length - 1 ? "border-b border-stone" : ""}`}
             >
-              {/* Feature */}
               <div className="p-5 lg:p-6 flex items-center">
-                <span className="text-gray-900 font-medium text-sm lg:text-base">
+                <span className="text-[#0A0A0A] font-medium text-sm lg:text-base">
                   {item.feature}
                 </span>
               </div>
-
-              {/* TBM */}
-              <div className="p-5 lg:p-6 bg-primary/10 flex items-center gap-2.5">
+              <div className="p-5 lg:p-6 bg-warm flex items-center gap-2.5">
                 <CheckIcon />
-                <span className="text-primary font-semibold text-sm lg:text-base">
+                <span className="text-[#0A0A0A] font-semibold text-sm lg:text-base">
                   {item.tbm}
                 </span>
               </div>
-
-              {/* Traditional */}
               <div className="p-5 lg:p-6 flex items-center">
-                <span className="text-gray-500 text-sm lg:text-base">
+                <span className="text-[#7A736C] text-sm lg:text-base">
                   {item.traditional}
                 </span>
               </div>
@@ -123,7 +121,7 @@ export default function WhyChooseTBM() {
         </motion.div>
 
         {/* ── MOBILE CARDS (< md) ── */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-px bg-stone">
           {features.map((item, index) => (
             <motion.div
               key={index}
@@ -131,41 +129,23 @@ export default function WhyChooseTBM() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1 + index * 0.08 }}
               viewport={{ once: true }}
-              className="border border-gray-100 rounded-2xl overflow-hidden"
+              className="bg-white overflow-hidden"
             >
-              {/* Feature label */}
-              <div className="px-4 py-3 border-b border-gray-100">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                  Feature
-                </span>
-                <p className="text-gray-900 font-semibold text-sm mt-0.5">
-                  {item.feature}
-                </p>
+              <div className="px-4 py-3 border-b border-stone">
+                <span className="text-[10px] font-bold text-[#7A736C] uppercase tracking-[0.15em]">Feature</span>
+                <p className="text-[#0A0A0A] font-semibold text-sm mt-0.5">{item.feature}</p>
               </div>
-
-              {/* Two column — TBM vs Traditional */}
               <div className="grid grid-cols-2">
-                {/* TBM */}
-                <div className="bg-primary/10 px-4 py-4 flex flex-col gap-1.5">
-                  <span className="text-xs font-bold text-primary/60 uppercase tracking-wider">
-                    TBM
-                  </span>
+                <div className="bg-warm px-4 py-4 flex flex-col gap-1.5">
+                  <span className="text-[10px] font-bold text-gold uppercase tracking-wider">TBM</span>
                   <div className="flex items-start gap-1.5">
                     <CheckIcon />
-                    <span className="text-primary font-semibold text-sm leading-snug">
-                      {item.tbm}
-                    </span>
+                    <span className="text-[#0A0A0A] font-semibold text-sm leading-snug">{item.tbm}</span>
                   </div>
                 </div>
-
-                {/* Traditional */}
-                <div className="px-4 py-4 flex flex-col gap-1.5 border-l border-gray-100">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Traditional
-                  </span>
-                  <span className="text-gray-500 text-sm leading-snug">
-                    {item.traditional}
-                  </span>
+                <div className="px-4 py-4 flex flex-col gap-1.5 border-l border-stone">
+                  <span className="text-[10px] font-bold text-[#7A736C] uppercase tracking-wider">Traditional</span>
+                  <span className="text-[#7A736C] text-sm leading-snug">{item.traditional}</span>
                 </div>
               </div>
             </motion.div>

@@ -14,13 +14,12 @@ const STEPS = [
 
 export default function ZioraTeaser() {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-primary overflow-hidden relative">
-      {/* decorative blobs */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+    <section className="py-20 sm:py-24 lg:py-32 bg-[#0A0A0A] overflow-hidden relative">
+      {/* Subtle gold grain texture overlay */}
+      <div className="absolute inset-0 bg-linear-to-br from-white/2 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Copy */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -28,20 +27,20 @@ export default function ZioraTeaser() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white/90 text-xs font-inter font-medium px-4 py-1.5 rounded-full mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" />
+            <span className="inline-flex items-center gap-2.5 border border-white/15 text-white/70 text-xs font-manrope font-medium px-4 py-2 tracking-[0.15em] uppercase mb-6">
+              <span className="w-1.5 h-1.5 bg-gold animate-pulse" />
               Ziora Intelligence
             </span>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-white leading-tight mb-4">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-white leading-tight tracking-tight mb-5">
               Try your space before <br className="hidden sm:block" /> you build it.
             </h2>
-            <p className="text-white/80 font-inter text-base sm:text-lg max-w-lg mb-10">
+            <p className="text-white/60 font-manrope text-base sm:text-lg max-w-lg mb-10">
               Upload a photo of your room, choose a style, and Ziora AI generates a premium design concept in seconds — before you spend a single naira.
             </p>
 
             {/* Flow steps */}
-            <div className="flex flex-wrap gap-3 mb-10">
+            <div className="flex flex-wrap gap-2 mb-10">
               {STEPS.map((step, i) => {
                 const Icon = step.icon;
                 return (
@@ -51,21 +50,22 @@ export default function ZioraTeaser() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2"
+                    className="flex items-center gap-2 border border-white/10 px-4 py-2"
                   >
-                    <Icon className="w-3.5 h-3.5 text-white/70" strokeWidth={2} />
-                    <span className="text-xs text-white font-inter font-medium">{step.text}</span>
+                    <span className="text-[10px] font-manrope font-bold text-gold tracking-widest">{String(i + 1).padStart(2, "0")}</span>
+                    <Icon className="w-3 h-3 text-white/40" strokeWidth={1.5} />
+                    <span className="text-xs text-white/60 font-manrope">{step.text}</span>
                   </motion.div>
                 );
               })}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/ai-visualizer">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 bg-white text-primary font-inter font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group"
+                  className="inline-flex items-center gap-3 bg-white text-[#0A0A0A] font-manrope font-bold px-8 py-4 rounded-none shadow-lg hover:bg-[#FAF8F5] transition-all duration-200 group tracking-wide"
                 >
                   Start With Ziora
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -73,9 +73,9 @@ export default function ZioraTeaser() {
               </Link>
               <Link href="/ai-visualizer#examples">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/30 text-white font-inter font-semibold px-8 py-4 rounded-xl backdrop-blur-sm transition-all duration-200"
+                  className="inline-flex items-center gap-3 border border-white/20 hover:border-white/40 text-white font-manrope font-semibold px-8 py-4 rounded-none transition-all duration-200 tracking-wide"
                 >
                   See Sample Results
                 </motion.button>
@@ -92,7 +92,7 @@ export default function ZioraTeaser() {
             className="relative hidden lg:block"
           >
             {/* Packages */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-px bg-white/10">
               {[
                 { tier: "Economy", desc: "Free trial — limited renders", cta: "Try free" },
                 { tier: "Premium", desc: "Full renders + material match", cta: "Get Premium", featured: true },
@@ -104,20 +104,20 @@ export default function ZioraTeaser() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                  className={`rounded-2xl p-5 flex flex-col gap-3 ${
+                  className={`p-6 flex flex-col gap-4 ${
                     pkg.featured
-                      ? "bg-white text-primary shadow-2xl scale-105 ring-2 ring-white/50"
-                      : "bg-white/10 border border-white/20 text-white"
+                      ? "bg-[#FAF8F5] text-[#0A0A0A]"
+                      : "bg-white/5 text-white"
                   }`}
                 >
-                  <p className={`text-xs font-inter font-bold uppercase tracking-widest ${pkg.featured ? "text-primary/60" : "text-white/60"}`}>
+                  <p className={`text-[10px] font-manrope font-bold uppercase tracking-[0.2em] ${pkg.featured ? "text-gold" : "text-white/40"}`}>
                     {pkg.tier}
                   </p>
-                  <p className={`text-sm font-inter leading-snug ${pkg.featured ? "text-gray-700" : "text-white/80"}`}>
+                  <p className={`text-sm font-manrope leading-snug ${pkg.featured ? "text-[#3D3833]" : "text-white/60"}`}>
                     {pkg.desc}
                   </p>
                   <Link href="/ai-visualizer">
-                    <span className={`text-xs font-inter font-semibold underline underline-offset-2 ${pkg.featured ? "text-primary" : "text-white/70 hover:text-white"}`}>
+                    <span className={`text-xs font-manrope font-semibold tracking-wide underline underline-offset-4 ${pkg.featured ? "text-[#0A0A0A]" : "text-white/50 hover:text-white"}`}>
                       {pkg.cta}
                     </span>
                   </Link>
@@ -126,11 +126,11 @@ export default function ZioraTeaser() {
             </div>
 
             {/* After CTA nudge */}
-            <div className="mt-6 bg-white/10 border border-white/20 rounded-2xl p-5">
-              <p className="text-white/80 text-sm font-inter mb-3">After your Ziora concept, continue to:</p>
+            <div className="mt-px bg-white/5 border-t border-white/5 p-5">
+              <p className="text-white/40 text-xs font-manrope mb-3 uppercase tracking-[0.15em]">After your Ziora concept, continue to:</p>
               <div className="flex flex-wrap gap-2">
                 {["Get estimate", "Shop matching products", "Book consultation", "Start project"].map((a) => (
-                  <span key={a} className="text-xs bg-white/15 border border-white/20 text-white font-inter px-3 py-1.5 rounded-full">
+                  <span key={a} className="text-xs border border-white/10 text-white/50 font-manrope px-3 py-1.5 tracking-wide">
                     {a}
                   </span>
                 ))}

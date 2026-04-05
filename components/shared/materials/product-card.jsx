@@ -14,10 +14,10 @@ function HeartIcon({ filled, loading, className = "w-4 h-4" }) {
     <svg
       className={`${className} transition-colors duration-200 ${
         loading
-          ? "fill-none text-gray-300"
+          ? "fill-none text-stone"
           : filled
             ? "fill-red-500 text-red-500"
-            : "fill-none text-gray-400"
+            : "fill-none text-[#7A736C]"
       }`}
       stroke="currentColor"
       strokeWidth={2}
@@ -78,9 +78,9 @@ export default function ProductCard({ product, viewMode = "grid" }) {
       <Link href={detailHref}>
         <motion.div
           whileHover={{ y: -2 }}
-          className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex gap-0"
+          className="bg-white overflow-hidden hover:bg-warm transition-colors cursor-pointer flex gap-0"
         >
-          <div className="relative w-48 shrink-0 bg-gray-100">
+          <div className="relative w-48 shrink-0 bg-stone">
             <Image
               src={imageUrl}
               alt={product.name}
@@ -88,7 +88,7 @@ export default function ProductCard({ product, viewMode = "grid" }) {
               className="object-cover"
             />
             {product.isFeatured && (
-              <span className="absolute top-2 left-2 text-xs font-medium px-2 py-1 rounded bg-primary text-white">
+              <span className="absolute top-2 left-2 text-xs font-medium px-2 py-1 bg-[#0A0A0A] text-white font-manrope">
                 Featured
               </span>
             )}
@@ -96,19 +96,19 @@ export default function ProductCard({ product, viewMode = "grid" }) {
           <div className="p-4 flex flex-col justify-between flex-1">
             <div>
               <div className="flex items-start justify-between gap-2 mb-1">
-                <p className="text-xs text-primary font-semibold uppercase tracking-wide">
+                <p className="text-xs text-[#7A736C] font-semibold uppercase tracking-wide font-manrope">
                   {product.categoryName} · {product.brandName}
                 </p>
                 <SaveButton
                   productId={product.id}
-                  className="w-8 h-8 bg-gray-100 rounded-full shrink-0"
+                  className="w-8 h-8 bg-stone shrink-0"
                   iconClass="w-4 h-4"
                 />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">
+              <h3 className="font-semibold text-[#0A0A0A] mb-1 line-clamp-1 font-primary">
                 {product.name}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+              <p className="text-sm text-[#7A736C] line-clamp-2 mb-3 font-manrope">
                 {product.shortDescription || product.description}
               </p>
             </div>
@@ -116,27 +116,27 @@ export default function ProductCard({ product, viewMode = "grid" }) {
               <div className="flex items-baseline gap-2">
                 {product.showPrice ? (
                   <>
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className="text-xl font-bold text-[#0A0A0A]">
                       {product.priceDisplay}
                     </span>
                     {hasDiscount && (
-                      <span className="text-sm text-gray-400 line-through">
+                      <span className="text-sm text-[#7A736C] line-through">
                         ₦{product.compareAtPrice?.toLocaleString()}.00
                       </span>
                     )}
                   </>
                 ) : (
-                  <span className="text-base font-semibold text-primary">
+                  <span className="text-base font-bold text-[#0A0A0A] font-manrope">
                     Request Price
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-2">
                 <span
-                  className={`text-xs font-medium px-2 py-1 rounded-full ${
+                  className={`text-xs font-medium px-2 py-1 font-manrope ${
                     product.inStock
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
+                      ? "bg-[#FAF8F5] text-green-700"
+                      : "bg-[#FAF8F5] text-red-700"
                   }`}
                 >
                   {product.inStock
@@ -145,7 +145,7 @@ export default function ProductCard({ product, viewMode = "grid" }) {
                 </span>
                 <button
                   onClick={(e) => e.preventDefault()}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-sm font-semibold text-primary hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF8F5] border border-stone text-sm font-semibold text-[#0A0A0A] hover:bg-warm transition-colors font-manrope"
                 >
                   <svg
                     className="w-3.5 h-3.5"
@@ -180,9 +180,9 @@ export default function ProductCard({ product, viewMode = "grid" }) {
     <Link href={detailHref}>
       <motion.div
         whileHover={{ y: -4 }}
-        className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer h-full flex flex-col"
+        className="bg-white overflow-hidden hover:bg-warm transition-colors cursor-pointer h-full flex flex-col"
       >
-        <div className="relative h-48 sm:h-56 lg:h-64 bg-gray-100 shrink-0">
+        <div className="relative h-48 sm:h-56 lg:h-64 bg-stone shrink-0">
           <Image
             src={imageUrl}
             alt={product.name}
@@ -192,17 +192,17 @@ export default function ProductCard({ product, viewMode = "grid" }) {
 
           <div className="absolute top-3 left-3 flex flex-col gap-1.5">
             {product.isFeatured && (
-              <span className="text-xs font-medium px-2 py-1 rounded bg-primary text-white">
+              <span className="text-xs font-medium px-2 py-1 bg-[#0A0A0A] text-white font-manrope">
                 Featured
               </span>
             )}
             {hasDiscount && (
-              <span className="text-xs font-medium px-2 py-1 rounded bg-emerald-500 text-white">
+              <span className="text-xs font-medium px-2 py-1 bg-gold text-white font-manrope">
                 -{discountPct}%
               </span>
             )}
             {product.productTypeName === "Service" && (
-              <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600 text-white">
+              <span className="text-xs font-medium px-2 py-1 bg-[#0A0A0A] text-white font-manrope">
                 Service
               </span>
             )}
@@ -210,19 +210,19 @@ export default function ProductCard({ product, viewMode = "grid" }) {
 
           <SaveButton
             productId={product.id}
-            className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full shadow-md"
+            className="absolute top-3 right-3 w-8 h-8 bg-white/90 border border-stone"
             iconClass="w-4 h-4"
           />
         </div>
 
         <div className="p-4 flex flex-col flex-1">
-          <p className="text-xs text-primary font-semibold uppercase tracking-wide mb-1">
+          <p className="text-xs text-[#7A736C] font-semibold uppercase tracking-wide mb-1 font-manrope">
             {product.categoryName} · {product.brandName}
           </p>
-          <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 flex-1">
+          <h3 className="font-semibold text-[#0A0A0A] mb-1 line-clamp-2 flex-1 font-primary">
             {product.name}
           </h3>
-          <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+          <p className="text-sm text-[#7A736C] mb-3 line-clamp-2 font-manrope">
             {product.shortDescription || product.description}
           </p>
 
@@ -240,14 +240,14 @@ export default function ProductCard({ product, viewMode = "grid" }) {
                     clipRule="evenodd"
                   />
                 </svg>
-                <p className="text-sm text-green-700">
+                <p className="text-sm text-green-700 font-manrope">
                   {product.trackInventory
                     ? `${product.stockQuantity} units in stock`
                     : "In Stock"}
                 </p>
               </>
             ) : (
-              <p className="text-sm text-red-600 font-medium">Out of Stock</p>
+              <p className="text-sm text-red-600 font-medium font-manrope">Out of Stock</p>
             )}
           </div>
 
@@ -255,24 +255,24 @@ export default function ProductCard({ product, viewMode = "grid" }) {
             <div>
               {product.showPrice ? (
                 <>
-                  <span className="text-xl font-bold text-gray-900">
+                  <span className="text-xl font-bold text-[#0A0A0A]">
                     {product.priceDisplay}
                   </span>
                   {hasDiscount && (
-                    <div className="text-xs text-gray-400 line-through mt-0.5">
+                    <div className="text-xs text-[#7A736C] line-through mt-0.5">
                       ₦{product.compareAtPrice?.toLocaleString()}.00
                     </div>
                   )}
                 </>
               ) : (
-                <span className="text-base font-semibold text-primary">
+                <span className="text-base font-bold text-[#0A0A0A] font-manrope">
                   Request Price
                 </span>
               )}
             </div>
             <button
               onClick={(e) => e.preventDefault()}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm font-semibold text-primary hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-4 py-2 bg-[#FAF8F5] border border-stone text-sm font-semibold text-[#0A0A0A] hover:bg-warm transition-colors w-full sm:w-auto justify-center font-manrope"
             >
               <svg
                 className="w-4 h-4"

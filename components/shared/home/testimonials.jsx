@@ -48,28 +48,28 @@ export default function Testimonials() {
   const t = TESTIMONIALS[current];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gray-50">
+    <section className="py-20 sm:py-24 lg:py-32 bg-[#0A0A0A]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="mb-14"
         >
-          <span className="inline-block text-primary text-xs font-inter font-semibold uppercase tracking-widest mb-2">
+          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
             Testimonials
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary leading-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-white leading-tight tracking-tight">
             Clients Who Trusted TBM
           </h2>
         </motion.div>
 
-        <div className="relative bg-white rounded-3xl shadow-xl p-8 sm:p-12">
+        <div className="relative border border-white/10 p-8 sm:p-14">
           {/* Stars */}
-          <div className="flex gap-1 mb-6 justify-center">
+          <div className="flex gap-1 mb-8">
             {Array.from({ length: t.rating }).map((_, i) => (
-              <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+              <Star key={i} className="w-4 h-4 fill-gold text-gold" />
             ))}
           </div>
 
@@ -81,7 +81,7 @@ export default function Testimonials() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35 }}
-              className="text-lg sm:text-xl font-inter text-gray-700 text-center leading-relaxed mb-8"
+              className="text-xl sm:text-2xl font-manrope text-white/80 leading-relaxed mb-10 font-light"
             >
               &ldquo;{t.quote}&rdquo;
             </motion.blockquote>
@@ -95,20 +95,19 @@ export default function Testimonials() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="text-center"
             >
-              <p className="font-inter font-bold text-gray-900">{t.name}</p>
-              <p className="text-sm font-inter text-gray-500 mt-1">
+              <p className="font-manrope font-bold text-white tracking-wide">{t.name}</p>
+              <p className="text-sm font-manrope text-white/40 mt-1 tracking-wide uppercase">
                 {t.projectType} &middot; {t.city}
               </p>
             </motion.div>
           </AnimatePresence>
 
           {/* Nav */}
-          <div className="flex items-center justify-center gap-4 mt-10">
+          <div className="flex items-center gap-4 mt-10">
             <button
               onClick={prev}
-              className="w-10 h-10 rounded-full border border-gray-200 hover:border-primary hover:text-primary flex items-center justify-center transition-colors"
+              className="w-9 h-9 border border-white/15 hover:border-white/40 text-white/50 hover:text-white flex items-center justify-center transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -118,8 +117,8 @@ export default function Testimonials() {
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === current ? "w-6 bg-primary" : "w-1.5 bg-gray-300"
+                  className={`h-px transition-all duration-300 ${
+                    i === current ? "w-8 bg-gold" : "w-3 bg-white/20"
                   }`}
                 />
               ))}
@@ -127,7 +126,7 @@ export default function Testimonials() {
 
             <button
               onClick={next}
-              className="w-10 h-10 rounded-full border border-gray-200 hover:border-primary hover:text-primary flex items-center justify-center transition-colors"
+              className="w-9 h-9 border border-white/15 hover:border-white/40 text-white/50 hover:text-white flex items-center justify-center transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

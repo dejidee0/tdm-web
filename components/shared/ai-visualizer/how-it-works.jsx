@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const HowItWorks = () => {
   const steps = [
     {
-      number: "1.",
+      number: "01",
       title: "Upload Your Space",
       description:
         "Take a photo of your room. Ziora identifies walls, furniture, and lighting.",
@@ -36,7 +36,7 @@ const HowItWorks = () => {
       supportText: "Supported: JPG, PNG, HEIC",
     },
     {
-      number: "2.",
+      number: "02",
       title: "Select Style & Room",
       description:
         "Choose from 50+ presets or create a custom mood board for your renovation.",
@@ -78,10 +78,10 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      colors: ["#FFB3C1", "#C3B5F5", "#A8E6CF", "#FFD700"],
+      colors: ["#FFB3C1", "#C3B5F5", "#A8E6CF", "#C9A55A"],
     },
     {
-      number: "3.",
+      number: "03",
       title: "Instant Preview",
       description:
         "Watch the magic happen. Compare before/after with our interactive slider.",
@@ -119,7 +119,7 @@ const HowItWorks = () => {
       preview: true,
     },
     {
-      number: "4.",
+      number: "04",
       title: "Save & Consult",
       description:
         "Save to your project board or send directly to a TBM Designer for a quote.",
@@ -181,115 +181,114 @@ const HowItWorks = () => {
   };
 
   return (
-    <section className="max-w-[1260px] mx-auto min-h-[40vh] flex flex-col px-4 sm:px-6 lg:px-8 py-4 relative mt-4 md:mt-8 font-manrope">
-      {/* Header */}
-      <motion.div
-        className="flex flex-col items-center justify-center gap-2 mb-12"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="font-primary text-4xl font-semibold text-primary">
-          How It Works
-        </h1>
-        <p className="font-manrope text-lg text-gray-800">
-          Simple steps to your dream renovation. Scroll to explore the process.
-        </p>
-      </motion.div>
+    <section className="bg-[#FAF8F5] py-16 sm:py-20 font-manrope">
+      <div className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <motion.div
+          className="mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4 block">
+            The Process
+          </span>
+          <h2 className="font-primary text-4xl sm:text-5xl font-bold text-[#0A0A0A] tracking-tight">
+            How It Works
+          </h2>
+          <p className="font-manrope text-base text-[#7A736C] mt-3 max-w-lg">
+            Simple steps to your dream renovation. Scroll to explore the process.
+          </p>
+        </motion.div>
 
-      {/* Steps Grid */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        {steps.map((step, index) => (
-          <motion.div
-            key={index}
-            variants={cardVariants}
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col"
-          >
-            {/* Icon */}
+        {/* Steps Grid */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {steps.map((step, index) => (
             <motion.div
-              className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-4 text-gray-700"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ duration: 0.3 }}
+              key={index}
+              variants={cardVariants}
+              className="bg-white p-8 flex flex-col"
             >
-              {step.icon}
+              {/* Step number + icon */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-12 h-12 border border-stone flex items-center justify-center text-[#0A0A0A]">
+                  {step.icon}
+                </div>
+                <span className="text-gold font-bold text-lg tracking-wider">
+                  {step.number}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3 className="text-base font-bold text-[#0A0A0A] mb-2 font-primary">
+                {step.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm text-[#7A736C] leading-relaxed mb-4 grow">
+                {step.description}
+              </p>
+
+              {/* Footer Content */}
+              {step.supportText && (
+                <div className="flex items-center gap-2 text-xs text-[#7A736C] border-t border-stone pt-3">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="7"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M8 4V8L10.5 10.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  {step.supportText}
+                </div>
+              )}
+
+              {step.colors && (
+                <div className="flex gap-2 border-t border-stone pt-3">
+                  {step.colors.map((color, i) => (
+                    <div
+                      key={i}
+                      className="w-6 h-6 border border-stone"
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {step.preview && (
+                <div className="w-full h-8 bg-stone border-t border-stone mt-auto" />
+              )}
+
+              {step.link && (
+                <div className="text-xs font-semibold text-[#0A0A0A] cursor-pointer tracking-wider border-t border-stone pt-3 hover:text-gold transition-colors">
+                  {step.link}
+                </div>
+              )}
             </motion.div>
-
-            {/* Title */}
-            <h3 className="text-base font-semibold text-gray-900 mb-2">
-              {step.number} {step.title}
-            </h3>
-
-            {/* Description */}
-            <p className="text-sm text-gray-600 leading-relaxed mb-4 flex-grow">
-              {step.description}
-            </p>
-
-            {/* Footer Content */}
-            {step.supportText && (
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="8"
-                    cy="8"
-                    r="7"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 4V8L10.5 10.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                {step.supportText}
-              </div>
-            )}
-
-            {step.colors && (
-              <div className="flex gap-2">
-                {step.colors.map((color, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-6 h-6 rounded-full border border-gray-200"
-                    style={{ backgroundColor: color }}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                ))}
-              </div>
-            )}
-
-            {step.preview && (
-              <div className="w-full h-8 bg-gray-200 rounded-lg" />
-            )}
-
-            {step.link && (
-              <motion.div
-                className="text-sm font-medium text-gray-900 flex items-center gap-1 cursor-pointer"
-                whileHover={{ gap: 6 }}
-                transition={{ duration: 0.2 }}
-              >
-                {step.link}
-              </motion.div>
-            )}
-          </motion.div>
-        ))}
-      </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 };

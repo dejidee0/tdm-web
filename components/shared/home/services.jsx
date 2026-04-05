@@ -27,7 +27,7 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-14 lg:py-16 bg-[#FFFFFF]">
+    <section className="py-20 sm:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -35,30 +35,33 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="mb-14 sm:mb-18"
         >
+          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
+            What we offer
+          </span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-primary font-bold text-primary mb-4 sm:mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] mb-5 leading-tight tracking-tight"
           >
-            One Platform. Design. Materials. Execution.
+            One Platform.<br className="hidden sm:block" /> Design. Materials. Execution.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl font-inter text-gray-600 max-w-4xl mx-auto"
+            className="text-base sm:text-lg font-manrope text-[#7A736C] max-w-2xl"
           >
-            TBM Building Services brings together Ziora AI planning, Bogat materials supply, and expert project execution — guiding you from first design to finished build.
+            TBM brings together AI planning, materials supply, and expert execution — from first design to finished build.
           </motion.p>
         </motion.div>
 
         {/* Service Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -68,53 +71,28 @@ const ServicesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl shadow-xl p-8 sm:p-10 transition-shadow duration-300 border border-gray-100 group"
+                className="bg-white p-8 sm:p-10 group hover:bg-[#FAF8F5] transition-colors duration-300"
               >
                 {/* Icon */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 15,
-                    delay: index * 0.15 + 0.3,
-                  }}
-                  className="mb-6"
-                >
-                  <motion.div
-                    whileHover={{ rotate: [0, -15, 15, -15, 0] }}
-                    transition={{ duration: 0.5 }}
-                    className="w-16 h-16 sm:w-14 sm:h-14 flex items-center justify-center bg-primary/5 rounded-xl group-hover:bg-primary/10 transition-colors duration-300"
-                  >
+                <div className="mb-8">
+                  <div className="w-12 h-12 flex items-center justify-center border border-stone group-hover:border-gold transition-colors duration-300">
                     <Icon
-                      className="w-8 h-8 sm:w-7 sm:h-7 text-primary"
-                      strokeWidth={2}
+                      className="w-5 h-5 text-[#0A0A0A]"
+                      strokeWidth={1.5}
                     />
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
 
                 {/* Content */}
-                <motion.h3
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.15 + 0.4 }}
-                  className="text-xl sm:text-xl font-inter font-bold text-gray-900 mb-3 sm:mb-4"
-                >
+                <h3 className="text-xl sm:text-2xl font-manrope font-bold text-[#0A0A0A] mb-4 leading-snug">
                   {service.title}
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.15 + 0.5 }}
-                  className="text-base sm:text-lg font-inter text-gray-600 leading-relaxed"
-                >
+                </h3>
+                <p className="text-base font-manrope text-[#7A736C] leading-relaxed">
                   {service.description}
-                </motion.p>
+                </p>
+
+                {/* Understated gold accent line */}
+                <div className="mt-8 w-8 h-px bg-gold group-hover:w-16 transition-all duration-500" />
               </motion.div>
             );
           })}

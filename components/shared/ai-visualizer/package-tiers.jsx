@@ -8,23 +8,24 @@ import { usePricing } from "@/hooks/use-pricing";
 import { useCurrentUser } from "@/hooks/use-auth";
 import { useActivateEconomy, useSubscribePaid } from "@/hooks/use-subscription";
 
-// ── Price display helpers ─────────────────────────────────────────────────
-
 function PriceSkeleton() {
   return (
     <div className="space-y-2 mt-4">
-      <div className="h-9 w-32 bg-gray-200 rounded-lg animate-pulse" />
-      <div className="h-4 w-40 bg-gray-100 rounded animate-pulse" />
+      <div className="h-9 w-32 bg-stone animate-pulse" />
+      <div className="h-4 w-40 bg-stone animate-pulse" />
     </div>
   );
 }
 
-function TierPrice({ tier, billing, pricing, discount }) {
+function TierPrice({ tier, billing, pricing, discount, dark }) {
+  const textMuted = dark ? "text-white/50" : "text-[#7A736C]";
+  const textMain = dark ? "text-white" : "text-[#0A0A0A]";
+
   if (tier === "economy") {
     return (
       <div className="mt-4">
-        <span className="text-4xl font-extrabold text-gray-900">Free</span>
-        <p className="text-sm text-gray-500 mt-1">1 generation · no renewal</p>
+        <span className={`text-4xl font-extrabold ${textMain}`}>Free</span>
+        <p className={`text-sm ${textMuted} mt-1 font-manrope`}>1 generation · no renewal</p>
       </div>
     );
   }
@@ -53,7 +54,7 @@ function TierPrice({ tier, billing, pricing, discount }) {
   return (
     <div className="mt-4">
       {activeDiscount && (
-        <span className="inline-block mb-2 px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-100 text-amber-700 uppercase tracking-wide">
+        <span className="inline-block mb-2 px-2.5 py-1 text-[11px] font-bold bg-warm text-[#0A0A0A] uppercase tracking-wide font-manrope">
           {activeDiscount.displayLabel || "Limited Offer"}
         </span>
       )}
@@ -61,29 +62,29 @@ function TierPrice({ tier, billing, pricing, discount }) {
       <div className="flex items-end gap-2">
         {activeDiscount && discountedPrice != null ? (
           <>
-            <span className="text-4xl font-extrabold text-gray-900">
+            <span className={`text-4xl font-extrabold ${textMain}`}>
               ${Number(discountedPrice).toFixed(2)}
             </span>
-            <span className="text-sm text-gray-400 line-through mb-1.5">
+            <span className={`text-sm ${textMuted} line-through mb-1.5`}>
               ${Number(basePrice).toFixed(2)}
             </span>
           </>
         ) : (
-          <span className="text-4xl font-extrabold text-gray-900">
+          <span className={`text-4xl font-extrabold ${textMain}`}>
             ${Number(basePrice).toFixed(2)}
           </span>
         )}
-        <span className="text-sm text-gray-500 mb-1.5">/mo</span>
+        <span className={`text-sm ${textMuted} mb-1.5 font-manrope`}>/mo</span>
       </div>
 
       {isYearly && (
-        <p className="text-sm text-gray-500 mt-1">
+        <p className={`text-sm ${textMuted} mt-1 font-manrope`}>
           ${Number(annualTotal).toFixed(2)} billed annually
         </p>
       )}
 
       {activeDiscount?.endDate && (
-        <p className="text-xs text-amber-600 mt-1 font-medium">
+        <p className="text-xs text-gold mt-1 font-medium font-manrope">
           Ends {new Date(activeDiscount.endDate).toLocaleDateString()}
         </p>
       )}
@@ -91,16 +92,13 @@ function TierPrice({ tier, billing, pricing, discount }) {
   );
 }
 
-// ── Tier config ───────────────────────────────────────────────────────────
-
 const TIERS = [
   {
     id: "economy",
     label: "Economy",
     tagline: "Try it before you commit",
     icon: Zap,
-    color: "from-gray-50 to-gray-100",
-    border: "border-gray-200",
+    dark: false,
     badge: null,
     features: [
       "1 AI design generation",
@@ -109,17 +107,14 @@ const TIERS = [
       "Download as image",
     ],
     cta: "Activate Free",
-    ctaStyle: "bg-gray-900 text-white hover:bg-gray-700",
   },
   {
     id: "premium",
     label: "Premium",
     tagline: "More designs, more control",
     icon: Sparkles,
-    color: "from-blue-50 to-indigo-50",
-    border: "border-blue-200",
+    dark: true,
     badge: "Most Popular",
-    badgeColor: "bg-blue-600 text-white",
     features: [
       "50 generations per billing period",
       "Multiple style variations",
@@ -128,17 +123,14 @@ const TIERS = [
       "Priority rendering queue",
     ],
     cta: "Choose Premium",
-    ctaStyle: "bg-blue-600 text-white hover:bg-blue-700",
   },
   {
     id: "luxury",
     label: "Luxury",
     tagline: "From vision to execution",
     icon: Crown,
-    color: "from-purple-50 to-violet-50",
-    border: "border-purple-300",
+    dark: false,
     badge: "Full Access",
-    badgeColor: "bg-purple-700 text-white",
     features: [
       "Unlimited generations",
       "Full material mapping (BOQ)",
@@ -148,11 +140,8 @@ const TIERS = [
       "Execution-ready output",
     ],
     cta: "Choose Luxury",
-    ctaStyle: "bg-purple-700 text-white hover:bg-purple-800",
   },
 ];
-
-// ── Main component ────────────────────────────────────────────────────────
 
 export default function PackageTiers({ id, onSubscribed }) {
   const [billing, setBilling] = useState("monthly");
@@ -178,7 +167,6 @@ export default function PackageTiers({ id, onSubscribed }) {
   const handleCTA = async (tierId) => {
     setCtaError(null);
 
-    // Redirect unauthenticated users to sign in
     if (!user) {
       router.push(`/sign-in?from=${encodeURIComponent("/ai-visualizer#pricing")}`);
       return;
@@ -205,168 +193,180 @@ export default function PackageTiers({ id, onSubscribed }) {
   return (
     <section
       id={id}
-      className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8 py-16 font-manrope scroll-mt-20"
+      className="bg-[#FAF8F5] py-16 sm:py-20 font-manrope scroll-mt-20"
     >
-      {/* Section header */}
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold uppercase tracking-widest mb-4">
-          <Sparkles className="w-3 h-3" /> Ziora Intelligence Plans
-        </span>
-        <h2 className="text-4xl md:text-5xl font-bold text-primary mt-3 mb-4">
-          Choose Your Plan
-        </h2>
-        <p className="text-gray-500 text-lg max-w-xl mx-auto">
-          Start free and upgrade when you're ready for deeper design power,
-          cost estimates, and full project execution.
-        </p>
-      </motion.div>
+      <div className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <motion.div
+          className="mb-12"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4">
+            <Sparkles className="w-3 h-3" /> Ziora Intelligence Plans
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0A0A0A] mb-4 tracking-tight font-primary">
+            Choose Your Plan
+          </h2>
+          <p className="text-[#7A736C] text-base max-w-xl font-manrope">
+            Start free and upgrade when you're ready for deeper design power,
+            cost estimates, and full project execution.
+          </p>
+        </motion.div>
 
-      {/* Billing toggle */}
-      <motion.div
-        className="flex items-center justify-center mb-10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        <div className="inline-flex items-center gap-0 rounded-xl border border-gray-200 p-1 bg-gray-50">
-          {["monthly", "yearly"].map((cycle) => (
-            <button
-              key={cycle}
-              onClick={() => setBilling(cycle)}
-              className={`relative px-5 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                billing === cycle
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {cycle === "monthly" ? "Monthly" : "Yearly"}
-              {cycle === "yearly" && yearlyDiscountPct != null && (
-                <span className="ml-2 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-green-100 text-green-700">
-                  Save {Math.round(yearlyDiscountPct)}%
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* API error */}
-      {priceError && (
-        <div className="flex items-center justify-center gap-2 py-4 mb-6 text-red-500 text-sm">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          Unable to load pricing. Please refresh.
-        </div>
-      )}
-
-      {/* CTA mutation error */}
-      {ctaError && (
-        <div className="flex items-center justify-center gap-2 py-3 mb-4 text-red-500 text-sm">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          {ctaError}
-        </div>
-      )}
-
-      {/* Tier cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {TIERS.map((tier, i) => {
-          const Icon = tier.icon;
-          const isHidden =
-            tier.id !== "economy" && pricingData
-              ? pricingData[tier.id]?.isActive === false
-              : false;
-          if (isHidden) return null;
-
-          const isBusy = isSubmitting && pendingTier === tier.id;
-          const ctaDisabled =
-            isSubmitting ||
-            (tier.id !== "economy" && priceLoading) ||
-            priceError;
-
-          return (
-            <motion.div
-              key={tier.id}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.1 }}
-              className={`relative flex flex-col rounded-3xl border ${tier.border} bg-linear-to-br ${tier.color} p-8 shadow-sm hover:shadow-md transition-shadow`}
-            >
-              {tier.badge && (
-                <span
-                  className={`absolute top-5 right-5 px-2.5 py-1 text-[11px] font-bold rounded-full ${tier.badgeColor}`}
-                >
-                  {tier.badge}
-                </span>
-              )}
-
-              <div className="w-10 h-10 rounded-xl bg-white/70 border border-white/50 flex items-center justify-center shadow-sm mb-3">
-                <Icon className="w-5 h-5 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-primary">{tier.label}</h3>
-              <p className="text-sm text-gray-500 mt-0.5">{tier.tagline}</p>
-
-              {priceLoading && tier.id !== "economy" ? (
-                <PriceSkeleton />
-              ) : (
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`${tier.id}-${billing}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <TierPrice
-                      tier={tier.id}
-                      billing={billing}
-                      pricing={pricing}
-                      discount={activeDiscount}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              )}
-
-              <div className="my-6 border-t border-gray-200" />
-
-              <ul className="flex-1 space-y-3">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
+        {/* Billing toggle */}
+        <motion.div
+          className="flex items-center mb-10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="inline-flex items-center gap-0 border border-stone p-1 bg-white">
+            {["monthly", "yearly"].map((cycle) => (
               <button
-                onClick={() => handleCTA(tier.id)}
-                disabled={!!ctaDisabled}
-                className={`mt-8 w-full py-3 px-6 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${tier.ctaStyle}`}
+                key={cycle}
+                onClick={() => setBilling(cycle)}
+                className={`relative px-5 py-2 text-sm font-semibold transition-colors font-manrope ${
+                  billing === cycle
+                    ? "bg-[#0A0A0A] text-white"
+                    : "text-[#7A736C] hover:text-[#0A0A0A]"
+                }`}
               >
-                {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-                {isBusy ? "Processing…" : tier.cta}
+                {cycle === "monthly" ? "Monthly" : "Yearly"}
+                {cycle === "yearly" && yearlyDiscountPct != null && (
+                  <span className="ml-2 px-1.5 py-0.5 text-[10px] font-bold bg-warm text-[#0A0A0A]">
+                    Save {Math.round(yearlyDiscountPct)}%
+                  </span>
+                )}
               </button>
-            </motion.div>
-          );
-        })}
-      </div>
+            ))}
+          </div>
+        </motion.div>
 
-      <motion.p
-        className="text-center text-sm text-gray-400 mt-10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        All plans include Nigerian materials context. Upgrade or cancel anytime.
-        No credit card required for Economy.
-      </motion.p>
+        {/* API error */}
+        {priceError && (
+          <div className="flex items-center gap-2 py-4 mb-6 text-red-500 text-sm font-manrope">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            Unable to load pricing. Please refresh.
+          </div>
+        )}
+
+        {/* CTA mutation error */}
+        {ctaError && (
+          <div className="flex items-center gap-2 py-3 mb-4 text-red-500 text-sm font-manrope">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {ctaError}
+          </div>
+        )}
+
+        {/* Tier cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone">
+          {TIERS.map((tier, i) => {
+            const Icon = tier.icon;
+            const isHidden =
+              tier.id !== "economy" && pricingData
+                ? pricingData[tier.id]?.isActive === false
+                : false;
+            if (isHidden) return null;
+
+            const isBusy = isSubmitting && pendingTier === tier.id;
+            const ctaDisabled =
+              isSubmitting ||
+              (tier.id !== "economy" && priceLoading) ||
+              priceError;
+
+            const bg = tier.dark ? "bg-[#0A0A0A]" : "bg-white";
+            const textMain = tier.dark ? "text-white" : "text-[#0A0A0A]";
+            const textMuted = tier.dark ? "text-white/50" : "text-[#7A736C]";
+            const divider = tier.dark ? "border-white/10" : "border-stone";
+            const iconBorder = tier.dark ? "border-white/15" : "border-stone";
+            const iconBg = tier.dark ? "bg-white/5" : "bg-[#FAF8F5]";
+            const checkColor = tier.dark ? "text-gold" : "text-gold";
+            const ctaClass = tier.dark
+              ? "bg-white text-[#0A0A0A] hover:bg-[#FAF8F5]"
+              : "bg-[#0A0A0A] text-white hover:bg-[#1C1C1C]";
+
+            return (
+              <motion.div
+                key={tier.id}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.1 }}
+                className={`relative flex flex-col p-8 ${bg}`}
+              >
+                {tier.badge && (
+                  <span className="absolute top-5 right-5 px-2.5 py-1 text-[11px] font-bold bg-gold text-white uppercase tracking-wide font-manrope">
+                    {tier.badge}
+                  </span>
+                )}
+
+                <div className={`w-10 h-10 border ${iconBorder} ${iconBg} flex items-center justify-center mb-3`}>
+                  <Icon className={`w-5 h-5 ${tier.dark ? "text-gold" : "text-[#0A0A0A]"}`} />
+                </div>
+                <h3 className={`text-xl font-bold ${textMain} font-primary`}>{tier.label}</h3>
+                <p className={`text-sm ${textMuted} mt-0.5 font-manrope`}>{tier.tagline}</p>
+
+                {priceLoading && tier.id !== "economy" ? (
+                  <PriceSkeleton />
+                ) : (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`${tier.id}-${billing}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <TierPrice
+                        tier={tier.id}
+                        billing={billing}
+                        pricing={pricing}
+                        discount={activeDiscount}
+                        dark={tier.dark}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+
+                <div className={`my-6 border-t ${divider}`} />
+
+                <ul className="flex-1 space-y-3">
+                  {tier.features.map((f) => (
+                    <li key={f} className={`flex items-start gap-2.5 text-sm ${textMuted} font-manrope`}>
+                      <Check className={`w-4 h-4 ${checkColor} mt-0.5 shrink-0`} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => handleCTA(tier.id)}
+                  disabled={!!ctaDisabled}
+                  className={`mt-8 w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed tracking-wide ${ctaClass}`}
+                >
+                  {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
+                  {isBusy ? "Processing…" : tier.cta}
+                </button>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <motion.p
+          className="text-sm text-[#7A736C] mt-10 font-manrope"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          All plans include Nigerian materials context. Upgrade or cancel anytime.
+          No credit card required for Economy.
+        </motion.p>
+      </div>
     </section>
   );
 }

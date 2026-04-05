@@ -39,24 +39,24 @@ export default function FAQ() {
   const [open, setOpen] = useState(null);
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="py-20 sm:py-24 lg:py-32 bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-14"
         >
-          <span className="inline-block text-primary text-xs font-inter font-semibold uppercase tracking-widest mb-2">
+          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
             FAQ
           </span>
-          <h2 className="text-3xl sm:text-4xl font-primary font-bold text-primary">
+          <h2 className="text-4xl sm:text-5xl font-primary font-bold text-[#0A0A0A] tracking-tight">
             Common Questions
           </h2>
         </motion.div>
 
-        <div className="space-y-3">
+        <div className="divide-y divide-stone">
           {FAQS.map((faq, index) => (
             <motion.div
               key={index}
@@ -64,24 +64,21 @@ export default function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.06 }}
-              className={`border rounded-2xl overflow-hidden transition-colors duration-200 ${
-                open === index ? "border-primary/30 bg-primary/[0.02]" : "border-gray-200 bg-white"
-              }`}
             >
               <button
                 onClick={() => setOpen(open === index ? null : index)}
-                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                className="w-full flex items-center justify-between gap-4 py-6 text-left"
               >
-                <span className="font-inter font-semibold text-gray-900 text-sm sm:text-base">
+                <span className="font-manrope font-semibold text-[#0A0A0A] text-sm sm:text-base tracking-wide">
                   {faq.q}
                 </span>
                 <motion.div
-                  animate={{ rotate: open === index ? 180 : 0 }}
-                  transition={{ duration: 0.25 }}
+                  animate={{ rotate: open === index ? 45 : 0 }}
+                  transition={{ duration: 0.2 }}
                   className="shrink-0"
                 >
                   <ChevronDown
-                    className={`w-5 h-5 transition-colors ${open === index ? "text-primary" : "text-gray-400"}`}
+                    className={`w-5 h-5 transition-colors ${open === index ? "text-gold" : "text-[#7A736C]"}`}
                   />
                 </motion.div>
               </button>
@@ -94,8 +91,8 @@ export default function FAQ() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <div className="px-6 pb-5">
-                      <p className="text-sm sm:text-base font-inter text-gray-600 leading-relaxed">
+                    <div className="pb-6">
+                      <p className="text-sm sm:text-base font-manrope text-[#7A736C] leading-relaxed">
                         {faq.a}
                       </p>
                     </div>

@@ -207,72 +207,72 @@ function ServiceCard({ service, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay: (index % 2) * 0.1 }}
-      className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
+      className="bg-white border border-stone overflow-hidden"
       id={service.slug}
     >
       {/* Header */}
-      <div className="p-8 sm:p-10 border-b border-gray-100">
+      <div className="p-8 sm:p-10 border-b border-stone">
         <div className="flex items-start gap-5">
-          <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0">
-            <Icon className="w-7 h-7 text-primary" strokeWidth={1.8} />
+          <div className="w-12 h-12 border border-stone flex items-center justify-center shrink-0">
+            <Icon className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl sm:text-3xl font-primary font-bold text-gray-900 mb-1">
+            <h2 className="text-2xl sm:text-3xl font-primary font-bold text-[#0A0A0A] mb-1 tracking-tight">
               {service.title}
             </h2>
-            <p className="text-primary font-inter font-medium text-sm">{service.tagline}</p>
+            <p className="text-gold font-manrope font-medium text-xs tracking-[0.15em] uppercase">{service.tagline}</p>
           </div>
         </div>
-        <p className="mt-5 text-gray-600 font-inter leading-relaxed">{service.intro}</p>
+        <p className="mt-5 text-[#7A736C] font-manrope leading-relaxed text-sm sm:text-base">{service.intro}</p>
       </div>
 
       {/* Details grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-stone">
         <div className="p-6 sm:p-8">
-          <p className="text-xs font-inter font-semibold text-gray-400 uppercase tracking-widest mb-3">
+          <p className="text-[10px] font-manrope font-bold text-[#7A736C] uppercase tracking-[0.2em] mb-4">
             What&apos;s Included
           </p>
-          <ul className="space-y-2">
+          <ul className="space-y-2.5">
             {service.includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm font-inter text-gray-700">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+              <li key={i} className="flex items-start gap-2.5 text-sm font-manrope text-[#3D3833]">
+                <span className="w-px h-3 bg-gold mt-1.5 shrink-0" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
-        <div className="p-6 sm:p-8">
-          <div className="mb-6">
-            <p className="text-xs font-inter font-semibold text-gray-400 uppercase tracking-widest mb-2">
+        <div className="p-6 sm:p-8 space-y-6">
+          <div>
+            <p className="text-[10px] font-manrope font-bold text-[#7A736C] uppercase tracking-[0.2em] mb-2">
               Who It&apos;s For
             </p>
-            <p className="text-sm font-inter text-gray-700">{service.whoFor}</p>
-          </div>
-          <div className="mb-6">
-            <p className="text-xs font-inter font-semibold text-gray-400 uppercase tracking-widest mb-2">
-              Typical Timeline
-            </p>
-            <p className="text-sm font-inter text-gray-700">{service.timeline}</p>
+            <p className="text-sm font-manrope text-[#3D3833]">{service.whoFor}</p>
           </div>
           <div>
-            <p className="text-xs font-inter font-semibold text-gray-400 uppercase tracking-widest mb-2">
+            <p className="text-[10px] font-manrope font-bold text-[#7A736C] uppercase tracking-[0.2em] mb-2">
+              Typical Timeline
+            </p>
+            <p className="text-sm font-manrope text-[#3D3833]">{service.timeline}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-manrope font-bold text-[#7A736C] uppercase tracking-[0.2em] mb-2">
               Pricing Approach
             </p>
-            <p className="text-sm font-inter text-gray-700">{service.pricing}</p>
+            <p className="text-sm font-manrope text-[#3D3833]">{service.pricing}</p>
           </div>
         </div>
         <div className="p-6 sm:p-8">
-          <p className="text-xs font-inter font-semibold text-gray-400 uppercase tracking-widest mb-3">FAQ</p>
-          <div className="space-y-2">
+          <p className="text-[10px] font-manrope font-bold text-[#7A736C] uppercase tracking-[0.2em] mb-4">FAQ</p>
+          <div className="space-y-px bg-stone">
             {service.faqs.map((faq, fi) => (
-              <div key={fi} className="border border-gray-100 rounded-xl overflow-hidden">
+              <div key={fi} className="bg-white overflow-hidden">
                 <button
                   onClick={() => setFaqOpen(faqOpen === fi ? null : fi)}
-                  className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
+                  className="w-full flex items-center justify-between gap-3 px-4 py-3.5 text-left"
                 >
-                  <span className="text-xs font-inter font-semibold text-gray-800">{faq.q}</span>
-                  <motion.div animate={{ rotate: faqOpen === fi ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                    <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span className="text-xs font-manrope font-semibold text-[#0A0A0A]">{faq.q}</span>
+                  <motion.div animate={{ rotate: faqOpen === fi ? 45 : 0 }} transition={{ duration: 0.2 }}>
+                    <ChevronDown className={`w-4 h-4 shrink-0 transition-colors ${faqOpen === fi ? "text-gold" : "text-[#7A736C]"}`} />
                   </motion.div>
                 </button>
                 <AnimatePresence initial={false}>
@@ -283,7 +283,7 @@ function ServiceCard({ service, index }) {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25 }}
                     >
-                      <p className="px-4 pb-3 text-xs font-inter text-gray-600 leading-relaxed">{faq.a}</p>
+                      <p className="px-4 pb-4 text-xs font-manrope text-[#7A736C] leading-relaxed">{faq.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -294,16 +294,16 @@ function ServiceCard({ service, index }) {
           <div className="mt-6 flex flex-col gap-2">
             <Link href="/contact?type=consultation">
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-inter font-semibold text-sm px-5 py-3 rounded-xl transition-all duration-200 group"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#0A0A0A] text-white font-manrope font-semibold text-sm px-5 py-3.5 rounded-none hover:bg-[#1C1C1C] transition-colors group tracking-wide"
               >
                 Book Inspection
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
             <Link href="/contact?type=estimate">
-              <button className="w-full text-sm font-inter font-medium text-primary border border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-xl transition-colors">
+              <button className="w-full text-sm font-manrope font-medium text-[#0A0A0A] border border-stone hover:border-[#0A0A0A] px-5 py-3 rounded-none transition-colors tracking-wide">
                 Get Quote
               </button>
             </Link>
@@ -316,9 +316,9 @@ function ServiceCard({ service, index }) {
 
 export default function ServiceList() {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gray-50">
+    <section className="py-16 sm:py-20 lg:py-24 bg-[#FAF8F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-px bg-stone">
           {SERVICES.map((service, index) => (
             <ServiceCard key={service.slug} service={service} index={index} />
           ))}
