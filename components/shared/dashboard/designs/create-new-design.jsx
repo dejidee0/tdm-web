@@ -1,18 +1,16 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { X, Plus, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDashboardUser } from "@/hooks/use-user-dashboard";
 import {
-  useCreateDesignSession,
-  useUploadSessionPhoto,
-  useGenerateDesign,
-  useDesignSessionStatus,
-} from "@/hooks/use-designs";
-import { useCreateAIProject } from "@/hooks/use-ai-services";
-import { aiGenerationApi } from "@/lib/api/ai-services";
+  useUploadRoom,
+  useCreateAIProject,
+  useGenerateImage,
+  useGenerateVideo,
+} from "@/hooks/use-ai-services";
 
 const ROOM_TYPES = [
   "Living Room",
@@ -24,13 +22,17 @@ const ROOM_TYPES = [
   "Other",
 ];
 
+// outputType: 1 = Image, 2 = Video (default)
+const OUTPUT_TYPES = [
+  { id: 2, label: "VIDEO" },
+  { id: 1, label: "IMAGE" },
+];
+
 export default function CreateNewDesignModal({ isOpen, onClose }) {
-  const [activeTab, setActiveTab] = useState("text-to-image");
+  const [outputType, setOutputType] = useState(2);
   const [prompt, setPrompt] = useState("");
-  const [roomType, setRoomType] = useState("");
-  const [tier, setTier] = useState(2); // 1=Luxury, 2=Economic
+  const [contextLabel, setContextLabel] = useState("");
   const [file, setFile] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
   const [step, setStep] = useState("form"); // "form" | "generating" | "done" | "error"
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -39,42 +41,12 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
   const { user } = useDashboardUser();
   const firstName = user?.firstName || "there";
 
-  const createSession = useCreateDesignSession();
-  const uploadPhoto = useUploadSessionPhoto();
-  const generateDesign = useGenerateDesign();
+  const uploadRoom = useUploadRoom();
   const createAIProject = useCreateAIProject();
+  const generateImage = useGenerateImage();
+  const generateVideo = useGenerateVideo();
 
-  const needsFile = activeTab !== "text-to-image";
-
-  // Poll session status while generating (design sessions flow)
-  const { data: statusData } = useDesignSessionStatus(sessionId, {
-    enabled: step === "generating" && activeTab !== "image-to-video",
-  });
-
-  useEffect(() => {
-    if (!statusData) return;
-    const status = statusData?.status ?? statusData;
-    // DesignSessionStatus: Generated=4, Failed=8
-    if (status === "Generated" || status === 4) {
-      setStep("done");
-      queryClient.invalidateQueries({ queryKey: ["designs"] });
-    } else if (status === "Failed" || status === 8) {
-      setStep("error");
-      setErrorMsg("Generation failed. Please try again.");
-    }
-  }, [statusData, queryClient]);
-
-  const tabs = [
-    { id: "text-to-image", label: "TEXT TO IMAGE" },
-    { id: "image-to-image", label: "IMAGE TO IMAGE" },
-    { id: "image-to-video", label: "IMAGE TO VIDEO" },
-  ];
-
-  const canSubmit =
-    prompt.trim() &&
-    (activeTab === "image-to-video" || roomType) &&
-    (!needsFile || file) &&
-    step === "form";
+  const canSubmit = prompt.trim() && file && step === "form";
 
   const handleCreate = async () => {
     if (!canSubmit) return;
@@ -82,53 +54,50 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
     setStep("generating");
 
     try {
-      if (activeTab === "image-to-video") {
-        // image-to-video: create AI project → generate video
-        const projectRes = await createAIProject.mutateAsync({
-          name: prompt.slice(0, 80),
-          description: prompt,
-        });
-        const projectId =
-          projectRes?.data?.id ??
-          projectRes?.data?.projectId ??
-          projectRes?.id;
-        await aiGenerationApi.generateVideo({ projectId });
-        setStep("done");
-        queryClient.invalidateQueries({ queryKey: ["ai-projects"] });
+      // 1. Upload source image
+      const uploadRes = await uploadRoom.mutateAsync(file);
+      const sourceImageUrl = uploadRes?.imageUrl;
+      if (!sourceImageUrl) throw new Error("Image upload failed.");
+
+      // 2. Create AI project
+      const projectRes = await createAIProject.mutateAsync({
+        sourceImageUrl,
+        outputType,
+        prompt,
+        contextLabel: contextLabel || undefined,
+      });
+      const projectId =
+        projectRes?.id ??
+        projectRes?.data?.id ??
+        projectRes?.data?.projectId;
+      if (!projectId) throw new Error("Project creation failed.");
+
+      // 3. Generate
+      if (outputType === 1) {
+        await generateImage.mutateAsync({ projectId });
       } else {
-        // text-to-image / image-to-image: design sessions flow
-        const sessionRes = await createSession.mutateAsync({
-          projectName: prompt.slice(0, 80),
-          roomType,
-          visionText: prompt,
-          tier,
-        });
-        const id =
-          sessionRes?.data?.id ??
-          sessionRes?.data?.sessionId ??
-          sessionRes?.id;
-        setSessionId(id);
-
-        if (activeTab === "image-to-image" && file) {
-          await uploadPhoto.mutateAsync({ sessionId: id, file });
-        }
-
-        await generateDesign.mutateAsync(id);
-        // useDesignSessionStatus polling takes over to detect completion
+        await generateVideo.mutateAsync({ projectId, durationSeconds: 9 });
       }
+
+      setStep("done");
+      queryClient.invalidateQueries({ queryKey: ["ai-projects"] });
     } catch (err) {
+      const msg =
+        err?.message ||
+        (err?.status === 403 && err?.code === "subscription_quota_exceeded"
+          ? "AI generation quota exceeded."
+          : "Something went wrong. Please try again.");
       setStep("error");
-      setErrorMsg(err.message || "Something went wrong. Please try again.");
+      setErrorMsg(msg);
     }
   };
 
   const handleClose = () => {
     if (step === "generating") return;
+    setOutputType(2);
     setPrompt("");
-    setRoomType("");
-    setTier(2);
+    setContextLabel("");
     setFile(null);
-    setSessionId(null);
     setStep("form");
     setErrorMsg("");
     onClose();
@@ -161,37 +130,33 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
               style={{ maxHeight: "92dvh" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* ── Drag handle (mobile only) ── */}
+              {/* Drag handle (mobile only) */}
               <div className="flex justify-center pt-3 pb-1 sm:hidden">
                 <div className="w-10 h-1 rounded-full bg-gray-300" />
               </div>
 
-              {/* ── Tab Bar ── */}
+              {/* Tab Bar — output type selector */}
               <div className="flex items-center border-b border-gray-200 px-4 sm:px-8 pt-3 sm:pt-6">
                 <div className="w-7 shrink-0" />
-                <div className="flex-1 flex items-center justify-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none">
-                  {tabs.map((tab) => (
+                <div className="flex-1 flex items-center justify-center gap-4 sm:gap-6">
+                  {OUTPUT_TYPES.map((type) => (
                     <button
-                      key={tab.id}
-                      onClick={() => step === "form" && setActiveTab(tab.id)}
+                      key={type.id}
+                      onClick={() => step === "form" && setOutputType(type.id)}
                       disabled={step !== "form"}
                       className={`relative pb-3 text-[10px] sm:text-[11px] font-extrabold tracking-widest whitespace-nowrap transition-colors duration-200 ${
-                        activeTab === tab.id
+                        outputType === type.id
                           ? "text-[#1a2340]"
                           : "text-[#b0b8c9] hover:text-[#8890a0]"
                       }`}
                     >
-                      {tab.label}
-                      {activeTab === tab.id && (
+                      {type.label}
+                      {outputType === type.id && (
                         <motion.div
                           layoutId="tab-underline"
                           className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
                           style={{ backgroundColor: "#1a2340" }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 38,
-                          }}
+                          transition={{ type: "spring", stiffness: 500, damping: 38 }}
                         />
                       )}
                     </button>
@@ -208,7 +173,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                 </button>
               </div>
 
-              {/* ── Body ── */}
+              {/* Body */}
               <div className="flex flex-col flex-1 px-4 sm:px-8 font-poppins overflow-y-auto">
 
                 {/* Generating state */}
@@ -265,7 +230,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                   <>
                     {/* Greeting */}
                     <motion.div
-                      key={activeTab}
+                      key={outputType}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.22 }}
@@ -281,100 +246,58 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         What shall we build today?
                       </p>
                       <p className="text-[13px] sm:text-[13.5px] text-primary/70">
-                        Start typing your vision or upload a reference.
+                        Upload a room photo and describe your vision.
                       </p>
                     </motion.div>
 
-                    {/* Room Type + Tier — only for design sessions tabs */}
-                    {activeTab !== "image-to-video" && (
-                      <div className="flex flex-col sm:flex-row gap-3 mb-4">
-                        <div className="flex-1">
-                          <label className="block text-[11px] font-semibold text-[#666] uppercase tracking-wider mb-1.5">
-                            Room Type <span className="text-red-400">*</span>
-                          </label>
-                          <select
-                            value={roomType}
-                            onChange={(e) => setRoomType(e.target.value)}
-                            className="w-full text-[13px] text-[#1a2340] border border-[#e5e8ef] rounded-xl px-3 py-2.5 outline-none focus:border-[#1a2340] bg-white"
-                          >
-                            <option value="">Select room type…</option>
-                            {ROOM_TYPES.map((r) => (
-                              <option key={r} value={r}>
-                                {r}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                    {/* Room Type (contextLabel) — optional */}
+                    <div className="mb-4">
+                      <label className="block text-[11px] font-semibold text-[#666] uppercase tracking-wider mb-1.5">
+                        Room Type <span className="text-[#b0b8c9]">(optional)</span>
+                      </label>
+                      <select
+                        value={contextLabel}
+                        onChange={(e) => setContextLabel(e.target.value)}
+                        className="w-full text-[13px] text-[#1a2340] border border-[#e5e8ef] rounded-xl px-3 py-2.5 outline-none focus:border-[#1a2340] bg-white"
+                      >
+                        <option value="">Select room type…</option>
+                        {ROOM_TYPES.map((r) => (
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                        <div>
-                          <label className="block text-[11px] font-semibold text-[#666] uppercase tracking-wider mb-1.5">
-                            Tier
-                          </label>
-                          <div className="flex rounded-xl border border-[#e5e8ef] overflow-hidden">
-                            <button
-                              type="button"
-                              onClick={() => setTier(1)}
-                              className={`px-5 py-2.5 text-[12px] font-semibold transition-colors ${
-                                tier === 1
-                                  ? "bg-[#1a2340] text-white"
-                                  : "bg-white text-[#999] hover:text-[#1a2340]"
-                              }`}
-                            >
-                              Luxury
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setTier(2)}
-                              className={`px-5 py-2.5 text-[12px] font-semibold transition-colors ${
-                                tier === 2
-                                  ? "bg-[#1a2340] text-white"
-                                  : "bg-white text-[#999] hover:text-[#1a2340]"
-                              }`}
-                            >
-                              Economic
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ── Input Row ── */}
+                    {/* Input Row */}
                     <div className="pb-5 sm:pb-6">
                       <div
                         className="flex items-center gap-2 sm:gap-3 rounded-xl px-3 sm:px-4 py-1 transition-all duration-200"
                         style={{ border: "1.5px solid #e5e8ef" }}
                       >
-                        {/* File upload — image-to-image and image-to-video only */}
-                        {needsFile && (
-                          <>
-                            <button
-                              type="button"
-                              onClick={() => fileInputRef.current?.click()}
-                              className="shrink-0 w-9 h-9 rounded-lg shadow flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors"
-                              title="Upload reference image"
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                            <input
-                              ref={fileInputRef}
-                              type="file"
-                              className="hidden"
-                              accept="image/jpeg,image/png,image/webp"
-                              onChange={(e) =>
-                                setFile(e.target.files?.[0] ?? null)
-                              }
-                            />
-                          </>
-                        )}
+                        {/* File upload */}
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="shrink-0 w-9 h-9 rounded-lg shadow flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors"
+                          title="Upload source image"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          className="hidden"
+                          accept="image/jpeg,image/png,image/webp"
+                          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                        />
 
                         {/* Text input */}
                         <input
                           type="text"
                           value={prompt}
                           onChange={(e) => setPrompt(e.target.value)}
-                          onKeyDown={(e) =>
-                            e.key === "Enter" && handleCreate()
-                          }
+                          onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                           placeholder="Describe your dream space..."
                           className="flex-1 min-w-0 text-[14px] placeholder-gray-400 outline-none bg-transparent py-2.5"
                           style={{ color: "#1a2340" }}
@@ -389,8 +312,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                           style={{ backgroundColor: "#1a2340" }}
                           onMouseEnter={(e) => {
                             if (canSubmit)
-                              e.currentTarget.style.backgroundColor =
-                                "#273054";
+                              e.currentTarget.style.backgroundColor = "#273054";
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = "#1a2340";
@@ -400,13 +322,10 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         </motion.button>
                       </div>
 
-                      {/* File name indicator */}
-                      {needsFile && file && (
-                        <p className="mt-2 text-[12px] text-[#666] pl-1">
-                          {file.name}
-                        </p>
-                      )}
-                      {needsFile && !file && (
+                      {/* File indicator */}
+                      {file ? (
+                        <p className="mt-2 text-[12px] text-[#666] pl-1">{file.name}</p>
+                      ) : (
                         <p className="mt-2 text-[12px] text-[#999] pl-1">
                           Upload a reference image to continue
                         </p>

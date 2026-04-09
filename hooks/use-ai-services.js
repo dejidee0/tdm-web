@@ -20,6 +20,12 @@ export const aiKeys = {
 
 // ─── AI Projects ──────────────────────────────────────────────────────────────
 
+export function useUploadRoom() {
+  return useMutation({
+    mutationFn: (file) => aiProjectsApi.uploadRoom(file),
+  });
+}
+
 export function useAIProjects() {
   return useQuery({
     queryKey: aiKeys.projects(),
