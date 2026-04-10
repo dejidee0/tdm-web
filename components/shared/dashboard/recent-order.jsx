@@ -72,13 +72,21 @@ export default function RecentOrder() {
         <div className="flex gap-4">
           {/* Order Image */}
           <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 bg-[#f5f5f5] rounded-xl overflow-hidden">
-            <Image
-              src={order.image}
-              alt={order.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 80px, 96px"
-            />
+            {order.image ? (
+              <Image
+                src={order.image}
+                alt={order.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 80px, 96px"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#cccccc]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 9.75h18M3 19.5h18" />
+                </svg>
+              </div>
+            )}
           </div>
 
           {/* Order Details */}

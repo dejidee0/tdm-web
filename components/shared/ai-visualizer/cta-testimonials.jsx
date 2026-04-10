@@ -1,12 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCurrentUser } from "@/hooks/use-auth";
 import AuthModal from "@/components/common/auth-modal";
 
 const CTAAndTestimonials = () => {
   const [showAuthModal, setShowAuthModal] = useState("");
+  const [mounted, setMounted] = useState(false);
   const { data: user } = useCurrentUser();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSaveProject = () => {
     if (!user) {
@@ -80,7 +85,7 @@ const CTAAndTestimonials = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-3">
-            {!user && (
+            {mounted && !user && (
               <motion.button
                 whileHover={{ scale: 1.05, backgroundColor: "#3d4f66" }}
                 whileTap={{ scale: 0.95 }}

@@ -69,13 +69,21 @@ export default function LatestDesign() {
 
       {/* Design Preview */}
       <div className="relative w-full aspect-[16/10] bg-[#f5f5f5] rounded-xl overflow-hidden mb-4 group">
-        <Image
-          src={design.image}
-          alt={design.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
+        {design.image ? (
+          <Image
+            src={design.image}
+            alt={design.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-[#cccccc]">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 9.75h18M3 19.5h18" />
+            </svg>
+          </div>
+        )}
 
         {/* Generation Time Overlay */}
         <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-md">

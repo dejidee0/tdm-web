@@ -99,8 +99,9 @@ export function useSubscribePaid() {
   return useMutation({
     mutationFn: subscriptionApi.subscribe,
     onSuccess: (data) => {
-      if (data?.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
+      const redirectUrl = data?.authorizationUrl ?? data?.checkoutUrl;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
         return;
       }
       queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
