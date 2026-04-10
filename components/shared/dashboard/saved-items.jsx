@@ -8,7 +8,14 @@ import { useSavedItems } from "@/hooks/use-user-dashboard";
 import { useState, useEffect, useRef } from "react";
 
 export default function SavedItems() {
-  const { data: items, isLoading, isError } = useSavedItems();
+  const { data: savedData, isLoading, isError } = useSavedItems();
+  const items = Array.isArray(savedData)
+    ? savedData
+    : Array.isArray(savedData?.items)
+    ? savedData.items
+    : Array.isArray(savedData?.data)
+    ? savedData.data
+    : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const scrollContainerRef = useRef(null);

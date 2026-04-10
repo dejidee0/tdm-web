@@ -13,6 +13,7 @@ import {
   resetPassword,
 } from "@/lib/actions/auth";
 import { cartApi } from "@/lib/api/cart";
+import { subscriptionKeys } from "@/hooks/use-subscription";
 
 export const authKeys = {
   all: ["auth"],
@@ -23,7 +24,7 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: authKeys.user(),
     queryFn: async () => {
-      const response = await fetch("/api/auth/me");
+      const response = await fetch("/api/proxy/v1/auth/me");
       if (!response.ok) {
         if (response.status === 401) return null;
         throw new Error("Failed to fetch user");
@@ -65,8 +66,28 @@ export function useLogin() {
       return result.data;
     },
     onSuccess: async (data) => {
+      console.log("[login] response data:", data);
+
       // 1. Update auth state
       queryClient.setQueryData(authKeys.user(), data.user);
+
+      // 2. Seed subscription cache from login response so useSubscriptionState
+      //    works immediately without waiting for a separate fetch.
+      //    Normalize capitalized backend values to lowercase (e.g. "Premium" → "premium").
+      if (data.user?.subscription) {
+        const s = data.user.subscription;
+        queryClient.setQueryData(subscriptionKeys.current(), {
+          tier: s.tier?.toLowerCase() ?? null,
+          status: s.status?.toLowerCase() ?? null,
+          billingCycle: s.billingCycle?.toLowerCase() ?? null,
+          startDate: s.startDate ?? null,
+          endDate: s.endDate ?? null,
+          generationsUsed: s.generationsUsed ?? 0,
+          generationsAllowed: s.generationsLimit ?? null,
+          unlimitedGenerations: s.unlimitedGenerations ?? false,
+        });
+      }
+
       queryClient.invalidateQueries({ queryKey: authKeys.user() });
 
       // 2. Role-based redirect — vendors go to their dashboard
