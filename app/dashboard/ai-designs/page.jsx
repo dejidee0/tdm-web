@@ -3,7 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Plus, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import DashboardLayout from "@/components/shared/dashboard/layout";
 import DesignsFilters from "@/components/shared/dashboard/designs/filters";
@@ -11,7 +11,6 @@ import DesignsGrid from "@/components/shared/dashboard/designs/grid";
 import { useDesigns } from "@/hooks/use-designs";
 import CreateNewDesignModal from "@/components/shared/dashboard/designs/create-new-design";
 import SubscriptionPanel from "@/components/shared/dashboard/designs/subscription-panel";
-import { useSubscriptionState } from "@/hooks/use-subscription";
 
 export default function DesignsPage() {
   const [filters, setFilters] = useState({
@@ -23,7 +22,6 @@ export default function DesignsPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const { data: designs, isLoading, isError } = useDesigns(filters);
-  const { canGenerate } = useSubscriptionState();
 
   return (
     <DashboardLayout>
@@ -45,27 +43,14 @@ export default function DesignsPage() {
             </p>
           </div>
 
-          {/* Create New Design — only shown when user can generate */}
-          {canGenerate && (
-            <button
-              onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors self-start sm:self-auto whitespace-nowrap"
-            >
-              <Plus className="w-5 h-5" />
-              Create New Design
-            </button>
-          )}
-
-          {/* Upgrade CTA when quota blocked */}
-          {!canGenerate && (
-            <a
-              href="/ai-visualizer#pricing"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors self-start sm:self-auto whitespace-nowrap"
-            >
-              <Sparkles className="w-5 h-5" />
-              Upgrade to Generate
-            </a>
-          )}
+          {/* Create New Design — always visible; modal handles quota/upgrade wall */}
+          <button
+            onClick={() => setModalOpen(true)}
+            className="relative inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl text-[14px] font-semibold shadow-md shadow-primary/30 hover:shadow-primary/50 hover:scale-[1.02] active:scale-[0.98] transition-all self-start sm:self-auto whitespace-nowrap"
+          >
+            <Sparkles className="w-4 h-4" />
+            Create New Design
+          </button>
         </motion.div>
 
         {/* Subscription status panel */}
@@ -80,7 +65,7 @@ export default function DesignsPage() {
           isLoading={isLoading}
           isError={isError}
           view={filters.view}
-          onOpenModal={canGenerate ? () => setModalOpen(true) : undefined}
+          onOpenModal={() => setModalOpen(true)}
         />
       </div>
 

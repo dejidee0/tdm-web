@@ -11,14 +11,8 @@ import {
   CheckCircle,
   AlertCircle,
   Sparkles,
-  Sofa,
-  BedDouble,
-  ChefHat,
-  Bath,
-  UtensilsCrossed,
-  Briefcase,
-  LayoutGrid,
   Camera,
+  ChevronDown,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDashboardUser } from "@/hooks/use-user-dashboard";
@@ -46,14 +40,38 @@ const OUTPUT_TYPES = [
   },
 ];
 
-const ROOM_TYPES = [
-  { label: "Living Room", Icon: Sofa },
-  { label: "Bedroom", Icon: BedDouble },
-  { label: "Kitchen", Icon: ChefHat },
-  { label: "Bathroom", Icon: Bath },
-  { label: "Dining Room", Icon: UtensilsCrossed },
-  { label: "Home Office", Icon: Briefcase },
-  { label: "Other", Icon: LayoutGrid },
+const CONTEXT_CATEGORIES = [
+  {
+    label: "Interior Design",
+    tags: [
+      "Living room design", "Bedroom design", "Kitchen design", "Bathroom design",
+      "Office interior", "Commercial interior", "Minimalist interior", "Luxury interior",
+      "Modern interior", "Contemporary interior", "Scandinavian style", "Industrial style",
+      "Traditional interior",
+    ],
+  },
+  {
+    label: "Construction",
+    tags: [
+      "Residential construction", "Commercial construction", "Renovation", "Remodeling",
+      "Structural work", "Finishing work", "Civil works", "Drywall installation",
+      "Flooring installation", "Roofing", "Plumbing", "Electrical works", "Painting & finishing",
+    ],
+  },
+  {
+    label: "Furniture",
+    tags: [
+      "Sofas", "Chairs", "Tables", "Wardrobes", "Cabinets",
+      "TV units", "Bed frames", "Shelving", "Office desks", "Reception desks",
+    ],
+  },
+  {
+    label: "Materials",
+    tags: [
+      "Wood", "MDF", "Plywood", "Marble", "Granite", "Tiles", "PVC panels",
+      "Gypsum board", "Concrete", "Steel", "Aluminum", "Glass", "Laminate", "Veneer",
+    ],
+  },
 ];
 
 const EXAMPLE_PROMPTS = [
@@ -81,6 +99,100 @@ function useGenerationStage(active) {
   return GENERATION_STAGES[index];
 }
 
+// ── Context tag picker ────────────────────────────────────────────────────
+
+function ContextTagPicker({ contextTags, setContextTags }) {
+  const [openCategory, setOpenCategory] = useState(CONTEXT_CATEGORIES[0].label);
+
+  const toggle = (tag) =>
+    setContextTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+
+  return (
+    <div className="border border-gray-200 rounded-xl divide-y divide-gray-200 overflow-hidden mb-1">
+      {CONTEXT_CATEGORIES.map(({ label, tags }) => {
+        const isOpen = openCategory === label;
+        const selectedInCategory = tags.filter((t) => contextTags.includes(t)).length;
+        return (
+          <div key={label}>
+            {/* Category header — toggle */}
+            <button
+              type="button"
+              onClick={() => setOpenCategory(isOpen ? null : label)}
+              className="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  {label}
+                </span>
+                {selectedInCategory > 0 && (
+                  <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-primary text-white leading-none">
+                    {selectedInCategory}
+                  </span>
+                )}
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {/* Tags — animated expand */}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  key="tags"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex flex-wrap gap-2 px-3 pb-3 pt-1 bg-gray-50/60">
+                    {tags.map((tag) => {
+                      const active = contextTags.includes(tag);
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => toggle(tag)}
+                          className={`px-3 py-1.5 rounded-full border text-xs font-semibold transition-all whitespace-nowrap ${
+                            active
+                              ? "border-primary bg-primary text-white"
+                              : "border-gray-300 text-gray-700 hover:border-primary hover:text-primary bg-white"
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+
+      {/* Footer — selected count + clear */}
+      {contextTags.length > 0 && (
+        <div className="flex items-center justify-between px-3 py-2.5 bg-gray-50">
+          <p className="text-xs font-semibold text-primary">
+            {contextTags.length} tag{contextTags.length !== 1 ? "s" : ""} selected
+          </p>
+          <button
+            type="button"
+            onClick={() => setContextTags([])}
+            className="text-xs font-medium text-gray-600 hover:text-gray-900 underline underline-offset-2 transition-colors"
+          >
+            Clear all
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Step label ────────────────────────────────────────────────────────────
 
 function StepLabel({ number, title, note }) {
@@ -89,8 +201,8 @@ function StepLabel({ number, title, note }) {
       <span className="w-5 h-5 rounded-full bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0">
         {number}
       </span>
-      <span className="text-sm font-semibold text-primary">{title}</span>
-      {note && <span className="text-xs text-gray-400 ml-0.5">{note}</span>}
+      <span className="text-sm font-bold text-primary">{title}</span>
+      {note && <span className="text-xs font-medium text-gray-500 ml-0.5">{note}</span>}
     </div>
   );
 }
@@ -100,7 +212,7 @@ function StepLabel({ number, title, note }) {
 export default function CreateNewDesignModal({ isOpen, onClose }) {
   const [outputType, setOutputType] = useState(1);
   const [prompt, setPrompt] = useState("");
-  const [contextLabel, setContextLabel] = useState("");
+  const [contextTags, setContextTags] = useState([]);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -169,7 +281,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
         sourceImageUrl,
         outputType,
         prompt,
-        contextLabel: contextLabel || undefined,
+        contextTags: contextTags.length > 0 ? contextTags : undefined,
       });
       const projectId =
         projectRes?.id ?? projectRes?.data?.id ?? projectRes?.data?.projectId;
@@ -198,7 +310,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
     if (step === "generating") return;
     setOutputType(1);
     setPrompt("");
-    setContextLabel("");
+    setContextTags([]);
     if (filePreview) URL.revokeObjectURL(filePreview);
     setFile(null);
     setFilePreview(null);
@@ -219,11 +331,11 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-black/50 z-50"
+            className="fixed inset-0 bg-black/50 z-70"
           />
 
           {/* Sheet */}
-          <div className="fixed inset-0 z-50 flex items-end sm:items-start justify-center pointer-events-none sm:px-4 sm:pt-20 sm:pb-6">
+          <div className="fixed inset-0 z-70 flex items-end sm:items-center justify-center pointer-events-none sm:px-4 sm:py-6">
             <motion.div
               key="modal"
               initial={{ opacity: 0, y: 48 }}
@@ -236,23 +348,23 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
             >
               {/* Mobile drag handle */}
               <div className="flex justify-center pt-3 pb-1 sm:hidden">
-                <div className="w-10 h-1 rounded-full bg-gray-200" />
+                <div className="w-10 h-1 rounded-full bg-gray-300" />
               </div>
 
               {/* Header */}
-              <div className="flex items-start justify-between px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-gray-100">
+              <div className="flex items-start justify-between px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-gray-200">
                 <div>
                   <p className="text-base font-bold text-primary">
                     Create a New Design
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-sm text-gray-600 mt-0.5">
                     Fill in the steps below — Ziora will generate your space from your description.
                   </p>
                 </div>
                 <button
                   onClick={handleClose}
                   disabled={step === "generating"}
-                  className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed mt-0.5 shrink-0"
+                  className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed mt-0.5 shrink-0"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -268,7 +380,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                       <div className="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center">
                         <Sparkles className="w-6 h-6 text-primary" />
                       </div>
-                      <Loader2 className="w-14 h-14 animate-spin text-primary/20 absolute inset-0" />
+                      <Loader2 className="w-14 h-14 animate-spin text-primary/30 absolute inset-0" />
                     </div>
                     <div>
                       <p className="text-base font-semibold text-primary">
@@ -281,7 +393,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -5 }}
                           transition={{ duration: 0.3 }}
-                          className="text-sm text-gray-400 mt-1"
+                          className="text-sm text-gray-600 mt-1"
                         >
                           {generationStage}
                         </motion.p>
@@ -298,7 +410,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                       <p className="text-base font-semibold text-primary">
                         {outputType === 2 ? "Video tour" : "Design"} created!
                       </p>
-                      <p className="text-sm text-gray-400 mt-0.5">
+                      <p className="text-sm text-gray-600 mt-0.5">
                         Your result is ready in the gallery.
                       </p>
                     </div>
@@ -317,7 +429,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                     <AlertCircle className="w-12 h-12 text-red-400" />
                     <div>
                       <p className="text-base font-semibold text-primary">Something went wrong</p>
-                      <p className="text-sm text-gray-400 mt-0.5 max-w-xs">{errorMsg}</p>
+                      <p className="text-sm text-gray-600 mt-0.5 max-w-xs">{errorMsg}</p>
                     </div>
                     <button
                       onClick={() => setStep("form")}
@@ -348,15 +460,15 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             }`}
                           >
                             <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                              outputType === id ? "bg-primary text-white" : "bg-gray-100 text-gray-500"
+                              outputType === id ? "bg-primary text-white" : "bg-gray-100 text-gray-600"
                             }`}>
                               <Icon className="w-4 h-4" />
                             </div>
                             <div>
-                              <p className={`text-sm font-semibold ${outputType === id ? "text-primary" : "text-gray-700"}`}>
+                              <p className={`text-sm font-semibold ${outputType === id ? "text-primary" : "text-gray-800"}`}>
                                 {label}
                               </p>
-                              <p className="text-[11px] text-gray-400 leading-snug mt-0.5">
+                              <p className={`text-xs leading-snug mt-0.5 ${outputType === id ? "text-primary/70" : "text-gray-600"}`}>
                                 {sublabel}
                               </p>
                             </div>
@@ -381,20 +493,20 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             ? "e.g. A cinematic walk-through of a modern open-plan living space with warm evening lighting and Nigerian hardwood floors…"
                             : "e.g. A modern minimalist bedroom with warm tones, linen textures, built-in wardrobes and soft ambient lighting…"
                         }
-                        className="w-full text-sm text-primary placeholder-gray-300 border border-gray-200 rounded-xl px-4 py-3.5 outline-none focus:border-primary bg-white resize-none transition-colors leading-relaxed"
+                        className="w-full text-sm text-primary placeholder-gray-400 border border-gray-200 rounded-xl px-4 py-3.5 outline-none focus:border-primary bg-white resize-none transition-colors leading-relaxed"
                       />
 
                       {/* Example prompt chips */}
                       {!prompt && (
                         <div className="mt-2.5">
-                          <p className="text-[11px] text-gray-400 mb-1.5">Try an example:</p>
+                          <p className="text-xs font-medium text-gray-600 mb-1.5">Try an example:</p>
                           <div className="flex flex-wrap gap-1.5">
                             {EXAMPLE_PROMPTS.map((ex) => (
                               <button
                                 key={ex}
                                 type="button"
                                 onClick={() => setPrompt(ex)}
-                                className="text-[11px] px-2.5 py-1 border border-gray-200 rounded-full text-gray-500 hover:border-primary hover:text-primary transition-colors bg-white"
+                                className="text-xs font-medium px-2.5 py-1 border border-gray-300 rounded-full text-gray-700 hover:border-primary hover:text-primary transition-colors bg-white"
                               >
                                 {ex.length > 42 ? ex.slice(0, 42) + "…" : ex}
                               </button>
@@ -404,7 +516,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                       )}
                     </div>
 
-                    {/* STEP 3 — Context (room type + photo) */}
+                    {/* STEP 3 — Context (tags + photo) */}
                     <div>
                       <StepLabel
                         number="3"
@@ -412,34 +524,22 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         note="— photo required"
                       />
 
-                      {/* Room type chips */}
-                      <p className="text-[11px] text-gray-400 mb-2">
-                        What kind of room is this?
+                      {/* Context tags — collapsible categories */}
+                      <p className="text-xs font-medium text-gray-600 mb-2">
+                        Tag your project — select all that apply
                       </p>
-                      <div className="flex flex-wrap gap-2 mb-5">
-                        {ROOM_TYPES.map(({ label, Icon }) => (
-                          <button
-                            key={label}
-                            type="button"
-                            onClick={() => setContextLabel(contextLabel === label ? "" : label)}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
-                              contextLabel === label
-                                ? "border-primary bg-primary text-white"
-                                : "border-gray-200 text-gray-500 hover:border-gray-400 bg-white"
-                            }`}
-                          >
-                            <Icon className="w-3 h-3" />
-                            {label}
-                          </button>
-                        ))}
-                      </div>
+                      <ContextTagPicker
+                        contextTags={contextTags}
+                        setContextTags={setContextTags}
+                      />
+                      <div className="mb-4" />
 
                       {/* Photo upload */}
-                      <p className="text-[11px] mb-2 flex items-center gap-1.5 text-primary font-medium">
+                      <p className="text-xs font-semibold mb-2 flex items-center gap-1.5 text-primary">
                         <Camera className="w-3.5 h-3.5" />
                         Photo of the current space
-                        <span className="text-red-400">*</span>
-                        <span className="text-gray-400 font-normal">— Ziora needs this to generate your design</span>
+                        <span className="text-red-500">*</span>
+                        <span className="text-gray-600 font-normal">— Ziora needs this to generate your design</span>
                       </p>
 
                       <AnimatePresence mode="wait">
@@ -465,7 +565,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             >
                               <X className="w-3 h-3" />
                             </button>
-                            <p className="mt-1 text-[11px] text-gray-400 truncate max-w-xs">{file?.name}</p>
+                            <p className="mt-1 text-xs text-gray-600 truncate max-w-xs">{file?.name}</p>
                           </motion.div>
                         ) : (
                           <motion.div
@@ -481,16 +581,16 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             className={`flex items-center gap-4 px-4 py-4 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
                               isDragging
                                 ? "border-primary bg-primary/5"
-                                : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
+                                : "border-gray-300 hover:border-gray-400 bg-gray-50/50"
                             }`}
                           >
-                            <UploadCloud className={`w-8 h-8 shrink-0 ${isDragging ? "text-primary" : "text-gray-300"}`} />
+                            <UploadCloud className={`w-8 h-8 shrink-0 ${isDragging ? "text-primary" : "text-gray-400"}`} />
                             <div>
-                              <p className="text-sm font-medium text-gray-600">
+                              <p className="text-sm font-medium text-gray-700">
                                 Drag your photo here, or{" "}
                                 <span className="text-primary underline underline-offset-2">click to browse</span>
                               </p>
-                              <p className="text-xs text-gray-400 mt-0.5">
+                              <p className="text-xs text-gray-500 mt-0.5">
                                 JPG, PNG or WEBP · 1 image max
                               </p>
                             </div>
@@ -519,7 +619,7 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         {outputType === 2 ? "Generate Video Tour" : "Generate My Design"}
                       </motion.button>
                       {!canSubmit && (
-                        <p className="text-center text-xs text-gray-400 mt-2">
+                        <p className="text-center text-xs font-medium text-gray-600 mt-2">
                           {prompt && file
                             ? null
                             : prompt

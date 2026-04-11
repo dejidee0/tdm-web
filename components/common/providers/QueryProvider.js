@@ -10,30 +10,22 @@ export default function QueryProvider({ children }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            // Queries will be considered stale after 1 minute
-            staleTime: 1000 * 60,
-            // Queries will be cached for 5 minutes
-            gcTime: 1000 * 60 * 5,
-            // Retry failed requests 3 times with exponential backoff
+            // Data is considered fresh for 2 minutes — no refetch within this window
+            staleTime: 2 * 60 * 1000,
+            // Keep unused cache for 20 minutes — avoids cold fetches on page navigation
+            gcTime: 20 * 60 * 1000,
+            // Only retry network/server errors, not 4xx (client errors are final)
             retry: (failureCount, error) => {
-              // Don't retry on 4xx errors (client errors)
-              if (error?.status >= 400 && error?.status < 500) {
-                return false;
-              }
-              // Retry up to 3 times for server errors
-              return failureCount < 3;
+              if (error?.status >= 400 && error?.status < 500) return false;
+              return failureCount < 2;
             },
-            // Refetch on window focus for better UX
-            refetchOnWindowFocus: true,
-            // Don't refetch on mount if data is fresh
+            // Window focus refetches cause visible lag when switching tabs — disable
+            refetchOnWindowFocus: false,
             refetchOnMount: true,
-            // Refetch on reconnect
             refetchOnReconnect: true,
           },
           mutations: {
-            // Retry mutations once on failure
-            retry: 1,
-            // Network mode for mutations
+            retry: 0,
             networkMode: "online",
           },
         },
@@ -43,7 +35,6 @@ export default function QueryProvider({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      {/* Only show devtools in development */}
       {process.env.NODE_ENV === "development" && (
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       )}

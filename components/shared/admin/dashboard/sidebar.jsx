@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { LogOut, ExternalLink } from "lucide-react";
+import { LogOut, ExternalLink, Zap, CreditCard } from "lucide-react";
 import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
 import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
 import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
@@ -27,6 +27,16 @@ const navItems = [
     label: "Financial Report",
     icon: financialReportIcon,
     href: "/admin/dashboard/financial-report",
+  },
+  {
+    label: "AI Usage",
+    lucideIcon: Zap,
+    href: "/admin/dashboard/ai-usage",
+  },
+  {
+    label: "Subscriptions",
+    lucideIcon: CreditCard,
+    href: "/admin/dashboard/subscriptions",
   },
   {
     label: "System Log",
@@ -113,12 +123,16 @@ export default function AdminSidebar() {
                       }
                     `}
                   >
-                    <Image
-                      src={item.icon}
-                      alt={item.label}
-                      width={20}
-                      height={20}
-                    />
+                    {item.lucideIcon ? (
+                      <item.lucideIcon size={20} />
+                    ) : (
+                      <Image
+                        src={item.icon}
+                        alt={item.label}
+                        width={20}
+                        height={20}
+                      />
+                    )}
                     <span>{item.label}</span>
                   </motion.div>
                 </Link>
