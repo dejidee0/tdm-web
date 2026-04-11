@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -480,7 +480,7 @@ function UserUsagePanel({ userId }) {
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
-export default function AIUsagePage() {
+function AIUsageContent() {
   const searchParams = useSearchParams();
   const [spendMonths, setSpendMonths] = useState(6);
   const [activeMetric, setActiveMetric] = useState("totalGenerations");
@@ -662,5 +662,13 @@ export default function AIUsagePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AIUsagePage() {
+  return (
+    <Suspense fallback={<div className="max-w-360 mx-auto animate-pulse h-96 bg-[#F8FAFC] rounded-xl" />}>
+      <AIUsageContent />
+    </Suspense>
   );
 }
