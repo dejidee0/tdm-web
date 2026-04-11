@@ -5,7 +5,6 @@ import {
   adminObservabilityAPI,
 } from "@/lib/api/admin";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useIsAdminAuthed } from "@/hooks/use-admin-auth";
 
 // Query keys
 export const ADMIN_QUERY_KEYS = {
@@ -18,92 +17,78 @@ export const ADMIN_QUERY_KEYS = {
   alerts: ["admin", "dashboard", "alerts"],
   quickActions: ["admin", "dashboard", "quick-actions"],
   // AI usage
-  aiUsageMonthly: (months) => ["admin", "ai", "usage", "monthly", months],
-  aiUsageByType: ["admin", "ai", "usage", "by-type"],
-  aiUsageOverview: ["admin", "ai", "usage", "overview"],
+  aiMonthlySpend: (months) => ["admin", "ai", "usage", "monthly-spend", months],
   // Observability
   health: ["admin", "observability", "health"],
   metrics: ["admin", "observability", "metrics"],
   recentErrors: ["admin", "observability", "recent-errors"],
 };
 
+// ─── Analytics ────────────────────────────────────────────────────────────────
+
 export function useAnalyticsOverview() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.overview,
     queryFn: adminAnalyticsAPI.getOverview,
-    enabled: authed,
-    staleTime: 2 * 60 * 1000,
+    staleTime: 3 * 60 * 1000,
   });
 }
 
 export function useMonthlyRevenue() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.monthlyRevenue,
     queryFn: adminAnalyticsAPI.getMonthlyRevenue,
-    enabled: authed,
     staleTime: 5 * 60 * 1000,
   });
 }
 
 export function usePaymentDistribution() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.paymentDistribution,
     queryFn: adminAnalyticsAPI.getPaymentDistribution,
-    enabled: authed,
     staleTime: 5 * 60 * 1000,
   });
 }
 
+// ─── Dashboard ────────────────────────────────────────────────────────────────
+
 export function useDashboardStats() {
-  const authed = useIsAdminAuthed();
-  console.log("[useDashboardStats] isAuthed:", authed);
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.stats,
     queryFn: adminDashboardAPI.getStats,
-    enabled: authed,
     staleTime: 2 * 60 * 1000,
   });
 }
 
 export function useDashboardRevenue(timeRange = "30d") {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: [...ADMIN_QUERY_KEYS.revenue(timeRange), "dashboard"],
     queryFn: () => adminDashboardAPI.getRevenue(timeRange),
-    enabled: authed,
     staleTime: 5 * 60 * 1000,
   });
 }
 
 export function useServerLoad() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.serverLoad,
     queryFn: adminDashboardAPI.getServerLoad,
-    enabled: authed,
-    staleTime: 30 * 1000,
+    staleTime: 60 * 1000,
+    refetchInterval: 2 * 60 * 1000, // passive background poll every 2 min
   });
 }
 
 export function useAdminAlerts() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.alerts,
     queryFn: adminDashboardAPI.getAlerts,
-    enabled: authed,
-    staleTime: 60 * 1000,
+    staleTime: 2 * 60 * 1000,
   });
 }
 
 export function useAdminQuickActions() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.quickActions,
     queryFn: adminDashboardAPI.getQuickActions,
-    enabled: authed,
     staleTime: 10 * 60 * 1000,
   });
 }
@@ -137,74 +122,78 @@ export function useExportReport() {
         document.body.removeChild(link);
       }
     },
-    onError: (error) => {
-      console.error("Export failed:", error);
-    },
   });
 }
 
 // ─── Admin AI Usage ────────────────────────────────────────────────────────────
 
-export function useAdminAIUsageMonthly(months = 12) {
-  const authed = useIsAdminAuthed();
+// GET /admin/ai/usage/monthly-spend?months=6
+export function useAdminAIMonthlySpend(months = 6) {
   return useQuery({
-    queryKey: ADMIN_QUERY_KEYS.aiUsageMonthly(months),
-    queryFn: () => adminAIUsageAPI.getMonthlyUsage(months),
-    enabled: authed,
+    queryKey: ["admin", "ai", "usage", "monthly-spend", months],
+    queryFn: () => adminAIUsageAPI.getMonthlySpend(months),
     staleTime: 5 * 60 * 1000,
+    retry: false,
   });
 }
 
-export function useAdminAIUsageByType() {
-  const authed = useIsAdminAuthed();
+// GET /admin/ai/credits/{userId}
+export function useAdminAIUserCredits(userId) {
   return useQuery({
-    queryKey: ADMIN_QUERY_KEYS.aiUsageByType,
-    queryFn: adminAIUsageAPI.getUsageByType,
-    enabled: authed,
-    staleTime: 5 * 60 * 1000,
+    queryKey: ["admin", "ai", "credits", userId],
+    queryFn: () => adminAIUsageAPI.getUserCredits(userId),
+    enabled: !!userId,  // userId is the real dependency, not auth
+    staleTime: 60 * 1000,
+    retry: false,
   });
 }
 
-export function useAdminAIUsageOverview() {
-  const authed = useIsAdminAuthed();
+// POST /admin/ai/credits/adjust
+export function useAdminAIAdjustCredits() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: adminAIUsageAPI.adjustUserCredits,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "ai", "credits", variables.userId] });
+    },
+  });
+}
+
+// GET /admin/ai/usage/user/{userId}?year=&month=
+export function useAdminAIUserUsage(userId, { year, month } = {}) {
   return useQuery({
-    queryKey: ADMIN_QUERY_KEYS.aiUsageOverview,
-    queryFn: adminAIUsageAPI.getUsageOverview,
-    enabled: authed,
-    staleTime: 5 * 60 * 1000,
+    queryKey: ["admin", "ai", "usage", "user", userId, year, month],
+    queryFn: () => adminAIUsageAPI.getUserUsage(userId, { year, month }),
+    enabled: !!userId,  // userId is the real dependency, not auth
+    staleTime: 2 * 60 * 1000,
+    retry: false,
   });
 }
 
 // ─── Admin Observability ───────────────────────────────────────────────────────
 
 export function useAdminHealth() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.health,
     queryFn: adminObservabilityAPI.getHealth,
-    enabled: authed,
     staleTime: 30 * 1000,
-    refetchInterval: 60 * 1000, // auto-refresh every minute
+    refetchInterval: 60 * 1000,
   });
 }
 
 export function useAdminMetrics() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.metrics,
     queryFn: adminObservabilityAPI.getMetrics,
-    enabled: authed,
     staleTime: 60 * 1000,
   });
 }
 
 export function useAdminRecentErrors() {
-  const authed = useIsAdminAuthed();
   return useQuery({
     queryKey: ADMIN_QUERY_KEYS.recentErrors,
     queryFn: adminObservabilityAPI.getRecentErrors,
-    enabled: authed,
     staleTime: 30 * 1000,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true, // errors are the one thing worth re-checking on focus
   });
 }

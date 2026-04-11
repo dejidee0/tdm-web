@@ -5,8 +5,14 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import AdminSidebar from "@/components/shared/admin/dashboard/sidebar";
+import { useAdminUser } from "@/hooks/use-admin-auth";
 
 export default function AdminLayout({ children }) {
+  // Prime the auth cache immediately when the layout mounts.
+  // All child hooks use `useIsAdminAuthed()` which reads this same query key.
+  // By firing the /me request here — before children mount — we eliminate the
+  // serial waterfall where data queries wait for auth to resolve first.
+  useAdminUser();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
 
