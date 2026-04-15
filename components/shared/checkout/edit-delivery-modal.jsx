@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MapPin, Plus, Check } from "lucide-react";
 
+const inputClass =
+  "w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-[14px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all";
+
 export default function EditDeliveryModal({
   isOpen,
   onClose,
@@ -14,7 +17,6 @@ export default function EditDeliveryModal({
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
 
-  // New address form state
   const [newAddress, setNewAddress] = useState({
     label: "",
     streetAddress: "",
@@ -37,24 +39,13 @@ export default function EditDeliveryModal({
     const addressToSave = showNewAddressForm
       ? newAddress
       : savedAddresses.find((addr) => addr.id === selectedAddress);
-
-    onSave?.({
-      address: addressToSave,
-      deliveryInstructions,
-    });
+    onSave?.({ address: addressToSave, deliveryInstructions });
     onClose();
   };
 
   const handleCancel = () => {
     setShowNewAddressForm(false);
-    setNewAddress({
-      label: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      saveForFuture: false,
-    });
+    setNewAddress({ label: "", streetAddress: "", city: "", state: "", zipCode: "", saveForFuture: false });
     onClose();
   };
 
@@ -68,7 +59,7 @@ export default function EditDeliveryModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleCancel}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 h-screen"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 h-screen"
           />
 
           {/* Modal */}
@@ -78,24 +69,25 @@ export default function EditDeliveryModal({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-[560px] max-h-[90vh] overflow-hidden"
+              className="rounded-2xl shadow-2xl w-full max-w-140 max-h-[90vh] overflow-hidden border border-white/10"
+              style={{ background: "#0d0b08" }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="flex items-start justify-between p-6 border-b border-[#e5e5e5]">
+              <div className="flex items-start justify-between p-6 border-b border-white/08">
                 <div>
-                  <h2 className="text-[20px] font-semibold text-text-black">
+                  <h2 className="text-[20px] font-semibold text-white">
                     Edit Delivery Details
                   </h2>
-                  <p className="text-[13px] text-[#666666] mt-1">
+                  <p className="text-[13px] text-white/40 mt-1">
                     Update where your materials will be shipped
                   </p>
                 </div>
                 <button
                   onClick={handleCancel}
-                  className="p-2 hover:bg-background rounded-lg transition-colors"
+                  className="p-2 hover:bg-white/05 rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-[#666666]" />
+                  <X className="w-5 h-5 text-white/40" />
                 </button>
               </div>
 
@@ -105,8 +97,8 @@ export default function EditDeliveryModal({
                   {/* Select Address Section */}
                   <div>
                     <div className="flex items-center gap-2 mb-4">
-                      <MapPin className="w-4 h-4 text-[#666666]" />
-                      <h3 className="text-[13px] font-semibold text-[#666666] uppercase tracking-wide">
+                      <MapPin className="w-4 h-4 text-white/40" />
+                      <h3 className="text-[13px] font-semibold text-white/40 uppercase tracking-widest">
                         Select Address
                       </h3>
                     </div>
@@ -116,41 +108,35 @@ export default function EditDeliveryModal({
                       {savedAddresses?.map((address) => (
                         <label
                           key={address.id}
-                          className={`
-                            flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all
-                            ${
-                              selectedAddress === address.id &&
-                              !showNewAddressForm
-                                ? "border-primary bg-primary/5"
-                                : "border-[#e5e5e5] hover:border-[#d4d4d4]"
-                            }
-                          `}
+                          className="flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all"
+                          style={
+                            selectedAddress === address.id && !showNewAddressForm
+                              ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.06)" }
+                              : { borderColor: "rgba(255,255,255,0.08)", background: "transparent" }
+                          }
                         >
                           <input
                             type="radio"
                             name="address"
-                            checked={
-                              selectedAddress === address.id &&
-                              !showNewAddressForm
-                            }
-                            onChange={() => {
-                              setSelectedAddress(address.id);
-                              setShowNewAddressForm(false);
-                            }}
-                            className="mt-0.5 w-5 h-5 text-primary focus:ring-2 focus:ring-primary focus:ring-offset-0"
+                            checked={selectedAddress === address.id && !showNewAddressForm}
+                            onChange={() => { setSelectedAddress(address.id); setShowNewAddressForm(false); }}
+                            className="mt-0.5 w-5 h-5 accent-[#D4AF37]"
                           />
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-[15px] font-semibold text-text-black">
+                              <span className="text-[15px] font-semibold text-white">
                                 {address.label}
                               </span>
                               {address.isDefault && (
-                                <span className="px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-semibold rounded uppercase">
+                                <span
+                                  className="px-2 py-0.5 text-[11px] font-semibold rounded uppercase text-black"
+                                  style={{ background: "rgba(212,175,55,0.80)" }}
+                                >
                                   Default
                                 </span>
                               )}
                             </div>
-                            <p className="text-[14px] text-[#666666] leading-relaxed">
+                            <p className="text-[14px] text-white/40 leading-relaxed">
                               {address.line1}
                               <br />
                               {address.city}, {address.state}, {address.country}
@@ -161,142 +147,91 @@ export default function EditDeliveryModal({
 
                       {/* Add New Address Button/Form */}
                       <div
-                        className={`
-                          border-2 rounded-xl transition-all
-                          ${
-                            showNewAddressForm
-                              ? "border-primary bg-primary/5"
-                              : "border-dashed border-[#d4d4d4]"
-                          }
-                        `}
+                        className="border-2 rounded-xl transition-all"
+                        style={
+                          showNewAddressForm
+                            ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.04)" }
+                            : { borderColor: "rgba(255,255,255,0.10)", borderStyle: "dashed" }
+                        }
                       >
                         {!showNewAddressForm ? (
                           <button
                             onClick={() => setShowNewAddressForm(true)}
-                            className="w-full flex items-center gap-3 p-4 hover:bg-background/50 transition-colors"
+                            className="w-full flex items-center gap-3 p-4 hover:bg-white/03 transition-colors"
                           >
-                            <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center">
-                              <Plus className="w-3 h-3 text-primary" />
+                            <div className="w-5 h-5 rounded-full border-2 border-[#D4AF37] flex items-center justify-center">
+                              <Plus className="w-3 h-3 text-[#D4AF37]" />
                             </div>
-                            <span className="text-[15px] font-semibold text-text-black">
+                            <span className="text-[15px] font-semibold text-white">
                               Add New Address
                             </span>
                           </button>
                         ) : (
                           <div className="p-4">
                             <div className="flex items-center gap-3 mb-4">
-                              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                <Plus className="w-3 h-3 text-white" />
+                              <div
+                                className="w-5 h-5 rounded-full flex items-center justify-center"
+                                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                              >
+                                <Plus className="w-3 h-3 text-black" />
                               </div>
-                              <span className="text-[15px] font-semibold text-text-black">
+                              <span className="text-[15px] font-semibold text-white">
                                 Add New Address
                               </span>
                             </div>
 
                             <div className="space-y-4">
-                              {/* Street Address */}
                               <div>
-                                <label className="block text-[13px] font-medium text-[#666666] mb-2">
+                                <label className="block text-[13px] font-medium text-white/40 mb-2">
                                   Street Address
                                 </label>
                                 <input
                                   type="text"
                                   value={newAddress.streetAddress}
-                                  onChange={(e) =>
-                                    setNewAddress({
-                                      ...newAddress,
-                                      streetAddress: e.target.value,
-                                    })
-                                  }
+                                  onChange={(e) => setNewAddress({ ...newAddress, streetAddress: e.target.value })}
                                   placeholder="e.g. 123 Designer Way"
-                                  className="w-full px-4 py-2.5 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                  className={inputClass}
                                 />
                               </div>
 
-                              {/* City, State, Zip */}
                               <div className="grid grid-cols-3 gap-3">
                                 <div>
-                                  <label className="block text-[13px] font-medium text-[#666666] mb-2">
-                                    City
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={newAddress.city}
-                                    onChange={(e) =>
-                                      setNewAddress({
-                                        ...newAddress,
-                                        city: e.target.value,
-                                      })
-                                    }
-                                    placeholder="City"
-                                    className="w-full px-4 py-2.5 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
-                                  />
+                                  <label className="block text-[13px] font-medium text-white/40 mb-2">City</label>
+                                  <input type="text" value={newAddress.city}
+                                    onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+                                    placeholder="City" className={inputClass} />
                                 </div>
                                 <div>
-                                  <label className="block text-[13px] font-medium text-[#666666] mb-2">
-                                    State
-                                  </label>
+                                  <label className="block text-[13px] font-medium text-white/40 mb-2">State</label>
                                   <select
                                     value={newAddress.state}
-                                    onChange={(e) =>
-                                      setNewAddress({
-                                        ...newAddress,
-                                        state: e.target.value,
-                                      })
-                                    }
-                                    className="w-full px-4 py-2.5 bg-background border border-transparent rounded-lg text-[14px] text-text-black focus:outline-none focus:border-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                                    style={{
-                                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-                                      backgroundRepeat: "no-repeat",
-                                      backgroundPosition:
-                                        "right 0.75rem center",
-                                      paddingRight: "2.5rem",
-                                    }}
+                                    onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
+                                    className={`${inputClass} appearance-none cursor-pointer`}
                                   >
                                     <option value="">State</option>
-                                    <option value="NY">NY</option>
-                                    <option value="CA">CA</option>
-                                    <option value="TX">TX</option>
-                                    <option value="FL">FL</option>
+                                    <option value="Abuja">Abuja</option>
+                                    <option value="Lagos">Lagos</option>
+                                    <option value="Rivers">Rivers</option>
+                                    <option value="Kano">Kano</option>
                                   </select>
                                 </div>
                                 <div>
-                                  <label className="block text-[13px] font-medium text-[#666666] mb-2">
-                                    Zip Code
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={newAddress.zipCode}
-                                    onChange={(e) =>
-                                      setNewAddress({
-                                        ...newAddress,
-                                        zipCode: e.target.value,
-                                      })
-                                    }
-                                    placeholder="10001"
-                                    className="w-full px-4 py-2.5 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
-                                  />
+                                  <label className="block text-[13px] font-medium text-white/40 mb-2">Zip Code</label>
+                                  <input type="text" value={newAddress.zipCode}
+                                    onChange={(e) => setNewAddress({ ...newAddress, zipCode: e.target.value })}
+                                    placeholder="900001" className={inputClass} />
                                 </div>
                               </div>
 
-                              {/* Save Checkbox */}
                               <div className="flex items-center gap-3 pt-2">
                                 <input
                                   type="checkbox"
                                   id="saveAddress"
                                   checked={newAddress.saveForFuture}
-                                  onChange={(e) =>
-                                    setNewAddress({
-                                      ...newAddress,
-                                      saveForFuture: e.target.checked,
-                                    })
-                                  }
-                                  className="w-4 h-4 rounded border-[#d4d4d4] text-primary focus:ring-2 focus:ring-primary focus:ring-offset-0"
+                                  onChange={(e) => setNewAddress({ ...newAddress, saveForFuture: e.target.checked })}
+                                  className="w-4 h-4 rounded border-white/20 bg-[#1a1a1a] accent-[#D4AF37]"
                                 />
-                                <label
-                                  htmlFor="saveAddress"
-                                  className="text-[13px] text-text-black cursor-pointer"
-                                >
+                                <label htmlFor="saveAddress" className="text-[13px] text-white/50 cursor-pointer">
                                   Save this address for future orders
                                 </label>
                               </div>
@@ -310,35 +245,23 @@ export default function EditDeliveryModal({
                   {/* Delivery Instructions */}
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <svg
-                        className="w-4 h-4 text-[#666666]"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
+                      <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <h3 className="text-[13px] font-semibold text-[#666666] uppercase tracking-wide">
+                      <h3 className="text-[13px] font-semibold text-white/40 uppercase tracking-widest">
                         Delivery Instructions
                       </h3>
                     </div>
                     <div className="relative">
                       <textarea
                         value={deliveryInstructions}
-                        onChange={(e) =>
-                          setDeliveryInstructions(e.target.value)
-                        }
+                        onChange={(e) => setDeliveryInstructions(e.target.value)}
                         rows={3}
                         maxLength={200}
                         placeholder="Gate code is 4451. Please leave at front door."
-                        className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all resize-none"
+                        className={`${inputClass} resize-none`}
                       />
-                      <span className="absolute bottom-3 right-3 text-[11px] text-[#999999]">
+                      <span className="absolute bottom-3 right-3 text-[11px] text-white/25">
                         {deliveryInstructions.length}/200
                       </span>
                     </div>
@@ -347,16 +270,17 @@ export default function EditDeliveryModal({
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-end gap-3 p-6 border-t border-[#e5e5e5] bg-background/50">
+              <div className="flex items-center justify-end gap-3 p-6 border-t border-white/08" style={{ background: "rgba(255,255,255,0.02)" }}>
                 <button
                   onClick={handleCancel}
-                  className="px-5 py-2.5 text-[14px] font-medium text-text-black hover:bg-[#e5e5e5] rounded-lg transition-colors"
+                  className="px-5 py-2.5 text-[14px] font-medium text-white/60 hover:bg-white/05 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-[14px] font-medium transition-opacity hover:opacity-90 text-black"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                 >
                   <Check className="w-4 h-4" />
                   Save Changes

@@ -65,7 +65,7 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50"
+            className="fixed inset-0 bg-black/70 z-50"
             onClick={handleClose}
           />
 
@@ -76,12 +76,13 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.96 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden font-manrope"
+              className="w-full max-w-md rounded-2xl overflow-hidden font-manrope border border-white/10"
+              style={{ background: "#0d0b08", boxShadow: "0 24px 64px rgba(0,0,0,0.6)" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close button */}
-              <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                <h2 className="text-lg font-bold text-primary">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/08">
+                <h2 className="text-lg font-bold text-white">
                   {step === 1 && "Cancel Subscription?"}
                   {step === 2 && "One quick question"}
                   {step === 3 && "Confirm Cancellation"}
@@ -89,7 +90,7 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                 <button
                   onClick={handleClose}
                   disabled={cancel.isPending}
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-white/30 hover:bg-white/05 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -99,26 +100,31 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                 {/* Step 1 — Confirmation */}
                 {step === 1 && (
                   <div>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      Are you sure you want to cancel? Your access continues
-                      until your current billing period ends.
+                    <p className="text-white/50 text-sm leading-relaxed">
+                      Are you sure you want to cancel? Your access continues until your current
+                      billing period ends.
                     </p>
                     {accessDate && (
-                      <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 font-medium">
-                        You'll have full access until{" "}
+                      <div
+                        className="mt-4 rounded-xl px-4 py-3 text-sm text-amber-300 font-medium"
+                        style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.20)" }}
+                      >
+                        You&apos;ll have full access until{" "}
                         <span className="font-bold">{accessDate}</span>.
                       </div>
                     )}
                     <div className="flex gap-3 mt-6">
                       <button
                         onClick={() => setStep(2)}
-                        className="flex-1 py-2.5 border border-red-300 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-50 transition-colors"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-900/20 transition-colors"
+                        style={{ border: "1px solid rgba(239,68,68,0.25)" }}
                       >
                         Continue to Cancel
                       </button>
                       <button
                         onClick={handleClose}
-                        className="flex-1 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#273054] transition-colors"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity"
+                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                       >
                         Keep My Plan
                       </button>
@@ -129,20 +135,30 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                 {/* Step 2 — Questionnaire */}
                 {step === 2 && (
                   <div>
-                    <p className="text-gray-500 text-sm mb-4">
+                    <p className="text-white/40 text-sm mb-4">
                       Help us improve — why are you leaving?{" "}
-                      <span className="text-gray-400">(optional)</span>
+                      <span className="text-white/25">(optional)</span>
                     </p>
                     <div className="grid grid-cols-2 gap-2 mb-4">
                       {REASONS.map((r) => (
                         <button
                           key={r}
                           onClick={() => setReason(r === reason ? "" : r)}
-                          className={`text-left px-3 py-2 rounded-lg text-sm border transition-colors ${
+                          className="text-left px-3 py-2 rounded-lg text-sm transition-colors"
+                          style={
                             reason === r
-                              ? "border-primary bg-primary/5 text-primary font-medium"
-                              : "border-gray-200 text-gray-600 hover:border-gray-300"
-                          }`}
+                              ? {
+                                  background: "rgba(212,175,55,0.10)",
+                                  border: "1px solid rgba(212,175,55,0.40)",
+                                  color: "#D4AF37",
+                                  fontWeight: 500,
+                                }
+                              : {
+                                  background: "transparent",
+                                  border: "1px solid rgba(255,255,255,0.08)",
+                                  color: "rgba(255,255,255,0.50)",
+                                }
+                          }
                         >
                           {r}
                         </button>
@@ -153,28 +169,26 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                       onChange={(e) => setFeedback(e.target.value)}
                       placeholder="Anything else you'd like us to know…"
                       rows={3}
-                      className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 outline-none focus:border-primary resize-none text-primary placeholder-gray-300"
+                      className="w-full text-sm border border-white/10 rounded-xl px-3 py-2.5 outline-none focus:border-[#D4AF37]/50 resize-none text-white placeholder-white/20 bg-[#1a1a1a] transition-all"
                     />
                     <div className="flex gap-3 mt-4">
                       <button
                         onClick={() => setStep(1)}
-                        className="px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                        className="px-4 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-white/05 transition-colors"
+                        style={{ border: "1px solid rgba(255,255,255,0.08)" }}
                       >
                         Back
                       </button>
                       <button
                         onClick={() => setStep(3)}
-                        className="flex-1 py-2.5 border border-red-300 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-50 transition-colors"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-900/20 transition-colors"
+                        style={{ border: "1px solid rgba(239,68,68,0.25)" }}
                       >
                         Next
                       </button>
                       <button
-                        onClick={() => {
-                          setReason("");
-                          setFeedback("");
-                          setStep(3);
-                        }}
-                        className="px-4 py-2.5 text-gray-400 text-sm hover:text-gray-600 transition-colors"
+                        onClick={() => { setReason(""); setFeedback(""); setStep(3); }}
+                        className="px-4 py-2.5 text-white/30 text-sm hover:text-white/50 transition-colors"
                       >
                         Skip
                       </button>
@@ -187,27 +201,28 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                   <div>
                     {done ? (
                       <div className="text-center py-8">
-                        <p className="text-green-600 font-semibold text-base">
+                        <p className="text-green-400 font-semibold text-base">
                           Subscription canceled.
                         </p>
                         {accessDate && (
-                          <p className="text-gray-500 text-sm mt-2">
+                          <p className="text-white/40 text-sm mt-2">
                             You have access until {accessDate}.
                           </p>
                         )}
                       </div>
                     ) : (
                       <>
-                        <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                          This will cancel your subscription at the end of your
-                          current billing period.{accessDate && (
-                            <> You'll retain access until{" "}
-                              <strong>{accessDate}</strong>.</>
+                        <p className="text-white/50 text-sm leading-relaxed mb-4">
+                          This will cancel your subscription at the end of your current billing
+                          period.
+                          {accessDate && (
+                            <> You&apos;ll retain access until{" "}
+                              <strong className="text-white/70">{accessDate}</strong>.</>
                           )}
                         </p>
 
                         {cancel.isError && (
-                          <p className="text-red-500 text-sm mb-3">
+                          <p className="text-red-400 text-sm mb-3">
                             {cancel.error?.message || "Cancellation failed. Please try again."}
                           </p>
                         )}
@@ -216,7 +231,8 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                           <button
                             onClick={() => setStep(2)}
                             disabled={cancel.isPending}
-                            className="px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                            className="px-4 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-white/05 transition-colors disabled:opacity-50"
+                            style={{ border: "1px solid rgba(255,255,255,0.08)" }}
                           >
                             Back
                           </button>
@@ -225,15 +241,14 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                             disabled={cancel.isPending}
                             className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
                           >
-                            {cancel.isPending && (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            )}
+                            {cancel.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             Yes, Cancel Subscription
                           </button>
                           <button
                             onClick={handleClose}
                             disabled={cancel.isPending}
-                            className="px-4 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#273054] transition-colors disabled:opacity-50"
+                            className="px-4 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity disabled:opacity-50"
+                            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                           >
                             Keep Plan
                           </button>

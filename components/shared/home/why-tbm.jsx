@@ -1,94 +1,94 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { PackageSearch, Store, HardHat, Cpu, ClipboardCheck, MapPin } from "lucide-react";
+import Image from "next/image";
+import { FileStack, Settings2, MapPin, ArrowRight } from "lucide-react";
+import Reveal from "@/components/common/reveal";
 
-const REASONS = [
+const FEATURES = [
   {
-    icon: PackageSearch,
-    title: "Premium Material Sourcing",
-    description:
-      "Every product in the Bogat store is sourced from certified suppliers — no compromises on quality, no fakes, no grey-market goods.",
+    Icon: FileStack,
+    label: "Full Structural Blueprints",
   },
   {
-    icon: Store,
-    title: "Showroom Access",
-    description:
-      "See materials in person before you buy. Our Abuja showroom lets you feel the finishes, compare options, and make confident decisions.",
+    Icon: Settings2,
+    label: "Precision MEP Engineering",
   },
   {
-    icon: HardHat,
-    title: "Real Project Execution Team",
-    description:
-      "We don't just sell — TBM manages your project with an on-ground team of verified contractors and site supervisors.",
-  },
-  {
-    icon: Cpu,
-    title: "AI-Assisted Planning",
-    description:
-      "Ziora Intelligence generates design concepts, estimates, and material recommendations before any money changes hands.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Transparent Consultation Process",
-    description:
-      "Every engagement starts with a structured consultation — scope, budget, timeline — fully documented before work begins.",
-  },
-  {
-    icon: MapPin,
-    title: "Abuja & Lagos Capability",
-    description:
-      "Two-city delivery and execution capability, with plans to expand across Nigeria's major metro areas.",
+    Icon: MapPin,
+    label: "Curation of Fine Materials",
   },
 ];
 
-export default function WhyTBM() {
+export default function ReimagineSection() {
   return (
-    <section className="py-20 sm:py-24 lg:py-32 bg-[#FAF8F5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14"
-        >
-          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
-            Why choose TBM
-          </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] leading-tight tracking-tight">
-            Built Different.<br className="hidden sm:block" /> Built Better.
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-[#7A736C] font-manrope max-w-xl">
-            Premium materials, intelligent planning tools, and real execution capability — one seamless platform.
-          </p>
-        </motion.div>
+    <section className="bg-black py-20 sm:py-28">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-stone">
-          {REASONS.map((reason, index) => {
-            const Icon = reason.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group bg-white p-7 hover:bg-warm transition-colors duration-300"
-              >
-                <div className="w-10 h-10 border border-stone group-hover:border-gold flex items-center justify-center mb-5 transition-colors duration-300">
-                  <Icon className="w-4 h-4 text-[#3D3833]" strokeWidth={1.6} />
+          {/* Left — text content */}
+          <div>
+            <Reveal direction="up">
+              <h2 className="font-poppins font-bold text-4xl sm:text-5xl lg:text-[52px] leading-[1.08] tracking-tight text-white mb-6">
+                Everything you need<br />
+                to{" "}
+                <span className="text-[#D4AF37]">reimagine</span>
+                {" "}your space.
+              </h2>
+            </Reveal>
+
+            <Reveal direction="up" delay={100}>
+              <p className="text-white/45 text-base font-manrope leading-relaxed mb-10 max-w-md">
+                We bridge the gap between creative vision and structural integrity.
+                Our hybrid approach ensures that what you see in the design is
+                exactly what we build on the site.
+              </p>
+            </Reveal>
+
+            {/* Feature bullets */}
+            <ul className="flex flex-col gap-5">
+              {FEATURES.map(({ Icon, label }, i) => (
+                <Reveal key={label} direction="left" delay={i * 100 + 150}>
+                  <li className="flex items-center gap-4">
+                    <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#D4AF37]/40 shrink-0">
+                      <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.6} />
+                    </span>
+                    <span className="text-white/70 text-[15px] font-manrope font-medium">
+                      {label}
+                    </span>
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right — image card */}
+          <Reveal direction="right" delay={100}>
+            <div className="relative rounded-br-[48px] overflow-hidden aspect-4/5 lg:aspect-auto lg:h-135 bg-card">
+              <Image
+                src="/product-2.jpg"
+                alt="The Luxury Transition"
+                fill
+                className="object-cover"
+              />
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-black/30" />
+
+              {/* Bottom card label */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
+                <div>
+                  <span className="block text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.25em] uppercase mb-1">
+                    Perspective
+                  </span>
+                  <span className="block text-white text-base font-manrope font-semibold">
+                    The Luxury Transition
+                  </span>
                 </div>
-                <h3 className="text-base font-manrope font-bold text-[#0A0A0A] mb-2 tracking-wide">
-                  {reason.title}
-                </h3>
-                <p className="text-sm font-manrope text-[#7A736C] leading-relaxed">
-                  {reason.description}
-                </p>
-              </motion.div>
-            );
-          })}
+                <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#D4AF37] text-black hover:bg-[#c49e30] transition-colors shrink-0">
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

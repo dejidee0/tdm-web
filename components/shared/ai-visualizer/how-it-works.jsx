@@ -181,7 +181,7 @@ const HowItWorks = () => {
   };
 
   return (
-    <section className="bg-[#FAF8F5] py-16 sm:py-20 font-manrope">
+    <section className="bg-black py-16 sm:py-20 font-manrope">
       <div className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -194,17 +194,17 @@ const HowItWorks = () => {
           <span className="text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4 block">
             The Process
           </span>
-          <h2 className="font-primary text-4xl sm:text-5xl font-bold text-[#0A0A0A] tracking-tight">
+          <h2 className="font-primary text-4xl sm:text-5xl font-bold text-white tracking-tight">
             How It Works
           </h2>
-          <p className="font-manrope text-base text-[#7A736C] mt-3 max-w-lg">
+          <p className="font-manrope text-base text-white/40 mt-3 max-w-lg">
             Simple steps to your dream renovation. Scroll to explore the process.
           </p>
         </motion.div>
 
         {/* Steps Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/05"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -214,11 +214,12 @@ const HowItWorks = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              className="bg-white p-8 flex flex-col"
+              className="p-8 flex flex-col border border-white/08"
+              style={{ background: "#0d0b08" }}
             >
               {/* Step number + icon */}
               <div className="flex items-start justify-between mb-6">
-                <div className="w-12 h-12 border border-stone flex items-center justify-center text-[#0A0A0A]">
+                <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-[#D4AF37]">
                   {step.icon}
                 </div>
                 <span className="text-gold font-bold text-lg tracking-wider">
@@ -227,18 +228,18 @@ const HowItWorks = () => {
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-[#0A0A0A] mb-2 font-primary">
+              <h3 className="text-base font-bold text-white mb-2 font-primary">
                 {step.title}
               </h3>
 
               {/* Description */}
-              <p className="text-sm text-[#7A736C] leading-relaxed mb-4 grow">
+              <p className="text-sm text-white/40 leading-relaxed mb-4 grow">
                 {step.description}
               </p>
 
               {/* Footer Content */}
               {step.supportText && (
-                <div className="flex items-center gap-2 text-xs text-[#7A736C] border-t border-stone pt-3">
+                <div className="flex items-center gap-2 text-xs text-white/30 border-t border-white/08 pt-3">
                   <svg
                     width="16"
                     height="16"
@@ -265,11 +266,11 @@ const HowItWorks = () => {
               )}
 
               {step.colors && (
-                <div className="flex gap-2 border-t border-stone pt-3">
+                <div className="flex gap-2 border-t border-white/08 pt-3">
                   {step.colors.map((color, i) => (
                     <div
                       key={i}
-                      className="w-6 h-6 border border-stone"
+                      className="w-6 h-6 border border-white/10"
                       style={{ backgroundColor: color }}
                     />
                   ))}
@@ -277,11 +278,11 @@ const HowItWorks = () => {
               )}
 
               {step.preview && (
-                <div className="w-full h-8 bg-stone border-t border-stone mt-auto" />
+                <div className="w-full h-8 bg-white/06 border-t border-white/08 mt-auto" />
               )}
 
               {step.link && (
-                <div className="text-xs font-semibold text-[#0A0A0A] cursor-pointer tracking-wider border-t border-stone pt-3 hover:text-gold transition-colors">
+                <div className="text-xs font-semibold text-white/50 cursor-pointer tracking-wider border-t border-white/08 pt-3 hover:text-[#D4AF37] transition-colors">
                   {step.link}
                 </div>
               )}

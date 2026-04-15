@@ -6,9 +6,9 @@ import { Upload, RefreshCcw, Sparkles, PlayCircle } from "lucide-react";
 
 export default function Hero() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] md:min-h-[90vh] overflow-visible relative">
-      <div className="max-w-[1275px] mx-auto h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 relative min-h-[90vh] mt-20 md:mt-16">
-        <div className="w-full min-h-[80vh] bg-[#0A0A0A] flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+    <div className="min-h-screen bg-black md:min-h-[90vh] overflow-visible relative">
+      <div className="max-w-318.75 mx-auto h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 relative min-h-[90vh] mt-20 md:mt-16">
+        <div className="w-full min-h-[80vh] bg-text-black flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
           <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
             {/* Left Content */}
             <motion.div
@@ -64,7 +64,8 @@ export default function Hero() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-[#0A0A0A] rounded-none font-manrope font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#FAF8F5] transition-colors"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-none font-manrope font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-black"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                 >
                   <Upload size={18} className="sm:w-5 sm:h-5" />
                   Upload Photo
@@ -89,15 +90,21 @@ export default function Hero() {
               className="relative mt-8 lg:mt-0"
             >
               {/* Browser Window */}
-              <motion.div className="bg-white overflow-hidden border border-stone/20">
+              <motion.div
+                className="overflow-hidden border border-white/08"
+                style={{ background: "#0d0b08" }}
+              >
                 {/* Window Header */}
-                <div className="bg-warm px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between w-full border-b border-stone">
+                <div
+                  className="px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between w-full border-b border-white/06"
+                  style={{ background: "rgba(255,255,255,0.04)" }}
+                >
                   <div className="flex gap-1.5 sm:gap-2">
                     <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f57]" />
                     <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#febc2e]" />
                     <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840]" />
                   </div>
-                  <span className="text-[#7A736C] text-xs sm:text-sm font-normal font-manrope">
+                  <span className="text-white/30 text-xs sm:text-sm font-normal font-manrope">
                     Ziora 2.0
                   </span>
                   <div className="w-8 sm:w-16" />
@@ -108,7 +115,12 @@ export default function Hero() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.2, duration: 0.5 }}
-                  className="absolute top-10 sm:top-12 -right-2 sm:-right-8 bg-white border border-stone px-3 sm:px-4 py-2 sm:py-3 z-10 max-w-45 sm:max-w-none shadow-lg"
+                  className="absolute top-10 sm:top-12 -right-2 sm:-right-8 border px-3 sm:px-4 py-2 sm:py-3 z-10 max-w-45 sm:max-w-none"
+                  style={{
+                    background: "#0d0b08",
+                    borderColor: "rgba(212,175,55,0.25)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.40)",
+                  }}
                 >
                   <div className="flex items-start gap-2">
                     <Sparkles
@@ -116,10 +128,10 @@ export default function Hero() {
                       className="sm:w-5 sm:h-5 text-gold mt-0.5 shrink-0"
                     />
                     <div className="font-manrope">
-                      <p className="font-semibold text-[#0A0A0A] text-xs sm:text-sm">
+                      <p className="font-semibold text-white text-xs sm:text-sm">
                         Ziora Suggestion
                       </p>
-                      <p className="text-[#7A736C] text-[10px] sm:text-xs mt-0.5 sm:mt-1">
+                      <p className="text-white/40 text-[10px] sm:text-xs mt-0.5 sm:mt-1">
                         Try &quot;Scandi-Boho&quot; for this light.
                       </p>
                     </div>
@@ -128,7 +140,7 @@ export default function Hero() {
 
                 {/* Kitchen Image */}
                 <div className="p-2 sm:p-3 md:p-3.5">
-                  <div className="relative aspect-[6/3] sm:aspect-[3/2] bg-stone overflow-hidden">
+                  <div className="relative aspect-6/3 sm:aspect-3/2 bg-white/06 overflow-hidden">
                     <Image
                       src="/kitchen.png"
                       alt="Kitchen visualization"
@@ -162,26 +174,31 @@ export default function Hero() {
                 </div>
 
                 {/* Bottom Controls */}
-                <div className="bg-[#FAF8F5] px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between border-t border-stone">
+                <div
+                  className="px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between border-t border-white/06"
+                  style={{ background: "rgba(255,255,255,0.03)" }}
+                >
                   <div className="flex gap-2 sm:gap-3">
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-stone border-2 border-gold cursor-pointer"
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/10 border-2 cursor-pointer"
+                      style={{ borderColor: "#D4AF37" }}
                     />
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-stone border-2 border-transparent cursor-pointer"
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/10 border-2 border-transparent cursor-pointer"
                     />
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-stone border-2 border-transparent cursor-pointer"
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/10 border-2 border-transparent cursor-pointer"
                     />
                   </div>
 
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
-                    className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0A0A0A] text-white text-xs sm:text-sm font-medium font-manrope hover:bg-[#1C1C1C] transition-colors"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-black text-xs sm:text-sm font-semibold font-manrope hover:opacity-90 transition-opacity"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                   >
                     Save
                   </motion.button>
@@ -198,16 +215,20 @@ export default function Hero() {
           transition={{ delay: 1, duration: 0.8 }}
           className="mt-6 mb-2 w-full max-w-4xl"
         >
-          <div className="px-8 py-4 bg-[#FAF8F5] font-manrope">
+          <div
+            className="px-8 py-4 font-manrope border border-white/06"
+            style={{ background: "#0d0b08" }}
+          >
             <div className="flex items-center justify-between relative">
               {/* Progress Line Background */}
-              <div className="absolute left-0 right-0 top-5 h-px bg-stone z-0" />
+              <div className="absolute left-0 right-0 top-5 h-px bg-white/08 z-0" />
 
               {/* Progress Line Active */}
               <motion.div
                 initial={{ width: "0%" }}
                 animate={{ width: "0%" }}
-                className="absolute left-0 top-5 h-px bg-[#0A0A0A] z-0"
+                className="absolute left-0 top-5 h-px z-0"
+                style={{ background: "rgba(212,175,55,0.60)" }}
               />
 
               {/* Step 1 - UPLOAD */}
@@ -216,11 +237,12 @@ export default function Hero() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
-                  className="w-10 h-10 bg-[#0A0A0A] flex items-center justify-center text-white font-semibold text-sm"
+                  className="w-10 h-10 flex items-center justify-center text-black font-semibold text-sm"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                 >
                   1
                 </motion.div>
-                <span className="text-[#0A0A0A] font-semibold text-xs tracking-[0.15em] uppercase">
+                <span className="text-[#D4AF37] font-semibold text-xs tracking-[0.15em] uppercase">
                   UPLOAD
                 </span>
               </div>
@@ -231,11 +253,12 @@ export default function Hero() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.3, type: "spring", stiffness: 200 }}
-                  className="w-10 h-10 bg-stone flex items-center justify-center text-[#7A736C] font-semibold text-sm"
+                  className="w-10 h-10 flex items-center justify-center text-white/25 font-semibold text-sm"
+                  style={{ background: "rgba(255,255,255,0.08)" }}
                 >
                   2
                 </motion.div>
-                <span className="text-[#7A736C] font-medium text-xs tracking-[0.15em] uppercase">
+                <span className="text-white/25 font-medium text-xs tracking-[0.15em] uppercase">
                   STYLE
                 </span>
               </div>
@@ -246,11 +269,12 @@ export default function Hero() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
-                  className="w-10 h-10 bg-stone flex items-center justify-center text-[#7A736C] font-semibold text-sm"
+                  className="w-10 h-10 flex items-center justify-center text-white/25 font-semibold text-sm"
+                  style={{ background: "rgba(255,255,255,0.08)" }}
                 >
                   3
                 </motion.div>
-                <span className="text-[#7A736C] font-medium text-xs tracking-[0.15em] uppercase">
+                <span className="text-white/25 font-medium text-xs tracking-[0.15em] uppercase">
                   PREVIEW
                 </span>
               </div>
@@ -261,11 +285,12 @@ export default function Hero() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
-                  className="w-10 h-10 bg-stone flex items-center justify-center text-[#7A736C] font-semibold text-sm"
+                  className="w-10 h-10 flex items-center justify-center text-white/25 font-semibold text-sm"
+                  style={{ background: "rgba(255,255,255,0.08)" }}
                 >
                   4
                 </motion.div>
-                <span className="text-[#7A736C] font-medium text-xs tracking-[0.15em] uppercase">
+                <span className="text-white/25 font-medium text-xs tracking-[0.15em] uppercase">
                   SAVE
                 </span>
               </div>

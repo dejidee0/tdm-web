@@ -58,17 +58,17 @@ function resolveTierState(tierId, sub, status, isActive, isCanceled, isExpired, 
 function PriceSkeleton() {
   return (
     <div className="space-y-2 mt-4">
-      <div className="h-9 w-32 bg-stone animate-pulse" />
-      <div className="h-4 w-40 bg-stone animate-pulse" />
+      <div className="h-9 w-32 bg-white/06 animate-pulse" />
+      <div className="h-4 w-40 bg-white/06 animate-pulse" />
     </div>
   );
 }
 
 // ── Tier price block ──────────────────────────────────────────────────────
 
-function TierPrice({ tier, billing, pricing, discount, dark }) {
-  const textMuted = dark ? "text-white/50" : "text-[#7A736C]";
-  const textMain = dark ? "text-white" : "text-[#0A0A0A]";
+function TierPrice({ tier, billing, pricing, discount }) {
+  const textMuted = "text-white/50";
+  const textMain = "text-white";
 
   // Economy is always free
   if (tier === "economy") {
@@ -104,7 +104,10 @@ function TierPrice({ tier, billing, pricing, discount, dark }) {
   return (
     <div className="mt-4">
       {activeDiscount && (
-        <span className="inline-block mb-2 px-2.5 py-1 text-[11px] font-bold bg-warm text-[#0A0A0A] uppercase tracking-wide font-manrope">
+        <span
+          className="inline-block mb-2 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide font-manrope"
+          style={{ background: "rgba(212,175,55,0.12)", color: "#D4AF37" }}
+        >
           {activeDiscount.displayLabel || "Limited Offer"}
         </span>
       )}
@@ -141,11 +144,10 @@ function TierPrice({ tier, billing, pricing, discount, dark }) {
 
 // ── Quota bar (shown on active card) ─────────────────────────────────────
 
-function QuotaBar({ used, allowed, dark }) {
+function QuotaBar({ used, allowed }) {
   if (allowed === null) {
-    const textColor = dark ? "text-white/70" : "text-[#7A736C]";
     return (
-      <div className={`flex items-center gap-1.5 text-xs font-medium ${textColor} mt-4`}>
+      <div className="flex items-center gap-1.5 text-xs font-medium text-white/70 mt-4">
         <Crown className="w-3.5 h-3.5 text-gold" /> Unlimited generations
       </div>
     );
@@ -153,12 +155,9 @@ function QuotaBar({ used, allowed, dark }) {
 
   const pct = Math.min((used / allowed) * 100, 100);
   const isHigh = pct >= 80;
-  const trackBg = dark ? "bg-white/10" : "bg-stone";
-  const fillColor = isHigh ? "bg-orange-400" : dark ? "bg-gold" : "bg-[#0A0A0A]";
-  const textColor = dark ? "text-white/70" : "text-[#7A736C]";
-  const countColor = isHigh
-    ? "text-orange-400"
-    : dark ? "text-white" : "text-[#0A0A0A]";
+  const trackBg = "bg-white/10";
+  const textColor = "text-white/70";
+  const countColor = isHigh ? "text-orange-400" : "text-white";
 
   return (
     <div className="mt-4 space-y-1.5">
@@ -171,7 +170,11 @@ function QuotaBar({ used, allowed, dark }) {
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className={`h-full ${fillColor}`}
+          className="h-full"
+          style={isHigh
+            ? { background: "#fb923c" }
+            : { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+          }
         />
       </div>
       {isHigh && (
@@ -307,7 +310,7 @@ export default function PackageTiers({ id, onSubscribed }) {
 
   return (
     <>
-      <section id={id} className="bg-[#FAF8F5] py-16 sm:py-20 font-manrope scroll-mt-20">
+      <section id={id} className="bg-black py-16 sm:py-20 font-manrope scroll-mt-20">
         <div className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ── Section header ───────────────────────────────────── */}
@@ -321,10 +324,10 @@ export default function PackageTiers({ id, onSubscribed }) {
             <span className="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4">
               <Sparkles className="w-3 h-3" /> Ziora Intelligence Plans
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0A0A0A] mb-4 tracking-tight font-primary">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight font-primary">
               {currentTier && isActive ? "Your Plan" : "Choose Your Plan"}
             </h2>
-            <p className="text-[#7A736C] text-base max-w-xl font-manrope">
+            <p className="text-white/40 text-base max-w-xl font-manrope">
               {currentTier && isActive
                 ? "You're all set. Manage your subscription or upgrade below."
                 : "Start free and upgrade when you're ready for deeper design power, cost estimates, and full project execution."}
@@ -340,20 +343,27 @@ export default function PackageTiers({ id, onSubscribed }) {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <div className="inline-flex items-center gap-0 border border-stone p-1 bg-white">
+              <div
+                className="inline-flex items-center gap-0 border p-1"
+                style={{ background: "#0d0b08", borderColor: "rgba(255,255,255,0.10)" }}
+              >
                 {["monthly", "yearly"].map((cycle) => (
                   <button
                     key={cycle}
                     onClick={() => setBilling(cycle)}
-                    className={`relative px-5 py-2 text-sm font-semibold transition-colors font-manrope ${
+                    className="relative px-5 py-2 text-sm font-semibold transition-colors font-manrope text-black"
+                    style={
                       billing === cycle
-                        ? "bg-[#0A0A0A] text-white"
-                        : "text-[#7A736C] hover:text-[#0A0A0A]"
-                    }`}
+                        ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+                        : { background: "transparent", color: "rgba(255,255,255,0.40)" }
+                    }
                   >
                     {cycle === "monthly" ? "Monthly" : "Yearly"}
                     {cycle === "yearly" && yearlyDiscountPct != null && (
-                      <span className="ml-2 px-1.5 py-0.5 text-[10px] font-bold bg-warm text-[#0A0A0A]">
+                      <span
+                        className="ml-2 px-1.5 py-0.5 text-[10px] font-bold"
+                        style={{ background: "rgba(212,175,55,0.15)", color: "#D4AF37" }}
+                      >
                         Save {Math.round(yearlyDiscountPct)}%
                       </span>
                     )}
@@ -361,7 +371,7 @@ export default function PackageTiers({ id, onSubscribed }) {
                 ))}
               </div>
               {isActive && currentTier && currentTier !== "economy" && (
-                <p className="ml-4 text-xs text-[#7A736C]">
+                <p className="ml-4 text-xs text-white/30">
                   Billing cycle is locked to your current plan.
                 </p>
               )}
@@ -377,14 +387,17 @@ export default function PackageTiers({ id, onSubscribed }) {
           )}
 
           {ctaError && (
-            <div className="flex items-start gap-3 p-4 mb-6 bg-amber-50 border border-amber-200 font-manrope">
-              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-800">{ctaError}</p>
+            <div
+              className="flex items-start gap-3 p-4 mb-6 border font-manrope"
+              style={{ background: "rgba(245,158,11,0.08)", borderColor: "rgba(245,158,11,0.25)" }}
+            >
+              <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <p className="text-sm text-amber-400">{ctaError}</p>
             </div>
           )}
 
           {/* ── Tier cards ───────────────────────────────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black">
             {TIERS.map((tier, i) => {
               const Icon = tier.icon;
               const isHidden =
@@ -406,23 +419,25 @@ export default function PackageTiers({ id, onSubscribed }) {
 
               const isBusy = isSubmitting && pendingTier === tier.id;
 
-              const bg = tier.dark ? "bg-[#0A0A0A]" : "bg-white";
-              const textMain = tier.dark ? "text-white" : "text-[#0A0A0A]";
-              const textMuted = tier.dark ? "text-white/50" : "text-[#7A736C]";
-              const divider = tier.dark ? "border-white/10" : "border-stone";
-              const iconBorder = tier.dark ? "border-white/15" : "border-stone";
-              const iconBg = tier.dark ? "bg-white/5" : "bg-[#FAF8F5]";
+              const cardBg = tier.dark
+                ? "rgba(212,175,55,0.04)"
+                : "#0d0b08";
+              const cardBorder = tier.dark
+                ? "rgba(212,175,55,0.20)"
+                : "rgba(255,255,255,0.08)";
+              const textMain = "text-white";
+              const textMuted = "text-white/50";
+              const divider = "border-white/10";
+              const iconBorder = "border-white/10";
 
               // Outer ring for current plan
-              const ringClass = isCurrentActive
-                ? tier.dark
-                  ? "ring-2 ring-white ring-inset"
-                  : "ring-2 ring-[#0A0A0A] ring-inset"
+              const ringStyle = isCurrentActive
+                ? { outline: "2px solid rgba(212,175,55,0.50)", outlineOffset: "-2px" }
                 : isCurrentCanceled
-                ? "ring-2 ring-amber-400 ring-inset"
+                ? { outline: "2px solid #f59e0b", outlineOffset: "-2px" }
                 : isCurrentExpired || isCurrentPaused
-                ? "ring-2 ring-red-300 ring-inset"
-                : "";
+                ? { outline: "2px solid rgba(239,68,68,0.60)", outlineOffset: "-2px" }
+                : {};
 
               return (
                 <motion.div
@@ -431,15 +446,17 @@ export default function PackageTiers({ id, onSubscribed }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.55, delay: i * 0.1 }}
-                  className={`relative flex flex-col p-8 ${bg} ${ringClass} ${
-                    hasOtherActive ? "opacity-60" : ""
-                  }`}
+                  className={`relative flex flex-col p-8 border ${hasOtherActive ? "opacity-60" : ""}`}
+                  style={{ background: cardBg, borderColor: cardBorder, ...ringStyle }}
                 >
                   {/* ── Top badges ── */}
                   <div className="absolute top-5 right-5 flex flex-col items-end gap-1.5">
                     {/* Current plan badge */}
                     {isCurrentActive && (
-                      <span className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold bg-[#0A0A0A] text-white uppercase tracking-wide font-manrope">
+                      <span
+                        className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-black uppercase tracking-wide font-manrope"
+                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                      >
                         <BadgeCheck className="w-3 h-3" /> Your Plan
                       </span>
                     )}
@@ -467,8 +484,11 @@ export default function PackageTiers({ id, onSubscribed }) {
                   </div>
 
                   {/* Icon + title */}
-                  <div className={`w-10 h-10 border ${iconBorder} ${iconBg} flex items-center justify-center mb-3`}>
-                    <Icon className={`w-5 h-5 ${tier.dark ? "text-gold" : "text-[#0A0A0A]"}`} />
+                  <div
+                    className={`w-10 h-10 border ${iconBorder} flex items-center justify-center mb-3`}
+                    style={{ background: "rgba(212,175,55,0.06)" }}
+                  >
+                    <Icon className="w-5 h-5 text-[#D4AF37]" />
                   </div>
                   <h3 className={`text-xl font-bold ${textMain} font-primary`}>{tier.label}</h3>
                   <p className={`text-sm ${textMuted} mt-0.5 font-manrope`}>{tier.tagline}</p>
@@ -490,7 +510,6 @@ export default function PackageTiers({ id, onSubscribed }) {
                           billing={billing}
                           pricing={pricing}
                           discount={activeDiscount}
-                          dark={tier.dark}
                         />
                       </motion.div>
                     </AnimatePresence>
@@ -501,7 +520,6 @@ export default function PackageTiers({ id, onSubscribed }) {
                     <QuotaBar
                       used={generationsUsed}
                       allowed={generationsAllowed}
-                      dark={tier.dark}
                     />
                   )}
 
@@ -554,7 +572,7 @@ export default function PackageTiers({ id, onSubscribed }) {
                           <button
                             onClick={() => setShowCancelModal(true)}
                             disabled={isSubmitting}
-                            className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 border border-red-200 text-red-600 hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
+                            className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 border border-red-500/30 text-red-400 hover:bg-red-900/20 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
                           >
                             Cancel Plan
                           </button>
@@ -583,7 +601,8 @@ export default function PackageTiers({ id, onSubscribed }) {
                       <button
                         onClick={handleRenew}
                         disabled={renew.isPending}
-                        className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 bg-[#0A0A0A] text-white hover:bg-[#1C1C1C] disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 text-black hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
+                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                       >
                         {renew.isPending ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -600,11 +619,8 @@ export default function PackageTiers({ id, onSubscribed }) {
                         <button
                           onClick={() => handleSubscribe(tier.id)}
                           disabled={isSubmitting || priceLoading || !!priceError}
-                          className={`w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide ${
-                            tier.dark
-                              ? "bg-white text-[#0A0A0A] hover:bg-[#FAF8F5]"
-                              : "bg-[#0A0A0A] text-white hover:bg-[#1C1C1C]"
-                          }`}
+                          className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
+                          style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                         >
                           {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
                           {isBusy ? "Processing…" : `Switch to ${tier.label}`}
@@ -621,11 +637,8 @@ export default function PackageTiers({ id, onSubscribed }) {
                       <button
                         onClick={() => handleSubscribe(tier.id)}
                         disabled={isSubmitting || (tier.id !== "economy" && (priceLoading || !!priceError))}
-                        className={`w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide ${
-                          tier.dark
-                            ? "bg-white text-[#0A0A0A] hover:bg-[#FAF8F5]"
-                            : "bg-[#0A0A0A] text-white hover:bg-[#1C1C1C]"
-                        }`}
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
+                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                       >
                         {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
                         {isBusy ? "Processing…" : `Choose ${tier.label}`}
@@ -634,7 +647,7 @@ export default function PackageTiers({ id, onSubscribed }) {
 
                     {/* Subscription loading skeleton for CTA */}
                     {subLoading && (
-                      <div className="w-full h-11 bg-stone animate-pulse" />
+                      <div className="w-full h-11 bg-white/06 animate-pulse" />
                     )}
                   </div>
                 </motion.div>
@@ -644,7 +657,7 @@ export default function PackageTiers({ id, onSubscribed }) {
 
           {/* ── Footer note ──────────────────────────────────────── */}
           <motion.p
-            className="text-sm text-[#7A736C] mt-10 font-manrope"
+            className="text-sm text-white/30 mt-10 font-manrope"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

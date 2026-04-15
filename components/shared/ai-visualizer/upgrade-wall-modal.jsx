@@ -37,22 +37,22 @@ function CardPrice({ tier, billing, pricing, discount }) {
         {activeDiscount && discountedPrice != null ? (
           <>
             <span className="text-2xl font-extrabold text-white">
-              ${Number(discountedPrice).toFixed(2)}
+              ₦{Number(discountedPrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
             </span>
             <span className="text-sm text-white/50 line-through mb-0.5">
-              ${Number(basePrice).toFixed(2)}
+              ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
             </span>
           </>
         ) : (
           <span className="text-2xl font-extrabold text-white">
-            ${Number(basePrice).toFixed(2)}
+            ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
           </span>
         )}
         <span className="text-sm text-white/60 mb-0.5">/mo</span>
       </div>
       {isYearly && (
         <p className="text-xs text-white/50 mt-0.5">
-          ${Number(data.annualPrice).toFixed(2)} billed annually
+          ₦{Number(data.annualPrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })} billed annually
         </p>
       )}
     </div>
@@ -189,11 +189,11 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
                     <button
                       key={cycle}
                       onClick={() => setBilling(cycle)}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
-                        billing === cycle
-                          ? "bg-white text-primary"
-                          : "text-white/50 hover:text-white"
-                      }`}
+                      className="px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors"
+                      style={billing === cycle
+                        ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", color: "#000" }
+                        : { background: "transparent", color: "rgba(255,255,255,0.50)" }
+                      }
                     >
                       {cycle === "monthly" ? "Monthly" : "Yearly"}
                       {cycle === "yearly" && yearlyDiscountPct != null && (
@@ -268,7 +268,8 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
                           isLoading ||
                           isError
                         }
-                        className={`mt-5 w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${tier.accent}`}
+                        className="mt-5 w-full py-2.5 rounded-xl text-sm font-semibold text-black flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                       >
                         {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
                         {isBusy ? "Processing…" : tier.cta}

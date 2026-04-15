@@ -1,105 +1,71 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Store, Sparkles, Users } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Hammer, HardHat, Sofa, LayoutGrid, ClipboardList, Building2 } from "lucide-react";
+import Reveal from "@/components/common/reveal";
 
-const ServicesSection = () => {
-  const services = [
-    {
-      icon: Store,
-      title: "Bogat Materials",
-      description:
-        "Source certified renovation and construction materials — tiles, plumbing, electrical, and more — delivered directly to your site.",
-    },
-    {
-      icon: Sparkles,
-      title: "Design with Ziora",
-      description:
-        "Upload your space, choose a style, and let Ziora Intelligence generate a premium design vision before you spend a single naira.",
-    },
-    {
-      icon: Users,
-      title: "TBM Project Execution",
-      description:
-        "From estimate to completion — TBM connects you with verified contractors and manages your renovation or construction project end-to-end.",
-    },
-  ];
+const SERVICES = [
+  { Icon: Hammer,        label: "Construction" },
+  { Icon: HardHat,       label: "Renovation" },
+  { Icon: Sofa,          label: "Interior Design" },
+  { Icon: LayoutGrid,    label: "Interior Design" },
+  { Icon: ClipboardList, label: "Project Management" },
+  { Icon: Building2,     label: "Commercial Build" },
+];
 
+export default function ServicesSection() {
   return (
-    <section className="py-20 sm:py-24 lg:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-14 sm:mb-18"
-        >
-          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
-            What we offer
-          </span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-[#0A0A0A] mb-5 leading-tight tracking-tight"
-          >
-            One Platform.<br className="hidden sm:block" /> Design. Materials. Execution.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg font-manrope text-[#7A736C] max-w-2xl"
-          >
-            TBM brings together AI planning, materials supply, and expert execution — from first design to finished build.
-          </motion.p>
-        </motion.div>
+    <section className="bg-black py-20 sm:py-28">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
 
-        {/* Service Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="bg-white p-8 sm:p-10 group hover:bg-[#FAF8F5] transition-colors duration-300"
-              >
-                {/* Icon */}
-                <div className="mb-8">
-                  <div className="w-12 h-12 flex items-center justify-center border border-stone group-hover:border-gold transition-colors duration-300">
+        {/* Section title */}
+        <Reveal direction="up">
+          <h2 className="font-poppins font-bold text-3xl sm:text-4xl text-white mb-12 sm:mb-16">
+            Our Services
+          </h2>
+        </Reveal>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 lg:gap-12 items-start">
+
+          {/* Left — 3×2 service cards grid */}
+          <div className="grid grid-cols-3 gap-4">
+            {SERVICES.map(({ Icon, label }, i) => (
+              <Reveal key={`${label}-${i}`} direction="up" delay={i * 60}>
+                <Link
+                  href="/services"
+                  className="group flex flex-col items-center gap-4 bg-card rounded-2xl p-6 sm:p-8 hover:border hover:border-[#D4AF37]/30 border border-transparent transition-all duration-300"
+                >
+                  {/* Icon container */}
+                  <span className="flex items-center justify-center w-14 h-14 rounded-xl bg-black/50 group-hover:bg-[#D4AF37]/10 transition-colors duration-300">
                     <Icon
-                      className="w-5 h-5 text-[#0A0A0A]"
+                      className="w-6 h-6 text-[#D4AF37]"
                       strokeWidth={1.5}
                     />
-                  </div>
-                </div>
+                  </span>
+                  {/* Label */}
+                  <span className="text-white text-sm font-manrope font-medium text-center leading-snug">
+                    {label}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
 
-                {/* Content */}
-                <h3 className="text-xl sm:text-2xl font-manrope font-bold text-[#0A0A0A] mb-4 leading-snug">
-                  {service.title}
-                </h3>
-                <p className="text-base font-manrope text-[#7A736C] leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Understated gold accent line */}
-                <div className="mt-8 w-8 h-px bg-gold group-hover:w-16 transition-all duration-500" />
-              </motion.div>
-            );
-          })}
+          {/* Right — tall photo */}
+          <Reveal direction="right" delay={150}>
+            <div className="relative rounded-2xl overflow-hidden h-80 lg:h-full min-h-80 bg-card">
+              <Image
+                src="/product-1.jpg"
+                alt="TBM Services"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20" />
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
   );
-};
-
-export default ServicesSection;
+}

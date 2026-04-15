@@ -2,14 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Heart,
-  MoreVertical,
-  Download,
-  Share2,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { Heart, MoreVertical, Download, Share2, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -24,19 +17,13 @@ export default function DesignCard({ design, index, isList = false }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const menuRef = useRef(null);
 
-  // Normalise API response field names
-  const imageUrl =
-    design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
+  const imageUrl = design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
   const title = design.projectName ?? design.name ?? design.title ?? "Untitled";
   const room = design.roomType ?? design.room ?? "";
   const isFavorite = design.isFavorited ?? design.isFavorite ?? false;
   const isHighRes = design.isHighRes ?? false;
   const createdAt = design.createdAt
-    ? new Date(design.createdAt).toLocaleDateString("en-NG", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
+    ? new Date(design.createdAt).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })
     : "";
 
   const toggleFavorite = useToggleFavorite();
@@ -44,49 +31,20 @@ export default function DesignCard({ design, index, isList = false }) {
   const downloadDesign = useDownloadDesign();
   const shareDesign = useShareDesign();
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowMenu(false);
-      }
+      if (menuRef.current && !menuRef.current.contains(event.target)) setShowMenu(false);
     };
-
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [showMenu]);
 
-  const handleFavorite = (e) => {
-    e.stopPropagation();
-    toggleFavorite.mutate(design.id);
-  };
-
-  const handleDownload = () => {
-    downloadDesign.mutate({
-      designId: design.id,
-      quality: design.isHighRes ? "high" : "standard",
-    });
-    setShowMenu(false);
-  };
-
-  const handleShare = () => {
-    shareDesign.mutate(design.id, {
-      onSuccess: (data) => {
-        navigator.clipboard.writeText(data.shareUrl);
-        // Could add a toast notification here
-      },
-    });
-    setShowMenu(false);
-  };
-
-  const handleDelete = () => {
-    deleteDesign.mutate(design.id);
-    setShowMenu(false);
-    setShowDeleteConfirm(false);
-  };
+  const handleFavorite = (e) => { e.stopPropagation(); toggleFavorite.mutate(design.id); };
+  const handleDownload = () => { downloadDesign.mutate({ designId: design.id, quality: design.isHighRes ? "high" : "standard" }); setShowMenu(false); };
+  const handleShare = () => { shareDesign.mutate(design.id, { onSuccess: (data) => navigator.clipboard.writeText(data.shareUrl) }); setShowMenu(false); };
+  const handleDelete = () => { deleteDesign.mutate(design.id); setShowMenu(false); setShowDeleteConfirm(false); };
 
   if (isList) {
     return (
@@ -96,60 +54,35 @@ export default function DesignCard({ design, index, isList = false }) {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
         transition={{ duration: 0.3, delay: index * 0.05 }}
-        className="bg-white rounded-xl border border-[#e5e5e5] p-4 hover:shadow-md transition-all cursor-pointer group"
+        className="rounded-xl border border-white/08 p-4 hover:border-white/15 transition-all cursor-pointer group"
+        style={{ background: "#0d0b08" }}
       >
         <div className="flex items-center gap-4">
-          {/* Image */}
-          <div className="relative w-28 h-24 shrink-0 bg-[#f5f5f5] rounded-lg overflow-hidden">
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="112px"
-            />
+          <div className="relative w-28 h-24 shrink-0 bg-[#1a1a1a] rounded-lg overflow-hidden">
+            <Image src={imageUrl} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="112px" />
             {isHighRes && (
-              <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded">
-                HIGH RES
-              </div>
+              <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded">HIGH RES</div>
             )}
           </div>
 
-          {/* Info */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-[15px] font-semibold text-[#1a1a1a] mb-1 truncate">
-              {title}
-            </h3>
-            <div className="flex items-center gap-2 text-[13px] text-[#666666]">
-              <span className="w-2 h-2 rounded-full bg-[#ef4444]" />
+            <h3 className="text-[15px] font-semibold text-white mb-1 truncate">{title}</h3>
+            <div className="flex items-center gap-2 text-[13px] text-white/40">
+              <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
               <span>{room}</span>
             </div>
-            <p className="text-[12px] text-[#999999] mt-1">
-              {createdAt}
-            </p>
+            <p className="text-[12px] text-white/25 mt-1">{createdAt}</p>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleFavorite}
-              className="p-2 hover:bg-[#f5f5f5] rounded-lg transition-colors"
-            >
-              <Heart
-                className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#999999]"}`}
-              />
+            <button onClick={handleFavorite} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
+              <Heart className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/30"}`} />
             </button>
-            <button
-              onClick={handleDownload}
-              className="p-2 hover:bg-[#f5f5f5] rounded-lg transition-colors"
-            >
-              <Download className="w-5 h-5 text-[#999999]" />
+            <button onClick={handleDownload} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
+              <Download className="w-5 h-5 text-white/30" />
             </button>
-            <button
-              onClick={handleShare}
-              className="p-2 hover:bg-[#f5f5f5] rounded-lg transition-colors"
-            >
-              <Share2 className="w-5 h-5 text-[#999999]" />
+            <button onClick={handleShare} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
+              <Share2 className="w-5 h-5 text-white/30" />
             </button>
           </div>
         </div>
@@ -164,10 +97,11 @@ export default function DesignCard({ design, index, isList = false }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
+      className="rounded-xl border border-white/08 overflow-hidden hover:border-white/15 transition-all cursor-pointer group"
+      style={{ background: "#0d0b08" }}
     >
-      {/* Image Container */}
-      <div className="relative aspect-4/3 bg-[#f5f5f5] overflow-hidden">
+      {/* Image */}
+      <div className="relative aspect-4/3 bg-[#1a1a1a] overflow-hidden">
         <Image
           src={imageUrl}
           alt={title}
@@ -175,155 +109,93 @@ export default function DesignCard({ design, index, isList = false }) {
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         />
-
-        {/* High Res Badge */}
         {isHighRes && (
-          <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md">
-            HIGH RES
-          </div>
+          <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md">HIGH RES</div>
         )}
-
-        {/* Favorite Button */}
         <button
           onClick={handleFavorite}
-          className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white transition-colors"
+          className="absolute top-3 right-3 w-9 h-9 bg-black/60 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
         >
-          <Heart
-            className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-[#666666]"}`}
-          />
+          <Heart className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/50"}`} />
         </button>
       </div>
 
       {/* Content */}
       <div className="p-4 relative">
-        {/* Title and Menu */}
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-[15px] font-semibold text-[#1a1a1a] line-clamp-1 flex-1 pr-2">
-            {title}
-          </h3>
+          <h3 className="text-[15px] font-semibold text-white line-clamp-1 flex-1 pr-2">{title}</h3>
 
-          {/* More Menu */}
           <div className="relative z-10" ref={menuRef}>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowMenu(!showMenu);
-              }}
-              className="p-1 hover:bg-[#f5f5f5] rounded-md transition-colors shrink-0"
+              onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
+              className="p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
             >
-              <MoreVertical className="w-5 h-5 text-[#666666]" />
+              <MoreVertical className="w-5 h-5 text-white/40" />
             </button>
 
-            {/* Dropdown Menu - Fixed positioning to prevent cutoff */}
             {showMenu && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: -5 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-[#e5e5e5] py-1 z-50"
+                className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-white/10 py-1 z-50"
+                style={{ background: "#0d0b08", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}
               >
-                <button
-                  onClick={() => {
-                    // Edit functionality
-                    setShowMenu(false);
-                  }}
-                  className="w-full px-4 py-2.5 text-left text-[14px] text-[#1a1a1a] hover:bg-[#f5f5f5] flex items-center gap-3 transition-colors"
-                >
-                  <Pencil className="w-4 h-4" />
-                  Edit
+                <button onClick={() => setShowMenu(false)} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+                  <Pencil className="w-4 h-4" /> Edit
                 </button>
-                <button
-                  onClick={handleDownload}
-                  className="w-full px-4 py-2.5 text-left text-[14px] text-[#1a1a1a] hover:bg-[#f5f5f5] flex items-center gap-3 transition-colors"
-                >
-                  <Download className="w-4 h-4" />
-                  Download
+                <button onClick={handleDownload} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+                  <Download className="w-4 h-4" /> Download
                 </button>
-                <button
-                  onClick={handleShare}
-                  className="w-full px-4 py-2.5 text-left text-[14px] text-[#1a1a1a] hover:bg-[#f5f5f5] flex items-center gap-3 transition-colors"
-                >
-                  <Share2 className="w-4 h-4" />
-                  Share
+                <button onClick={handleShare} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+                  <Share2 className="w-4 h-4" /> Share
                 </button>
-                <div className="h-px bg-[#e5e5e5] my-1" />
-                <button
-                  onClick={() => {
-                    setShowDeleteConfirm(true);
-                    setShowMenu(false);
-                  }}
-                  className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-[#fef2f2] flex items-center gap-3 transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Delete
+                <div className="h-px bg-white/06 my-1" />
+                <button onClick={() => { setShowDeleteConfirm(true); setShowMenu(false); }} className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-red-900/20 flex items-center gap-3 transition-colors">
+                  <Trash2 className="w-4 h-4" /> Delete
                 </button>
               </motion.div>
             )}
           </div>
         </div>
 
-        {/* Room Info */}
-        <div className="flex items-center gap-2 text-[13px] text-[#666666] mb-3">
-          <span className="w-2 h-2 rounded-full bg-[#ef4444]" />
+        <div className="flex items-center gap-2 text-[13px] text-white/40 mb-3">
+          <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
           <span>{room}</span>
         </div>
 
-        {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-3 border-t border-[#e5e5e5]">
-          <span className="text-[12px] text-[#999999]">{createdAt}</span>
-
+        <div className="flex items-center justify-between pt-3 border-t border-white/06">
+          <span className="text-[12px] text-white/25">{createdAt}</span>
           <div className="flex items-center gap-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDownload();
-              }}
-              className="p-1.5 hover:bg-[#f5f5f5] rounded-md transition-colors"
-              aria-label="Download"
-            >
-              <Download className="w-4 h-4 text-[#666666]" />
+            <button onClick={(e) => { e.stopPropagation(); handleDownload(); }} className="p-1.5 hover:bg-white/05 rounded-md transition-colors" aria-label="Download">
+              <Download className="w-4 h-4 text-white/40" />
             </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleShare();
-              }}
-              className="p-1.5 hover:bg-[#f5f5f5] rounded-md transition-colors"
-              aria-label="Share"
-            >
-              <Share2 className="w-4 h-4 text-[#666666]" />
+            <button onClick={(e) => { e.stopPropagation(); handleShare(); }} className="p-1.5 hover:bg-white/05 rounded-md transition-colors" aria-label="Share">
+              <Share2 className="w-4 h-4 text-white/40" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl p-6 max-w-sm w-full"
+            className="rounded-xl p-6 max-w-sm w-full border border-white/10"
+            style={{ background: "#0d0b08" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-[18px] font-semibold text-[#1a1a1a] mb-2">
-              Delete Design?
-            </h3>
-            <p className="text-[14px] text-[#666666] mb-6">
-              This action cannot be undone. The design will be permanently
-              removed.
+            <h3 className="text-[18px] font-semibold text-white mb-2">Delete Design?</h3>
+            <p className="text-[14px] text-white/50 mb-6">
+              This action cannot be undone. The design will be permanently removed.
             </p>
             <div className="flex gap-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 px-4 py-2.5 bg-[#f5f5f5] text-[#1a1a1a] rounded-lg text-[14px] font-medium hover:bg-[#e5e5e5] transition-colors"
-              >
+              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 px-4 py-2.5 bg-white/06 text-white rounded-lg text-[14px] font-medium hover:bg-white/10 transition-colors">
                 Cancel
               </button>
-              <button
-                onClick={handleDelete}
-                className="flex-1 px-4 py-2.5 bg-[#ef4444] text-white rounded-lg text-[14px] font-medium hover:bg-[#dc2626] transition-colors"
-              >
+              <button onClick={handleDelete} className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-[14px] font-medium hover:bg-red-700 transition-colors">
                 Delete
               </button>
             </div>

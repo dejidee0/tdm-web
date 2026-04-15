@@ -199,25 +199,35 @@ export default function ZioraStudio() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold uppercase tracking-widest mb-3">
+            <span
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-widest mb-3"
+              style={{ borderColor: "rgba(212,175,55,0.25)", background: "rgba(212,175,55,0.08)", color: "#D4AF37" }}
+            >
               <Sparkles className="w-3 h-3" /> Ziora Studio
             </span>
-            <h1 className="text-3xl md:text-4xl font-bold text-primary">
+            <h1 className="text-3xl md:text-4xl font-bold text-white">
               Hey, {firstName}. What shall we build?
             </h1>
-            <p className="text-gray-500 mt-1 text-sm">
+            <p className="text-white/40 mt-1 text-sm">
               Describe your vision and let Ziora bring it to life.
             </p>
           </div>
 
           {generationsAllowed !== null ? (
-            <div className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold ${
-              quotaExhausted ? "bg-orange-100 text-orange-700" : "bg-primary/5 text-primary"
-            }`}>
+            <div
+              className="shrink-0 px-4 py-2 rounded-xl text-sm font-semibold"
+              style={quotaExhausted
+                ? { background: "rgba(251,146,60,0.12)", color: "#fb923c" }
+                : { background: "rgba(212,175,55,0.08)", color: "#D4AF37" }
+              }
+            >
               {generationsUsed} / {generationsAllowed} generations used
             </div>
           ) : (
-            <div className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-100 text-purple-700 text-sm font-semibold">
+            <div
+              className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold"
+              style={{ background: "rgba(168,85,247,0.12)", color: "#c084fc" }}
+            >
               <Crown className="w-3.5 h-3.5" /> Unlimited generations
             </div>
           )}
@@ -228,7 +238,8 @@ export default function ZioraStudio() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white border border-gray-200 shadow-sm overflow-hidden"
+          className="border border-white/08 overflow-hidden"
+          style={{ background: "#0d0b08" }}
         >
           {/* Generating state */}
           <AnimatePresence>
@@ -241,13 +252,16 @@ export default function ZioraStudio() {
                 className="flex flex-col items-center justify-center text-center px-8 py-24 gap-5"
               >
                 <div className="relative">
-                  <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center">
-                    <Sparkles className="w-7 h-7 text-primary" />
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center"
+                    style={{ background: "rgba(212,175,55,0.08)" }}
+                  >
+                    <Sparkles className="w-7 h-7 text-[#D4AF37]" />
                   </div>
-                  <Loader2 className="w-16 h-16 animate-spin text-primary/20 absolute inset-0" />
+                  <Loader2 className="w-16 h-16 animate-spin text-white/10 absolute inset-0" />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-primary">Working on your design…</p>
+                  <p className="text-lg font-semibold text-white">Working on your design…</p>
                   <AnimatePresence mode="wait">
                     <motion.p
                       key={generationStage}
@@ -255,7 +269,7 @@ export default function ZioraStudio() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -6 }}
                       transition={{ duration: 0.35 }}
-                      className="text-sm text-gray-400 mt-1"
+                      className="text-sm text-white/40 mt-1"
                     >
                       {generationStage}
                     </motion.p>
@@ -275,25 +289,26 @@ export default function ZioraStudio() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center text-center px-8 py-24 gap-4"
               >
-                <CheckCircle className="w-14 h-14 text-green-500" />
+                <CheckCircle className="w-14 h-14 text-green-400" />
                 <div>
-                  <p className="text-lg font-semibold text-primary">
+                  <p className="text-lg font-semibold text-white">
                     {outputType === "video" ? "Video" : "Design"} created!
                   </p>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-white/40 mt-1">
                     Ready in your gallery.
                   </p>
                 </div>
                 <div className="flex gap-3 mt-2">
                   <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold hover:bg-[#273054] transition-colors"
+                    className="flex items-center gap-2 px-5 py-2.5 text-black text-sm font-semibold hover:opacity-90 transition-opacity"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                   >
                     <RotateCcw className="w-4 h-4" /> Generate Another
                   </button>
                   <a
                     href="/dashboard/ai-designs"
-                    className="px-5 py-2.5 border border-gray-300 text-primary text-sm font-semibold hover:bg-gray-50 transition-colors"
+                    className="px-5 py-2.5 border border-white/10 text-white/60 text-sm font-semibold hover:bg-white/05 transition-colors"
                   >
                     View Gallery
                   </a>
@@ -314,12 +329,13 @@ export default function ZioraStudio() {
               >
                 <AlertCircle className="w-14 h-14 text-red-400" />
                 <div>
-                  <p className="text-lg font-semibold text-primary">Something went wrong</p>
-                  <p className="text-sm text-gray-400 mt-1">{errorMsg}</p>
+                  <p className="text-lg font-semibold text-white">Something went wrong</p>
+                  <p className="text-sm text-white/40 mt-1">{errorMsg}</p>
                 </div>
                 <button
                   onClick={handleReset}
-                  className="mt-1 px-6 py-2.5 bg-primary text-white text-sm font-semibold hover:bg-[#273054] transition-colors"
+                  className="mt-1 px-6 py-2.5 text-black text-sm font-semibold hover:opacity-90 transition-opacity"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                 >
                   Try Again
                 </button>
@@ -346,18 +362,18 @@ export default function ZioraStudio() {
                       key={id}
                       type="button"
                       onClick={() => setOutputType(id)}
-                      className={`flex items-center gap-2 px-5 py-2 text-sm font-semibold border-b-2 transition-colors ${
-                        outputType === id
-                          ? "border-primary text-primary"
-                          : "border-transparent text-gray-400 hover:text-gray-600"
-                      }`}
+                      className="flex items-center gap-2 px-5 py-2 text-sm font-semibold border-b-2 transition-colors"
+                      style={outputType === id
+                        ? { borderColor: "#D4AF37", color: "#D4AF37" }
+                        : { borderColor: "transparent", color: "rgba(255,255,255,0.30)" }
+                      }
                     >
                       <Icon className="w-4 h-4" />
                       {label}
                     </button>
                   ))}
                 </div>
-                <div className="border-b border-gray-100 mx-6 sm:mx-8" />
+                <div className="border-b border-white/06 mx-6 sm:mx-8" />
 
                 <div className="px-6 sm:px-8 py-7 space-y-5">
 
@@ -373,9 +389,9 @@ export default function ZioraStudio() {
                           ? "Describe the scene you want to animate — e.g. a cinematic walk-through of a modern open-plan living space with warm evening lighting…"
                           : "Describe your vision — e.g. a modern minimalist kitchen with marble countertops, warm pendant lighting and open shelving…"
                       }
-                      className="w-full text-[15px] text-primary placeholder-gray-300 border border-gray-200 px-4 py-4 outline-none focus:border-primary bg-white resize-none transition-colors leading-relaxed"
+                      className="w-full text-[15px] text-white placeholder:text-white/25 border border-white/10 px-4 py-4 outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 bg-[#1a1a1a] resize-none transition-colors leading-relaxed"
                     />
-                    <p className="mt-1.5 text-xs text-gray-300 text-right">
+                    <p className="mt-1.5 text-xs text-white/25 text-right">
                       {prompt.length > 0 && `${prompt.length} chars · `}⌘ + Enter to generate
                     </p>
                   </div>
@@ -392,40 +408,40 @@ export default function ZioraStudio() {
                       >
                         <div className="flex flex-col sm:flex-row gap-3">
                           <div className="flex-1">
-                            <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
+                            <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5">
                               Room type <span className="text-red-400">*</span>
                             </label>
                             <div className="relative">
                               <select
                                 value={roomType}
                                 onChange={(e) => setRoomType(e.target.value)}
-                                className="w-full appearance-none text-sm text-primary border border-gray-200 px-3 py-2.5 pr-8 outline-none focus:border-primary bg-white"
+                                className="w-full appearance-none text-sm text-white border border-white/10 px-3 py-2.5 pr-8 outline-none focus:border-[#D4AF37]/50 bg-[#1a1a1a]"
                               >
                                 <option value="">Select room type…</option>
                                 {ROOM_TYPES.map((r) => (
                                   <option key={r} value={r}>{r}</option>
                                 ))}
                               </select>
-                              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
                             </div>
                           </div>
 
                           {isLuxury && (
                             <div>
-                              <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
+                              <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5">
                                 Quality
                               </label>
-                              <div className="flex border border-gray-200 overflow-hidden">
+                              <div className="flex border border-white/10 overflow-hidden">
                                 {[{ val: 1, label: "Luxury" }, { val: 2, label: "Standard" }].map(({ val, label }) => (
                                   <button
                                     key={val}
                                     type="button"
                                     onClick={() => setTier(val)}
-                                    className={`px-5 py-2.5 text-xs font-semibold transition-colors ${
-                                      tier === val
-                                        ? "bg-primary text-white"
-                                        : "bg-white text-gray-400 hover:text-primary"
-                                    }`}
+                                    className="px-5 py-2.5 text-xs font-semibold transition-colors text-black"
+                                    style={tier === val
+                                      ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+                                      : { background: "#1a1a1a", color: "rgba(255,255,255,0.40)" }
+                                    }
                                   >
                                     {label}
                                   </button>
@@ -440,9 +456,9 @@ export default function ZioraStudio() {
 
                   {/* ── Reference image upload ───────────────────── */}
                   <div>
-                    <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-2">
                       Reference Image
-                      <span className="ml-1.5 normal-case font-normal tracking-normal text-gray-300">— optional</span>
+                      <span className="ml-1.5 normal-case font-normal tracking-normal text-white/20">— optional</span>
                     </label>
 
                     <AnimatePresence mode="wait">
@@ -460,7 +476,7 @@ export default function ZioraStudio() {
                           <img
                             src={filePreview}
                             alt="Reference"
-                            className="h-44 w-auto max-w-xs object-cover border border-gray-200"
+                            className="h-44 w-auto max-w-xs object-cover border border-white/10"
                           />
                           <button
                             type="button"
@@ -470,7 +486,7 @@ export default function ZioraStudio() {
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
-                          <p className="mt-1 text-xs text-gray-400 truncate max-w-xs">{file?.name}</p>
+                          <p className="mt-1 text-xs text-white/30 truncate max-w-xs">{file?.name}</p>
                         </motion.div>
                       ) : (
                         /* ── Drop zone ── */
@@ -484,23 +500,23 @@ export default function ZioraStudio() {
                           onDragLeave={handleDragLeave}
                           onDrop={handleDrop}
                           onClick={() => fileInputRef.current?.click()}
-                          className={`flex flex-col items-center justify-center gap-2 py-7 border-2 border-dashed cursor-pointer transition-colors ${
-                            isDragging
-                              ? "border-primary bg-primary/5"
-                              : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
-                          }`}
+                          className="flex flex-col items-center justify-center gap-2 py-7 border-2 border-dashed cursor-pointer transition-colors"
+                          style={isDragging
+                            ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.05)" }
+                            : { borderColor: "rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.02)" }
+                          }
                         >
-                          <UploadCloud className={`w-7 h-7 ${isDragging ? "text-primary" : "text-gray-300"}`} />
+                          <UploadCloud className={`w-7 h-7 ${isDragging ? "text-[#D4AF37]" : "text-white/25"}`} />
                           <div className="text-center">
-                            <p className="text-sm font-medium text-gray-500">
+                            <p className="text-sm font-medium text-white/50">
                               Drag a photo here, or{" "}
-                              <span className="text-primary underline underline-offset-2">browse</span>
+                              <span className="text-[#D4AF37] underline underline-offset-2">browse</span>
                             </p>
-                            <p className="text-xs text-gray-400 mt-0.5">
+                            <p className="text-xs text-white/30 mt-0.5">
                               JPG, PNG or WEBP · max 1 image
                             </p>
                           </div>
-                          <p className="text-xs text-gray-400 text-center max-w-xs leading-relaxed mt-1 px-4">
+                          <p className="text-xs text-white/25 text-center max-w-xs leading-relaxed mt-1 px-4">
                             Attaching a photo of your existing space gives Ziora more context
                             and produces a significantly more accurate result.
                           </p>
@@ -523,7 +539,8 @@ export default function ZioraStudio() {
                       whileTap={canSubmit ? { scale: 0.97 } : {}}
                       onClick={handleGenerate}
                       disabled={!canSubmit}
-                      className="flex items-center gap-2 px-7 py-3 bg-primary text-white text-sm font-semibold hover:bg-[#273054] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="flex items-center gap-2 px-7 py-3 text-black text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                     >
                       <Sparkles className="w-4 h-4" />
                       Generate {outputType === "video" ? "Video" : "Design"}

@@ -11,6 +11,9 @@ const paymentMethods = [
   { id: "financing", label: "Financing", icon: Landmark },
 ];
 
+const inputClass =
+  "w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-lg text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all";
+
 export default function PaymentMethod({ onComplete }) {
   const [selectedMethod, setSelectedMethod] = useState("credit-card");
   const [cardNumber, setCardNumber] = useState("");
@@ -20,77 +23,47 @@ export default function PaymentMethod({ onComplete }) {
   const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const formatCardNumber = (value) => {
-    // Remove all non-numeric characters
     const v = value.replace(/\D/g, "");
     const parts = [];
-
-    // Split into groups of 4
     for (let i = 0, len = v.length; i < len; i += 4) {
       parts.push(v.substring(i, i + 4));
     }
-
     return parts.join(" ");
   };
 
   const handleCardNumberChange = (e) => {
-    // Only allow numbers
     const value = e.target.value.replace(/\D/g, "");
-
-    if (value.length <= 16) {
-      const formatted = formatCardNumber(value);
-      setCardNumber(formatted);
-    }
+    if (value.length <= 16) setCardNumber(formatCardNumber(value));
   };
 
   const handleExpiryChange = (e) => {
-    // Only allow numbers
     let value = e.target.value.replace(/\D/g, "");
-
-    // Limit to 4 digits (MMYY)
-    if (value.length > 4) {
-      value = value.slice(0, 4);
-    }
-
-    // Auto-format as MM / YY
-    if (value.length >= 2) {
-      value = value.slice(0, 2) + " / " + value.slice(2, 4);
-    }
-
+    if (value.length > 4) value = value.slice(0, 4);
+    if (value.length >= 2) value = value.slice(0, 2) + " / " + value.slice(2, 4);
     setExpiryDate(value);
   };
 
   const handleCvcChange = (e) => {
-    // Only allow numbers, max 3 digits
-    const value = e.target.value.replace(/\D/g, "").slice(0, 3);
-    setCvc(value);
+    setCvc(e.target.value.replace(/\D/g, "").slice(0, 3));
   };
 
   const handleCardholderNameChange = (e) => {
-    // Only allow letters, spaces, hyphens, and apostrophes
-    const value = e.target.value.replace(/[^a-zA-Z\s\-']/g, "");
-    setCardholderName(value);
+    setCardholderName(e.target.value.replace(/[^a-zA-Z\s\-']/g, ""));
   };
 
   const handleSubmit = () => {
-    // Validate fields
     if (!cardNumber || !expiryDate || !cvc || !cardholderName) {
       alert("Please fill in all payment details");
       return;
     }
-
-    // Validate card number length (should be 16 digits)
     if (cardNumber.replace(/\s/g, "").length !== 16) {
       alert("Please enter a valid 16-digit card number");
       return;
     }
-
-    // Validate expiry date (should be MM / YY format)
     if (expiryDate.length !== 7) {
       alert("Please enter a valid expiry date (MM / YY)");
       return;
     }
-
-    // Validate CVC (should be 3 digits)
     if (cvc.length !== 3) {
       alert("Please enter a valid 3-digit CVC");
       return;
@@ -98,7 +71,7 @@ export default function PaymentMethod({ onComplete }) {
 
     onComplete?.({
       method: selectedMethod,
-      cardNumber: cardNumber.slice(-4), // Only store last 4 digits
+      cardNumber: cardNumber.slice(-4),
       expiryDate,
       cardholderName,
       sameAsShipping,
@@ -110,9 +83,10 @@ export default function PaymentMethod({ onComplete }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-white rounded-2xl border border-[#e5e5e5] p-6"
+      className="rounded-2xl border border-white/08 p-6"
+      style={{ background: "#0d0b08" }}
     >
-      <h2 className="text-[18px] font-semibold text-text-black mb-6">
+      <h2 className="text-[18px] font-semibold text-white mb-6">
         Payment Method
       </h2>
 
@@ -124,17 +98,15 @@ export default function PaymentMethod({ onComplete }) {
             <button
               key={method.id}
               onClick={() => setSelectedMethod(method.id)}
-              className={`
-                flex items-center justify-center gap-2 py-3 px-4 rounded-lg border-2 transition-all
-                ${
-                  selectedMethod === method.id
-                    ? "border-primary bg-primary/5"
-                    : "border-[#e5e5e5] bg-white hover:border-[#d4d4d4]"
-                }
-              `}
+              className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg border-2 transition-all"
+              style={
+                selectedMethod === method.id
+                  ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.08)" }
+                  : { borderColor: "rgba(255,255,255,0.10)", background: "transparent" }
+              }
             >
-              <Icon className="w-5 h-5 text-[#666666]" />
-              <span className="text-[14px] font-medium text-text-black">
+              <Icon className="w-5 h-5 text-white/50" />
+              <span className="text-[14px] font-medium text-white">
                 {method.label}
               </span>
             </button>
@@ -147,7 +119,7 @@ export default function PaymentMethod({ onComplete }) {
         <div className="space-y-5">
           {/* Card Number */}
           <div>
-            <label className="block text-[13px] font-medium text-[#666666] mb-2">
+            <label className="block text-[13px] font-medium text-white/40 mb-2">
               Card Number
             </label>
             <div className="relative">
@@ -156,18 +128,18 @@ export default function PaymentMethod({ onComplete }) {
                 inputMode="numeric"
                 value={cardNumber}
                 onChange={handleCardNumberChange}
-                className="w-full pl-4 pr-12 py-3 bg-background border border-transparent rounded-lg text-[15px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                className={`${inputClass} pr-12`}
                 placeholder="0000 0000 0000 0000"
                 maxLength={19}
               />
-              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4d4d4]" />
+              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20" />
             </div>
           </div>
 
           {/* Expiry and CVC */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[13px] font-medium text-[#666666] mb-2">
+              <label className="block text-[13px] font-medium text-white/40 mb-2">
                 Expiration Date
               </label>
               <input
@@ -175,29 +147,21 @@ export default function PaymentMethod({ onComplete }) {
                 inputMode="numeric"
                 value={expiryDate}
                 onChange={handleExpiryChange}
-                className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[15px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                className={inputClass}
                 placeholder="MM / YY"
                 maxLength={7}
               />
             </div>
             <div>
-              <label className="block text-[13px] font-medium text-[#666666] mb-2 flex items-center gap-2">
+              <label className="flex text-[13px] font-medium text-white/40 mb-2 items-center gap-2">
                 CVC
                 <button
                   type="button"
-                  className="text-[#999999] hover:text-[#666666]"
+                  className="text-white/30 hover:text-white/50"
                   title="3-digit security code on back of card"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clipRule="evenodd"
-                    />
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 </button>
               </label>
@@ -206,7 +170,7 @@ export default function PaymentMethod({ onComplete }) {
                 inputMode="numeric"
                 value={cvc}
                 onChange={handleCvcChange}
-                className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[15px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                className={inputClass}
                 placeholder="123"
                 maxLength={3}
               />
@@ -215,14 +179,14 @@ export default function PaymentMethod({ onComplete }) {
 
           {/* Cardholder Name */}
           <div>
-            <label className="block text-[13px] font-medium text-[#666666] mb-2">
+            <label className="block text-[13px] font-medium text-white/40 mb-2">
               Cardholder Name
             </label>
             <input
               type="text"
               value={cardholderName}
               onChange={handleCardholderNameChange}
-              className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[15px] text-text-black placeholder:text-text-black/40 focus:outline-none focus:border-primary focus:bg-white transition-all"
+              className={inputClass}
               placeholder="Enter name as shown on card"
             />
           </div>
@@ -234,12 +198,9 @@ export default function PaymentMethod({ onComplete }) {
               id="sameAsShipping"
               checked={sameAsShipping}
               onChange={(e) => setSameAsShipping(e.target.checked)}
-              className="w-5 h-5 rounded border-[#d4d4d4] text-primary focus:ring-2 focus:ring-primary focus:ring-offset-0"
+              className="w-5 h-5 rounded border-white/20 bg-[#1a1a1a] accent-[#D4AF37]"
             />
-            <label
-              htmlFor="sameAsShipping"
-              className="text-[14px] text-text-black cursor-pointer"
-            >
+            <label htmlFor="sameAsShipping" className="text-[14px] text-white/60 cursor-pointer">
               Billing address same as shipping address
             </label>
           </div>
@@ -247,15 +208,21 @@ export default function PaymentMethod({ onComplete }) {
       )}
 
       {/* Order Confirmation Info */}
-      <div className="mt-8 p-4 bg-background rounded-lg flex items-start gap-3">
-        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shrink-0">
-          <span className="text-[16px]">ℹ️</span>
+      <div
+        className="mt-8 p-4 rounded-lg flex items-start gap-3"
+        style={{ background: "rgba(255,255,255,0.03)" }}
+      >
+        <div
+          className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+          style={{ background: "rgba(212,175,55,0.12)" }}
+        >
+          <span className="text-[14px] text-[#D4AF37] font-bold">i</span>
         </div>
         <div>
-          <h4 className="text-[14px] font-semibold text-text-black mb-1">
+          <h4 className="text-[14px] font-semibold text-white mb-1">
             Order Confirmation
           </h4>
-          <p className="text-[13px] text-[#666666] leading-relaxed">
+          <p className="text-[13px] text-white/40 leading-relaxed">
             You will receive your Order ID # and tracking information via email.
           </p>
         </div>

@@ -6,24 +6,23 @@ import { Package } from "lucide-react";
 import Image from "next/image";
 import { useRecentOrder } from "@/hooks/use-user-dashboard";
 
+const cardClass = "rounded-2xl p-6 border border-white/08";
+const cardStyle = { background: "#0d0b08" };
+
 export default function RecentOrder() {
   const { data: order, isLoading, isError } = useRecentOrder();
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl p-6 border border-[#e5e5e5]">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <Package className="w-5 h-5 text-[#666666]" />
-            <h2 className="text-[16px] font-semibold text-[#1a1a1a]">
-              Recent Order
-            </h2>
-          </div>
+      <div className={cardClass} style={cardStyle}>
+        <div className="flex items-center gap-2 mb-6">
+          <Package className="w-5 h-5 text-white/30" />
+          <h2 className="text-[16px] font-semibold text-white">Recent Order</h2>
         </div>
         <div className="animate-pulse">
-          <div className="w-full h-24 bg-gray-200 rounded-xl mb-4" />
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-          <div className="h-3 bg-gray-200 rounded w-1/2" />
+          <div className="w-full h-24 bg-white/06 rounded-xl mb-4" />
+          <div className="h-4 bg-white/06 rounded w-3/4 mb-2" />
+          <div className="h-3 bg-white/06 rounded w-1/2" />
         </div>
       </div>
     );
@@ -31,16 +30,12 @@ export default function RecentOrder() {
 
   if (isError || !order) {
     return (
-      <div className="bg-white rounded-2xl p-6 border border-[#e5e5e5]">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <Package className="w-5 h-5 text-[#666666]" />
-            <h2 className="text-[16px] font-semibold text-[#1a1a1a]">
-              Recent Order
-            </h2>
-          </div>
+      <div className={cardClass} style={cardStyle}>
+        <div className="flex items-center gap-2 mb-6">
+          <Package className="w-5 h-5 text-white/30" />
+          <h2 className="text-[16px] font-semibold text-white">Recent Order</h2>
         </div>
-        <p className="text-[14px] text-[#999999] text-center py-8">
+        <p className="text-[14px] text-white/30 text-center py-8">
           No recent orders
         </p>
       </div>
@@ -52,17 +47,16 @@ export default function RecentOrder() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-white rounded-2xl p-6 border border-[#e5e5e5]"
+      className={cardClass}
+      style={cardStyle}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Package className="w-5 h-5 text-gray-400" />
-          <h2 className="text-[16px] font-semibold text-[#1a1a1a]">
-            Recent Order
-          </h2>
+          <Package className="w-5 h-5 text-white/30" />
+          <h2 className="text-[16px] font-semibold text-white">Recent Order</h2>
         </div>
-        <button className="text-[13px] text-[#3b82f6] font-medium hover:text-[#2563eb] transition-colors">
+        <button className="text-[13px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors">
           View All
         </button>
       </div>
@@ -70,8 +64,7 @@ export default function RecentOrder() {
       {/* Order Card */}
       <div className="flex flex-col gap-6">
         <div className="flex gap-4">
-          {/* Order Image */}
-          <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 bg-[#f5f5f5] rounded-xl overflow-hidden">
+          <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 bg-[#1a1a1a] rounded-xl overflow-hidden">
             {order.image ? (
               <Image
                 src={order.image}
@@ -81,7 +74,7 @@ export default function RecentOrder() {
                 sizes="(max-width: 768px) 80px, 96px"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#cccccc]">
+              <div className="w-full h-full flex items-center justify-center text-white/20">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 9.75h18M3 19.5h18" />
                 </svg>
@@ -89,29 +82,30 @@ export default function RecentOrder() {
             )}
           </div>
 
-          {/* Order Details */}
           <div className="flex-1 min-w-0">
-            <p className="text-[12px] text-[#999999] mb-1">Order {order.id}</p>
-            <h3 className="text-[15px] font-semibold text-[#1a1a1a] mb-2 truncate">
+            <p className="text-[12px] text-white/30 mb-1">Order {order.id}</p>
+            <h3 className="text-[15px] font-semibold text-white mb-2 truncate">
               {order.title}
             </h3>
 
-            {/* Status Badge */}
             <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="inline-flex items-center px-2.5 py-1 bg-primary/10 text-primary text-[12px] font-medium rounded-full">
+              <span
+                className="inline-flex items-center px-2.5 py-1 text-[12px] font-medium rounded-full text-black"
+                style={{ background: "rgba(212,175,55,0.80)" }}
+              >
                 {order.status}
               </span>
-              <span className="text-[12px] text-[#666666]">
+              <span className="text-[12px] text-white/40">
                 {order.estimatedArrival}
               </span>
             </div>
-
-            {/* Track Package Button */}
           </div>
         </div>
 
         {order.trackingAvailable && (
-          <button className="text-sm text-primary font-semibold hover:text-primary transition-colors border border-primary/30 hover:bg-primary/30 px-6 py-2.5 rounded-lg cursor-pointer ">
+          <button
+            className="text-sm font-semibold px-6 py-2.5 rounded-lg cursor-pointer border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors"
+          >
             Track Package
           </button>
         )}

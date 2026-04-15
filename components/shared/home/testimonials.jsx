@@ -1,136 +1,95 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import Image from "next/image";
+import { Star } from "lucide-react";
+import Reveal from "@/components/common/reveal";
 
 const TESTIMONIALS = [
   {
-    name: "Adaeze Okonkwo",
-    projectType: "Full bathroom renovation",
-    city: "Abuja",
-    rating: 5,
     quote:
-      "TBM completely transformed our master bathroom. The Ziora design tool gave us a clear picture before work started, and the execution team delivered exactly what was promised. The Italian tiles look stunning.",
+      '"TBM Digital didn\'t just build our headquarters; they interpreted our brand values into a structural language. The AI visualizer was a game changer for our board."',
+    name: "Adesola K.",
+    title: "CEO, ZENITH FRONTIERS",
+    avatar: "/avatars/avatar1.png",
   },
   {
-    name: "Emeka Chukwu",
-    projectType: "Kitchen fit-out",
-    city: "Lagos",
-    rating: 5,
     quote:
-      "I was skeptical about using an online platform for something this big, but TBM exceeded every expectation. The Bogat materials were top quality — I've had contractors try to tell me I must have paid double what I actually paid.",
+      '"The transition from the digital render to the final site in Lagos was indistinguishable. Their commitment to material quality is unparalleled."',
+    name: "Chiamaka O.",
+    title: "PRINCIPAL, O. LIVING",
+    avatar: "/avatars/avatar2.png",
   },
   {
-    name: "Fatimah Suleiman",
-    projectType: "Living room & dining redesign",
-    city: "Abuja",
-    rating: 5,
     quote:
-      "The consultation process was refreshingly honest. They gave us a realistic budget, a clear scope, and stuck to the timeline. Ziora AI helped us visualize three different style directions before we committed.",
-  },
-  {
-    name: "Tunde Adeyemi",
-    projectType: "Full home renovation",
-    city: "Lagos",
-    rating: 5,
-    quote:
-      "Seven rooms, twelve weeks, zero surprises. The project management was tight, the materials arrived on time, and the finishing is exceptional. TBM is the real deal — I've already referred three friends.",
+      '"Their methodical approach removed all the anxiety usually associated with high-end construction. Truly the architects of the digital age."',
+    name: "Dr. Marcus T.",
+    title: "PROPERTY DEVELOPER",
+    avatar: "/avatars/avatar3.png",
   },
 ];
 
-export default function Testimonials() {
-  const [current, setCurrent] = useState(0);
-
-  const prev = () => setCurrent((c) => (c - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-  const next = () => setCurrent((c) => (c + 1) % TESTIMONIALS.length);
-
-  const t = TESTIMONIALS[current];
-
+export default function TestimonialsSection() {
   return (
-    <section className="py-20 sm:py-24 lg:py-32 bg-[#0A0A0A]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14"
-        >
-          <span className="inline-block text-gold text-xs font-manrope font-semibold uppercase tracking-[0.2em] mb-4">
-            Testimonials
-          </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-primary font-bold text-white leading-tight tracking-tight">
-            Clients Who Trusted TBM
-          </h2>
-        </motion.div>
+    <section className="bg-black py-20 sm:py-28">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
 
-        <div className="relative border border-white/10 p-8 sm:p-14">
-          {/* Stars */}
-          <div className="flex gap-1 mb-8">
-            {Array.from({ length: t.rating }).map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+        {/* Heading */}
+        <Reveal direction="up">
+          <h2 className="font-poppins font-bold text-3xl sm:text-4xl lg:text-5xl text-white text-center mb-4">
+            Trusted by Visionaries
+          </h2>
+        </Reveal>
+
+        {/* Stars */}
+        <Reveal direction="up" delay={80}>
+          <div className="flex justify-center gap-1.5 mb-14 sm:mb-16">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className="w-5 h-5 fill-[#D4AF37] text-[#D4AF37]"
+                strokeWidth={0}
+              />
             ))}
           </div>
+        </Reveal>
 
-          {/* Quote */}
-          <AnimatePresence mode="wait">
-            <motion.blockquote
-              key={current}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35 }}
-              className="text-xl sm:text-2xl font-manrope text-white/80 leading-relaxed mb-10 font-light"
-            >
-              &ldquo;{t.quote}&rdquo;
-            </motion.blockquote>
-          </AnimatePresence>
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {TESTIMONIALS.map((t, i) => (
+            <Reveal key={t.name} direction="up" delay={i * 100}>
+              <div className="bg-card rounded-2xl p-7 sm:p-8 flex flex-col gap-6 h-full">
+                {/* Quote */}
+                <p className="text-white/70 text-[15px] font-manrope leading-relaxed flex-1 italic">
+                  {t.quote}
+                </p>
 
-          {/* Attribution */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`attr-${current}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <p className="font-manrope font-bold text-white tracking-wide">{t.name}</p>
-              <p className="text-sm font-manrope text-white/40 mt-1 tracking-wide uppercase">
-                {t.projectType} &middot; {t.city}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Nav */}
-          <div className="flex items-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="w-9 h-9 border border-white/15 hover:border-white/40 text-white/50 hover:text-white flex items-center justify-center transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            <div className="flex gap-1.5">
-              {TESTIMONIALS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`h-px transition-all duration-300 ${
-                    i === current ? "w-8 bg-gold" : "w-3 bg-white/20"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="w-9 h-9 border border-white/15 hover:border-white/40 text-white/50 hover:text-white flex items-center justify-center transition-colors"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+                {/* Author */}
+                <div className="flex items-center gap-4">
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden bg-[#333] shrink-0">
+                    <Image
+                      src={t.avatar}
+                      alt={t.name}
+                      fill
+                      className="object-cover"
+                      onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    />
+                    {/* Fallback initial */}
+                    <span className="absolute inset-0 flex items-center justify-center text-white/60 text-sm font-bold font-manrope">
+                      {t.name.charAt(0)}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-white text-[14px] font-manrope font-semibold leading-tight">
+                      {t.name}
+                    </p>
+                    <p className="text-[#D4AF37] text-[11px] font-manrope font-medium tracking-[0.12em] uppercase mt-0.5">
+                      {t.title}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
