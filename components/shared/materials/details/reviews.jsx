@@ -8,7 +8,6 @@ export default function RatingsReviews({
   totalReviews = 42,
   ratingDistribution = { 5: 78, 4: 15, 3: 5, 2: 2, 1: 0 },
 }) {
-  // Safely get max percentage with fallback
   const maxPercentage = ratingDistribution
     ? Math.max(...Object.values(ratingDistribution))
     : 100;
@@ -18,16 +17,17 @@ export default function RatingsReviews({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-white rounded-lg border border-gray-200 p-6"
+      className="rounded-lg border border-white/08 p-6"
+      style={{ background: "#0d0b08" }}
     >
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-        Ratings & Reviews
+      <h2 className="text-2xl font-semibold text-white mb-6">
+        Ratings &amp; Reviews
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Average Rating */}
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="text-5xl font-bold text-gray-900 mb-2">
+          <div className="text-5xl font-bold text-white mb-2">
             {averageRating.toFixed(1)}
           </div>
           <div className="flex items-center gap-1 mb-2">
@@ -36,13 +36,13 @@ export default function RatingsReviews({
                 key={i}
                 className={`w-5 h-5 ${
                   i < Math.floor(averageRating)
-                    ? "fill-primary text-primary"
-                    : "fill-gray-200 text-gray-200"
+                    ? "fill-[#D4AF37] text-[#D4AF37]"
+                    : "fill-white/10 text-white/10"
                 }`}
               />
             ))}
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-white/40">
             Based on {totalReviews} verified reviews
           </p>
         </div>
@@ -56,10 +56,10 @@ export default function RatingsReviews({
 
             return (
               <div key={rating} className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-700 w-3">
+                <span className="text-sm font-medium text-white/50 w-3">
                   {rating}
                 </span>
-                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-white/08 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${barWidth}%` }}
@@ -68,10 +68,11 @@ export default function RatingsReviews({
                       delay: 0.1 * (5 - rating),
                       ease: "easeOut",
                     }}
-                    className="h-full bg-primary rounded-full"
+                    className="h-full rounded-full"
+                    style={{ background: "linear-gradient(90deg, #D4AF37, #b8962e)" }}
                   />
                 </div>
-                <span className="text-sm text-gray-600 w-10 text-right">
+                <span className="text-sm text-white/40 w-10 text-right">
                   {percentage}%
                 </span>
               </div>

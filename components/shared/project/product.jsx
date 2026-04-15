@@ -213,7 +213,7 @@ export default function MasterpiecesGallery() {
               <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
 
               <div className="absolute top-4 left-4 flex gap-2 z-10">
-                <span className="px-3 py-1 bg-[#0A0A0A] text-white text-xs font-medium font-manrope">
+                <span className="px-3 py-1 bg-black/70 backdrop-blur-sm text-white text-xs font-medium font-manrope">
                   {project.tag}
                 </span>
                 <span className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-medium font-manrope">
@@ -251,20 +251,23 @@ export default function MasterpiecesGallery() {
               </div>
             </div>
 
-            <div className="p-4 bg-white border border-stone flex-1 flex flex-col">
-              <p className="text-sm text-[#7A736C] italic mb-4 flex-1 font-manrope">
+            <div
+              className="p-4 flex-1 flex flex-col border border-white/08"
+              style={{ background: "#0d0b08" }}
+            >
+              <p className="text-sm text-white/50 italic mb-4 flex-1 font-manrope">
                 {project.quote}
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  <button className="w-8 h-8 border border-stone flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                  <button className="w-8 h-8 border border-white/10 flex items-center justify-center hover:border-white/30 transition-colors">
                     <span className="text-xs">👁️</span>
                   </button>
-                  <button className="w-8 h-8 border border-stone flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                  <button className="w-8 h-8 border border-white/10 flex items-center justify-center hover:border-white/30 transition-colors">
                     <span className="text-xs">📤</span>
                   </button>
                 </div>
-                <button className="flex items-center gap-2 text-sm font-semibold text-[#0A0A0A] hover:text-gold transition-colors font-manrope tracking-wide">
+                <button className="flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-[#D4AF37] transition-colors font-manrope tracking-wide">
                   GET THIS LOOK
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -280,7 +283,8 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="relative group overflow-hidden bg-white border border-stone flex flex-col w-full"
+            className="relative group overflow-hidden flex flex-col w-full border border-white/08"
+            style={{ background: "#0d0b08" }}
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -304,20 +308,23 @@ export default function MasterpiecesGallery() {
             <div className="p-4 flex-1 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="text-sm">
-                  <div className="text-[#7A736C] mb-1 font-manrope text-xs uppercase tracking-[0.15em]">BUDGET</div>
-                  <div className="font-semibold text-[#0A0A0A] font-primary">
+                  <div className="text-white/30 mb-1 font-manrope text-xs uppercase tracking-[0.15em]">BUDGET</div>
+                  <div className="font-semibold text-white font-primary">
                     {project.budget}
                   </div>
                 </div>
                 <div className="text-sm">
-                  <div className="text-[#7A736C] mb-1 font-manrope text-xs uppercase tracking-[0.15em]">DURATION</div>
-                  <div className="font-semibold text-[#0A0A0A] font-primary">
+                  <div className="text-white/30 mb-1 font-manrope text-xs uppercase tracking-[0.15em]">DURATION</div>
+                  <div className="font-semibold text-white font-primary">
                     {project.duration}
                   </div>
                 </div>
               </div>
               <Link href="/contact?type=consultation" className="mt-auto block">
-                <button className="w-full py-3 bg-[#0A0A0A] text-white text-sm font-medium font-manrope hover:bg-[#1C1C1C] transition-colors tracking-wide">
+                <button
+                  className="w-full py-3 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity tracking-wide"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                >
                   Start Similar Project
                 </button>
               </Link>
@@ -357,7 +364,8 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white overflow-hidden border border-stone flex flex-col w-full"
+            className="overflow-hidden flex flex-col w-full border border-white/08"
+            style={{ background: "#0d0b08" }}
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -366,7 +374,7 @@ export default function MasterpiecesGallery() {
                 fill
                 className="object-cover absolute inset-0"
               />
-              <span className="absolute top-4 left-4 px-3 py-1 bg-[#0A0A0A] text-white text-xs font-medium font-manrope z-10">
+              <span className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-sm text-white text-xs font-medium font-manrope z-10">
                 {project.tag}
               </span>
               <button
@@ -384,7 +392,7 @@ export default function MasterpiecesGallery() {
             </div>
             <div className="p-4 flex-1 flex flex-col">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-lg font-medium text-[#0A0A0A] font-primary">
+                <h3 className="text-lg font-medium text-white font-primary">
                   {project.title}
                 </h3>
                 <div className="flex gap-0.5">
@@ -393,13 +401,19 @@ export default function MasterpiecesGallery() {
                   ))}
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-[#7A736C] mb-4 font-manrope">
-                <span className="px-2 py-0.5 bg-warm text-xs">
+              <div className="flex items-center gap-2 text-sm text-white/40 mb-4 font-manrope">
+                <span
+                  className="px-2 py-0.5 text-xs"
+                  style={{ background: "rgba(212,175,55,0.08)", color: "rgba(255,255,255,0.40)" }}
+                >
                   {project.categoryLabel}
                 </span>
                 <span>{project.budget}</span>
               </div>
-              <button className="w-full py-2.5 border border-stone text-[#0A0A0A] text-sm font-medium font-manrope hover:bg-warm transition-colors mt-auto tracking-wide">
+              <button
+                className="w-full py-2.5 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity mt-auto tracking-wide"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              >
                 Get This Look
               </button>
             </div>
@@ -413,7 +427,8 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white overflow-hidden border border-stone flex flex-col w-full"
+            className="overflow-hidden flex flex-col w-full border border-white/08"
+            style={{ background: "#0d0b08" }}
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -422,7 +437,9 @@ export default function MasterpiecesGallery() {
                 fill
                 className="object-cover absolute inset-0"
               />
-              <span className="absolute top-4 left-4 px-3 py-1 bg-gold text-white text-xs font-medium font-manrope z-10">
+              <span className="absolute top-4 left-4 px-3 py-1 z-10 text-black text-xs font-semibold font-manrope"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              >
                 {project.tag}
               </span>
               <button
@@ -440,7 +457,7 @@ export default function MasterpiecesGallery() {
             </div>
             <div className="p-4 flex-1 flex flex-col">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-medium text-[#0A0A0A] font-primary">
+                <h3 className="text-lg font-medium text-white font-primary">
                   {project.title}
                 </h3>
                 <div className="flex gap-0.5">
@@ -449,11 +466,14 @@ export default function MasterpiecesGallery() {
                   ))}
                 </div>
               </div>
-              <p className="text-sm text-[#7A736C] mb-4 flex-1 font-manrope">
+              <p className="text-sm text-white/40 mb-4 flex-1 font-manrope">
                 {project.description}
               </p>
               <Link href="/contact?type=consultation" className="mt-auto block">
-                <button className="w-full py-3 bg-[#0A0A0A] text-white text-sm font-medium font-manrope hover:bg-[#1C1C1C] transition-colors tracking-wide">
+                <button
+                  className="w-full py-3 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity tracking-wide"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                >
                   Start Similar Project
                 </button>
               </Link>
@@ -468,7 +488,8 @@ export default function MasterpiecesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: baseDelay }}
-            className="bg-white overflow-hidden border border-stone flex flex-col w-full"
+            className="overflow-hidden flex flex-col w-full border border-white/08"
+            style={{ background: "#0d0b08" }}
           >
             <div className="relative w-full" style={{ paddingBottom: "75%" }}>
               <Image
@@ -478,20 +499,23 @@ export default function MasterpiecesGallery() {
                 className="object-cover absolute inset-0"
               />
               {project.isNew && (
-                <span className="absolute top-4 right-4 px-3 py-1 bg-white text-[#0A0A0A] text-xs font-bold font-manrope z-10">
+                <span
+                  className="absolute top-4 right-4 px-3 py-1 text-black text-xs font-bold font-manrope z-10"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                >
                   NEW
                 </span>
               )}
             </div>
             <div className="p-4 flex-1 flex flex-col">
-              <h3 className="text-lg font-medium text-[#0A0A0A] mb-1 font-primary">
+              <h3 className="text-lg font-medium text-white mb-1 font-primary">
                 {project.title}
               </h3>
               <div className="w-px h-8 bg-gold mb-2" />
-              <p className="text-sm text-[#7A736C] mb-4 flex-1 font-manrope">
+              <p className="text-sm text-white/40 mb-4 flex-1 font-manrope">
                 {project.categoryLabel}
               </p>
-              <button className="flex items-center gap-2 text-sm font-semibold text-[#0A0A0A] hover:text-gold transition-colors mt-auto font-manrope tracking-wide">
+              <button className="flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-[#D4AF37] transition-colors mt-auto font-manrope tracking-wide">
                 View Materials List
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -560,7 +584,10 @@ export default function MasterpiecesGallery() {
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
 
-              <span className="absolute top-4 left-4 px-3 py-1 bg-gold text-white text-xs font-medium font-manrope z-10">
+              <span
+                className="absolute top-4 left-4 px-3 py-1 text-black text-xs font-semibold font-manrope z-10"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              >
                 {project.tag}
               </span>
 
@@ -571,7 +598,10 @@ export default function MasterpiecesGallery() {
                 <p className="text-white/80 text-sm mb-4 max-w-md font-manrope">
                   {project.description}
                 </p>
-                <button className="w-full py-3 bg-[#0A0A0A] text-white text-sm font-medium font-manrope hover:bg-[#1C1C1C] transition-colors tracking-wide">
+                <button
+                  className="w-full py-3 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity tracking-wide"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                >
                   View Project Details
                 </button>
               </div>
@@ -618,19 +648,19 @@ export default function MasterpiecesGallery() {
   };
 
   return (
-    <section className="w-full bg-[#FAF8F5] pb-20 pt-6">
+    <section className="w-full bg-black pb-20 pt-6 font-manrope">
       <div className="max-w-7xl mx-auto px-8">
         {/* Search and Filters */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
           {/* Search */}
           <div className="relative w-full md:w-96">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A736C]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
             <input
               type="text"
               placeholder="Search by room, style..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-stone bg-white text-[#0A0A0A] text-sm focus:outline-none focus:border-[#0A0A0A] transition-colors font-manrope placeholder:text-[#7A736C]"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-colors font-manrope placeholder:text-white/30"
             />
           </div>
 
@@ -642,11 +672,12 @@ export default function MasterpiecesGallery() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors font-manrope tracking-wide ${
+                className="px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors font-manrope tracking-wide"
+                style={
                   activeFilter === filter.id
-                    ? "bg-[#0A0A0A] text-white"
-                    : "bg-white text-[#5C5550] border border-stone hover:bg-warm"
-                }`}
+                    ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", color: "#000" }
+                    : { background: "#0d0b08", border: "1px solid rgba(255,255,255,0.10)", color: "rgba(255,255,255,0.50)" }
+                }
               >
                 {filter.label}
               </motion.button>
@@ -658,14 +689,14 @@ export default function MasterpiecesGallery() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowBudgetDropdown(!showBudgetDropdown)}
-                className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-1 font-manrope tracking-wide ${
+                className="px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-1 font-manrope tracking-wide"
+                style={
                   budgetFilter !== "all"
-                    ? "bg-[#0A0A0A] text-white"
-                    : "bg-white text-[#5C5550] border border-stone hover:bg-warm"
-                }`}
+                    ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", color: "#000" }
+                    : { background: "#0d0b08", border: "1px solid rgba(255,255,255,0.10)", color: "rgba(255,255,255,0.50)" }
+                }
               >
-                {BUDGET_RANGES.find((b) => b.id === budgetFilter)?.label ||
-                  "Budget"}
+                {BUDGET_RANGES.find((b) => b.id === budgetFilter)?.label || "Budget"}
                 <ChevronDown className="w-4 h-4" />
               </motion.button>
 
@@ -674,7 +705,8 @@ export default function MasterpiecesGallery() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-full mt-1 right-0 bg-white border border-stone py-1 min-w-45 z-20"
+                  className="absolute top-full mt-1 right-0 border py-1 min-w-45 z-20"
+                  style={{ background: "#0d0b08", borderColor: "rgba(255,255,255,0.10)" }}
                 >
                   {BUDGET_RANGES.map((range) => (
                     <button
@@ -683,11 +715,18 @@ export default function MasterpiecesGallery() {
                         setBudgetFilter(range.id);
                         setShowBudgetDropdown(false);
                       }}
-                      className={`w-full px-4 py-2 text-left text-sm font-manrope hover:bg-warm transition-colors ${
+                      className="w-full px-4 py-2 text-left text-sm font-manrope transition-colors"
+                      style={
                         budgetFilter === range.id
-                          ? "bg-warm font-medium text-[#0A0A0A]"
-                          : "text-[#5C5550]"
-                      }`}
+                          ? { background: "rgba(212,175,55,0.08)", color: "#D4AF37", fontWeight: 500 }
+                          : { color: "rgba(255,255,255,0.50)" }
+                      }
+                      onMouseEnter={(e) => {
+                        if (budgetFilter !== range.id) e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (budgetFilter !== range.id) e.currentTarget.style.background = "transparent";
+                      }}
                     >
                       {range.label}
                     </button>
@@ -700,7 +739,7 @@ export default function MasterpiecesGallery() {
 
         {/* Results Count */}
         {(searchQuery || activeFilter !== "all" || budgetFilter !== "all") && (
-          <div className="mb-4 text-sm text-[#7A736C] font-manrope">
+          <div className="mb-4 text-sm text-white/40 font-manrope">
             Showing {filteredProjects.length} project
             {filteredProjects.length !== 1 ? "s" : ""}
           </div>
@@ -709,8 +748,8 @@ export default function MasterpiecesGallery() {
         {/* No Results Message */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-[#7A736C] text-lg mb-2 font-manrope">No projects found</p>
-            <p className="text-[#7A736C]/60 text-sm font-manrope">
+            <p className="text-white/40 text-lg mb-2 font-manrope">No projects found</p>
+            <p className="text-white/25 text-sm font-manrope">
               Try adjusting your filters or search query
             </p>
           </div>

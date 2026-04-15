@@ -214,48 +214,21 @@ export default function MaterialsClient({ initialData }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 font-manrope">
+    <div className="min-h-screen bg-black pt-20 font-manrope">
       {/* Breadcrumb */}
-      <nav
-        aria-label="Breadcrumb"
-        className="bg-white border-y border-gray-200"
-      >
+      <nav aria-label="Breadcrumb" className="border-b border-white/08" style={{ background: "#0d0b08" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <ol
-            className="flex items-center gap-2 text-sm"
-            itemScope
-            itemType="https://schema.org/BreadcrumbList"
-          >
-            <li
-              itemProp="itemListElement"
-              itemScope
-              itemType="https://schema.org/ListItem"
-            >
-              <Link
-                href="/"
-                className="text-gray-500 hover:text-gray-700"
-                itemProp="item"
-              >
+          <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
+            <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+              <Link href="/" className="text-white/40 hover:text-white/70 transition-colors" itemProp="item">
                 <span itemProp="name">Home</span>
               </Link>
               <meta itemProp="position" content="1" />
             </li>
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+            <svg className="w-4 h-4 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <li>
-              <span className="text-gray-900 font-medium">All Materials</span>
-            </li>
+            <li><span className="text-white/70 font-medium">All Materials</span></li>
           </ol>
         </div>
       </nav>
@@ -291,7 +264,7 @@ export default function MaterialsClient({ initialData }) {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="text-xs text-gray-400 flex items-center gap-1"
+                      className="text-xs text-white/35 flex items-center gap-1"
                     >
                       <svg
                         className="animate-spin w-3 h-3"
@@ -316,45 +289,27 @@ export default function MaterialsClient({ initialData }) {
                     </motion.span>
                   )}
                 </AnimatePresence>
-                <p className="text-gray-600">{data?.totalCount ?? 0} Results</p>
-                <label className="text-sm text-gray-700">Sort:</label>
+                <p className="text-white/40">{data?.totalCount ?? 0} Results</p>
+                <label className="text-sm text-white/50">Sort:</label>
                 <select
                   value={sortBy}
                   onChange={(e) => handleSortChange(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 text-primary rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 border border-white/10 bg-[#1a1a1a] text-white text-sm focus:outline-none focus:border-[#D4AF37]/50"
                 >
                   <option value="popular">Most Popular</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
                   <option value="featured">Featured</option>
                 </select>
-                <div className="flex items-center gap-1 border border-gray-300 rounded-lg p-1">
-                  <button
-                    onClick={() => setViewMode("grid")}
-                    className={`p-1.5 rounded ${viewMode === "grid" ? "bg-gray-200" : "hover:bg-gray-100"}`}
-                  >
-                    <svg
-                      className="w-5 h-5 text-gray-700"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                <div className="flex items-center gap-px border border-white/10 p-1">
+                  <button onClick={() => setViewMode("grid")} className={`p-1.5 transition-colors ${viewMode === "grid" ? "bg-white/10" : "hover:bg-white/05"}`}>
+                    <svg className="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
                   </button>
-                  <button
-                    onClick={() => setViewMode("list")}
-                    className={`p-1.5 rounded ${viewMode === "list" ? "bg-gray-200" : "hover:bg-gray-100"}`}
-                  >
-                    <svg
-                      className="w-5 h-5 text-gray-700"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                        clipRule="evenodd"
-                      />
+                  <button onClick={() => setViewMode("list")} className={`p-1.5 transition-colors ${viewMode === "list" ? "bg-white/10" : "hover:bg-white/05"}`}>
+                    <svg className="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                     </svg>
                   </button>
                 </div>
@@ -366,31 +321,22 @@ export default function MaterialsClient({ initialData }) {
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-50 border border-gray-100 rounded-lg p-4 mb-6 flex items-center justify-between"
+                className="rounded-lg p-4 mb-6 flex items-center justify-between"
+                style={{ background: "rgba(212,175,55,0.06)", boxShadow: "0 0 0 1px rgba(212,175,55,0.15)" }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center shrink-0">
-                    <div className="w-6 h-6 bg-transparent border-2 border-primary rounded-full flex items-center justify-center">
-                      <ThumbsUp
-                        className="text-primary"
-                        size={12}
-                        strokeWidth={2}
-                      />
-                    </div>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(212,175,55,0.12)" }}>
+                    <ThumbsUp className="text-[#D4AF37]" size={14} strokeWidth={2} />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-semibold text-gray-900">
-                      Recommended for You
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Based on your recent renovation style quiz
-                    </p>
-                    <button className="text-sm text-start font-semibold text-primary hover:text-gray-800 whitespace-nowrap block md:hidden">
+                    <h3 className="font-semibold text-white text-sm">Recommended for You</h3>
+                    <p className="text-xs text-white/40">Based on your recent renovation style quiz</p>
+                    <button className="text-xs text-start font-semibold text-[#D4AF37] hover:text-[#D4AF37]/80 whitespace-nowrap block md:hidden">
                       View All Recommendations
                     </button>
                   </div>
                 </div>
-                <button className="text-sm font-medium text-gray-600 hover:text-gray-800 whitespace-nowrap hidden md:block">
+                <button className="text-sm font-medium text-[#D4AF37]/70 hover:text-[#D4AF37] whitespace-nowrap hidden md:block transition-colors">
                   View All Recommendations
                 </button>
               </motion.div>
@@ -398,10 +344,8 @@ export default function MaterialsClient({ initialData }) {
 
             {/* Error */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                <p className="text-red-800">
-                  Failed to load products. Please try again.
-                </p>
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6">
+                <p className="text-red-400">Failed to load products. Please try again.</p>
               </div>
             )}
 

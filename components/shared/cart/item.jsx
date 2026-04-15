@@ -45,7 +45,7 @@ export default function CartItem({ item, index }) {
       <div className="hidden md:grid md:grid-cols-[1fr_120px_140px_40px] gap-4 items-center">
         {/* Product details */}
         <div className="flex gap-4 items-center">
-          <div className="relative w-24 h-24 flex-shrink-0 bg-[#f5f5f5] rounded-xl overflow-hidden">
+          <div className="relative w-24 h-24 shrink-0 bg-[#1a1a1a] rounded-xl overflow-hidden">
             <Image
               src={item.image || PLACEHOLDER}
               alt={item.name}
@@ -55,11 +55,11 @@ export default function CartItem({ item, index }) {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-[15px] font-semibold text-primary mb-1 line-clamp-2">
+            <h3 className="text-[15px] font-semibold text-white mb-1 line-clamp-2">
               {item.name}
             </h3>
             {(item.brandName || item.categoryName) && (
-              <p className="text-[12px] text-[#999999] mb-2">
+              <p className="text-[12px] text-white/40 mb-2">
                 {[item.brandName, item.categoryName]
                   .filter(Boolean)
                   .join(" · ")}
@@ -68,14 +68,14 @@ export default function CartItem({ item, index }) {
             <span
               className={`inline-block px-2.5 py-1 text-[11px] font-medium rounded-md ${
                 isInStock
-                  ? "bg-[#dcfce7] text-[#166534]"
-                  : "bg-[#fee2e2] text-[#991b1b]"
+                  ? "bg-green-900/30 text-green-400"
+                  : "bg-red-900/20 text-red-400"
               }`}
             >
               {isInStock ? "In Stock" : "Out of Stock"}
             </span>
             {item.price != null && (
-              <p className="text-[12px] text-[#999999] mt-2">
+              <p className="text-[12px] text-white/40 mt-2">
                 ₦{item.price.toLocaleString()}/unit
               </p>
             )}
@@ -95,13 +95,13 @@ export default function CartItem({ item, index }) {
         {/* Price */}
         <div className="text-right">
           {totalPrice != null ? (
-            <p className="text-[17px] font-bold text-primary">₦{totalPrice}</p>
+            <p className="text-[17px] font-bold text-white">₦{totalPrice}</p>
           ) : (
-            <p className="text-[14px] font-semibold text-primary">
+            <p className="text-[14px] font-semibold text-white">
               Request Price
             </p>
           )}
-          <p className="text-[12px] text-[#999999] mt-0.5">
+          <p className="text-[12px] text-white/40 mt-0.5">
             {quantity} unit{quantity !== 1 ? "s" : ""}
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function CartItem({ item, index }) {
           <button
             onClick={handleRemove}
             disabled={removeItem.isPending}
-            className="p-2 text-[#ef4444] hover:bg-[#fef2f2] rounded-lg transition-colors disabled:opacity-50"
+            className="p-2 text-[#ef4444] hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
             aria-label="Remove item"
           >
             <Trash2 className="w-4 h-4" />
@@ -122,7 +122,7 @@ export default function CartItem({ item, index }) {
       {/* ── Mobile layout ── */}
       <div className="flex md:hidden gap-3">
         {/* Thumbnail */}
-        <div className="relative w-[72px] h-[72px] flex-shrink-0 bg-[#f5f5f5] rounded-xl overflow-hidden">
+        <div className="relative w-18 h-18 shrink-0 bg-[#1a1a1a] rounded-xl overflow-hidden">
           <Image
             src={item.image || PLACEHOLDER}
             alt={item.name}
@@ -136,13 +136,13 @@ export default function CartItem({ item, index }) {
         <div className="flex-1 min-w-0 flex flex-col gap-2">
           {/* Name + delete */}
           <div className="flex items-start justify-between gap-2">
-            <h3 className="text-[14px] font-semibold text-primary leading-snug line-clamp-2 flex-1">
+            <h3 className="text-[14px] font-semibold text-white leading-snug line-clamp-2 flex-1">
               {item.name}
             </h3>
             <button
               onClick={handleRemove}
               disabled={removeItem.isPending}
-              className="p-1.5 text-[#ef4444] hover:bg-[#fef2f2] rounded-lg transition-colors disabled:opacity-50 flex-shrink-0 -mt-0.5"
+              className="p-1.5 text-[#ef4444] hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50 shrink-0 -mt-0.5"
               aria-label="Remove item"
             >
               <Trash2 className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function CartItem({ item, index }) {
 
           {/* Brand / category */}
           {(item.brandName || item.categoryName) && (
-            <p className="text-[12px] text-[#999999] leading-none">
+            <p className="text-[12px] text-white/40 leading-none">
               {[item.brandName, item.categoryName].filter(Boolean).join(" · ")}
             </p>
           )}
@@ -161,14 +161,14 @@ export default function CartItem({ item, index }) {
             <span
               className={`inline-block px-2 py-0.5 text-[10px] font-medium rounded-md ${
                 isInStock
-                  ? "bg-[#dcfce7] text-[#166534]"
-                  : "bg-[#fee2e2] text-[#991b1b]"
+                  ? "bg-green-900/30 text-green-400"
+                  : "bg-red-900/20 text-red-400"
               }`}
             >
               {isInStock ? "In Stock" : "Out of Stock"}
             </span>
             {item.price != null && (
-              <p className="text-[11px] text-[#aaaaaa]">
+              <p className="text-[11px] text-white/40">
                 ₦{item.price.toLocaleString()}/unit
               </p>
             )}
@@ -186,15 +186,15 @@ export default function CartItem({ item, index }) {
 
             <div className="text-right">
               {totalPrice != null ? (
-                <p className="text-[15px] font-bold text-primary">
+                <p className="text-[15px] font-bold text-white">
                   ₦{totalPrice}
                 </p>
               ) : (
-                <p className="text-[12px] font-semibold text-primary">
+                <p className="text-[12px] font-semibold text-white">
                   Request Price
                 </p>
               )}
-              <p className="text-[11px] text-[#aaaaaa]">
+              <p className="text-[11px] text-white/40">
                 {quantity} unit{quantity !== 1 ? "s" : ""}
               </p>
             </div>
@@ -218,13 +218,13 @@ function QuantityControl({
   const textSize = compact ? "text-[13px]" : "text-[14px]";
 
   return (
-    <div className="inline-flex items-center border border-[#e5e5e5] rounded-lg overflow-hidden">
+    <div className="inline-flex items-center border border-white/10 rounded-lg overflow-hidden">
       <button
         onClick={() => onChange(quantity - 1)}
         disabled={quantity <= 1 || isPending}
-        className={`${btnSize} hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
+        className={`${btnSize} hover:bg-white/05 transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
       >
-        <Minus className={`${iconSize} text-[#666666]`} />
+        <Minus className={`${iconSize} text-white/50`} />
       </button>
       <input
         type="number"
@@ -232,16 +232,16 @@ function QuantityControl({
         min={1}
         max={stockQuantity || undefined}
         onChange={(e) => onChange(parseInt(e.target.value) || 1)}
-        className={`${inputWidth} text-center ${textSize} font-medium text-primary border-x border-[#e5e5e5] py-1.5 focus:outline-none bg-white`}
+        className={`${inputWidth} text-center ${textSize} font-medium text-white border-x border-white/10 py-1.5 focus:outline-none bg-transparent`}
       />
       <button
         onClick={() => onChange(quantity + 1)}
         disabled={
           isPending || (stockQuantity != null && quantity >= stockQuantity)
         }
-        className={`${btnSize} hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
+        className={`${btnSize} hover:bg-white/05 transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
       >
-        <Plus className={`${iconSize} text-[#666666]`} />
+        <Plus className={`${iconSize} text-white/50`} />
       </button>
     </div>
   );

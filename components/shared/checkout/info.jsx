@@ -6,9 +6,12 @@ import { useState } from "react";
 import { Pencil, CheckCircle } from "lucide-react";
 import EditDeliveryModal from "./edit-delivery-modal";
 
+const inputClass =
+  "w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-lg text-[14px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all disabled:cursor-not-allowed disabled:opacity-60";
+
 export default function DeliveryInformation({
   savedAddress,
-  savedAddresses = [], // Array of all saved addresses
+  savedAddresses = [],
   onComplete,
   readonly = false,
   onEdit,
@@ -21,12 +24,7 @@ export default function DeliveryInformation({
   const [zipCode, setZipCode] = useState(savedAddress?.zipCode || "");
   const [deliveryNote, setDeliveryNote] = useState("");
 
-  const handleEditClick = () => {
-    setShowEditModal(true);
-  };
-
   const handleModalSave = (data) => {
-    // Update fields from modal
     setShippingTo(data.address.label || data.address.streetAddress);
     setAddress(data.address.line1 || data.address.streetAddress);
     setCity(data.address.city);
@@ -37,17 +35,9 @@ export default function DeliveryInformation({
   };
 
   const handleContinue = () => {
-    onComplete?.({
-      label: shippingTo,
-      line1: address,
-      city,
-      state,
-      zipCode,
-      deliveryNote,
-    });
+    onComplete?.({ label: shippingTo, line1: address, city, state, zipCode, deliveryNote });
   };
 
-  // Readonly view (when on payment step)
   if (readonly) {
     return (
       <>
@@ -55,34 +45,33 @@ export default function DeliveryInformation({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl border border-[#e5e5e5] p-6"
+          className="rounded-2xl border border-white/08 p-6"
+          style={{ background: "#0d0b08" }}
         >
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#16a34a]" />
-              <h2 className="text-[18px] font-semibold text-text-black">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <h2 className="text-[18px] font-semibold text-white">
                 Delivery Information
               </h2>
             </div>
             <button
               onClick={onEdit}
-              className="p-2 hover:bg-background rounded-lg transition-colors"
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
             >
-              <Pencil className="w-4 h-4 text-[#666666]" />
+              <Pencil className="w-4 h-4 text-white/40" />
             </button>
           </div>
 
           <div className="space-y-3">
             <div>
-              <p className="text-[12px] text-[#999999] uppercase tracking-wide mb-1">
+              <p className="text-[12px] text-white/30 uppercase tracking-widest mb-1">
                 Shipping To
               </p>
-              <p className="text-[14px] font-medium text-text-black">
-                {shippingTo}
-              </p>
+              <p className="text-[14px] font-medium text-white">{shippingTo}</p>
             </div>
             <div>
-              <p className="text-[14px] text-[#666666] leading-relaxed">
+              <p className="text-[14px] text-white/50 leading-relaxed">
                 {address}
                 <br />
                 {city}, {state} {zipCode}
@@ -90,10 +79,10 @@ export default function DeliveryInformation({
             </div>
             {deliveryNote && (
               <div>
-                <p className="text-[12px] text-[#999999] uppercase tracking-wide mb-1">
+                <p className="text-[12px] text-white/30 uppercase tracking-widest mb-1">
                   Delivery Note
                 </p>
-                <p className="text-[14px] text-[#666666]">{deliveryNote}</p>
+                <p className="text-[14px] text-white/50">{deliveryNote}</p>
               </div>
             )}
           </div>
@@ -102,7 +91,6 @@ export default function DeliveryInformation({
     );
   }
 
-  // Check if user has saved addresses (logged in with saved addresses)
   const hasSavedAddresses = savedAddresses && savedAddresses.length > 0;
 
   return (
@@ -111,16 +99,17 @@ export default function DeliveryInformation({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white rounded-2xl border border-[#e5e5e5] p-6"
+        className="rounded-2xl border border-white/08 p-6"
+        style={{ background: "#0d0b08" }}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-[18px] font-semibold text-text-black">
+          <h2 className="text-[18px] font-semibold text-white">
             Delivery Information
           </h2>
           {hasSavedAddresses && (
             <button
-              onClick={handleEditClick}
-              className="flex items-center gap-2 px-3 py-1.5 text-[14px] text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors"
+              onClick={() => setShowEditModal(true)}
+              className="flex items-center gap-2 px-3 py-1.5 text-[14px] text-[#D4AF37] font-medium hover:bg-[#D4AF37]/05 rounded-lg transition-colors"
             >
               <Pencil className="w-4 h-4" />
               Edit
@@ -132,7 +121,7 @@ export default function DeliveryInformation({
           {/* Shipping To */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-[#999999] uppercase tracking-wide mb-2">
+              <label className="block text-[12px] font-medium text-white/30 uppercase tracking-widest mb-2">
                 Shipping To
               </label>
               <div className="relative">
@@ -140,17 +129,17 @@ export default function DeliveryInformation({
                   type="text"
                   value={shippingTo}
                   onChange={(e) => setShippingTo(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                  className={inputClass}
                   placeholder="e.g., Home, Office"
                   disabled={hasSavedAddresses}
                 />
                 {hasSavedAddresses && (
                   <button
-                    onClick={handleEditClick}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white rounded transition-colors"
+                    onClick={() => setShowEditModal(true)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/05 rounded transition-colors"
                     aria-label="Edit address"
                   >
-                    <Pencil className="w-4 h-4 text-[#999999]" />
+                    <Pencil className="w-4 h-4 text-white/30" />
                   </button>
                 )}
               </div>
@@ -164,17 +153,17 @@ export default function DeliveryInformation({
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                className={inputClass}
                 placeholder="Street address"
                 disabled={hasSavedAddresses}
               />
               {hasSavedAddresses && (
                 <button
-                  onClick={handleEditClick}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white rounded transition-colors"
+                  onClick={() => setShowEditModal(true)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/05 rounded transition-colors"
                   aria-label="Edit address"
                 >
-                  <Pencil className="w-4 h-4 text-[#999999]" />
+                  <Pencil className="w-4 h-4 text-white/30" />
                 </button>
               )}
             </div>
@@ -182,57 +171,38 @@ export default function DeliveryInformation({
 
           {/* City, State, ZIP */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all disabled:cursor-not-allowed disabled:opacity-75"
-              placeholder="City"
-              disabled={hasSavedAddresses}
-            />
-            <input
-              type="text"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all disabled:cursor-not-allowed disabled:opacity-75"
-              placeholder="State"
-              disabled={hasSavedAddresses}
-            />
-            <input
-              type="text"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all disabled:cursor-not-allowed disabled:opacity-75"
-              placeholder="ZIP Code"
-              disabled={hasSavedAddresses}
-            />
+            <input type="text" value={city} onChange={(e) => setCity(e.target.value)}
+              className={inputClass} placeholder="City" disabled={hasSavedAddresses} />
+            <input type="text" value={state} onChange={(e) => setState(e.target.value)}
+              className={inputClass} placeholder="State" disabled={hasSavedAddresses} />
+            <input type="text" value={zipCode} onChange={(e) => setZipCode(e.target.value)}
+              className={inputClass} placeholder="ZIP Code" disabled={hasSavedAddresses} />
           </div>
 
           {/* Delivery Note */}
           <div>
-            <label className="block text-[12px] font-medium text-[#999999] uppercase tracking-wide mb-2">
+            <label className="block text-[12px] font-medium text-white/30 uppercase tracking-widest mb-2">
               Delivery Note
             </label>
-            <div className="relative">
-              <textarea
-                value={deliveryNote}
-                onChange={(e) => setDeliveryNote(e.target.value)}
-                rows={3}
-                className="w-full px-4 py-3 bg-background border border-transparent rounded-lg text-[14px] text-text-black placeholder:text-text-black/50 focus:outline-none focus:border-primary focus:bg-white transition-all resize-none"
-                placeholder='"Gate code is 4451. Please leave at front door."'
-              />
-            </div>
+            <textarea
+              value={deliveryNote}
+              onChange={(e) => setDeliveryNote(e.target.value)}
+              rows={3}
+              className={`${inputClass} resize-none`}
+              placeholder='"Gate code is 4451. Please leave at front door."'
+            />
           </div>
 
           <button
             onClick={handleContinue}
-            className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-90 text-black"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
             Continue to Payment
           </button>
         </div>
       </motion.div>
-      {/* Edit Modal - Only shows when user has saved addresses */}e
+
       {hasSavedAddresses && (
         <EditDeliveryModal
           isOpen={showEditModal}

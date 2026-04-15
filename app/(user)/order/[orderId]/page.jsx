@@ -3,7 +3,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { FileText, Headphones } from "lucide-react";
+import { FileText, Headphones, ChevronRight } from "lucide-react";
 import { use } from "react";
 
 import { useOrderDetails, useDownloadInvoice } from "@/hooks/use-order-details";
@@ -20,53 +20,34 @@ export default function OrderDetailsPage({ params }) {
 
   const handleDownloadInvoice = () => {
     downloadInvoice.mutate(orderId, {
-      onSuccess: (data) => {
-        window.open(data.url, "_blank");
-      },
+      onSuccess: (data) => window.open(data.url, "_blank"),
     });
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[14px] text-[#666666]">Loading order details...</p>
+          <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[14px] text-white/40">Loading order details...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] pt-20">
+    <div className="min-h-screen bg-black pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Breadcrumb */}
         <div className="mb-6">
           <div className="flex items-center gap-2 text-[13px]">
-            <Link
-              href="/"
-              className="text-[#999999] hover:text-[#666666] transition-colors"
-            >
-              Home
-            </Link>
-            <span className="text-[#999999]">/</span>
-            <Link
-              href="/dashboard"
-              className="text-[#999999] hover:text-[#666666] transition-colors"
-            >
-              Account
-            </Link>
-            <span className="text-[#999999]">/</span>
-            <Link
-              href="/dashboard/orders"
-              className="text-[#999999] hover:text-[#666666] transition-colors"
-            >
-              Orders
-            </Link>
-            <span className="text-[#999999]">/</span>
-            <span className="text-primary font-medium">
-              Order {order?.orderNumber}
-            </span>
+            <Link href="/" className="text-white/30 hover:text-white/60 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-white/20" />
+            <Link href="/dashboard" className="text-white/30 hover:text-white/60 transition-colors">Account</Link>
+            <ChevronRight className="w-3 h-3 text-white/20" />
+            <Link href="/dashboard/orders" className="text-white/30 hover:text-white/60 transition-colors">Orders</Link>
+            <ChevronRight className="w-3 h-3 text-white/20" />
+            <span className="text-[#D4AF37] font-medium">Order {order?.orderNumber}</span>
           </div>
         </div>
 
@@ -78,63 +59,45 @@ export default function OrderDetailsPage({ params }) {
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8"
         >
           <div>
-            <h1 className="text-[40px] md:text-[48px] font-bold text-primary leading-tight">
+            <h1 className="text-[40px] md:text-[48px] font-bold text-white leading-tight">
               Order {order?.orderNumber}
             </h1>
-            <p className="text-[14px] text-[#666666] mt-2">
-              Placed on {order?.placedDate} • Total:{" "}
-              <span className="font-semibold text-primary">
-                ${order?.total.toFixed(2)}
+            <p className="text-[14px] text-white/40 mt-2">
+              Placed on {order?.placedDate} · Total:{" "}
+              <span className="font-semibold text-[#D4AF37]">
+                ₦{order?.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </span>
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <button
               onClick={handleDownloadInvoice}
               disabled={downloadInvoice.isPending}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-primary hover:bg-[#f8f8f8] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-white/10 rounded-lg text-[14px] font-medium text-white/60 hover:bg-white/05 transition-colors disabled:opacity-50"
+              style={{ background: "#0d0b08" }}
             >
-              <FileText className="w-4 h-4" />
-              Invoice
+              <FileText className="w-4 h-4" /> Invoice
             </button>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-[#2a2a2a] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[14px] font-medium text-black hover:opacity-90 transition-opacity"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
             >
-              <Headphones className="w-4 h-4" />
-              Support
+              <Headphones className="w-4 h-4" /> Support
             </Link>
           </div>
         </motion.div>
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-8">
-          {/* Left Column */}
           <div className="space-y-6">
-            {/* Delivery Timeline */}
-            <OrderTimeline
-              estimatedDelivery={order?.estimatedDelivery}
-              timeline={order?.timeline}
-            />
-
-            {/* Order Items */}
+            <OrderTimeline estimatedDelivery={order?.estimatedDelivery} timeline={order?.timeline} />
             <OrderItems items={order?.items} />
           </div>
-
-          {/* Right Column */}
           <div className="space-y-6">
-            {/* Shipping Details */}
-            <ShippingDetails
-              shipping={order?.shipping}
-              tracking={order?.tracking}
-            />
-
-            {/* AI Visualizer Promo */}
+            <ShippingDetails shipping={order?.shipping} tracking={order?.tracking} />
             <AIVisualizerPromo items={order?.items} />
-
-            {/* Help Section */}
             <HelpSection />
           </div>
         </div>

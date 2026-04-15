@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Bell, Mail, Smartphone, Loader2 } from "lucide-react";
+import { Mail, Smartphone, Loader2 } from "lucide-react";
 import { useNotifications, useUpdateNotifications } from "@/hooks/use-profile";
 import { showToast } from "@/components/shared/toast";
 
@@ -40,14 +40,10 @@ export default function NotificationPreferences() {
   const handleSave = () => {
     updateNotifications.mutate(prefs, {
       onSuccess: () => {
-        showToast.success({
-          title: "Saved",
-          message: "Notification preferences updated.",
-        });
+        showToast.success({ title: "Saved", message: "Notification preferences updated." });
         setIsDirty(false);
       },
-      onError: (err) =>
-        showToast.error({ title: "Error", message: err.message }),
+      onError: (err) => showToast.error({ title: "Error", message: err.message }),
     });
   };
 
@@ -58,24 +54,19 @@ export default function NotificationPreferences() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-2xl border border-[#e5e5e5] p-6 space-y-6"
+      className="rounded-2xl border border-white/08 p-6 space-y-6"
+      style={{ background: "#0d0b08" }}
     >
       <div>
-        <h2 className="text-[18px] font-semibold text-primary">
-          Notification Preferences
-        </h2>
-        <p className="text-[13px] text-[#888] mt-0.5">
-          Choose what updates you want to receive.
-        </p>
+        <h2 className="text-[18px] font-semibold text-white">Notification Preferences</h2>
+        <p className="text-[13px] text-white/40 mt-0.5">Choose what updates you want to receive.</p>
       </div>
 
       {/* Email Notifications */}
       <div className="space-y-3">
         <div className="flex items-center gap-2 mb-1">
-          <Mail className="w-4 h-4 text-[#888]" />
-          <p className="text-[13px] font-semibold text-[#555] uppercase tracking-wider">
-            Email
-          </p>
+          <Mail className="w-4 h-4 text-white/30" />
+          <p className="text-[13px] font-semibold text-white/30 uppercase tracking-widest">Email</p>
         </div>
         <NotifRow
           label="Order Updates"
@@ -91,15 +82,13 @@ export default function NotificationPreferences() {
         />
       </div>
 
-      <hr className="border-[#f0f0f0]" />
+      <div className="h-px bg-white/06" />
 
       {/* Push Notifications */}
       <div className="space-y-3">
         <div className="flex items-center gap-2 mb-1">
-          <Smartphone className="w-4 h-4 text-[#888]" />
-          <p className="text-[13px] font-semibold text-[#555] uppercase tracking-wider">
-            Push
-          </p>
+          <Smartphone className="w-4 h-4 text-white/30" />
+          <p className="text-[13px] font-semibold text-white/30 uppercase tracking-widest">Push</p>
         </div>
         <NotifRow
           label="Order Updates"
@@ -119,16 +108,15 @@ export default function NotificationPreferences() {
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-end pt-2 border-t border-[#f0f0f0]"
+          className="flex justify-end pt-2 border-t border-white/06"
         >
           <button
             onClick={handleSave}
             disabled={updateNotifications.isPending}
-            className="flex items-center gap-2 px-4 py-2.5 text-[14px] font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-60"
+            className="flex items-center gap-2 px-4 py-2.5 text-[14px] font-medium text-black rounded-lg hover:opacity-90 transition-opacity disabled:opacity-60"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
-            {updateNotifications.isPending && (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            )}
+            {updateNotifications.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {updateNotifications.isPending ? "Saving..." : "Save Preferences"}
           </button>
         </motion.div>
@@ -139,14 +127,15 @@ export default function NotificationPreferences() {
 
 function NotifRow({ label, description, enabled, onToggle }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-3 border-b border-[#f8f8f8] last:border-0">
+    <div className="flex items-center justify-between gap-4 py-3 border-b border-white/04 last:border-0">
       <div>
-        <p className="text-[14px] font-medium text-primary">{label}</p>
-        <p className="text-[12px] text-[#999] mt-0.5">{description}</p>
+        <p className="text-[14px] font-medium text-white">{label}</p>
+        <p className="text-[12px] text-white/35 mt-0.5">{description}</p>
       </div>
       <button
         onClick={onToggle}
-        className={`relative w-12 h-6 rounded-full shrink-0 transition-colors duration-200 focus:outline-none ${enabled ? "bg-primary" : "bg-[#ddd]"}`}
+        className="relative w-12 h-6 rounded-full shrink-0 transition-colors duration-200 focus:outline-none"
+        style={{ background: enabled ? "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" : "rgba(255,255,255,0.12)" }}
       >
         <span
           className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${enabled ? "translate-x-6" : "translate-x-0"}`}
@@ -158,16 +147,16 @@ function NotifRow({ label, description, enabled, onToggle }) {
 
 function NotifSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 space-y-6 animate-pulse">
-      <div className="h-5 w-48 bg-gray-200 rounded" />
+    <div className="rounded-2xl border border-white/08 p-6 space-y-6 animate-pulse" style={{ background: "#0d0b08" }}>
+      <div className="h-5 w-48 bg-white/06 rounded" />
       <div className="space-y-4">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="flex justify-between items-center">
             <div className="space-y-1.5">
-              <div className="h-3.5 w-32 bg-gray-200 rounded" />
-              <div className="h-3 w-56 bg-gray-100 rounded" />
+              <div className="h-3.5 w-32 bg-white/06 rounded" />
+              <div className="h-3 w-56 bg-white/06 rounded" />
             </div>
-            <div className="w-12 h-6 bg-gray-200 rounded-full" />
+            <div className="w-12 h-6 bg-white/06 rounded-full" />
           </div>
         ))}
       </div>

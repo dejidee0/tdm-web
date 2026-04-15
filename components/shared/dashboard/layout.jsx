@@ -10,14 +10,14 @@ export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8]">
+    <div className="min-h-screen bg-black">
       {/* Mobile sidebar toggle — left-aligned, below navbar, matches sidebar slide direction */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="lg:hidden fixed top-19 left-4 z-30 p-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+        className="lg:hidden fixed top-19 left-4 z-30 p-2 bg-[#0d0b08] border border-white/10 rounded-lg hover:bg-white/05 transition-colors"
         aria-label="Open sidebar"
       >
-        <Menu className="w-5 h-5 text-[#1a1a1a]" />
+        <Menu className="w-5 h-5 text-white/60" />
       </button>
 
       {/* Mobile Overlay */}
@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden fixed top-16 inset-x-0 bottom-0 bg-black/50 z-40"
+            className="lg:hidden fixed top-16 inset-x-0 bottom-0 bg-black/70 z-40"
           />
         )}
       </AnimatePresence>

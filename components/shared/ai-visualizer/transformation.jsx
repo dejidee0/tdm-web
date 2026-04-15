@@ -36,36 +36,40 @@ const fadeUp = (delay = 0) => ({
 
 export default function TransformationPath() {
   return (
-    <section className="bg-[#F3F4F6] py-16 px-4 sm:px-6 font-manrope">
+    <section className="bg-black py-16 px-4 sm:px-6 font-manrope">
       {/* Header */}
       <motion.div {...fadeUp(0)} className="text-center mb-10">
-        <h2 className="text-primary text-3xl sm:text-4xl font-bold mb-2.5 tracking-tight">
+        <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2.5 tracking-tight">
           Choose Your Transformation Path
         </h2>
-        <p className="text-gray-500 text-sm sm:text-base">
+        <p className="text-white/40 text-sm sm:text-base">
           Three powerful ways to visualize your future space.
         </p>
       </motion.div>
 
       {/* Cards */}
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="max-w-275 mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
         {paths.map((path, i) => {
           const Icon = path.icon;
           return (
             <motion.div
               key={path.title}
               {...fadeUp(0.1 + i * 0.1)}
-              className="bg-white rounded-2xl p-7 flex flex-col gap-4 shadow-sm"
+              className="rounded-2xl p-7 flex flex-col gap-4 border border-white/08"
+              style={{ background: "#0d0b08" }}
             >
               {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-[#F3F4F6] flex items-center justify-center shrink-0">
-                <Icon className="w-5 h-5 text-primary" strokeWidth={1.6} />
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: "rgba(212,175,55,0.08)" }}
+              >
+                <Icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.6} />
               </div>
 
               {/* Title + Description */}
               <div className="flex flex-col gap-2">
-                <h3 className="text-primary text-lg font-bold">{path.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
+                <h3 className="text-white text-lg font-bold">{path.title}</h3>
+                <p className="text-white/40 text-sm leading-relaxed">
                   {path.description}
                 </p>
               </div>
@@ -74,7 +78,6 @@ export default function TransformationPath() {
               <ul className="flex flex-col gap-2 mt-auto pt-2">
                 {path.features.map((feat) => (
                   <li key={feat} className="flex items-center gap-2">
-                    {/* Circle check icon */}
                     <svg
                       className="w-4 h-4 shrink-0 text-green-500"
                       viewBox="0 0 20 20"
@@ -96,7 +99,7 @@ export default function TransformationPath() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className="text-gray-500 text-sm">{feat}</span>
+                    <span className="text-white/40 text-sm">{feat}</span>
                   </li>
                 ))}
               </ul>

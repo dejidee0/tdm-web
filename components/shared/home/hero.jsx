@@ -1,347 +1,73 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Bath,
-  UtensilsCrossed,
-  LayoutGrid,
-  Droplets,
-  Zap,
-  Truck,
-  Headphones,
-  CheckCircle,
-  Trophy,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-const HeroSection = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const router = useRouter();
 
-  const slides = [
-    {
-      image: "/hero/slide1.png",
-      title: "Design. Price. Build. All in one place.",
-      description:
-        "Premium renovation, construction materials, and AI-powered space visualization for homes, apartments, and commercial spaces.",
-      ctas: [
-        { label: "Get Estimate", href: "/contact?type=estimate", primary: true },
-        { label: "Try Ziora AI", href: "/ai-visualizer", primary: false },
-      ],
-    },
-    {
-      image: "/product-1.jpg",
-      title: "Your Renovation, Starts Here.",
-      description:
-        "From tiles to electrical fittings — everything your construction project needs, all in one place. Delivered directly to site.",
-      ctas: [
-        { label: "Shop Materials", href: "/materials", primary: true },
-        { label: "Get Estimate", href: "/contact?type=estimate", primary: false },
-      ],
-    },
-    {
-      image: "/product-2.jpg",
-      title: "Certified Materials, Built to Last.",
-      description:
-        "Browse thousands of quality-assured building materials from trusted suppliers. Reliable stock for every stage of your project.",
-      ctas: [
-        { label: "View Projects", href: "/project", primary: true },
-        { label: "Shop Materials", href: "/materials", primary: false },
-      ],
-    },
-  ];
-
-  const categories = [
-    { icon: Bath, label: "Bathroom", active: true },
-    { icon: UtensilsCrossed, label: "Kitchen", active: false },
-    { icon: LayoutGrid, label: "Tiles", active: false },
-    { icon: Droplets, label: "Plumbing", active: false },
-    { icon: Zap, label: "Electrical", active: false },
-  ];
-
-  const features = [
-    {
-      icon: Trophy,
-      title: "High Quality",
-      description: "crafted from top materials",
-    },
-    {
-      icon: CheckCircle,
-      title: "Warranty Protection",
-      description: "Over 8 Months",
-    },
-    {
-      icon: Truck,
-      title: "Free Shipping",
-      description: "Order over N300,000",
-    },
-    {
-      icon: Headphones,
-      title: "24 / 7 Support",
-      description: "Dedicated support",
-    },
-  ];
-
-  // Auto-play slider
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, slides.length]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-  };
-
+export default function HeroSection() {
   return (
-    <div className="bg-background overflow-visible relative">
-      {/* Container with max-width for content constraint */}
-      <div className="max-w-325 mx-auto flex items-center justify-center px-4 sm:px-2 lg:px-3 relative min-h-[92vh]">
-        {/* Architectural image hero */}
-        <div className="absolute bottom-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 top-4 rounded-xl md:rounded-2xl overflow-hidden">
-          {/* Image Slider with crossfade */}
-          <div className="absolute inset-0">
-            <AnimatePresence initial={false}>
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={slides[currentSlide].image}
-                  alt={slides[currentSlide].title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {/* Deep dark overlay for luxury premium feel */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/45 to-black/20" />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+    <section className="relative min-h-screen bg-black flex items-center overflow-hidden">
+      {/* ── Background image ──────────────────────────────────────── */}
+      <div className="absolute inset-0">
+        <Image
+          src="/hero/hero.png"
+          alt="TBM — Design Digitally, Build Reality"
+          fill
+          className="object-cover object-center"
+          priority
+        />
 
-          {/* Slider Controls */}
-          <div className="absolute inset-0 z-10  items-center justify-between px-4 sm:px-6 md:px-2 hidden">
-            {/* Previous Button */}
-            <motion.button
-              whileHover={{ scale: 1.1, x: -4 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={prevSlide}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 flex items-center justify-center transition-colors group"
+        {/* Primary dark veil — very heavy so building is barely a silhouette */}
+        <div className="absolute inset-0 bg-black/72" />
+
+        {/* Left-to-right vignette — text side is almost pure black */}
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
+
+        {/* Bottom fade into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-black to-transparent" />
+      </div>
+
+      {/* ── Content ───────────────────────────────────────────────── */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-28 pb-24 sm:pt-36 sm:pb-32">
+        <div className="max-w-2xl lg:max-w-3xl">
+          {/* Heading */}
+          <h1 className="font-poppins font-bold leading-[1.12] tracking-tight mb-5 hero-heading">
+            <span className="block whitespace-nowrap text-white text-[42px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
+              Design Digitally,
+            </span>
+            <span className="block whitespace-nowrap text-[#D4AF37] text-[42px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
+              Build Reality.
+            </span>
+          </h1>
+
+          {/* Subtitle — small, muted, two lines */}
+          <p className="text-white/50 text-[13px] sm:text-sm font-manrope leading-relaxed mb-9 max-w-xs sm:max-w-sm hero-sub">
+            TBM Digital orchestrates high-end architectural journeys from
+            AI-driven concepts to precision-built physical luxury.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex items-center gap-4 hero-ctas">
+            {/* Primary — solid gold gradient fill, slightly rounded */}
+            <Link
+              href="/contact?type=consultation"
+              className="inline-flex items-center justify-center rounded-xl bg-linear-to-br from-[#D4AF37] to-gold-dim px-8 py-4 text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap hover:opacity-90 transition-opacity duration-200"
             >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-white" />
-            </motion.button>
+              Start Your Project
+            </Link>
 
-            {/* Next Button */}
-            <motion.button
-              whileHover={{ scale: 1.1, x: 4 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={nextSlide}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 flex items-center justify-center transition-colors group"
+            {/* Secondary — dark fill, gold gradient border, slightly rounded */}
+            <Link
+              href="/project"
+              className="relative inline-flex rounded-xl p-px bg-linear-to-br from-[#D4AF37] to-gold-dim hover:opacity-90 transition-opacity duration-200"
             >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-white" />
-            </motion.button>
-          </div>
-
-          {/* Slide Indicators */}
-          <div className="absolute bottom-4 right-6 sm:right-8 z-10 flex items-center gap-2">
-            {slides.map((_, index) => (
-              <motion.button
-                key={index}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === index
-                    ? "w-8 bg-white"
-                    : "w-2 bg-white/50 hover:bg-white/70"
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 h-full flex flex-col justify-center md:justify-end px-6 sm:px-8 md:px-12 lg:px-16 pt-20 pb-10 sm:pb-16 md:pb-24">
-            {/* Ziora badge */}
-            <div className="mb-4 sm:mb-5">
-              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-manrope font-medium px-4 py-2 rounded-full tracking-widest uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-                Powered by Ziora Intelligence
+              <span className="inline-flex items-center justify-center rounded-[11px] bg-[#0d0d0d] px-8 py-4 text-[#D4AF37] font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap">
+                View Portfolio
               </span>
-            </div>
-            {/* Heading */}
-            <div className="mb-4 sm:mb-5">
-              <AnimatePresence mode="wait">
-                <motion.h1
-                  key={currentSlide}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.45 }}
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-primary font-bold text-white leading-[1.05] tracking-tight"
-                >
-                  {slides[currentSlide].title}
-                </motion.h1>
-              </AnimatePresence>
-            </div>
-
-            {/* Subheading */}
-            <div className="mb-8 sm:mb-10 max-w-xl">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={currentSlide}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -14 }}
-                  transition={{ duration: 0.4, delay: 0.08 }}
-                  className="text-sm sm:text-base md:text-lg font-manrope text-white/75 leading-relaxed"
-                >
-                  {slides[currentSlide].description}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-
-            {/* CTAs — per slide */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`ctas-${currentSlide}`}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-                className="flex flex-col sm:flex-row gap-3"
-              >
-                {slides[currentSlide].ctas.map((cta) => (
-                  <Link key={cta.label} href={cta.href}>
-                    <motion.button
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`font-semibold px-8 py-3.5 sm:py-4 rounded-none transition-all duration-200 text-sm sm:text-base font-manrope cursor-pointer tracking-widest uppercase ${
-                        cta.primary
-                          ? "bg-white hover:bg-[#FAF8F5] text-[#0A0A0A] shadow-lg"
-                          : "bg-transparent hover:bg-white/10 border border-white/40 text-white"
-                      }`}
-                    >
-                      {cta.label}
-                    </motion.button>
-                  </Link>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Category Navigation Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-16 left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] h-24 sm:h-32 md:h-32 bg-[#FAF8F5] z-30 rounded-none shadow-2xl border-b-2 border-gold"
-        >
-          <div className="h-full flex items-center justify-around px-4 sm:px-6 md:px-8 lg:px-12">
-            {categories.map((category, index) => {
-              const Icon = category.icon;
-              return (
-                <motion.button
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
-                  whileHover={{ y: -4, scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push(`/materials?search=${encodeURIComponent(category.label)}`)}
-                  className={`flex flex-col items-center justify-center gap-2 transition-all duration-200 group cursor-pointer ${
-                    category.active ? "" : "opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 sm:w-12 sm:h-12 md:w-12 md:h-12 flex items-center justify-center transition-colors duration-200 ${
-                      category.active
-                        ? "text-[#0A0A0A]"
-                        : "text-[#7A736C] group-hover:text-[#0A0A0A]"
-                    }`}
-                  >
-                    <Icon
-                      className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6"
-                      strokeWidth={1.5}
-                    />
-                  </div>
-
-                  <span
-                    className={`text-[10px] sm:text-xs font-manrope font-semibold tracking-wide uppercase ${
-                      category.active ? "text-[#0A0A0A]" : "text-[#7A736C] group-hover:text-[#0A0A0A]"
-                    }`}
-                  >
-                    {category.label}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Features strip */}
-      <div className="bg-[#0A0A0A] py-10 sm:py-12 lg:py-14 mt-12 sm:mt-14 lg:mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start gap-4"
-                >
-                  <div className="shrink-0 mt-0.5">
-                    <Icon
-                      className="w-8 h-8 text-gold"
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1 tracking-wide">
-                      {feature.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/50 font-manrope">
-                      {feature.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default HeroSection;
+}

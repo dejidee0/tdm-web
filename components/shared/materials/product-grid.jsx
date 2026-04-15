@@ -10,30 +10,32 @@ export default function ProductGrid({
   if (isLoading) {
     return (
       <div
-        className={`grid gap-px bg-stone ${
+        className={`grid gap-px ${
           viewMode === "grid"
             ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             : "grid-cols-1"
         }`}
+        style={{ background: "rgba(255,255,255,0.06)" }}
       >
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="bg-white overflow-hidden animate-pulse"
+            className="overflow-hidden animate-pulse"
+            style={{ background: "#0d0b08" }}
           >
             <div
               className={
-                viewMode === "grid" ? "h-64 bg-stone" : "h-48 bg-stone"
+                viewMode === "grid" ? "h-64 bg-white/06" : "h-48 bg-white/06"
               }
             />
             <div className="p-4 space-y-3">
-              <div className="h-3 bg-stone w-1/3" />
-              <div className="h-4 bg-stone w-3/4" />
-              <div className="h-3 bg-stone w-full" />
-              <div className="h-3 bg-stone w-2/3" />
+              <div className="h-3 bg-white/06 w-1/3" />
+              <div className="h-4 bg-white/06 w-3/4" />
+              <div className="h-3 bg-white/06 w-full" />
+              <div className="h-3 bg-white/06 w-2/3" />
               <div className="flex items-center justify-between">
-                <div className="h-6 bg-stone w-1/4" />
-                <div className="h-8 bg-stone w-1/3" />
+                <div className="h-6 bg-white/06 w-1/4" />
+                <div className="h-8 bg-white/06 w-1/3" />
               </div>
             </div>
           </div>
@@ -46,7 +48,7 @@ export default function ProductGrid({
     return (
       <div className="text-center py-12">
         <svg
-          className="w-16 h-16 text-stone mx-auto mb-4"
+          className="w-16 h-16 text-white/20 mx-auto mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -58,10 +60,10 @@ export default function ProductGrid({
             d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
           />
         </svg>
-        <h3 className="text-lg font-medium text-[#0A0A0A] mb-2 font-primary">
+        <h3 className="text-lg font-medium text-white mb-2 font-primary">
           No products found
         </h3>
-        <p className="text-[#7A736C] font-manrope">
+        <p className="text-white/40 font-manrope">
           Try adjusting your filters to see more results
         </p>
       </div>
@@ -70,11 +72,12 @@ export default function ProductGrid({
 
   return (
     <div
-      className={`grid gap-px bg-stone ${
+      className={`grid gap-px ${
         viewMode === "grid"
           ? "grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
           : "grid-cols-1"
       }`}
+      style={{ background: "rgba(255,255,255,0.06)" }}
     >
       {products.map((product) => (
         <ProductCard key={product.id} product={product} viewMode={viewMode} />

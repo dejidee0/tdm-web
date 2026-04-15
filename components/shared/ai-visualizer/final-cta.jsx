@@ -68,7 +68,8 @@ const FinalCTA = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="px-8 py-4 bg-white text-[#0A0A0A] rounded-none font-manrope font-bold text-sm tracking-wide hover:bg-[#FAF8F5] transition-colors"
+              className="px-8 py-4 rounded-none font-manrope font-bold text-sm tracking-wide text-black hover:opacity-90 transition-opacity"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
             >
               Book a Designer
             </motion.button>

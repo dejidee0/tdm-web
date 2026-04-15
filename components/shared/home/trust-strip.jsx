@@ -1,42 +1,57 @@
 "use client";
 
-import React from "react";
-import { MapPin, Package, Cpu, HardHat, Zap, HeadphonesIcon } from "lucide-react";
+import Reveal from "@/components/common/reveal";
 
-const ITEMS = [
-  { icon: MapPin,           label: "Abuja & Lagos Projects" },
-  { icon: Package,          label: "Premium Materials" },
-  { icon: Cpu,              label: "AI Visualization" },
-  { icon: HardHat,          label: "Expert Execution" },
-  { icon: Zap,              label: "Fast Project Delivery" },
-  { icon: HeadphonesIcon,   label: "After-Sales Support" },
+const STATS = [
+  {
+    value: "150+",
+    label: "PROJECTS DELIVERED",
+    description: "Customising spaces, commercial and residential landscapes.",
+    valueColor: "text-white",
+  },
+  {
+    value: "Hubs",
+    label: "ABUJA & LAGOS",
+    description: "Strategically positioned to serve Nigeria's elite clientele.",
+    valueColor: "text-[#D4AF37]",
+    italic: true,
+  },
+  {
+    value: "N550M+",
+    label: "ASSET VALUE MANAGED",
+    description: "Significant portfolio performance for discerning investors.",
+    valueColor: "text-white",
+  },
 ];
 
-// Duplicate so the seam is invisible during the loop
-const TRACK = [...ITEMS, ...ITEMS];
-
-export default function TrustStrip() {
+export default function StatsStrip() {
   return (
-    <section className="bg-[#0A0A0A] py-4 overflow-hidden border-b border-white/5">
-      <div
-        className="flex w-max animate-marquee whitespace-nowrap"
-        style={{ "--marquee-speed": "32s" }}
-      >
-        {TRACK.map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <span
-              key={i}
-              className="inline-flex items-center gap-2.5 text-white/70 px-10"
-            >
-              <Icon className="w-3.5 h-3.5 text-gold shrink-0" strokeWidth={1.8} />
-              <span className="text-xs font-manrope font-medium tracking-[0.15em] uppercase">
-                {item.label}
-              </span>
-              <span className="ml-10 w-px h-3 bg-white/15 shrink-0" />
-            </span>
-          );
-        })}
+    <section className="bg-black py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          {STATS.map((stat, i) => (
+            <Reveal key={stat.label} direction="up" delay={i * 100}>
+              <div className="bg-[#111111] border border-white/8 rounded-2xl px-8 py-8 sm:py-10 flex flex-col gap-3">
+                {/* Value */}
+                <span
+                  className={`font-poppins font-bold text-4xl sm:text-5xl leading-none tracking-tight ${stat.valueColor} ${stat.italic ? "italic" : ""}`}
+                >
+                  {stat.value}
+                </span>
+
+                {/* Label */}
+                <span className="text-[10px] font-manrope font-semibold tracking-[0.22em] text-white/40 uppercase">
+                  {stat.label}
+                </span>
+
+                {/* Description */}
+                <p className="text-white/30 text-sm font-manrope leading-relaxed">
+                  {stat.description}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

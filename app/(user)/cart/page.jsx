@@ -1,4 +1,3 @@
-// app/cart/page.jsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -12,30 +11,23 @@ import RelatedProducts from "@/components/shared/cart/related";
 
 export default function CartPage() {
   const { data: cart, isLoading } = useCart();
-
   const itemCount = cart?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] pt-20">
+    <div className="min-h-screen bg-black pt-20">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-[#e5e5e5]">
+      <div className="border-b border-white/08" style={{ background: "#0d0b08" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 text-[13px]">
-            <Link
-              href="/"
-              className="text-[#666666] hover:text-primary transition-colors"
-            >
-              Home
-            </Link>
-            <ChevronRight className="w-4 h-4 text-[#999999]" />
-            <span className="text-primary font-medium">Shopping Cart</span>
+            <Link href="/" className="text-white/40 hover:text-white/70 transition-colors">Home</Link>
+            <ChevronRight className="w-4 h-4 text-white/20" />
+            <span className="text-white/70 font-medium">Shopping Cart</span>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -43,31 +35,23 @@ export default function CartPage() {
           className="flex items-center justify-between mb-8"
         >
           <div>
-            <h1 className="text-[32px] md:text-[40px] font-bold text-primary leading-tight">
+            <h1 className="text-[32px] md:text-[40px] font-bold text-white leading-tight font-poppins">
               Your Shopping Cart
             </h1>
-            <p className="text-[15px] text-[#666666] mt-1">
-              {isLoading
-                ? "Loading..."
-                : `${itemCount} item${itemCount !== 1 ? "s" : ""} ready for secure checkout`}
+            <p className="text-[15px] text-white/40 mt-1">
+              {isLoading ? "Loading…" : `${itemCount} item${itemCount !== 1 ? "s" : ""} ready for secure checkout`}
             </p>
           </div>
-
-          <Link
-            href="/materials"
-            className="text-[14px] text-[#3b82f6] font-medium hover:text-[#2563eb] transition-colors hidden md:block"
-          >
+          <Link href="/materials" className="text-[14px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors hidden md:block">
             Continue Shopping
           </Link>
         </motion.div>
 
-        {/* Cart Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 lg:gap-8">
           <div className="space-y-6">
             <CartItemsList cart={cart} isLoading={isLoading} />
             <DeliveryEstimate estimate={cart?.estimatedDelivery} />
           </div>
-
           <div className="lg:sticky lg:top-6 h-fit">
             <OrderSummary cart={cart} isLoading={isLoading} />
           </div>
