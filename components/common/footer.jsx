@@ -50,7 +50,9 @@ function AccordionSection({ title, links }) {
         <motion.ul
           key="mobile"
           initial={false}
-          animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+          animate={
+            open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }
+          }
           transition={{ duration: 0.28, ease: "easeInOut" }}
           className="overflow-hidden md:hidden"
         >
@@ -89,17 +91,17 @@ function AccordionSection({ title, links }) {
 const Footer = () => {
   return (
     <footer className="relative w-full font-manrope overflow-hidden">
-      {/* Topographic background */}
+      {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/footer-bg.png"
+          src="/footer-background.png"
           alt=""
           fill
-          className="object-cover opacity-30"
+          className="object-cover object-center"
           priority={false}
         />
-        {/* Dark overlay so the topo map is very subtle */}
-        <div className="absolute inset-0 bg-black/80" />
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/5" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 py-10 md:py-16">

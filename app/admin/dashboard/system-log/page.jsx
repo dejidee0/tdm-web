@@ -29,7 +29,6 @@ export default function SystemLogPage() {
   const [search, setSearch] = useState("");
   const [severity, setSeverity] = useState("all");
 
-  // Map service names to icon paths
   const getServiceIcon = (serviceName) => {
     const iconMap = {
       AI_JOB_ENGINE: aiJobEngineIcon,
@@ -60,8 +59,8 @@ export default function SystemLogPage() {
       <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-[#64748B] font-inter text-[14px]">
+            <div className="w-16 h-16 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-white/50 font-inter text-[14px]">
               Loading system logs...
             </p>
           </div>
@@ -70,7 +69,6 @@ export default function SystemLogPage() {
     );
   }
 
-  // Transform backend stats to UI format
   const formatStatsValue = (value) => {
     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
     if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
@@ -85,7 +83,6 @@ export default function SystemLogPage() {
       changeType: "neutral",
       subtitle: "Errors",
       key: "criticalErrors",
-      bgColor: "bg-white",
       icon: criticalErrorsIcon,
     },
     {
@@ -95,7 +92,6 @@ export default function SystemLogPage() {
       changeType: "neutral",
       subtitle: "Warnings",
       key: "activeWarnings",
-      bgColor: "bg-white",
       icon: activeWarningsIcon,
     },
     {
@@ -105,7 +101,6 @@ export default function SystemLogPage() {
       changeType: "neutral",
       subtitle: "Info",
       key: "avgResponseTime",
-      bgColor: "bg-white",
       icon: avgResponseIcon,
     },
     {
@@ -115,7 +110,6 @@ export default function SystemLogPage() {
       changeType: "neutral",
       subtitle: "All logs",
       key: "logsIngested",
-      bgColor: "bg-white",
       icon: logsIngestedIcon,
     },
   ] : [];
@@ -131,11 +125,11 @@ export default function SystemLogPage() {
   return (
     <div className="max-w-360 mx-auto">
       {/* Header */}
-      <div className="mb-6 sm:mb-8 pb-6 border-b border-[#314368]/50">
+      <div className="mb-6 sm:mb-8 pb-6 border-b border-white/08">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
             <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <h1 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-black text-[#273054] tracking-[-1.34px] leading-[1.1]">
+              <h1 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-black text-white tracking-[-1.34px] leading-[1.1]">
                 System Logs & Monitoring
               </h1>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20 rounded-full font-inter text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.67px] whitespace-nowrap">
@@ -143,7 +137,7 @@ export default function SystemLogPage() {
                 LIVE
               </span>
             </div>
-            <p className="font-inter text-[14px] sm:text-[16px] md:text-[18px] text-[#273054]">
+            <p className="font-inter text-[14px] sm:text-[16px] md:text-[18px] text-white/50">
               Real-time oversight of system events, errors, and operational
               metrics. Governance view for Super Admin.
             </p>
@@ -155,7 +149,8 @@ export default function SystemLogPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => exportLogs()}
             disabled={isExporting}
-            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold hover:bg-[#334155] transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold text-black transition-opacity disabled:opacity-50 whitespace-nowrap"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
             <Download size={14} className="sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Export Logs</span>
@@ -172,18 +167,18 @@ export default function SystemLogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`${stat.bgColor} rounded-xl p-6 border border-[#E5E7EB] shadow-[0_0.98px_1.96px_0_rgba(0,0,0,0.05)] relative overflow-hidden`}
+            className="bg-[#0d0b08] rounded-xl p-6 border border-white/08 relative overflow-hidden"
           >
             {/* Icon in top right */}
             <div className="absolute top-6 right-6">
               <Image src={stat.icon} alt={stat.label} width={44} height={44} />
             </div>
 
-            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium text-[#273054] uppercase tracking-[0.39px] mb-2">
+            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium text-white/50 uppercase tracking-[0.39px] mb-2">
               {stat.label}
             </p>
             <div className="flex items-end gap-3">
-              <h3 className="font-inter text-[28px] sm:text-[32px] md:text-[34px] font-bold text-[#273054] leading-none">
+              <h3 className="font-inter text-[28px] sm:text-[32px] md:text-[34px] font-bold text-white leading-none">
                 {stat.value}
               </h3>
               {stat.change !== 0 ? (
@@ -200,7 +195,7 @@ export default function SystemLogPage() {
                   {stat.change}%
                 </span>
               ) : (
-                <span className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium mb-2 text-[#273054]">
+                <span className="font-inter text-[13px] sm:text-[14px] md:text-[16px] font-medium mb-2 text-white/40">
                   {stat.subtitle}
                 </span>
               )}
@@ -210,11 +205,11 @@ export default function SystemLogPage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-4 sm:p-6 mb-6">
+      <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6 mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
           {/* Search Logs */}
           <div>
-            <label className="block font-inter text-[13px] font-semibold text-[#64748B] uppercase tracking-[0.67px] mb-2">
+            <label className="block font-inter text-[13px] font-semibold text-white/40 uppercase tracking-[0.67px] mb-2">
               Search Logs
             </label>
             <div className="relative">
@@ -223,7 +218,7 @@ export default function SystemLogPage() {
                 alt="Search"
                 width={18}
                 height={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2"
+                className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40"
               />
               <input
                 type="text"
@@ -233,14 +228,14 @@ export default function SystemLogPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2.5 bg-[#273054]/10 border border-[#273054]/20 rounded-[9px] font-inter text-[14px] sm:text-[16px] md:text-[18px] placeholder:text-[#273054]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+                className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-[9px] font-inter text-[14px] sm:text-[16px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
               />
             </div>
           </div>
 
           {/* Date Range */}
           <div>
-            <label className="block font-inter text-[13px] font-semibold text-[#64748B] uppercase tracking-[0.67px] mb-2">
+            <label className="block font-inter text-[13px] font-semibold text-white/40 uppercase tracking-[0.67px] mb-2">
               Date Range
             </label>
             <div className="flex gap-3">
@@ -250,22 +245,22 @@ export default function SystemLogPage() {
                   alt="Calendar"
                   width={18}
                   height={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40"
                 />
                 <input
                   type="text"
                   value="Oct 26, 2023 - Oct 27, 2023"
                   readOnly
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#273054]/10 border border-[#273054]/20 rounded-[9px] font-inter text-[14px] text-[#64748B] cursor-pointer"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-[9px] font-inter text-[14px] text-white/50 cursor-pointer"
                 />
               </div>
-              <button className="flex items-center gap-2 px-4 py-2.5 bg-[#273054] text-white rounded-[9px] font-inter text-[14px] sm:text-[16px] md:text-[18px] font-medium hover:bg-primary transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2.5 border border-white/10 text-white/60 rounded-[9px] font-inter text-[14px] sm:text-[16px] font-medium hover:bg-white/05 transition-colors">
                 <Image
                   src={filterIcon}
                   alt="Filter"
                   width={16}
                   height={16}
-                  className="brightness-0 invert"
+                  className="opacity-50"
                 />
                 Filters
               </button>
@@ -274,28 +269,27 @@ export default function SystemLogPage() {
         </div>
 
         {/* Severity Pills */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap pt-4 border-t border-[#314368]/50">
-          <span className="font-inter text-[11px] sm:text-[13px] font-medium text-[#273054] uppercase">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap pt-4 border-t border-white/08">
+          <span className="font-inter text-[11px] sm:text-[13px] font-medium text-white/40 uppercase">
             Severity:
           </span>
           {severityFilters.map((filter) => {
             const isActive = severity === filter.value;
 
-            // Bullet and text color for each severity type
             let bulletColor = "";
-            let textColor = "text-white";
+            let activeTextColor = "text-white";
             if (filter.value === "critical") {
               bulletColor = "bg-[#F87171]";
-              textColor = "text-[#F87171]";
+              activeTextColor = "text-[#F87171]";
             } else if (filter.value === "error") {
               bulletColor = "bg-[#FB923C]";
-              textColor = "text-[#FB923C]";
+              activeTextColor = "text-[#FB923C]";
             } else if (filter.value === "warning") {
               bulletColor = "bg-[#FACC15]";
-              textColor = "text-[#FACC15]";
+              activeTextColor = "text-[#FACC15]";
             } else if (filter.value === "info") {
-              bulletColor = "bg-white";
-              textColor = "text-white";
+              bulletColor = "bg-white/60";
+              activeTextColor = "text-white/80";
             }
 
             return (
@@ -305,7 +299,11 @@ export default function SystemLogPage() {
                   setSeverity(filter.value);
                   setPage(1);
                 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border border-[#273054] bg-[#273054] ${textColor} font-inter text-[15.74px] font-medium transition-colors ${isActive ? "shadow-[0_1.12px_2.25px_0_rgba(0,0,0,0.05)]" : ""}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border font-inter text-[13px] font-medium transition-colors ${
+                  isActive
+                    ? `border-white/20 bg-white/08 ${activeTextColor}`
+                    : "border-white/08 bg-white/03 text-white/40 hover:bg-white/08 hover:text-white/60"
+                }`}
               >
                 {filter.value !== "all" && (
                   <span className={`w-2 h-2 rounded-full ${bulletColor}`} />
@@ -318,29 +316,19 @@ export default function SystemLogPage() {
       </div>
 
       {/* Logs Table */}
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-[#0d0b08] rounded-xl border border-white/08">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#273054]/10 [&_tr:first-child_th:first-child]:rounded-tl-xl [&_tr:first-child_th:last-child]:rounded-tr-xl">
-              <tr className="border-b-[1.12px] border-[#314368]">
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  Timestamp
-                </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  Severity
-                </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  Service Source
-                </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  Message
-                </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  User/Actor
-                </th>
-                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-[#273054] uppercase tracking-[0.67px]">
-                  Action
-                </th>
+            <thead>
+              <tr className="bg-white/05 border-b border-white/08">
+                {["Timestamp", "Severity", "Service Source", "Message", "User/Actor", "Action"].map((h) => (
+                  <th
+                    key={h}
+                    className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-white/40 uppercase tracking-[0.67px]"
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -350,9 +338,9 @@ export default function SystemLogPage() {
                 return (
                   <tr
                     key={log?.id || index}
-                    className="bg-white border-t-[1.12px] border-[#273054]/50"
+                    className="border-t border-white/08 hover:bg-white/03 transition-colors"
                   >
-                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] whitespace-normal sm:whitespace-nowrap">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-white/60 whitespace-normal sm:whitespace-nowrap">
                       {log?.timestamp || log?.createdAt || "N/A"}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
@@ -370,31 +358,31 @@ export default function SystemLogPage() {
                           width={20}
                           height={20}
                         />
-                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] font-medium text-[#273054]">
+                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] font-medium text-white/70">
                           {log?.service?.name || log?.category || "N/A"}
                         </span>
                       </div>
                     </td>
-                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] max-w-xs sm:max-w-sm md:max-w-md truncate">
+                    <td className="px-2 sm:px-6 py-3 sm:py-4 font-inter text-[11px] sm:text-[13px] md:text-[16px] text-white/70 max-w-xs sm:max-w-sm md:max-w-md truncate">
                       {log?.message || log?.action || "N/A"}
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <div
-                          className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white"
+                          className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white shrink-0"
                           style={{
-                            backgroundColor: log?.actor?.colorScheme?.bg || "#64748B",
+                            backgroundColor: log?.actor?.colorScheme?.bg || "rgba(255,255,255,0.12)",
                           }}
                         >
                           {log?.actor?.initials || log?.userId?.charAt(0) || "U"}
                         </div>
-                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-[#273054] hidden sm:inline">
+                        <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-white/60 hidden sm:inline">
                           {log?.actor?.name || log?.userId || "N/A"}
                         </span>
                       </div>
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
-                      <button className="text-[#3B82F6] hover:text-[#1E40AF]">
+                      <button className="text-[#D4AF37] hover:text-[#b8962e] transition-colors">
                         <Eye size={16} className="sm:w-[18px] sm:h-[18px]" />
                       </button>
                     </td>
@@ -407,14 +395,14 @@ export default function SystemLogPage() {
 
         {/* Pagination */}
         {logs?.pagination && (
-          <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between">
-            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054]">
+          <div className="px-6 py-4 border-t border-white/08 flex items-center justify-between">
+            <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] text-white/50">
               Showing{" "}
-              <span className="font-medium">
+              <span className="font-medium text-white">
                 {(page - 1) * 6 + 1}-{Math.min(page * 6, logs?.pagination?.total || 0)}
               </span>{" "}
               of{" "}
-              <span className="font-medium">
+              <span className="font-medium text-white">
                 {logs?.pagination?.total?.toLocaleString() || 0}
               </span>{" "}
               entries
@@ -423,7 +411,7 @@ export default function SystemLogPage() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 rounded-[9px] border border-[#273054] font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054] opacity-50 hover:opacity-75 disabled:opacity-30"
+                className="px-4 py-2 rounded-[9px] border border-white/10 font-inter text-[13px] sm:text-[14px] md:text-[16px] text-white/60 hover:bg-white/05 transition-colors disabled:opacity-30"
               >
                 Previous
               </button>
@@ -432,7 +420,7 @@ export default function SystemLogPage() {
                   setPage(Math.min(logs?.pagination?.totalPages || 1, page + 1))
                 }
                 disabled={page === (logs?.pagination?.totalPages || 1)}
-                className="px-4 py-2 rounded-[9px] border border-[#273054] font-inter text-[13px] sm:text-[14px] md:text-[16px] text-[#273054] hover:bg-[#273054]/5 disabled:opacity-30"
+                className="px-4 py-2 rounded-[9px] border border-white/10 font-inter text-[13px] sm:text-[14px] md:text-[16px] text-white/60 hover:bg-white/05 transition-colors disabled:opacity-30"
               >
                 Next
               </button>

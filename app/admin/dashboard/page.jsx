@@ -27,13 +27,13 @@ function StatCardSkeleton({ count = 3 }) {
   return (
     <>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="bg-white rounded-xl p-5 border border-[#E5E7EB] animate-pulse">
+        <div key={i} className="bg-[#0d0b08] rounded-xl p-5 border border-white/08 animate-pulse">
           <div className="flex items-center justify-between mb-3">
-            <div className="h-4 w-28 bg-[#E5E7EB] rounded" />
-            <div className="h-9 w-9 bg-[#E5E7EB] rounded-lg" />
+            <div className="h-4 w-28 bg-white/08 rounded" />
+            <div className="h-9 w-9 bg-white/08 rounded-lg" />
           </div>
-          <div className="h-8 w-24 bg-[#E5E7EB] rounded mb-3" />
-          <div className="h-3 w-32 bg-[#E5E7EB] rounded" />
+          <div className="h-8 w-24 bg-white/08 rounded mb-3" />
+          <div className="h-3 w-32 bg-white/08 rounded" />
         </div>
       ))}
     </>
@@ -42,25 +42,25 @@ function StatCardSkeleton({ count = 3 }) {
 
 function ChartSkeleton() {
   return (
-    <div className="bg-white rounded-xl p-6 border border-[#E5E7EB] animate-pulse">
-      <div className="h-5 w-40 bg-[#E5E7EB] rounded mb-6" />
-      <div className="h-52 bg-[#E5E7EB] rounded-lg" />
+    <div className="bg-[#0d0b08] rounded-xl p-6 border border-white/08 animate-pulse">
+      <div className="h-5 w-40 bg-white/08 rounded mb-6" />
+      <div className="h-52 bg-white/08 rounded-lg" />
     </div>
   );
 }
 
 function AlertsSkeleton() {
   return (
-    <div className="bg-white rounded-xl p-5 border border-[#E5E7EB] animate-pulse">
-      <div className="h-5 w-32 bg-[#E5E7EB] rounded mb-6" />
+    <div className="bg-[#0d0b08] rounded-xl p-5 border border-white/08 animate-pulse">
+      <div className="h-5 w-32 bg-white/08 rounded mb-6" />
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="flex gap-4 mb-4 last:mb-0">
-          <div className="h-4 w-4 bg-[#E5E7EB] rounded-full mt-0.5 shrink-0" />
+          <div className="h-4 w-4 bg-white/08 rounded-full mt-0.5 shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-3/4 bg-[#E5E7EB] rounded" />
-            <div className="h-3 w-1/2 bg-[#E5E7EB] rounded" />
+            <div className="h-4 w-3/4 bg-white/08 rounded" />
+            <div className="h-3 w-1/2 bg-white/08 rounded" />
           </div>
-          <div className="h-6 w-16 bg-[#E5E7EB] rounded-full shrink-0" />
+          <div className="h-6 w-16 bg-white/08 rounded-full shrink-0" />
         </div>
       ))}
     </div>
@@ -153,10 +153,10 @@ export default function AdminDashboardPage() {
       <div className="mb-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
           <div>
-            <h1 className="font-inter text-[24px] sm:text-[28px] md:text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-inter text-[24px] sm:text-[28px] md:text-[32px] font-bold text-white mb-2">
               Dashboard Overview
             </h1>
-            <p className="font-manrope text-[13px] sm:text-[14px] text-[#64748B]">
+            <p className="font-manrope text-[13px] sm:text-[14px] text-white/50">
               System performance, financial metrics, and critical alerts
             </p>
           </div>
@@ -167,7 +167,7 @@ export default function AdminDashboardPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white/60 hover:bg-white/05 hover:text-white transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               <Download size={16} />
               Export Report
@@ -177,7 +177,8 @@ export default function AdminDashboardPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => refreshDashboard()}
               disabled={isRefreshing}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-manrope text-[13px] font-medium text-black transition-opacity disabled:opacity-50 w-full sm:w-auto"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
             >
               <Image src={refreshData} alt="Refresh Data" />
               Refresh Data
@@ -191,15 +192,15 @@ export default function AdminDashboardPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4"
+          className="mb-6 bg-red-950/30 border border-red-800/30 rounded-lg p-4"
         >
           <div className="flex items-start gap-3">
-            <AlertCircle className="text-red-600 shrink-0 mt-0.5" size={20} />
+            <AlertCircle className="text-red-400 shrink-0 mt-0.5" size={20} />
             <div className="flex-1">
-              <h3 className="font-manrope text-[14px] font-semibold text-red-800 mb-1">
+              <h3 className="font-manrope text-[14px] font-semibold text-red-300 mb-1">
                 {isCorsError ? "API Connection Issue" : "Error Loading Data"}
               </h3>
-              <p className="font-manrope text-[13px] text-red-700">
+              <p className="font-manrope text-[13px] text-red-400">
                 {isCorsError
                   ? "Unable to connect to the backend API due to CORS configuration. Contact your backend developer to update CORS settings."
                   : errorMessage}
@@ -207,7 +208,7 @@ export default function AdminDashboardPage() {
             </div>
             <button
               onClick={() => setShowError(false)}
-              className="text-red-600 hover:text-red-800 transition-colors shrink-0"
+              className="text-red-400 hover:text-red-300 transition-colors shrink-0"
             >
               <X size={18} />
             </button>

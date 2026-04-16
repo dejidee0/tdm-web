@@ -60,10 +60,10 @@ export default function OrdersPage() {
           className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div>
-            <h1 className="text-[28px] md:text-[32px] font-semibold text-[#1a1a1a] leading-tight">
+            <h1 className="text-[28px] md:text-[32px] font-semibold text-white leading-tight">
               My Orders
             </h1>
-            <p className="text-[14px] text-[#666666] mt-1">
+            <p className="text-[14px] text-white/50 mt-1">
               View your order history, check statuses, and track shipments.
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function OrdersPage() {
           <button
             onClick={handleExport}
             disabled={!orders || orders.length === 0}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-[#1a1a1a] hover:bg-[#f8f8f8] transition-colors self-start sm:self-auto disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/10 text-[14px] font-medium text-white/60 hover:bg-white/05 hover:text-white transition-colors self-start sm:self-auto disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
             Export

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Reveal from "@/components/common/reveal";
 
 const MATERIALS = [
@@ -18,12 +19,27 @@ export default function MaterialsBogatSection() {
     <section className="bg-black py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
 
-        {/* Title */}
+        {/* Section label */}
         <Reveal direction="up">
-          <h2 className="font-poppins font-bold text-3xl sm:text-4xl text-white text-center mb-12 sm:mb-16">
-            Material{" "}
-            <span className="text-white/40">(Bogat)</span>
+          <p className="text-center text-[#D4AF37] font-manrope text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+            Bogat Collection
+          </p>
+        </Reveal>
+
+        {/* Title */}
+        <Reveal direction="up" delay={60}>
+          <h2 className="font-poppins font-bold text-4xl sm:text-5xl text-white text-center mb-4">
+            Premium{" "}
+            <span className="text-[#D4AF37]">Materials</span>
           </h2>
+        </Reveal>
+
+        {/* Subtitle */}
+        <Reveal direction="up" delay={100}>
+          <p className="text-white/45 text-base font-manrope text-center leading-relaxed max-w-md mx-auto mb-12 sm:mb-16">
+            Curated finishes and fixtures sourced for quality, longevity, and
+            aesthetic precision.
+          </p>
         </Reveal>
 
         {/* 3×2 image grid */}
@@ -46,11 +62,14 @@ export default function MaterialsBogatSection() {
         {/* CTA */}
         <Reveal direction="up" delay={80}>
           <div className="flex justify-center">
-            <Link
-              href="/materials"
-              className="inline-flex items-center border border-white/30 text-white font-manrope font-medium text-[13px] tracking-[0.18em] uppercase px-10 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-200"
-            >
-              View More
+            <Link href="/materials">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center justify-center rounded-xl bg-linear-to-br from-[#D4AF37] to-[#b8942e] px-10 py-4 text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity duration-200"
+              >
+                View All Materials
+              </motion.button>
             </Link>
           </div>
         </Reveal>

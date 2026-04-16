@@ -43,9 +43,9 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+      className="bg-[#0d0b08] rounded-xl border border-white/08 p-6"
     >
-      <h3 className="font-manrope text-[18px] font-bold text-primary mb-4">
+      <h3 className="font-manrope text-[18px] font-bold text-white mb-4">
         Quick Actions
       </h3>
 
@@ -60,7 +60,7 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
             whileTap={{ scale: 0.98 }}
             onClick={action.onClick}
             disabled={action.isPending}
-            className="w-full flex items-center justify-between p-4 bg-[#2730541A] hover:bg-[#F1F5F9] rounded-lg transition-colors group disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-between p-4 bg-white/05 hover:bg-white/08 rounded-lg transition-colors group disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <div className="flex items-center gap-3">
               <div
@@ -73,13 +73,13 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
                   height={18}
                 />
               </div>
-              <span className="font-manrope text-[14px] font-medium text-primary">
+              <span className="font-manrope text-[14px] font-medium text-white/80">
                 {action.label}
               </span>
             </div>
             <ChevronRight
               size={18}
-              className="text-[#94A3B8] group-hover:text-[#64748B] transition-colors"
+              className="text-white/30 group-hover:text-white/60 transition-colors"
             />
           </motion.button>
         ))}

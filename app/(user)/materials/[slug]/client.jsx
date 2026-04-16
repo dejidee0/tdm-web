@@ -126,9 +126,10 @@ export default function MaterialDetailClient({
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50 font-manrope pt-20">
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="min-h-screen bg-black font-manrope pt-20">
+      {/* Breadcrumb bar */}
+      <div className="border-b border-white/08" style={{ background: "#0d0b08" }}>
+        <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
@@ -143,7 +144,7 @@ export default function MaterialDetailClient({
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <ImageGallery
             images={images}
@@ -155,17 +156,17 @@ export default function MaterialDetailClient({
               {/* Badges */}
               <div className="flex flex-wrap gap-2">
                 {product.isFeatured && (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary text-white">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-linear-to-br from-[#D4AF37] to-[#b8942e] text-black">
                     Featured
                   </span>
                 )}
                 {hasDiscount && (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500 text-white">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">
                     -{discountPct}% OFF
                   </span>
                 )}
                 {product.productTypeName === "Service" && (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-600 text-white">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/08 text-white/60 border border-white/10">
                     Service
                   </span>
                 )}
@@ -173,7 +174,7 @@ export default function MaterialDetailClient({
 
               {/* Title & Save */}
               <div className="flex items-start justify-between gap-4">
-                <h1 className="text-3xl font-semibold text-primary leading-tight flex-1 min-w-0">
+                <h1 className="font-poppins font-bold text-3xl text-white leading-tight flex-1 min-w-0">
                   {product?.name || "Product Name"}
                 </h1>
                 <motion.button
@@ -187,17 +188,17 @@ export default function MaterialDetailClient({
                   <Heart
                     className={`w-5 h-5 transition-colors duration-200 ${
                       savedLoading
-                        ? "text-gray-300"
+                        ? "text-white/20"
                         : isSaved
-                          ? "fill-primary text-primary"
-                          : "text-primary"
+                          ? "fill-[#D4AF37] text-[#D4AF37]"
+                          : "text-white/40 hover:text-[#D4AF37]"
                     }`}
                   />
                 </motion.button>
               </div>
 
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/40">
                 {product.brandName && (
                   <span className="flex items-center gap-1">
                     <Building2 className="w-3.5 h-3.5" />
@@ -222,28 +223,28 @@ export default function MaterialDetailClient({
               <div className="space-y-1">
                 {product.showPrice ? (
                   <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-bold text-gray-900">
+                    <span className="text-3xl font-bold text-white">
                       {product.priceDisplay}
                     </span>
                     {hasDiscount && (
-                      <span className="text-base text-gray-400 line-through">
+                      <span className="text-base text-white/30 line-through">
                         ₦{product.compareAtPrice?.toLocaleString()}.00
                       </span>
                     )}
                   </div>
                 ) : (
-                  <span className="text-xl font-semibold text-primary">
+                  <span className="text-xl font-semibold text-[#D4AF37]">
                     Request Price
                   </span>
                 )}
               </div>
 
               {/* Stock */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full">
+              <div className="inline-flex items-center gap-2">
                 {product.inStock ? (
                   <>
-                    <CheckCircle className="text-primary w-5 h-5" />
-                    <span className="text-sm font-medium text-primary">
+                    <CheckCircle className="text-emerald-400 w-5 h-5" />
+                    <span className="text-sm font-medium text-emerald-400">
                       {product.trackInventory && product.stockQuantity != null
                         ? `${product.stockQuantity} units in stock`
                         : "In Stock & Ready to Ship"}
@@ -252,7 +253,7 @@ export default function MaterialDetailClient({
                 ) : (
                   <>
                     <XCircle className="text-red-500 w-5 h-5" />
-                    <span className="text-sm font-medium text-red-600">
+                    <span className="text-sm font-medium text-red-400">
                       Out of Stock
                     </span>
                   </>
@@ -261,17 +262,17 @@ export default function MaterialDetailClient({
 
               {/* Quantity */}
               {product.showPrice && product.inStock && (
-                <div className="border border-gray-200 rounded-lg p-4 space-y-3">
-                  <p className="text-sm font-medium text-gray-700">Quantity</p>
+                <div className="rounded-xl border border-white/08 p-4 space-y-3" style={{ background: "#0d0b08" }}>
+                  <p className="text-sm font-medium text-white/50">Quantity</p>
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                    <div className="flex items-center border border-white/10 rounded-lg overflow-hidden">
                       <button
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg font-medium"
+                        className="w-10 h-10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
                       >
                         −
                       </button>
-                      <span className="w-12 text-center text-gray-900 font-semibold">
+                      <span className="w-12 text-center text-white font-semibold">
                         {quantity}
                       </span>
                       <button
@@ -282,15 +283,15 @@ export default function MaterialDetailClient({
                               : q + 1,
                           )
                         }
-                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg font-medium"
+                        className="w-10 h-10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
                       >
                         +
                       </button>
                     </div>
                     {totalPrice != null && (
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-white/40">
                         Total:{" "}
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-white">
                           ₦{totalPrice.toLocaleString()}.00
                         </span>
                       </div>
@@ -301,11 +302,11 @@ export default function MaterialDetailClient({
 
               {/* Add to Cart */}
               <motion.button
-                whileHover={{ scale: 1.01 }}
+                whileHover={{ scale: 1.01, y: -1 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleAddToCart}
                 disabled={addToCart.isPending || !product.inStock}
-                className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 rounded-xl bg-linear-to-br from-[#D4AF37] to-[#b8942e] text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {addToCart.isPending
@@ -320,7 +321,7 @@ export default function MaterialDetailClient({
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleShare}
-                className="w-full py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl border border-white/10 text-white/60 font-medium hover:border-white/20 hover:text-white hover:bg-white/05 transition-all flex items-center justify-center gap-2"
               >
                 <Share2 className="w-4 h-4" />
                 Share Product
@@ -333,7 +334,7 @@ export default function MaterialDetailClient({
                 <ProjectCard
                   title="Master Bath Renovation"
                   description="This item matches the moodboard for your active project"
-                  icon={<FolderPlus className="w-5 h-5 text-primary/40" />}
+                  icon={<FolderPlus className="w-5 h-5 text-[#D4AF37]/40" />}
                 />
               </div>
             </div>

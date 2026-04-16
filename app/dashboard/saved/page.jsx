@@ -61,13 +61,13 @@ export default function SavedItemsPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pb-4 border-b border-[#e5e5e5]"
+          className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pb-4 border-b border-white/08"
         >
           <div>
-            <h1 className="text-[28px] md:text-[32px] font-semibold text-primary leading-tight">
+            <h1 className="text-[28px] md:text-[32px] font-semibold text-white leading-tight">
               My Saved Items
             </h1>
-            <p className="text-[14px] text-[#666666] mt-1">
+            <p className="text-[14px] text-white/50 mt-1">
               Organize your materials, products, and inspiration for upcoming
               projects.
             </p>
@@ -77,7 +77,7 @@ export default function SavedItemsPage() {
             <button
               onClick={handleCreateBoard}
               disabled={totalItems === 0 || createBoard.isPending}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-[14px] font-medium text-primary hover:bg-[#f8f8f8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/10 text-[14px] font-medium text-white/60 hover:bg-white/05 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FolderPlus className="w-4 h-4" />
               Create Board
@@ -85,7 +85,8 @@ export default function SavedItemsPage() {
             <button
               onClick={handleBuyAll}
               disabled={totalItems === 0 || buyAll.isPending}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[14px] font-semibold text-black hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
             >
               <ShoppingBag className="w-4 h-4" />
               {buyAll.isPending

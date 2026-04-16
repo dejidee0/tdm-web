@@ -53,8 +53,8 @@ export default function UserManagementTable({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
-        <p className="text-[#64748B] font-manrope text-[14px]">
+      <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-12 text-center">
+        <p className="text-white/50 font-manrope text-[14px]">
           No users found. Try adjusting your filters.
         </p>
       </div>
@@ -152,25 +152,25 @@ export default function UserManagementTable({
                 right: menuPos.right,
                 zIndex: 9999,
               }}
-              className="w-48 bg-white rounded-lg shadow-xl border border-[#E5E7EB] overflow-hidden"
+              className="w-48 bg-[#0d0b08] rounded-lg shadow-xl border border-white/12 overflow-hidden"
             >
               <button
                 onClick={() => handleViewAIUsage(activeUser)}
-                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-[#7B2FBE] hover:bg-[#F3E8FF] transition-colors flex items-center gap-3"
+                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-purple-400 hover:bg-white/05 transition-colors flex items-center gap-3"
               >
                 <Zap size={16} />
                 View AI Usage
               </button>
               <button
                 onClick={() => handleEditUser(activeUser?.id)}
-                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-[#273054] hover:bg-[#F8FAFC] transition-colors flex items-center gap-3"
+                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-white/80 hover:bg-white/05 transition-colors flex items-center gap-3"
               >
                 <Edit2 size={16} />
                 Edit User
               </button>
               <button
                 onClick={() => handleDeleteUser(activeUser?.id, activeUser?.name)}
-                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-[#EF4444] hover:bg-[#FEE2E2] transition-colors flex items-center gap-3"
+                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
               >
                 <Trash2 size={16} />
                 Delete User
@@ -186,46 +186,46 @@ export default function UserManagementTable({
     <>
       {portalDropdown}
 
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-[#0d0b08] rounded-xl border border-white/08">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#27305433] border-b border-[#E5E7EB]">
+            <thead className="bg-white/05 border-b border-white/08">
               <tr>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     USER ID
                   </span>
                 </th>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     USER
                   </span>
                 </th>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     EMAIL
                   </span>
                 </th>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     ROLE
                   </span>
                 </th>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     STATUS
                   </span>
                 </th>
                 <th className="px-6 py-4 text-left">
-                  <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
                     ACTIONS
                   </span>
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-[#E5E7EB]">
+            <tbody className="divide-y divide-white/08">
               {data?.map((user, index) => {
                 const userRole = Array.isArray(user?.roles) ? user.roles[0] : user?.role;
                 const roleColor = roleBadgeColors[userRole] || roleBadgeColors.Customer;
@@ -236,11 +236,11 @@ export default function UserManagementTable({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="hover:bg-[#F8FAFC] transition-colors"
+                    className="hover:bg-white/03 transition-colors"
                   >
                     {/* User ID */}
                     <td className="px-6 py-4">
-                      <span className="font-manrope text-[14px] text-[#64748B]">
+                      <span className="font-manrope text-[14px] text-white/40">
                         #{user?.id || "N/A"}
                       </span>
                     </td>
@@ -269,7 +269,7 @@ export default function UserManagementTable({
                             {user?.initials || "?"}
                           </div>
                         )}
-                        <span className="font-manrope text-[14px] font-medium text-primary">
+                        <span className="font-manrope text-[14px] font-medium text-white">
                           {user?.fullName || user?.name || "N/A"}
                         </span>
                       </div>
@@ -277,7 +277,7 @@ export default function UserManagementTable({
 
                     {/* Email */}
                     <td className="px-6 py-4">
-                      <span className="font-manrope text-[14px] text-[#64748B]">
+                      <span className="font-manrope text-[14px] text-white/50">
                         {user?.email || "N/A"}
                       </span>
                     </td>
@@ -325,7 +325,7 @@ export default function UserManagementTable({
                     <td className="px-6 py-4">
                       <button
                         onClick={(e) => toggleMenu(user, e)}
-                        className="text-[#64748B] hover:text-primary transition-colors"
+                        className="text-white/40 hover:text-white transition-colors"
                         aria-label="User actions"
                       >
                         <MoreVertical size={20} />
@@ -339,7 +339,7 @@ export default function UserManagementTable({
         </div>
 
         {/* Mobile Card View */}
-        <div className="md:hidden divide-y divide-[#E5E7EB]">
+        <div className="md:hidden divide-y divide-white/08">
           {data?.map((user, index) => {
             const userRole = Array.isArray(user?.roles) ? user.roles[0] : user?.role;
             const roleColor = roleBadgeColors[userRole] || roleBadgeColors.Customer;
@@ -376,10 +376,10 @@ export default function UserManagementTable({
                     </div>
                   )}
                   <div className="flex-1">
-                    <p className="font-manrope text-[14px] font-medium text-primary">
+                    <p className="font-manrope text-[14px] font-medium text-white">
                       {user?.fullName || user?.name || "N/A"}
                     </p>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-manrope text-[12px] text-white/40">
                       #{user?.id || "N/A"}
                     </p>
                   </div>
@@ -414,7 +414,7 @@ export default function UserManagementTable({
                 {/* Email, Role, and Actions */}
                 <div className="mb-3 flex items-center justify-between">
                   <div>
-                    <p className="font-manrope text-[13px] text-[#64748B] mb-2">
+                    <p className="font-manrope text-[13px] text-white/50 mb-2">
                       {user?.email || "N/A"}
                     </p>
                     <span
@@ -427,7 +427,7 @@ export default function UserManagementTable({
                   {/* Trigger — dropdown renders in portal */}
                   <button
                     onClick={(e) => toggleMenu(user, e)}
-                    className="text-[#64748B] hover:text-primary transition-colors p-2"
+                    className="text-white/40 hover:text-white transition-colors p-2"
                     aria-label="User actions"
                   >
                     <MoreVertical size={20} />
@@ -440,8 +440,8 @@ export default function UserManagementTable({
 
         {/* Pagination Footer */}
         {pagination && (
-          <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="font-manrope text-[13px] text-[#273054]">
+          <div className="px-6 py-4 border-t border-white/08 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="font-manrope text-[13px] text-white/50">
               Showing{" "}
               <span className="font-medium">
                 {(currentPage - 1) * (pagination?.limit || 0) + 1}
@@ -462,7 +462,7 @@ export default function UserManagementTable({
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 rounded-lg bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="p-2 rounded-lg border border-white/10 text-white/60 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronLeft size={16} />
               </motion.button>
@@ -487,8 +487,8 @@ export default function UserManagementTable({
                     onClick={() => onPageChange(pageNum)}
                     className={`px-3 py-2 rounded-lg font-manrope text-[13px] font-medium transition-colors ${
                       currentPage === pageNum
-                        ? "bg-[#E2E8F0] text-[#64748B]"
-                        : "bg-primary text-white hover:bg-[#334155]"
+                        ? "bg-white/10 text-white"
+                        : "border border-white/10 text-white/60 hover:bg-white/05"
                     }`}
                   >
                     {pageNum}
@@ -501,7 +501,7 @@ export default function UserManagementTable({
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-2 rounded-lg bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="p-2 rounded-lg border border-white/10 text-white/60 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronRight size={16} />
               </motion.button>

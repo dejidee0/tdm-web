@@ -46,11 +46,11 @@ export default function AdminStatCard({ data, statKey, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-white rounded-xl p-5 border border-[#E5E7EB] hover:shadow-lg transition-shadow"
+      className="bg-[#0d0b08] rounded-xl p-5 border border-white/08 hover:border-white/12 transition-colors"
     >
       {/* Header: Label + Status Icon */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-primary font-manrope text-[13px] font-medium">
+        <h3 className="text-white/60 font-manrope text-[13px] font-medium">
           {label}
         </h3>
         {iconPath && (
@@ -69,7 +69,7 @@ export default function AdminStatCard({ data, statKey, index }) {
       </div>
 
       {/* Value */}
-      <p className="text-primary font-manrope text-[28px] font-bold leading-none mb-3">
+      <p className="text-white font-manrope text-[28px] font-bold leading-none mb-3">
         {value}
       </p>
 
@@ -85,7 +85,7 @@ export default function AdminStatCard({ data, statKey, index }) {
             {change}%
           </span>
         </div>
-        <span className="text-[#64748B] font-manrope text-[12px]">
+        <span className="text-white/40 font-manrope text-[12px]">
           {subtitle}
         </span>
       </div>

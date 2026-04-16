@@ -29,7 +29,8 @@ export function useCurrentUser() {
         if (response.status === 401) return null;
         throw new Error("Failed to fetch user");
       }
-      return response.json();
+      const json = await response.json();
+      return json?.data ?? json;
     },
     staleTime: 1000 * 60 * 5,
     retry: false,

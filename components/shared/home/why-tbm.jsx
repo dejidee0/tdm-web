@@ -24,23 +24,21 @@ export default function ReimagineSection() {
     <section className="bg-black py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
           {/* Left — text content */}
           <div>
             <Reveal direction="up">
               <h2 className="font-poppins font-bold text-4xl sm:text-5xl lg:text-[52px] leading-[1.08] tracking-tight text-white mb-6">
-                Everything you need<br />
-                to{" "}
-                <span className="text-[#D4AF37]">reimagine</span>
-                {" "}your space.
+                Everything you need
+                <br />
+                to <span className="text-[#D4AF37]">reimagine</span> your space.
               </h2>
             </Reveal>
 
             <Reveal direction="up" delay={100}>
               <p className="text-white/45 text-base font-manrope leading-relaxed mb-10 max-w-md">
-                We bridge the gap between creative vision and structural integrity.
-                Our hybrid approach ensures that what you see in the design is
-                exactly what we build on the site.
+                We bridge the gap between creative vision and structural
+                integrity. Our hybrid approach ensures that what you see in the
+                design is exactly what we build on the site.
               </p>
             </Reveal>
 
@@ -50,7 +48,10 @@ export default function ReimagineSection() {
                 <Reveal key={label} direction="left" delay={i * 100 + 150}>
                   <li className="flex items-center gap-4">
                     <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#D4AF37]/40 shrink-0">
-                      <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.6} />
+                      <Icon
+                        className="w-4 h-4 text-[#D4AF37]"
+                        strokeWidth={1.6}
+                      />
                     </span>
                     <span className="text-white/70 text-[15px] font-manrope font-medium">
                       {label}
@@ -65,7 +66,7 @@ export default function ReimagineSection() {
           <Reveal direction="right" delay={100}>
             <div className="relative rounded-br-[48px] overflow-hidden aspect-4/5 lg:aspect-auto lg:h-135 bg-card">
               <Image
-                src="/product-2.jpg"
+                src="/hero/re-imagine.png"
                 alt="The Luxury Transition"
                 fill
                 className="object-cover"

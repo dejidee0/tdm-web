@@ -23,12 +23,12 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="pb-4 border-b border-[#e5e5e5]"
+          className="pb-4 border-b border-white/08"
         >
-          <h1 className="text-[28px] md:text-[32px] font-semibold text-primary leading-tight">
+          <h1 className="text-[28px] md:text-[32px] font-semibold text-white leading-tight">
             My Profile & Settings
           </h1>
-          <p className="text-[14px] text-[#666666] mt-1">
+          <p className="text-[14px] text-white/50 mt-1">
             Manage your account settings, preferences, and delivery addresses.
           </p>
         </motion.div>
@@ -42,7 +42,7 @@ export default function ProfilePage() {
             isLoading={isLoading}
           />
 
-          <div className="min-h-[600px]">
+          <div className="min-h-150">
             {activeTab === "personal" && (
               <PersonalInformation profile={profile} isLoading={isLoading} />
             )}

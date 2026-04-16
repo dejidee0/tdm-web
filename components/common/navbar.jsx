@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useIsAuthenticated, useLogout } from "@/hooks/use-auth";
+import { useProfile } from "@/hooks/use-profile";
 import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
 import { useVendorUser, useVendorLogout } from "@/hooks/use-vendor-auth";
 import { useCartCount } from "@/hooks/use-cart";
@@ -26,6 +27,7 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { isAuthenticated: isUserAuthed, user: regularUser, isLoading: userLoading } = useIsAuthenticated();
+  const { data: profile } = useProfile();
   const { data: adminUser, isLoading: adminLoading } = useAdminUser();
   const { data: vendorUser, isLoading: vendorLoading } = useVendorUser();
 
@@ -86,7 +88,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-60 overflow-hidden"
+        className="fixed top-0 left-0 right-0 z-60"
         style={{ background: "radial-gradient(ellipse 80% 160% at 50% 0%, #2a2a2a 0%, #141414 45%, #0a0a0a 100%)" }}
       >
         {/* Left + right white edge highlights */}
@@ -160,7 +162,7 @@ export default function Navbar() {
                       className="flex items-center gap-2 py-1.5 px-3 rounded-full border border-white/20 hover:border-white/40 transition-colors"
                     >
                       <Avatar initial={avatarInitial} avatar={activeUser?.avatar} name={displayName} size={7} />
-                      <span className="text-sm font-medium text-white/80">{displayName}</span>
+                      <span className="text-sm font-medium text-white/80">{profile?.firstName || displayName}</span>
                       <ChevronDown className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${isProfileOpen ? "rotate-180" : ""}`} />
                     </button>
 
