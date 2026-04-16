@@ -73,10 +73,7 @@ export default function PortfolioSection() {
         {/* CTA */}
         <Reveal direction="up" delay={100}>
           <div className="flex justify-center mt-12 sm:mt-16">
-            <Link
-              href="/project"
-              className="inline-flex items-center border border-white/30 text-white font-manrope font-medium text-[13px] tracking-[0.18em] uppercase px-10 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-200"
-            >
+            <Link href="/project" className="btn-gold">
               View Full Portfolio
             </Link>
           </div>

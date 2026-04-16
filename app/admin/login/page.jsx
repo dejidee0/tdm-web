@@ -37,7 +37,7 @@ export default function AdminLoginPage() {
   });
 
   return (
-    <div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 font-manrope overflow-hidden">
+    <div className="relative min-h-screen bg-black flex items-center justify-center px-4 py-12 font-manrope overflow-hidden">
       {/* Faded background image */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Image
@@ -52,15 +52,15 @@ export default function AdminLoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">
+          <h1 className="text-3xl font-bold text-white mb-2">
             Admin Login
           </h1>
-          <p className="text-gray-500">Sign in to access the admin dashboard</p>
+          <p className="text-white/50">Sign in to access the admin dashboard</p>
         </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm text-gray-600 mb-1.5">
+            <label htmlFor="email" className="block text-sm text-white/60 mb-1.5">
               Email
             </label>
             <input
@@ -71,9 +71,9 @@ export default function AdminLoginPage() {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`w-full px-4 py-3 bg-white border ${
-                formik.errors.email && formik.touched.email ? "border-red-500" : "border-gray-200"
-              } rounded-lg focus:outline-none focus:ring-2 placeholder:text-gray-300 text-primary focus:ring-blue-500 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 bg-[#1a1a1a] border ${
+                formik.errors.email && formik.touched.email ? "border-red-500" : "border-white/10"
+              } rounded-lg focus:outline-none focus:ring-2 placeholder:text-white/20 text-white focus:ring-[#D4AF37]/40 focus:border-transparent transition-all`}
             />
             {formik.errors.email && formik.touched.email && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
@@ -81,7 +81,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm text-gray-600 mb-1.5">
+            <label htmlFor="password" className="block text-sm text-white/60 mb-1.5">
               Password
             </label>
             <div className="relative">
@@ -93,14 +93,14 @@ export default function AdminLoginPage() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full px-4 py-3 bg-white border ${
-                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-gray-200"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-300 text-primary transition-all pr-12`}
+                className={`w-full px-4 py-3 bg-[#1a1a1a] border ${
+                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-white/10"
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-transparent placeholder:text-white/20 text-white transition-all pr-12`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -123,28 +123,29 @@ export default function AdminLoginPage() {
                 checked={formik.values.rememberMe}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-[#D4AF37] border-white/20 rounded focus:ring-[#D4AF37]/40 bg-[#1a1a1a]"
               />
-              <span className="text-sm text-gray-600">Remember me</span>
+              <span className="text-sm text-white/60">Remember me</span>
             </label>
           </div>
 
           {submitError && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-red-600 text-sm">{submitError}</p>
+            <div className="bg-red-950/30 border border-red-800/30 rounded-lg p-3">
+              <p className="text-red-400 text-sm">{submitError}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={formik.isSubmitting || isPending}
-            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 rounded-lg font-semibold text-black transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
             {formik.isSubmitting || isPending ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-white/30 mt-6">
           Admin access only. Unauthorized access is prohibited.
         </p>
       </div>

@@ -135,16 +135,16 @@ export default function AddUserModal({
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-[#0d0b08] border border-white/08 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
               {/* Header */}
-              <div className="px-8 py-6 border-b border-[#E5E7EB]">
+              <div className="px-8 py-6 border-b border-white/08">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="font-manrope text-[24px] font-bold text-primary mb-2">
+                    <h2 className="font-manrope text-[24px] font-bold text-white mb-2">
                       {isEditMode ? "Edit User" : "Add New User"}
                     </h2>
-                    <p className="font-manrope text-[14px] text-[#64748B]">
+                    <p className="font-manrope text-[14px] text-white/50">
                       {isEditMode
                         ? "Update the user details below."
                         : "Fill in the details below to invite a new user to the platform."}
@@ -152,7 +152,7 @@ export default function AddUserModal({
                   </div>
                   <button
                     onClick={onClose}
-                    className="text-[#94A3B8] hover:text-[#64748B] transition-colors"
+                    className="text-white/30 hover:text-white/60 transition-colors"
                   >
                     <X size={24} />
                   </button>
@@ -164,7 +164,7 @@ export default function AddUserModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Full Name */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-white/70 mb-2">
                       Full Name
                     </label>
                     <input
@@ -172,14 +172,14 @@ export default function AddUserModal({
                       value={formData.fullName}
                       onChange={(e) => handleChange("fullName", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
                       placeholder="Enter full name"
                     />
                   </div>
 
                   {/* Email Address */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-white/70 mb-2">
                       Email Address
                     </label>
                     <input
@@ -187,7 +187,7 @@ export default function AddUserModal({
                       value={formData.email}
                       onChange={(e) => handleChange("email", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
                       placeholder="Enter email address"
                     />
                   </div>
@@ -196,7 +196,7 @@ export default function AddUserModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Role Selection */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-white/70 mb-2">
                       Role Selection
                     </label>
                     <div className="relative">
@@ -204,7 +204,7 @@ export default function AddUserModal({
                         value={formData.role}
                         onChange={(e) => handleChange("role", e.target.value)}
                         required
-                        className="appearance-none w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                        className="appearance-none w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
                       >
                         <option value="">Select a role</option>
                         <option value="Admin">Admin</option>
@@ -215,17 +215,17 @@ export default function AddUserModal({
                       </select>
                       <ChevronDown
                         size={16}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
                       />
                     </div>
                   </div>
 
                   {/* Account Status */}
                   <div>
-                    <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[14px] font-medium text-white/70 mb-2">
                       Account Status
                     </label>
-                    <div className="flex items-center gap-3 h-[42px]">
+                    <div className="flex items-center gap-3 h-10.5">
                       <button
                         type="button"
                         onClick={handleToggleStatus}
@@ -244,7 +244,7 @@ export default function AddUserModal({
                           }`}
                         />
                       </button>
-                      <span className="font-manrope text-[14px] text-[#64748B]">
+                      <span className="font-manrope text-[14px] text-white/50">
                         {formData.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
@@ -253,7 +253,7 @@ export default function AddUserModal({
 
                 {/* Initial Password */}
                 <div className="mb-6">
-                  <label className="block font-manrope text-[14px] font-medium text-primary mb-2">
+                  <label className="block font-manrope text-[14px] font-medium text-white/70 mb-2">
                     {isEditMode
                       ? "New Password (optional)"
                       : "Initial Password"}
@@ -264,7 +264,7 @@ export default function AddUserModal({
                       value={formData.password}
                       onChange={(e) => handleChange("password", e.target.value)}
                       required={!isEditMode}
-                      className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                      className="flex-1 px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
                       placeholder={
                         isEditMode
                           ? "Leave blank to keep current password"
@@ -277,7 +277,7 @@ export default function AddUserModal({
                       disabled={isGenerating}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] font-medium text-white/60 hover:bg-white/08 transition-colors disabled:opacity-50"
                     >
                       <RefreshCw
                         size={16}
@@ -286,7 +286,7 @@ export default function AddUserModal({
                       Generate
                     </motion.button>
                   </div>
-                  <p className="font-manrope text-[12px] text-[#94A3B8] italic mt-2">
+                  <p className="font-manrope text-[12px] text-white/30 italic mt-2">
                     {isEditMode
                       ? "Only enter a new password if you want to change it."
                       : ""}
@@ -294,13 +294,13 @@ export default function AddUserModal({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center justify-end gap-3 pt-6 border-t border-[#E5E7EB]">
+                <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/08">
                   <motion.button
                     type="button"
                     onClick={handleCancel}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors"
+                    className="px-6 py-2.5 border border-white/10 rounded-lg font-manrope text-[14px] font-medium text-white/60 hover:bg-white/05 transition-colors"
                   >
                     Cancel
                   </motion.button>
@@ -308,7 +308,8 @@ export default function AddUserModal({
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-2.5 bg-primary text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-[#334155] transition-colors"
+                    className="px-6 py-2.5 rounded-lg font-manrope text-[14px] font-medium text-black transition-opacity"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                   >
                     {isEditMode ? "Update User" : "Create User"}
                   </motion.button>

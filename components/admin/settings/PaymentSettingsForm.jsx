@@ -18,16 +18,16 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
     >
       {({ values, errors, touched, setFieldValue, dirty }) => (
         <Form>
-          <div className="bg-white rounded-xl border border-[#E5E7EB] p-4 sm:p-6">
+          <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <div className="w-10 h-10 bg-[#F1F5F9] rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-white/08 rounded-lg flex items-center justify-center shrink-0">
                 <Image
                   src={percentageIcon}
                   alt="Transaction Fees"
                   className="h-[20px] w-[20px]"
                 />
               </div>
-              <h2 className="font-inter text-[16px] sm:text-[18px] font-bold text-primary">
+              <h2 className="font-inter text-[16px] sm:text-[18px] font-bold text-white">
                 Transaction Fees
               </h2>
             </div>
@@ -37,7 +37,7 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
               <div>
                 <label
                   htmlFor="baseFee"
-                  className="block font-inter text-[14px] font-medium text-primary mb-2"
+                  className="block font-inter text-[14px] font-medium text-white/70 mb-2"
                 >
                   Base Platform Fee (%)
                 </label>
@@ -52,23 +52,23 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
                     name="baseFee"
                     type="number"
                     step="0.1"
-                    className={`w-full pl-12 pr-12 py-2.5 bg-[#F8FAFC] border rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:bg-white transition-colors ${
+                    className={`w-full pl-12 pr-12 py-2.5 bg-[#1a1a1a] border rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
                       errors.baseFee && touched.baseFee
-                        ? "border-red-500 focus:ring-red-200"
-                        : "border-[#E5E7EB] focus:ring-[#3B82F6]"
+                        ? "border-red-500/50 focus:ring-red-500/30"
+                        : "border-white/10 focus:ring-[#D4AF37]/30"
                     }`}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 font-inter text-[14px] text-[#64748B]">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 font-inter text-[14px] text-white/40">
                     %
                   </span>
                 </div>
                 <ErrorMessage
                   name="baseFee"
                   component="p"
-                  className="font-inter text-[12px] text-red-500 mt-1"
+                  className="font-inter text-[12px] text-red-400 mt-1"
                 />
                 {!errors.baseFee && (
-                  <p className="font-inter text-[12px] text-[#94A3B8] mt-1">
+                  <p className="font-inter text-[12px] text-white/30 mt-1">
                     Applied to all incoming transactions.
                   </p>
                 )}
@@ -78,7 +78,7 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
               <div>
                 <label
                   htmlFor="fixedFee"
-                  className="block font-inter text-[14px] font-medium text-primary mb-2"
+                  className="block font-inter text-[14px] font-medium text-white/70 mb-2"
                 >
                   Fixed Fee Per Transaction
                 </label>
@@ -93,20 +93,20 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
                     name="fixedFee"
                     type="number"
                     step="0.01"
-                    className={`w-full pl-12 pr-4 py-2.5 bg-[#F8FAFC] border rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:bg-white transition-colors ${
+                    className={`w-full pl-12 pr-4 py-2.5 bg-[#1a1a1a] border rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
                       errors.fixedFee && touched.fixedFee
-                        ? "border-red-500 focus:ring-red-200"
-                        : "border-[#E5E7EB] focus:ring-[#3B82F6]"
+                        ? "border-red-500/50 focus:ring-red-500/30"
+                        : "border-white/10 focus:ring-[#D4AF37]/30"
                     }`}
                   />
                 </div>
                 <ErrorMessage
                   name="fixedFee"
                   component="p"
-                  className="font-inter text-[12px] text-red-500 mt-1"
+                  className="font-inter text-[12px] text-red-400 mt-1"
                 />
                 {!errors.fixedFee && (
-                  <p className="font-inter text-[12px] text-[#94A3B8] mt-1">
+                  <p className="font-inter text-[12px] text-white/30 mt-1">
                     Additional flat rate charge.
                   </p>
                 )}
@@ -117,7 +117,7 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
             <div className="mb-6">
               <label
                 htmlFor="currency"
-                className="block font-inter text-[14px] font-medium text-primary mb-2"
+                className="block font-inter text-[14px] font-medium text-white/70 mb-2"
               >
                 Default Currency
               </label>
@@ -126,10 +126,10 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
                   as="select"
                   id="currency"
                   name="currency"
-                  className={`appearance-none w-full px-4 py-2.5 bg-[#F8FAFC] border rounded-lg font-inter text-[14px] focus:outline-none focus:ring-2 focus:bg-white transition-colors ${
+                  className={`appearance-none w-full px-4 py-2.5 bg-[#1a1a1a] border rounded-lg font-inter text-[14px] text-white focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
                     errors.currency && touched.currency
-                      ? "border-red-500 focus:ring-red-200"
-                      : "border-[#E5E7EB] focus:ring-[#3B82F6]"
+                      ? "border-red-500/50 focus:ring-red-500/30"
+                      : "border-white/10 focus:ring-[#D4AF37]/30"
                   }`}
                 >
                   {currencyOptions.map((currency) => (
@@ -140,23 +140,24 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
                 </Field>
                 <ChevronDown
                   size={16}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
                 />
               </div>
               <ErrorMessage
                 name="currency"
                 component="p"
-                className="font-inter text-[12px] text-red-500 mt-1"
+                className="font-inter text-[12px] text-red-400 mt-1"
               />
             </div>
 
             {/* Action Buttons */}
             {dirty && (
-              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-[#E5E7EB]">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/08">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 bg-primary text-white rounded-lg font-inter text-[14px] font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 rounded-lg font-inter text-[14px] font-medium text-black transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                 >
                   {isSubmitting ? "Saving..." : "Save Changes"}
                 </button>
@@ -164,7 +165,7 @@ export default function PaymentSettingsForm({ initialValues, onSubmit, onCancel,
                   type="button"
                   onClick={onCancel}
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 bg-white border border-[#E5E7EB] text-primary rounded-lg font-inter text-[14px] font-medium hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+                  className="px-6 py-2.5 border border-white/10 text-white/60 rounded-lg font-inter text-[14px] font-medium hover:bg-white/05 transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>

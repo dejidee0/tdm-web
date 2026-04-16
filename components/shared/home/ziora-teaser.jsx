@@ -55,13 +55,7 @@ export default function ZioraSection() {
             </Reveal>
 
             <Reveal direction="left" delay={180}>
-              <Link
-                href="/ai-visualizer"
-                className="inline-flex items-center gap-2.5 self-start rounded-lg px-6 py-3 font-manrope font-semibold text-[11px] tracking-[0.18em] uppercase text-black hover:opacity-90 transition-opacity duration-200"
-                style={{
-                  background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
-                }}
-              >
+              <Link href="/ai-visualizer" className="btn-gold gap-2.5 self-start">
                 Launch Visualizer
                 <Zap className="w-3.5 h-3.5" fill="currentColor" strokeWidth={0} />
               </Link>

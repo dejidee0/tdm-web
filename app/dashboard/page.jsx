@@ -20,10 +20,10 @@ export default function DashboardPage() {
           transition={{ duration: 0.5 }}
           className="pt-12 md:pt-0"
         >
-          <h1 className="text-[28px] md:text-3xl  font-semibold text-[#0F172A] leading-tight">
+          <h1 className="text-[28px] md:text-3xl font-semibold text-white leading-tight">
             Dashboard
           </h1>
-          <p className="text-base text-[#666666] mt-1">
+          <p className="text-base text-white/50 mt-1">
             Manage your renovation projects and track your orders.
           </p>
         </motion.div>

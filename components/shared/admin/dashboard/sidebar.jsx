@@ -78,7 +78,7 @@ export default function AdminSidebar() {
   return (
     <div className="h-full flex flex-col">
       {/* Logo/Header */}
-      <div className="p-6 border-b border-[#E5E7EB]">
+      <div className="p-6 border-b border-white/08">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
             <Image
@@ -91,10 +91,10 @@ export default function AdminSidebar() {
             />
           </div>
           <div>
-            <h1 className="font-manrope font-bold text-[15px] text-primary">
+            <h1 className="font-manrope font-bold text-[15px] text-white">
               TBM & Bogat
             </h1>
-            <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
+            <p className="font-manrope text-[11px] text-white/40 uppercase tracking-wider">
               ADMIN PORTAL
             </p>
           </div>
@@ -118,8 +118,8 @@ export default function AdminSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-[#2730541A] text-[#273054] font-semibold"
-                          : "text-[#64748B] hover:bg-[#2730541A]"
+                          ? "bg-[#D4AF37]/10 text-[#D4AF37] font-semibold"
+                          : "text-white/50 hover:bg-white/05 hover:text-white"
                       }
                     `}
                   >
@@ -143,16 +143,16 @@ export default function AdminSidebar() {
       </nav>
 
       {/* Admin Profile */}
-      <div className="p-4 border-t border-[#E5E7EB]">
+      <div className="p-4 border-t border-white/08">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-[#3B82F6] rounded-full flex items-center justify-center text-white font-manrope font-bold text-[14px]">
+          <div className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-black font-manrope font-bold text-[14px]">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-manrope font-medium text-[14px] text-primary truncate">
+            <p className="font-manrope font-medium text-[14px] text-white truncate">
               {displayName}
             </p>
-            <p className="font-manrope text-[12px] text-[#64748B] truncate uppercase">
+            <p className="font-manrope text-[12px] text-white/40 truncate uppercase">
               {displayRole}
             </p>
           </div>
@@ -161,7 +161,7 @@ export default function AdminSidebar() {
           <motion.div
             whileHover={{ x: 4 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-primary hover:bg-[#2730541A] font-manrope text-[13px] transition-colors mb-1"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-white/50 hover:bg-white/05 hover:text-white font-manrope text-[13px] transition-colors mb-1"
           >
             <ExternalLink size={16} />
             <span>Back to Main Site</span>
@@ -172,7 +172,7 @@ export default function AdminSidebar() {
           disabled={isLoggingOut}
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-primary hover:bg-[#2730541A] font-manrope text-[13px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-white/50 hover:bg-white/05 hover:text-white font-manrope text-[13px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LogOut size={16} />
           <span>{isLoggingOut ? "Logging out..." : "Log Out"}</span>

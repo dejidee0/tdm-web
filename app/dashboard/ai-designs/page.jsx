@@ -31,13 +31,13 @@ export default function DesignsPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col py-2 sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-gray-300"
+          className="flex flex-col py-2 sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-white/08"
         >
           <div>
-            <h1 className="text-[28px] md:text-[32px] font-extrabold text-text-black leading-tight">
+            <h1 className="text-[28px] md:text-[32px] font-extrabold text-white leading-tight">
               My Ziora Designs
             </h1>
-            <p className="text-[15px] text-[#666666] font-medium mt-1 max-w-2xl">
+            <p className="text-[15px] text-white/50 font-medium mt-1 max-w-2xl">
               Browse, edit, and organize your Ziora-generated interior
               visualizations. All your creative ideas in one place.
             </p>
@@ -46,7 +46,8 @@ export default function DesignsPage() {
           {/* Create New Design — always visible; modal handles quota/upgrade wall */}
           <button
             onClick={() => setModalOpen(true)}
-            className="relative inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl text-[14px] font-semibold shadow-md shadow-primary/30 hover:shadow-primary/50 hover:scale-[1.02] active:scale-[0.98] transition-all self-start sm:self-auto whitespace-nowrap"
+            className="relative inline-flex items-center gap-2 px-5 py-3 rounded-xl text-[14px] font-semibold text-black hover:opacity-90 active:scale-[0.98] transition-all self-start sm:self-auto whitespace-nowrap"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
             <Sparkles className="w-4 h-4" />
             Create New Design

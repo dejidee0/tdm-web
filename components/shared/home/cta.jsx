@@ -35,7 +35,7 @@ export default function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-[#0A0A0A] overflow-hidden"
+          className="bg-text-black overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left — copy */}
@@ -78,7 +78,7 @@ export default function CTASection() {
                   <motion.button
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-3 bg-white text-[#0A0A0A] font-manrope font-bold px-8 py-4 rounded-none hover:bg-[#FAF8F5] transition-all duration-200 group tracking-wide"
+                    className="btn-gold gap-3 group"
                   >
                     Book Consultation
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

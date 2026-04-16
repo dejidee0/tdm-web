@@ -44,9 +44,9 @@ function formatTimestamp(value) {
 
 const getActionButtonStyle = (action) => {
   if (action === "Resolve") {
-    return "bg-[#27305433] text-[#273054] hover:bg-[#CBD5E1]";
+    return "bg-white/08 text-white/60 hover:bg-white/12";
   }
-  return "bg-[#273054] text-white hover:bg-[#334155]";
+  return "bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20";
 };
 
 export default function AdminAlertsTable({ alerts }) {
@@ -65,15 +65,15 @@ export default function AdminAlertsTable({ alerts }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white rounded-xl border border-[#E5E7EB] px-6 py-8 flex flex-col items-center gap-3 text-center"
+        className="bg-[#0d0b08] rounded-xl border border-white/08 px-6 py-8 flex flex-col items-center gap-3 text-center"
       >
         <div className="w-10 h-10 bg-[#22C55E1A] rounded-full flex items-center justify-center">
           <CheckCircle size={20} className="text-[#22C55E]" />
         </div>
-        <h3 className="font-manrope text-[16px] font-bold text-primary">
+        <h3 className="font-manrope text-[16px] font-bold text-white">
           All Systems Operational
         </h3>
-        <p className="font-manrope text-[13px] text-[#64748B]">{infoMsg}</p>
+        <p className="font-manrope text-[13px] text-white/50">{infoMsg}</p>
       </motion.div>
     );
   }
@@ -85,25 +85,25 @@ export default function AdminAlertsTable({ alerts }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="bg-white rounded-xl border border-[#E5E7EB]"
+      className="bg-[#0d0b08] rounded-xl border border-white/08"
     >
       {/* Header */}
-      <div className="px-6 py-4 border-b border-[#E5E7EB]">
+      <div className="px-6 py-4 border-b border-white/08">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-[#FEE2E2] rounded-lg flex items-center justify-center mt-0.5">
-              <AlertTriangle size={16} className="text-[#EF4444]" />
+            <div className="w-8 h-8 bg-red-950/40 rounded-lg flex items-center justify-center mt-0.5">
+              <AlertTriangle size={16} className="text-red-400" />
             </div>
             <div>
-              <h2 className="font-manrope text-[18px] font-bold text-primary">
+              <h2 className="font-manrope text-[18px] font-bold text-white">
                 Alerts & Escalations
               </h2>
-              <p className="font-manrope text-[13px] text-[#64748B] mt-1">
+              <p className="font-manrope text-[13px] text-white/50 mt-1">
                 Critical system issues requiring immediate attention
               </p>
             </div>
           </div>
-          <button className="font-manrope text-[13px] text-[#273054] hover:underline">
+          <button className="font-manrope text-[13px] text-[#D4AF37] hover:underline">
             View All Logs
           </button>
         </div>
@@ -112,25 +112,25 @@ export default function AdminAlertsTable({ alerts }) {
       {/* Desktop Table View */}
       <div className="hidden md:block">
         {/* Table Header */}
-        <div className="px-6 py-4 bg-[#CBD5E1] border-b border-[#E5E7EB]">
+        <div className="px-6 py-4 bg-white/05 border-b border-white/08">
           <div className="grid grid-cols-[140px_1fr_180px_140px] gap-4">
-            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
               SEVERITY
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
               ISSUE DESCRIPTION
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
               TIMESTAMP
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#273054] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-white/40 uppercase tracking-wider">
               ACTION
             </span>
           </div>
         </div>
 
         {/* Alert Rows */}
-        <div className="divide-y divide-[#E5E7EB]">
+        <div className="divide-y divide-white/08">
           {displayAlerts.map((alert, index) => {
             const severityKey = alert?.severity?.toLowerCase() || "medium";
             const severity = severityStyles[severityKey] || severityStyles.medium;
@@ -141,7 +141,7 @@ export default function AdminAlertsTable({ alerts }) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7 + index * 0.1 }}
-                className="px-6 py-4 hover:bg-[#F8FAFC] transition-colors"
+                className="px-6 py-4 hover:bg-white/03 transition-colors"
               >
                 <div className="grid grid-cols-[140px_1fr_180px_140px] gap-4 items-center">
                   {/* Severity Badge with background pill */}
@@ -162,18 +162,18 @@ export default function AdminAlertsTable({ alerts }) {
 
                   {/* Issue Description */}
                   <div>
-                    <p className="font-manrope text-[14px] font-medium text-primary">
+                    <p className="font-manrope text-[14px] font-medium text-white">
                       {alert?.message || alert?.issue || "No description"}
                     </p>
                     {alert?.description && (
-                      <p className="font-manrope text-[12px] text-[#64748B] mt-1">
+                      <p className="font-manrope text-[12px] text-white/50 mt-1">
                         {alert.description}
                       </p>
                     )}
                   </div>
 
                   {/* Timestamp */}
-                  <span className="font-manrope text-[13px] text-[#64748B]">
+                  <span className="font-manrope text-[13px] text-white/40">
                     {formatTimestamp(alert?.createdAt || alert?.timestamp)}
                   </span>
 
@@ -195,7 +195,7 @@ export default function AdminAlertsTable({ alerts }) {
       </div>
 
       {/* Mobile Card View */}
-      <div className="md:hidden divide-y divide-[#E5E7EB]">
+      <div className="md:hidden divide-y divide-white/08">
         {displayAlerts.map((alert, index) => {
           const severityKey = alert?.severity?.toLowerCase() || "medium";
           const severity = severityStyles[severityKey] || severityStyles.medium;
@@ -220,17 +220,17 @@ export default function AdminAlertsTable({ alerts }) {
                     {alert?.severity || 'N/A'}
                   </span>
                 </span>
-                <span className="ml-auto font-manrope text-[12px] text-[#64748B]">
+                <span className="ml-auto font-manrope text-[12px] text-white/40">
                   {formatTimestamp(alert?.createdAt || alert?.timestamp)}
                 </span>
               </div>
 
               {/* Issue */}
-              <p className="font-manrope text-[14px] font-medium text-primary mb-1">
+              <p className="font-manrope text-[14px] font-medium text-white mb-1">
                 {alert?.message || alert?.issue || "No description"}
               </p>
               {alert?.description && (
-                <p className="font-manrope text-[12px] text-[#64748B] mb-3">
+                <p className="font-manrope text-[12px] text-white/50 mb-3">
                   {alert.description}
                 </p>
               )}
@@ -248,8 +248,8 @@ export default function AdminAlertsTable({ alerts }) {
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-[#E5E7EB] flex justify-center">
-        <button className="flex items-center gap-1 text-[#273054] font-manrope text-[13px] font-medium hover:underline">
+      <div className="px-6 py-4 border-t border-white/08 flex justify-center">
+        <button className="flex items-center gap-1 text-[#D4AF37] font-manrope text-[13px] font-medium hover:underline">
           Show 5 more alerts
           <ChevronDown size={14} />
         </button>
