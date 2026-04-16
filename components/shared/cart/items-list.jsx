@@ -71,7 +71,7 @@ export default function CartItemsList({ cart, isLoading }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="rounded-2xl border border-white/08" style={{ background: "#0d0b08" }} px-6 py-16 sm:py-20 text-center flex flex-col items-center"
+        className="rounded-2xl border border-white/08 px-6 py-16 sm:py-20 text-center flex flex-col items-center" style={{ background: "#0d0b08" }}
       >
         {/* Icon */}
         <motion.div
@@ -134,7 +134,7 @@ export default function CartItemsList({ cart, isLoading }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="rounded-2xl border border-white/08" style={{ background: "#0d0b08" }} overflow-hidden"
+      className="rounded-2xl border border-white/08 overflow-hidden" style={{ background: "#0d0b08" }}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/08">
