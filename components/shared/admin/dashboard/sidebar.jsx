@@ -82,7 +82,7 @@ export default function AdminSidebar() {
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
             <Image
-              src="/logo.png"
+              src="/tbm-logo-v2.png"
               alt="TBM Logo"
               width={40}
               height={40}

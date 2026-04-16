@@ -120,7 +120,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-300 mx-auto">
+    <div className="max-w-300 mx-auto bg-background">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">

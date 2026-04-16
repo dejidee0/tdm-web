@@ -47,12 +47,7 @@ export default function AddProductModal({
   const [dragActive, setDragActive] = useState(false);
   const [categories, setCategories] = useState([]);
   const [productTypeEnum, setProductTypeEnum] = useState([]);
-
-  // useEffect(()=>{
-  //   const categoryData = lookupsAPI.getMaterialTypes()
-  //   setCategories(categoryData?.data);
-  //      console.log("categoryData: ", categories)
-  // },[])
+  const [brandTypeEnum, setBrandTypeEnum] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -84,6 +79,21 @@ export default function AddProductModal({
     };
 
     fetchProductTypes();
+  }, []);
+
+   useEffect(() => {
+    const fetchBrandTypes = async () => {
+      try {
+        const brandTypeData = await lookupsAPI.getBrandTypes();
+
+        setBrandTypeEnum(brandTypeData?.data || []);
+
+      } catch (error) {
+        console.error("Failed to fetch brandTypes:", error);
+      }
+    };
+
+    fetchBrandTypes();
   }, []);
 
   const formik = useFormik({
@@ -251,7 +261,7 @@ export default function AddProductModal({
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none bg-background">
             <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -397,7 +407,7 @@ export default function AddProductModal({
                   {/* Brand Type and Product Type Row */}
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     {/* Brand Type */}
-                    <div>
+                    {/* <div>
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         Brand Type
                       </label>
@@ -416,30 +426,40 @@ export default function AddProductModal({
                         }`}
                       />
                       <ErrorMessage name="brandType" />
+                    </div> */}
+                    <div>
+                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                        Brand Type
+                      </label>
+                      <div className="relative">
+                        <select
+                          name="brandType"
+                          value={formik.values.brandType}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                            formik.touched.brandType &&
+                            formik.errors.brandType
+                              ? "border-red-500"
+                              : "border-[#E5E7EB]"
+                          }`}
+                        >
+                          <option value="">Select Brand Type</option>
+                          {productTypeEnum?.map((brand, index) => (
+                            <option key={index} value={brand.value}>
+                              {brand.name}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          size={16}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                        />
+                      </div>
+                      <ErrorMessage name="brandType" />
                     </div>
 
                     {/* Product Type */}
-                    {/* <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
-                        Product Type
-                      </label>
-                      <input
-                        type="number"
-                        name="productType"
-                        min="0"
-                        placeholder="0"
-                        value={formik.values.productType}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
-                          formik.touched.productType &&
-                          formik.errors.productType
-                            ? "border-red-500"
-                            : "border-[#E5E7EB]"
-                        }`}
-                      />
-                      <ErrorMessage name="productType" />
-                    </div> */}
                     <div>
                       <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
                         Product Type

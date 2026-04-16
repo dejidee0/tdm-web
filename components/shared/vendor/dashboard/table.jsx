@@ -37,7 +37,7 @@ export default function OrdersTable({ orders, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-background rounded-xl border border-[#E5E7EB]">
         <div className="p-8 text-center">
           <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
@@ -50,7 +50,7 @@ export default function OrdersTable({ orders, isLoading }) {
 
   if (!orders || orders.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
+      <div className="bg-background rounded-xl border border-[#E5E7EB] p-12 text-center">
         <p className="text-[#64748B] font-manrope text-[14px]">
           No orders found
         </p>
@@ -59,10 +59,10 @@ export default function OrdersTable({ orders, isLoading }) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
+    <div className="bg-background rounded-xl border border-[#E5E7EB] overflow-hidden">
       {/* Table Header */}
       <div className="overflow-x-auto table-scroll">
-        <div className="px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB] min-w-[1020px]">
+        <div className="px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB] min-w-255">
           <div className="grid grid-cols-[140px_240px_120px_140px_120px_140px_120px] justify-between gap-4">
             <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
               ORDER ID
@@ -100,7 +100,7 @@ export default function OrdersTable({ orders, isLoading }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="px-6 py-4 hover:bg-[#F8FAFC] transition-colors min-w-[1020px]"
+                className="px-6 py-4 hover:bg-[#F8FAFC] transition-colors min-w-255"
               >
                 <div className="grid grid-cols-[140px_240px_120px_140px_120px_140px_120px] gap-4 justify-between items-center">
                   {/* Order ID */}
@@ -111,7 +111,7 @@ export default function OrdersTable({ orders, isLoading }) {
                   {/* Customer */}
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center font-manrope text-[13px] font-bold flex-shrink-0"
+                      className="w-9 h-9 rounded-lg flex items-center justify-center font-manrope text-[13px] font-bold shrink-0"
                       style={{
                         backgroundColor: order.customer.bgColor,
                         color: order.customer.textColor,

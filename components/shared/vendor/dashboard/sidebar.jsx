@@ -49,14 +49,14 @@ export default function VendorSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-background">
       {/* Logo/Header */}
       <div className="p-6 border-b border-[#E5E7EB]">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
               <Image
-                src="/logo.png" // change to your actual file name
+                src="/tbm-logo-v2.png" // change to your actual file name
                 alt="TBM Logo"
                 width={40}
                 height={40}

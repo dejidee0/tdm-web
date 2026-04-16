@@ -87,7 +87,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB]">
+      <div className="bg-background rounded-xl border border-[#E5E7EB]">
         <div className="p-8 text-center">
           <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
@@ -100,7 +100,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
 
   if (!assignments || assignments.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
+      <div className="bg-background rounded-xl border border-[#E5E7EB] p-12 text-center">
         <p className="text-[#64748B] font-manrope text-[14px]">
           No assignments found
         </p>
@@ -109,7 +109,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
+    <div className="bg-background rounded-xl border border-[#E5E7EB] overflow-hidden">
       {/* Table Header */}
       <div className="overflow-x-auto table-scroll">
         <div className="px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB] min-w-[1020px]">

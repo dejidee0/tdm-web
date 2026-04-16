@@ -98,7 +98,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="shrink-0 transition-opacity hover:opacity-80">
               <Image
-                src="/logo.png"
+                src="/tbm-logo-v2.png"
                 alt="TBM"
                 width={120}
                 height={60}
