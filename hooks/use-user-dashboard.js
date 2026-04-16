@@ -16,6 +16,7 @@ export const dashboardKeys = {
   recentOrder: () => [...dashboardKeys.all, "recent-order"],
   orders: () => [...dashboardKeys.all, "orders"],
   order: (id) => [...dashboardKeys.all, "order", id],
+  orderTracking: (id) => [...dashboardKeys.all, "order-tracking", id],
   designs: (filters) => [...dashboardKeys.all, "designs", filters],
   latestDesign: () => [...dashboardKeys.all, "latest-design"],
   consultations: () => [...dashboardKeys.all, "consultations"],
@@ -146,6 +147,17 @@ export function useSavedItems() {
     queryFn: dashboardApi.getSavedItems,
     enabled: isAuthenticated,
     ...dashboardQueryOptions,
+  });
+}
+
+export function useOrderTracking(orderId) {
+  const { isAuthenticated } = useAuthGuard();
+  return useQuery({
+    queryKey: dashboardKeys.orderTracking(orderId),
+    queryFn: () => dashboardApi.getOrderTracking(orderId),
+    enabled: isAuthenticated && !!orderId,
+    staleTime: 2 * 60 * 1000,
+    select: (res) => res?.data ?? res,
   });
 }
 

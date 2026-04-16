@@ -24,10 +24,10 @@ export async function GET() {
   return NextResponse.json(data, { status: res.status });
 }
 
-export async function PUT(request) {
+export async function PATCH(request) {
   const body = await request.json();
   const res = await fetch(`${BASE}/account/me`, {
-    method: "PUT",
+    method: "PATCH",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),
   });

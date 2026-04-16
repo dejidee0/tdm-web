@@ -28,7 +28,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-8 h-8 flex items-center justify-center rounded border border-white/10 text-white/50 hover:bg-white/05 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         <svg
           className="w-4 h-4"
@@ -51,7 +51,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           return (
             <span
               key={`ellipsis-${index}`}
-              className="w-8 h-8 flex items-center justify-center text-gray-500"
+              className="w-8 h-8 flex items-center justify-center text-white/30"
             >
               ...
             </span>
@@ -62,11 +62,16 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`w-8 h-8 flex items-center justify-center rounded font-medium transition-colors ${
+            className={`w-8 h-8 flex items-center justify-center rounded font-medium transition-colors text-sm ${
               currentPage === page
-                ? "bg-primary text-white"
-                : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                ? "text-black"
+                : "border border-white/10 text-white/50 hover:bg-white/05"
             }`}
+            style={
+              currentPage === page
+                ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+                : undefined
+            }
           >
             {page}
           </button>
@@ -77,7 +82,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-8 h-8 flex items-center justify-center rounded border border-white/10 text-white/50 hover:bg-white/05 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         <svg
           className="w-4 h-4"

@@ -34,7 +34,7 @@ function useIsAuthenticated() {
 const QUICK_ACTIONS = [
   {
     id: "visualize",
-    label: "How AI Visualizer works?",
+    label: "How Ziora works?",
     Icon: Eye,
     highlight: true,
   },
@@ -55,7 +55,7 @@ const QUICK_ACTIONS = [
 const INITIAL_MESSAGE = {
   id: "init",
   role: "assistant",
-  text: "Hello! I'm your TBM Concierge. How can I help you renovate your space today?",
+  text: "Hello! I'm Ziora, your TBM design assistant. How can I help you renovate your space today?",
   time: "TBM ASSISTANT · JUST NOW",
 };
 
@@ -500,7 +500,7 @@ export default function TBMConcierge() {
 
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-[15px] font-bold leading-tight tracking-tight">
-                    TBM Concierge
+                    Ask Ziora
                   </p>
                   <p className="text-white/45 text-[11px] font-medium">
                     Always active
@@ -903,7 +903,7 @@ export default function TBMConcierge() {
                   style={{ boxShadow: "0 0 0 3px rgba(52,211,153,0.25)" }}
                 />
                 <span className="text-[#1a2340] text-[12.5px] font-semibold whitespace-nowrap">
-                  Need help? <span className="font-bold">Ask our AI</span>
+                  Need help? <span className="font-bold">Ask Ziora</span>
                 </span>
               </motion.button>
             )}

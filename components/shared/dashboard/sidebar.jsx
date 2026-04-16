@@ -10,7 +10,6 @@ import {
   Heart,
   User,
   Sparkles,
-  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -22,7 +21,6 @@ const navItems = [
   { icon: Package, label: "Orders", href: "/dashboard/orders" },
   { icon: Layers, label: "AI Designs", href: "/dashboard/ai-designs" },
   { icon: Heart, label: "Saved Items", href: "/dashboard/saved" },
-  { icon: Calendar, label: "Project", href: "/dashboard/project" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
 ];
 
@@ -40,12 +38,15 @@ export default function Sidebar({ isOpen, onClose }) {
     "U";
 
   const sidebarContent = (
-    <div className="h-full flex flex-col bg-white font-manrope">
+    <div className="h-full flex flex-col font-manrope" style={{ background: "#0d0b08" }}>
       {/* Header */}
-      <div className="p-6 border-b border-[#e5e5e5]">
+      <div className="p-6 border-b border-white/08">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 overflow-hidden"
+              style={{ background: "rgba(212,175,55,0.12)" }}
+            >
               {user?.avatar ? (
                 <Image
                   src={user.avatar}
@@ -55,7 +56,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-sm font-bold text-primary">
+                <span className="text-sm font-bold text-[#D4AF37]">
                   {avatarInitial}
                 </span>
               )}
@@ -63,17 +64,15 @@ export default function Sidebar({ isOpen, onClose }) {
             <div className="min-w-0">
               {user ? (
                 <>
-                  <p className="text-base text-[#0F172A] font-semibold font-manrope truncate">
+                  <p className="text-base text-white font-semibold font-manrope truncate">
                     Welcome back, {user?.firstName || displayName}
                   </p>
-                  <p className="text-sm text-[#999999] mt-0.5">
-                    Premium Member
-                  </p>
+                  <p className="text-sm text-white/40 mt-0.5">Premium Member</p>
                 </>
               ) : (
                 <>
-                  <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
-                  <div className="h-3 w-20 bg-gray-100 rounded animate-pulse mt-1.5" />
+                  <div className="h-4 w-32 bg-white/08 rounded animate-pulse" />
+                  <div className="h-3 w-20 bg-white/08 rounded animate-pulse mt-1.5" />
                 </>
               )}
             </div>
@@ -82,9 +81,9 @@ export default function Sidebar({ isOpen, onClose }) {
           {/* Mobile close button */}
           <button
             onClick={onClose}
-            className="lg:hidden p-1 hover:bg-gray-100 rounded-md transition-colors shrink-0"
+            className="lg:hidden p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
           >
-            <X className="w-5 h-5 text-[#666666]" />
+            <X className="w-5 h-5 text-white/40" />
           </button>
         </div>
       </div>
@@ -105,10 +104,15 @@ export default function Sidebar({ isOpen, onClose }) {
                 text-[14px] font-medium transition-all
                 ${
                   isActive
-                    ? "bg-primary/20 text-primary font-semibold"
-                    : "text-primary/60 hover:bg-primary/10 hover:text-primary"
+                    ? "text-[#D4AF37]"
+                    : "text-white/50 hover:bg-white/05 hover:text-white"
                 }
               `}
+              style={
+                isActive
+                  ? { background: "rgba(212,175,55,0.10)" }
+                  : undefined
+              }
             >
               <Icon className="w-5 h-5" />
               <span>{item.label}</span>
@@ -122,19 +126,27 @@ export default function Sidebar({ isOpen, onClose }) {
         <div
           className="rounded-2xl p-6 text-white"
           style={{
-            background: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
+            background: "rgba(212,175,55,0.06)",
+            boxShadow: "0 0 0 1px rgba(212,175,55,0.15)",
           }}
         >
-          <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mb-4">
-            <Sparkles className="w-5 h-5" />
+          <div
+            className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+            style={{ background: "rgba(212,175,55,0.12)" }}
+          >
+            <Sparkles className="w-5 h-5 text-[#D4AF37]" />
           </div>
-          <h3 className="text-[16px] font-semibold mb-2">Go Pro?</h3>
-          <p className="text-[13px] text-white/70 mb-4 leading-relaxed">
+          <h3 className="text-[16px] font-semibold mb-2 text-white">Go Pro?</h3>
+          <p className="text-[13px] text-white/50 mb-4 leading-relaxed">
             Get unlimited AI renders and priority support.
           </p>
-          <button className="w-full bg-white text-[#1a1a1a] text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-white/90 transition-colors">
+          <Link
+            href="/ai-visualizer#pricing"
+            className="block w-full text-center text-[14px] font-medium py-2.5 px-4 rounded-lg transition-colors text-black"
+            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+          >
             Upgrade Plan
-          </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -143,11 +155,11 @@ export default function Sidebar({ isOpen, onClose }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-80 h-screen sticky top-0 border-r border-[#e5e5e5]">
+      <aside className="hidden lg:block w-80 h-screen sticky top-0 border-r border-white/08">
         {sidebarContent}
       </aside>
 
-      {/* Mobile Sidebar — starts at top-16 to sit below the fixed Navbar */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -155,7 +167,7 @@ export default function Sidebar({ isOpen, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="lg:hidden fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 border-r border-[#e5e5e5] z-50 overflow-y-auto"
+            className="lg:hidden fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 border-r border-white/08 z-50 overflow-y-auto"
           >
             {sidebarContent}
           </motion.aside>

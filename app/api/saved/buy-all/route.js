@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL_WV1 || "https://api.yourbackend.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
 
 async function getAuthHeader() {
   const cookieStore = await cookies();

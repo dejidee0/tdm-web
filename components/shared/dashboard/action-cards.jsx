@@ -8,24 +8,18 @@ import Link from "next/link";
 const cards = [
   {
     icon: ShoppingBag,
-    iconBg: "bg-[#3b82f6]/10",
-    iconColor: "text-[#3b82f6]",
     title: "Shop Materials",
     description: "Browse flooring, tiles, and fixtures.",
     href: "/shop",
   },
   {
     icon: Wand2,
-    iconBg: "bg-[#a855f7]/10",
-    iconColor: "text-[#a855f7]",
-    title: "Try AI Visualizer",
+    title: "Design with Ziora",
     description: "See your room with new styles instantly.",
     href: "/visualizer",
   },
   {
     icon: Calendar,
-    iconBg: "bg-[#f97316]/10",
-    iconColor: "text-[#f97316]",
     title: "Book Consultation",
     description: "Talk to a pro designer today.",
     href: "/consultation",
@@ -48,28 +42,22 @@ export default function ActionCards() {
           >
             <Link
               href={card.href}
-              className="
-                block h-full
-                bg-white border border-[#e5e5e5]
-                rounded-2xl p-5
-                transition-all hover:shadow-lg
-                md:flex flex-col
-                min-h-[180px]
-              "
+              className="block h-full rounded-2xl p-5 transition-all md:flex flex-col min-h-45 border border-white/08 hover:border-[#D4AF37]/30"
+              style={{ background: "#0d0b08" }}
             >
-              {/* Top content */}
               <div>
                 <div
-                  className={`w-12 h-12 ${card.iconBg} rounded-xl flex items-center justify-center mb-4`}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: "rgba(212,175,55,0.10)" }}
                 >
-                  <Icon className={`w-6 h-6 ${card.iconColor}`} />
+                  <Icon className="w-6 h-6 text-[#D4AF37]" />
                 </div>
 
-                <h3 className="text-[16px] font-semibold text-[#1a1a1a] mb-1">
+                <h3 className="text-[16px] font-semibold text-white mb-1">
                   {card.title}
                 </h3>
 
-                <p className="text-[14px] text-[#666666] leading-relaxed">
+                <p className="text-[14px] text-white/40 leading-relaxed">
                   {card.description}
                 </p>
               </div>

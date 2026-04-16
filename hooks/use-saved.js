@@ -269,7 +269,7 @@ export function useBuyAll() {
 export function useCreateBoard() {
   return useMutation({
     mutationFn: ({ itemIds, boardName }) =>
-      apiFetch("/saved/boards", {
+      apiFetch("/saved/create-board", {
         method: "POST",
         body: JSON.stringify({ itemIds, boardName }),
       }),

@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ImageGallery({ images = [], productName = "Product" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // Default images if none provided
   const galleryImages =
     images.length > 0
       ? images
@@ -24,18 +23,16 @@ export default function ImageGallery({ images = [], productName = "Product" }) {
     <div className="space-y-4">
       {/* Main Image */}
       <motion.div
-        className="relative w-full h-[500px] bg-gray-100 rounded-lg overflow-hidden"
+        className="relative w-full h-125 bg-[#1a1a1a] rounded-lg overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
         {/* AI READY Badge */}
         <div className="absolute top-4 left-4 z-10">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs font-semibold text-gray-900">
-              AI READY
-            </span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full border border-white/10">
+            <div className="w-2 h-2 bg-green-400 rounded-full" />
+            <span className="text-xs font-semibold text-white">AI READY</span>
           </div>
         </div>
 
@@ -70,8 +67,8 @@ export default function ImageGallery({ images = [], productName = "Product" }) {
             onClick={() => setSelectedIndex(index)}
             className={`relative h-32 rounded-lg overflow-hidden border-2 transition-all ${
               selectedIndex === index
-                ? "border-gray-900 ring-2 ring-gray-900 ring-offset-2"
-                : "border-gray-200 hover:border-gray-400"
+                ? "border-[#D4AF37]"
+                : "border-white/10 hover:border-white/30"
             }`}
           >
             <Image

@@ -1,59 +1,68 @@
-import CTASection from "@/components/shared/home/cta";
-import CustomizeSection from "@/components/shared/home/customize";
 import HeroSection from "@/components/shared/home/hero";
+import StatsStrip from "@/components/shared/home/trust-strip";
+import ReimagineSection from "@/components/shared/home/why-tbm";
 import ServicesSection from "@/components/shared/home/services";
-import TrendingSection from "@/components/shared/home/trending";
+import PortfolioSection from "@/components/shared/home/featured-projects";
+import TransformationSection from "@/components/shared/home/transformation";
+import ProcessSection from "@/components/shared/home/process";
+import MaterialsBogatSection from "@/components/shared/home/materials-bogat";
+import ArchServicesSection from "@/components/shared/home/arch-services";
+import ZioraSection from "@/components/shared/home/ziora-teaser";
+import TestimonialsSection from "@/components/shared/home/testimonials";
 
 export const metadata = {
-  title:
-    "TBM - Transform Your Dream Home with Premium Materials & AI Visualization",
+  title: "TBM Building Services – Design Digitally, Build Reality.",
   description:
-    "Discover premium materials, visualize your space with AI technology, and connect with expert designers. Shop high-quality furniture, get expert consultations, and transform your home renovation journey with TBM.",
+    "The apex construction and architecture agency. Premium renovation, construction materials, and AI-powered space visualization for homes and commercial spaces across Abuja and Lagos.",
   keywords: [
-    "premium materials",
-    "AI home visualization",
-    "furniture shopping",
-    "interior design",
-    "home renovation",
-    "expert consultation",
-    "custom furniture",
-    "home transformation",
-    "TBM",
+    "TBM Building Services",
+    "Ziora AI design",
+    "Bogat materials",
+    "renovation Nigeria",
+    "construction Abuja",
+    "interior design Lagos",
+    "AI visualization architecture",
+    "bespoke construction Nigeria",
+    "luxury renovation Abuja",
+    "building project estimate",
   ],
-  authors: [{ name: "TBM" }],
-  creator: "TBM",
-  publisher: "TBM",
+  authors: [{ name: "TBM Building Services" }],
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://yourdomain.com",
-    siteName: "TBM - Transform Your Home",
-    title: "TBM - Transform Your Dream Home with Premium Materials & AI",
+    url: "https://tbmbuilding.com",
+    siteName: "TBM Building Services",
+    title: "TBM Building Services – Design Digitally, Build Reality.",
     description:
-      "Discover premium materials, visualize your space with AI, and connect with expert designers to bring your vision to life.",
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+      "Premium renovation, AI-powered design with Ziora, and certified materials from Bogat — all in one platform.",
   },
 };
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white relative">
+    <main className="bg-black min-h-screen">
+      {/* 1. Hero */}
       <HeroSection />
+      {/* 2. Stats — 150+ | Hubs | N550M+ */}
+      <StatsStrip />
+      {/* 3. Reimagine your space */}
+      <ReimagineSection />
+      {/* 4. Our Services grid */}
       <ServicesSection />
-      <CustomizeSection />
-      <TrendingSection />
-      <CTASection />
-    </div>
+      {/* 5. Explore Our Work portfolio */}
+      <PortfolioSection />
+      {/* 6. The TBM Transformation before/after */}
+      <TransformationSection />
+      {/* 7. Methodical Excellence process */}
+      <ProcessSection />
+      {/* 8. Material (Bogat) gallery */}
+      <MaterialsBogatSection />
+      {/* 9. Bespoke Architectural Services */}
+      <ArchServicesSection />
+      {/* 10. Ziora AI teaser */}
+      <ZioraSection />
+      {/* 11. Testimonials */}
+      <TestimonialsSection />
+    </main>
   );
 }

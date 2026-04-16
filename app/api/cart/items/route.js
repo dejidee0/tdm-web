@@ -1,4 +1,4 @@
-// app/api/v1/Cart/items/route.js
+// app/api/v1/cart/items/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -10,11 +10,11 @@ async function authHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// POST /api/v1/Cart/items  { productId, quantity }
+// POST /api/v1/cart/items  { productId, quantity }
 export async function POST(req) {
   try {
     const body = await req.json();
-    const res = await fetch(`${BASE_URL}/Cart/items`, {
+    const res = await fetch(`${BASE_URL}/cart/items`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
       body: JSON.stringify(body),
