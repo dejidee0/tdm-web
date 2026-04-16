@@ -50,7 +50,7 @@ export default function QuickActions() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      className="bg-white rounded-xl p-4 h-full border border-[#E5E7EB]"
+      className="bg-background rounded-xl p-4 h-full border border-[#E5E7EB]"
     >
       {/* Header */}
       <h2 className="font-manrope text-[18px] font-bold text-primary mb-6">

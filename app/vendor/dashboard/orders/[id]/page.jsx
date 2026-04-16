@@ -46,7 +46,7 @@ export default function OrderDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="flex items-center justify-center min-h-[60vh] bg-background">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] font-manrope text-[14px]">
@@ -76,7 +76,7 @@ export default function OrderDetailPage() {
   };
 
   return (
-    <div className="max-w-360 mx-auto">
+    <div className="max-w-360 mx-auto bg-background">
       {/* Back Button */}
       <motion.button
         initial={{ opacity: 0, x: -10 }}

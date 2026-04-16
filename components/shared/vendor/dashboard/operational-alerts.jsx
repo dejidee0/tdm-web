@@ -32,7 +32,7 @@ export default function OperationalAlerts({ alerts }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-white rounded-xl border border-[#E5E7EB]"
+      className="bg-background rounded-xl border border-[#E5E7EB]"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-gray-200 py-4 px-4">

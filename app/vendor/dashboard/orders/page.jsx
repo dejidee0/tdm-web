@@ -93,7 +93,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="max-w-360 mx-auto">
+    <div className="max-w-360 mx-auto bg-background">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">

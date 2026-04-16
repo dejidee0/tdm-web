@@ -66,7 +66,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-[6.96px] border-[0.59px] border-[#273054]/10">
+      <div className="bg-background rounded-[6.96px] border-[0.59px] border-[#273054]/10">
         <div className="p-8 text-center">
           <div className="w-12 h-12 border-4 border-[#273054]/10 border-t-[#273054] rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#273054]/60 font-inter text-[12.19px]">
@@ -79,7 +79,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
 
   if (!products || products.length === 0) {
     return (
-      <div className="bg-white rounded-[6.96px] border-[0.59px] border-[#273054]/10 p-12 text-center">
+      <div className="bg-background rounded-[6.96px] border-[0.59px] border-[#273054]/10 p-12 text-center">
         <p className="text-[#273054]/60 font-inter text-[12.19px]">
           No products found
         </p>
@@ -88,7 +88,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
   }
 
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-background overflow-hidden">
       {/* Scroll Hint - Mobile only */}
       <div className="md:hidden px-4 py-2 bg-[#F6F8F7] border-b border-[#273054]/10 flex items-center justify-center gap-2 text-[#273054]/60">
         <ChevronRight size={14} className="animate-pulse" />

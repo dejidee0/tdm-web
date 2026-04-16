@@ -48,7 +48,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-[#E5E7EB]">
+    <div className="flex items-center justify-between px-6 py-4 bg-background border-t border-[#E5E7EB]">
       {/* Results info */}
       <p className="font-manrope text-[13px] text-[#64748B]">
         Showing <span className="font-bold text-primary">1</span> to{" "}

@@ -123,7 +123,7 @@ function InventoryContent() {
   };
 
   return (
-    <div className="max-w-360 mx-auto">
+    <div className="max-w-360 mx-auto bg-background">
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row items-start justify-between mb-2">

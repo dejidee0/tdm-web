@@ -26,7 +26,7 @@ export default function StatCard({ data, icon: Icon, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-white rounded-xl p-4  min-w-[5vw] border border-[#E5E7EB] relative overflow-hidden group hover:shadow-lg transition-shadow"
+      className="bg-background rounded-xl p-4  min-w-[5vw] border border-[#E5E7EB] relative overflow-hidden group hover:shadow-lg transition-shadow"
     >
       {/* Background Icon */}
       <div className="absolute top-4 right-4 opacity-5 group-hover:opacity-10 transition-opacity">

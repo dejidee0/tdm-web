@@ -91,7 +91,7 @@ export default function RecentActivityStream({ activities }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="bg-white rounded-xl border border-[#E5E7EB]"
+      className="bg-background rounded-xl border border-[#E5E7EB]"
     >
       {/* Header with Tabs */}
       <div className="p-4 md:p-6 border-b border-[#E5E7EB]">
@@ -214,7 +214,7 @@ export default function RecentActivityStream({ activities }) {
               <div className="md:hidden space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center text-[#64748B]">
+                    <div className="w-8 h-8 bg-background rounded-lg flex items-center justify-center text-[#64748B]">
                       <Icon size={16} />
                     </div>
                     <div>
