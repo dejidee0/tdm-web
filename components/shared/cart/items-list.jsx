@@ -8,7 +8,7 @@ import { ShoppingBag, ArrowRight } from "lucide-react";
 export default function CartItemsList({ cart, isLoading }) {
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-white/08" style={{ background: "#0d0b08" }} p-6">
+      <div className="rounded-2xl border border-white/08 p-6" style={{ background: "#0d0b08" }}>
         <div className="space-y-0 divide-y divide-white/08">
           {[...Array(3)].map((_, i) => (
             <motion.div
