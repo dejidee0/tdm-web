@@ -47,11 +47,11 @@ export default function HeroSection() {
           </p>
 
           {/* CTAs */}
-          <div className="flex items-center gap-4 hero-ctas">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hero-ctas">
             {/* Primary — solid gold gradient fill, slightly rounded */}
             <Link
               href="/contact?type=consultation"
-              className="inline-flex items-center justify-center rounded-xl bg-linear-to-br from-[#D4AF37] to-gold-dim px-8 py-4 text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap hover:opacity-90 transition-opacity duration-200"
+              className="flex items-center justify-center rounded-xl bg-linear-to-br from-[#D4AF37] to-gold-dim px-8 py-4 text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap hover:opacity-90 transition-opacity duration-200"
             >
               Start Your Project
             </Link>
@@ -61,7 +61,7 @@ export default function HeroSection() {
               href="/project"
               className="relative inline-flex rounded-xl p-px bg-linear-to-br from-[#D4AF37] to-gold-dim hover:opacity-90 transition-opacity duration-200"
             >
-              <span className="inline-flex items-center justify-center rounded-[11px] bg-[#0d0d0d] px-8 py-4 text-[#D4AF37] font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap">
+              <span className="flex items-center justify-center rounded-[11px] bg-[#0d0d0d] px-8 py-4 text-[#D4AF37] font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap w-full">
                 View Portfolio
               </span>
             </Link>
