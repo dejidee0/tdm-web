@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
@@ -9,7 +9,7 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { checkoutApi } from "@/lib/api/checkout";
 
-export default function CheckoutVerifyPage() {
+function CheckoutVerifyContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { width, height } = useWindowSize();
@@ -149,5 +149,20 @@ export default function CheckoutVerifyPage() {
         </motion.div>
       </div>
     </>
+  );
+}
+
+export default function CheckoutVerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center pt-20">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-[#D4AF37] animate-spin mx-auto mb-4" />
+          <p className="text-[15px] text-white/50">Verifying your payment…</p>
+        </div>
+      </div>
+    }>
+      <CheckoutVerifyContent />
+    </Suspense>
   );
 }
