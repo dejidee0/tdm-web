@@ -1,35 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
+import { Sparkles, CalendarDays } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-auth";
-import AuthModal from "@/components/common/auth-modal";
 
 const CTAAndTestimonials = () => {
-  const [showAuthModal, setShowAuthModal] = useState("");
-  const [mounted, setMounted] = useState(false);
-  const [copied, setCopied] = useState(false);
   const { data: user } = useCurrentUser();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleSaveProject = () => {
-    if (!user) {
-      setShowAuthModal((prev) => !prev);
-    }
-  };
-
-  const handleShareLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // fallback — select + copy not needed since modern browsers support clipboard API
-    }
-  };
+  const designHref = user ? "/dashboard/ai-designs" : "/sign-in?from=/dashboard/ai-designs";
 
   const testimonials = [
     {
@@ -90,83 +69,34 @@ const CTAAndTestimonials = () => {
               Ready to make it real?
             </h2>
             <p className="text-lg text-white/60 max-w-xl">
-              Don&apos;t lose your progress. Save your favorite designs or share
-              them with your partner.
+              Generate your first design free — then bring it to life with a TBM
+              designer who knows Nigerian materials and budgets.
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap gap-3">
-            {mounted && !user && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSaveProject}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-colors border border-white/10 text-white/60 hover:bg-white/05"
-                style={{ background: "rgba(255,255,255,0.04)" }}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 shrink-0">
+            <Link href={designHref}>
+              <motion.span
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-black hover:opacity-90 transition-opacity cursor-pointer"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M15.8333 17.5H4.16667C3.70833 17.5 3.33333 17.125 3.33333 16.6667V5.83333C3.33333 5.375 3.70833 5 4.16667 5H10L11.6667 6.66667H15.8333C16.2917 6.66667 16.6667 7.04167 16.6667 7.5V16.6667C16.6667 17.125 16.2917 17.5 15.8333 17.5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Save Project
-              </motion.button>
-            )}
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleShareLink}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-colors border border-white/10 text-white/60 hover:bg-white/05"
-              style={{ background: "rgba(255,255,255,0.04)" }}
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M13.3333 10.8333L16.6667 7.5L13.3333 4.16667M16.6667 7.5H9.16667C6.40833 7.5 4.16667 9.74167 4.16667 12.5V15.8333"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              {copied ? "Copied!" : "Share Link"}
-            </motion.button>
+                <Sparkles className="w-4 h-4" />
+                {user ? "Open Ziora Studio" : "Start Designing Free"}
+              </motion.span>
+            </Link>
 
             <Link href="/contact">
               <motion.span
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm text-black hover:opacity-90 transition-opacity cursor-pointer"
-                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm border border-white/15 text-white/70 hover:bg-white/05 transition-colors cursor-pointer"
+                style={{ background: "rgba(255,255,255,0.04)" }}
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M13.3333 5.83333C14.2538 5.83333 15 5.08714 15 4.16667C15 3.24619 14.2538 2.5 13.3333 2.5C12.4129 2.5 11.6667 3.24619 11.6667 4.16667C11.6667 5.08714 12.4129 5.83333 13.3333 5.83333Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M6.66667 11.6667C7.58714 11.6667 8.33333 10.9205 8.33333 10C8.33333 9.07953 7.58714 8.33333 6.66667 8.33333C5.74619 8.33333 5 9.07953 5 10C5 10.9205 5.74619 11.6667 6.66667 11.6667Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M13.3333 17.5C14.2538 17.5 15 16.7538 15 15.8333C15 14.9129 14.2538 14.1667 13.3333 14.1667C12.4129 14.1667 11.6667 14.9129 11.6667 15.8333C11.6667 16.7538 12.4129 17.5 13.3333 17.5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8.15833 11.0083L11.85 14.825M11.8417 5.175L8.16667 8.99167"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-                Send to Designer
+                <CalendarDays className="w-4 h-4" />
+                Book a Consultation
               </motion.span>
             </Link>
           </div>
@@ -247,15 +177,6 @@ const CTAAndTestimonials = () => {
         </motion.div>
       </div>
 
-      {/* Auth Modal */}
-      <AnimatePresence>
-        {showAuthModal && (
-          <AuthModal
-            setShowAuthModal={setShowAuthModal}
-            showAuthModal={showAuthModal}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 };
