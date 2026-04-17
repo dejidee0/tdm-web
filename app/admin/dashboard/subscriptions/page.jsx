@@ -49,158 +49,142 @@ function discountStatus(d) {
 }
 
 // ─── Pricing Row ──────────────────────────────────────────────────────────────
+// Each config record = one tier + billingCycle combination from the API.
+// Fields: id, tier, billingCycle, price, currency, generationsPerMonth (-1=∞),
+//         prioritySupport, unlimitedGenerations, displayName, description, features[]
 
 function PricingRow({ config, onSave }) {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
-    monthlyPrice: config.monthlyPrice ?? "",
-    annualPrice: config.annualPrice ?? "",
-    generationsAllowed: config.generationsAllowed ?? "",
-    yearlyDiscountPct: config.yearlyDiscountPct ?? "",
-    isActive: config.isActive ?? true,
+    price: config.price ?? 0,
+    generationsPerMonth: config.unlimitedGenerations ? "" : (config.generationsPerMonth ?? ""),
+    prioritySupport: config.prioritySupport ?? false,
+    unlimitedGenerations: config.unlimitedGenerations ?? false,
+    description: config.description ?? "",
   });
   const [saving, setSaving] = useState(false);
 
-  const tier = config.tier?.toLowerCase() || "economy";
-  const colors = TIER_COLORS[tier] || TIER_COLORS.economy;
+  const tierKey = config.tier?.toLowerCase() || "economy";
+  const colors = TIER_COLORS[tierKey] || TIER_COLORS.economy;
+  const isUnlimited = form.unlimitedGenerations;
 
   const inputCls =
-    "px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all disabled:opacity-40";
+    "px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all disabled:opacity-40 disabled:cursor-not-allowed";
 
   const handleSave = async () => {
     setSaving(true);
-    await onSave(tier, {
-      monthlyPrice: form.monthlyPrice !== "" ? Number(form.monthlyPrice) : undefined,
-      annualPrice: form.annualPrice !== "" ? Number(form.annualPrice) : undefined,
-      generationsAllowed:
-        form.generationsAllowed !== "" ? Number(form.generationsAllowed) : null,
-      yearlyDiscountPct:
-        form.yearlyDiscountPct !== "" ? Number(form.yearlyDiscountPct) : undefined,
-      isActive: form.isActive,
+    await onSave(tierKey, config.billingCycle?.toLowerCase(), {
+      price: Number(form.price),
+      generationsPerMonth: isUnlimited ? -1 : Number(form.generationsPerMonth),
+      prioritySupport: form.prioritySupport,
+      unlimitedGenerations: form.unlimitedGenerations,
+      description: form.description,
     });
     setSaving(false);
     setEditing(false);
   };
 
+  const displayGenerations =
+    config.unlimitedGenerations || config.generationsPerMonth === -1
+      ? "Unlimited"
+      : config.generationsPerMonth;
+
   return (
     <tr className="border-b border-white/08 last:border-0 hover:bg-white/03 transition-colors">
       {/* Tier */}
-      <td className="py-4 px-4">
+      <td className="py-4 px-4 whitespace-nowrap">
         <span
           className="px-3 py-1 rounded-full font-manrope text-[12px] font-bold uppercase"
           style={{ backgroundColor: colors.bg, color: colors.text }}
         >
-          {colors.label}
+          {config.tier}
         </span>
       </td>
 
-      {/* Monthly Price */}
+      {/* Billing Cycle */}
+      <td className="py-4 px-4 whitespace-nowrap">
+        <span className="font-manrope text-[13px] text-white/60">{config.billingCycle}</span>
+      </td>
+
+      {/* Price */}
       <td className="py-4 px-4">
         {editing ? (
           <input
             type="number"
-            value={form.monthlyPrice}
-            onChange={(e) => setForm({ ...form, monthlyPrice: e.target.value })}
+            value={form.price}
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
             className={`w-28 ${inputCls}`}
-            placeholder="e.g. 29990"
+            min="0"
+            disabled={tierKey === "economy"}
           />
         ) : (
-          <span className="font-manrope text-[14px] text-white">
-            {tier === "economy" ? "Free" : formatNGN(config.monthlyPrice)}
+          <span className="font-manrope text-[14px] text-white font-semibold">
+            {tierKey === "economy" ? "Free" : `${formatNGN(config.price)} ${config.currency}`}
           </span>
         )}
       </td>
 
-      {/* Annual Price */}
+      {/* Generations / Month */}
       <td className="py-4 px-4">
         {editing ? (
-          <input
-            type="number"
-            value={form.annualPrice}
-            onChange={(e) => setForm({ ...form, annualPrice: e.target.value })}
-            className={`w-28 ${inputCls}`}
-            placeholder="e.g. 287880"
-            disabled={tier === "economy"}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              value={form.generationsPerMonth}
+              onChange={(e) => setForm({ ...form, generationsPerMonth: e.target.value })}
+              className={`w-20 ${inputCls}`}
+              placeholder="e.g. 20"
+              disabled={isUnlimited}
+              min="1"
+            />
+            <label className="flex items-center gap-1.5 text-[12px] text-white/50 whitespace-nowrap cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.unlimitedGenerations}
+                onChange={(e) => setForm({ ...form, unlimitedGenerations: e.target.checked, generationsPerMonth: "" })}
+                className="accent-[#D4AF37]"
+              />
+              Unlimited
+            </label>
+          </div>
         ) : (
-          <span className="font-manrope text-[14px] text-white">
-            {tier === "economy" ? "—" : formatNGN(config.annualPrice)}
-          </span>
+          <span className="font-manrope text-[14px] text-white">{displayGenerations}</span>
         )}
       </td>
 
-      {/* Yearly Discount % */}
-      <td className="py-4 px-4">
-        {editing ? (
-          <input
-            type="number"
-            value={form.yearlyDiscountPct}
-            onChange={(e) => setForm({ ...form, yearlyDiscountPct: e.target.value })}
-            className={`w-20 ${inputCls}`}
-            placeholder="20"
-            disabled={tier === "economy"}
-          />
-        ) : (
-          <span className="font-manrope text-[14px] text-white">
-            {tier === "economy" ? "—" : config.yearlyDiscountPct != null ? `${config.yearlyDiscountPct}%` : "—"}
-          </span>
-        )}
-      </td>
-
-      {/* Generations */}
-      <td className="py-4 px-4">
-        {editing ? (
-          <input
-            type="number"
-            value={form.generationsAllowed}
-            onChange={(e) => setForm({ ...form, generationsAllowed: e.target.value })}
-            className={`w-24 ${inputCls}`}
-            placeholder="50 or blank=∞"
-            disabled={tier === "luxury"}
-          />
-        ) : (
-          <span className="font-manrope text-[14px] text-white">
-            {tier === "luxury" || config.generationsAllowed == null
-              ? "Unlimited"
-              : config.generationsAllowed}
-          </span>
-        )}
-      </td>
-
-      {/* Status */}
+      {/* Priority Support */}
       <td className="py-4 px-4">
         {editing ? (
           <button
-            onClick={() => setForm({ ...form, isActive: !form.isActive })}
-            className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
-            style={{ backgroundColor: form.isActive ? "#10B981" : "#94A3B8" }}
+            onClick={() => setForm({ ...form, prioritySupport: !form.prioritySupport })}
+            className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+            style={{ backgroundColor: form.prioritySupport ? "#10B981" : "rgba(255,255,255,0.15)" }}
           >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                form.isActive ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
+            <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${form.prioritySupport ? "translate-x-4" : "translate-x-0.5"}`} />
           </button>
         ) : (
-          <span
-            className={`px-2.5 py-1 rounded-full font-manrope text-[12px] font-semibold ${
-              config.isActive
-                ? "bg-[#DCFCE7] text-[#1A7A4A]"
-                : "bg-white/08 text-white/40"
-            }`}
-          >
-            {config.isActive ? "Active" : "Inactive"}
+          <span className={`font-manrope text-[12px] font-semibold px-2 py-0.5 rounded-full ${config.prioritySupport ? "bg-[#DCFCE7] text-[#1A7A4A]" : "bg-white/08 text-white/40"}`}>
+            {config.prioritySupport ? "Yes" : "No"}
           </span>
         )}
       </td>
 
-      {/* Last Updated */}
-      <td className="py-4 px-4 text-white/40 font-manrope text-[12px]">
-        {config.updatedAt ? new Date(config.updatedAt).toLocaleDateString() : "—"}
+      {/* Description */}
+      <td className="py-4 px-4 max-w-48">
+        {editing ? (
+          <input
+            type="text"
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            className={`w-full ${inputCls}`}
+          />
+        ) : (
+          <span className="font-manrope text-[12px] text-white/50 line-clamp-2">{config.description || "—"}</span>
+        )}
       </td>
 
       {/* Actions */}
-      <td className="py-4 px-4">
+      <td className="py-4 px-4 whitespace-nowrap">
         {editing ? (
           <div className="flex items-center gap-2">
             <button
@@ -612,9 +596,9 @@ export default function SubscriptionsPage() {
   const pricing = Array.isArray(pricingData) ? pricingData : pricingData?.data ?? [];
   const discounts = Array.isArray(discountsData) ? discountsData : discountsData?.data ?? [];
 
-  const handleUpdatePricing = async (tier, data) => {
+  const handleUpdatePricing = async (tier, cycle, data) => {
     try {
-      await updatePricing({ tier, data });
+      await updatePricing({ tier, cycle, data });
     } catch (err) {
       setPageError(err?.response?.data?.message || err.message || "Failed to save pricing.");
     }
@@ -705,7 +689,7 @@ export default function SubscriptionsPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-white/05 border-b border-white/08">
-                  {["Tier", "Monthly Price", "Annual Price", "Yearly Discount %", "Generations / Period", "Status", "Last Updated", ""].map(
+                  {["Tier", "Billing Cycle", "Price (NGN)", "Generations / Month", "Priority Support", "Description", ""].map(
                     (h) => (
                       <th
                         key={h}
@@ -721,14 +705,14 @@ export default function SubscriptionsPage() {
                 {pricing.length > 0 ? (
                   pricing.map((config) => (
                     <PricingRow
-                      key={config.tier}
+                      key={config.id}
                       config={config}
                       onSave={handleUpdatePricing}
                     />
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={8} className="py-12 text-center font-manrope text-[14px] text-white/40">
+                    <td colSpan={7} className="py-12 text-center font-manrope text-[14px] text-white/40">
                       No pricing data available
                     </td>
                   </tr>

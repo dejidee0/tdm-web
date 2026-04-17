@@ -19,7 +19,7 @@ export function useAdminPricing() {
 export function useUpdateAdminPricing() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ tier, data }) => adminPricingAPI.updateTier(tier, data),
+    mutationFn: ({ tier, cycle, data }) => adminPricingAPI.updateTier(tier, cycle, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SUBSCRIPTION_QUERY_KEYS.pricing });
     },

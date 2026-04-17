@@ -588,6 +588,32 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         )}
                       </AnimatePresence>
 
+                      {/* Upload warnings — only before a file is chosen */}
+                      {!filePreview && (
+                        <div
+                          className="mt-3 px-3.5 py-3 rounded-xl border"
+                          style={{ borderColor: "rgba(251,146,60,0.20)", background: "rgba(251,146,60,0.04)" }}
+                        >
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-orange-400/70 mb-2">
+                            Avoid uploading:
+                          </p>
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                            {[
+                              "Screenshots of screenshots",
+                              "Very small or low-res images",
+                              "Half-cropped room photos",
+                              "Blurry images",
+                              "Dark or poorly lit rooms",
+                            ].map((w) => (
+                              <li key={w} className="flex items-center gap-1.5 text-[11px] text-white/40">
+                                <span className="shrink-0">🚫</span>
+                                {w}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
                       <input
                         ref={fileInputRef}
                         type="file"
