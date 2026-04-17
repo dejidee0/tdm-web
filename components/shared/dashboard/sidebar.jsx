@@ -81,7 +81,7 @@ export default function Sidebar({ isOpen, onClose }) {
           {/* Mobile close button */}
           <button
             onClick={onClose}
-            className="lg:hidden p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
+            className="md:hidden p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
           >
             <X className="w-5 h-5 text-white/40" />
           </button>
@@ -154,8 +154,8 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-80 h-screen sticky top-0 border-r border-white/08">
+      {/* Tablet + Desktop Sidebar */}
+      <aside className="hidden md:block w-64 lg:w-80 shrink-0 h-screen sticky top-0 border-r border-white/08">
         {sidebarContent}
       </aside>
 
@@ -167,7 +167,7 @@ export default function Sidebar({ isOpen, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="lg:hidden fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 border-r border-white/08 z-50 overflow-y-auto"
+            className="md:hidden fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 border-r border-white/08 z-50 overflow-y-auto"
           >
             {sidebarContent}
           </motion.aside>

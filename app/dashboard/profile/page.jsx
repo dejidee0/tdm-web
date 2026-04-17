@@ -17,7 +17,7 @@ export default function ProfilePage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 pt-12 md:pt-0 md:w-[60vw] w-full">
+      <div className="space-y-6 pt-12 md:pt-0 w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -34,7 +34,7 @@ export default function ProfilePage() {
         </motion.div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr] gap-6">
           <ProfileSidebar
             profile={profile}
             activeTab={activeTab}

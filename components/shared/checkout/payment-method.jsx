@@ -3,79 +3,70 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { CreditCard, Building2, Landmark, Lock } from "lucide-react";
+import { CreditCard, Landmark, Tag, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { useValidatePromoCode } from "@/hooks/use-checkout";
 
 const paymentMethods = [
-  { id: "credit-card", label: "Credit Card", icon: CreditCard },
-  { id: "paypal", label: "PayPal", icon: Building2 },
-  { id: "financing", label: "Financing", icon: Landmark },
+  {
+    id: "Paystack",
+    label: "Card / Bank / USSD",
+    description: "Pay securely via Paystack — card, bank transfer, or USSD",
+    icon: CreditCard,
+  },
+  {
+    id: "BankTransfer",
+    label: "Direct Bank Transfer",
+    description: "Transfer directly to our account — we confirm within 24 hrs",
+    icon: Landmark,
+  },
 ];
 
-const inputClass =
-  "w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-lg text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all";
+export default function PaymentMethod({ onComplete, onPromoChange }) {
+  const [selectedMethod, setSelectedMethod] = useState("Paystack");
+  const [promoCode, setPromoCode] = useState("");
+  const [promoResult, setPromoResult] = useState(null); // { valid, discount, message }
 
-export default function PaymentMethod({ onComplete }) {
-  const [selectedMethod, setSelectedMethod] = useState("credit-card");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cvc, setCvc] = useState("");
-  const [cardholderName, setCardholderName] = useState("");
-  const [sameAsShipping, setSameAsShipping] = useState(true);
+  const validatePromo = useValidatePromoCode();
 
-  const formatCardNumber = (value) => {
-    const v = value.replace(/\D/g, "");
-    const parts = [];
-    for (let i = 0, len = v.length; i < len; i += 4) {
-      parts.push(v.substring(i, i + 4));
-    }
-    return parts.join(" ");
+  const handleMethodSelect = (id) => {
+    setSelectedMethod(id);
+    onComplete?.({ method: id, promoCode: promoResult?.valid ? promoCode : "" });
   };
 
-  const handleCardNumberChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "");
-    if (value.length <= 16) setCardNumber(formatCardNumber(value));
+  const handleApplyPromo = () => {
+    if (!promoCode.trim()) return;
+    validatePromo.mutate(
+      { code: promoCode.trim() },
+      {
+        onSuccess: (data) => {
+          const result = { valid: true, discount: data.discount, message: data.message || "Promo code applied!" };
+          setPromoResult(result);
+          onPromoChange?.(promoCode.trim(), data.discount);
+          onComplete?.({ method: selectedMethod, promoCode: promoCode.trim() });
+        },
+        onError: (err) => {
+          setPromoResult({ valid: false, message: err.message || "Invalid promo code." });
+          onPromoChange?.("", 0);
+        },
+      }
+    );
   };
 
-  const handleExpiryChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 4) value = value.slice(0, 4);
-    if (value.length >= 2) value = value.slice(0, 2) + " / " + value.slice(2, 4);
-    setExpiryDate(value);
+  const handlePromoKeyDown = (e) => {
+    if (e.key === "Enter") handleApplyPromo();
   };
 
-  const handleCvcChange = (e) => {
-    setCvc(e.target.value.replace(/\D/g, "").slice(0, 3));
+  const handleRemovePromo = () => {
+    setPromoCode("");
+    setPromoResult(null);
+    onPromoChange?.("", 0);
+    onComplete?.({ method: selectedMethod, promoCode: "" });
   };
 
-  const handleCardholderNameChange = (e) => {
-    setCardholderName(e.target.value.replace(/[^a-zA-Z\s\-']/g, ""));
-  };
-
-  const handleSubmit = () => {
-    if (!cardNumber || !expiryDate || !cvc || !cardholderName) {
-      alert("Please fill in all payment details");
-      return;
-    }
-    if (cardNumber.replace(/\s/g, "").length !== 16) {
-      alert("Please enter a valid 16-digit card number");
-      return;
-    }
-    if (expiryDate.length !== 7) {
-      alert("Please enter a valid expiry date (MM / YY)");
-      return;
-    }
-    if (cvc.length !== 3) {
-      alert("Please enter a valid 3-digit CVC");
-      return;
-    }
-
-    onComplete?.({
-      method: selectedMethod,
-      cardNumber: cardNumber.slice(-4),
-      expiryDate,
-      cardholderName,
-      sameAsShipping,
-    });
+  // Auto-notify parent on initial render
+  const handleSelect = (id) => {
+    setSelectedMethod(id);
+    onComplete?.({ method: id, promoCode: promoResult?.valid ? promoCode : "" });
   };
 
   return (
@@ -86,144 +77,117 @@ export default function PaymentMethod({ onComplete }) {
       className="rounded-2xl border border-white/08 p-6"
       style={{ background: "#0d0b08" }}
     >
-      <h2 className="text-[18px] font-semibold text-white mb-6">
-        Payment Method
-      </h2>
+      <h2 className="text-[18px] font-semibold text-white mb-6">Payment Method</h2>
 
-      {/* Payment Method Tabs */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      {/* Method Selection */}
+      <div className="space-y-2.5 mb-6">
         {paymentMethods.map((method) => {
           const Icon = method.icon;
+          const active = selectedMethod === method.id;
           return (
             <button
               key={method.id}
-              onClick={() => setSelectedMethod(method.id)}
-              className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg border-2 transition-all"
+              onClick={() => handleSelect(method.id)}
+              className="w-full flex items-center gap-3 p-3.5 rounded-xl border-2 transition-all text-left"
               style={
-                selectedMethod === method.id
-                  ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.08)" }
-                  : { borderColor: "rgba(255,255,255,0.10)", background: "transparent" }
+                active
+                  ? { borderColor: "#D4AF37", background: "rgba(212,175,55,0.06)" }
+                  : { borderColor: "rgba(255,255,255,0.08)", background: "transparent" }
               }
             >
-              <Icon className="w-5 h-5 text-white/50" />
-              <span className="text-[14px] font-medium text-white">
-                {method.label}
-              </span>
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                style={{ background: active ? "rgba(212,175,55,0.15)" : "rgba(255,255,255,0.05)" }}
+              >
+                <Icon className={`w-4.5 h-4.5 ${active ? "text-[#D4AF37]" : "text-white/40"}`} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={`text-[13px] font-semibold leading-tight ${active ? "text-white" : "text-white/60"}`}>
+                  {method.label}
+                </p>
+                <p className="text-[11px] text-white/35 mt-0.5 leading-relaxed">{method.description}</p>
+              </div>
+              <div
+                className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+                style={active ? { borderColor: "#D4AF37", background: "#D4AF37" } : { borderColor: "rgba(255,255,255,0.2)" }}
+              >
+                {active && <div className="w-2 h-2 rounded-full bg-black" />}
+              </div>
             </button>
           );
         })}
       </div>
 
-      {/* Credit Card Form */}
-      {selectedMethod === "credit-card" && (
-        <div className="space-y-5">
-          {/* Card Number */}
-          <div>
-            <label className="block text-[13px] font-medium text-white/40 mb-2">
-              Card Number
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                inputMode="numeric"
-                value={cardNumber}
-                onChange={handleCardNumberChange}
-                className={`${inputClass} pr-12`}
-                placeholder="0000 0000 0000 0000"
-                maxLength={19}
-              />
-              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20" />
-            </div>
-          </div>
+      {/* Promo Code */}
+      <div className="border-t border-white/08 pt-6">
+        <label className="flex items-center gap-2 text-[12px] font-medium text-white/30 uppercase tracking-widest mb-3">
+          <Tag className="w-3.5 h-3.5" />
+          Promo Code
+          <span className="normal-case tracking-normal text-white/20 font-normal">(optional)</span>
+        </label>
 
-          {/* Expiry and CVC */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[13px] font-medium text-white/40 mb-2">
-                Expiration Date
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={expiryDate}
-                onChange={handleExpiryChange}
-                className={inputClass}
-                placeholder="MM / YY"
-                maxLength={7}
-              />
+        {promoResult?.valid ? (
+          <div className="flex items-center gap-3 p-3 rounded-lg border border-green-500/30 bg-green-500/05">
+            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-semibold text-green-400">{promoCode.toUpperCase()}</p>
+              <p className="text-[12px] text-white/40">{promoResult.message}</p>
             </div>
-            <div>
-              <label className="flex text-[13px] font-medium text-white/40 mb-2 items-center gap-2">
-                CVC
-                <button
-                  type="button"
-                  className="text-white/30 hover:text-white/50"
-                  title="3-digit security code on back of card"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={cvc}
-                onChange={handleCvcChange}
-                className={inputClass}
-                placeholder="123"
-                maxLength={3}
-              />
-            </div>
+            <button
+              onClick={handleRemovePromo}
+              className="text-white/30 hover:text-white/60 transition-colors text-[12px] shrink-0"
+            >
+              Remove
+            </button>
           </div>
-
-          {/* Cardholder Name */}
-          <div>
-            <label className="block text-[13px] font-medium text-white/40 mb-2">
-              Cardholder Name
-            </label>
+        ) : (
+          <div className="flex gap-2">
             <input
               type="text"
-              value={cardholderName}
-              onChange={handleCardholderNameChange}
-              className={inputClass}
-              placeholder="Enter name as shown on card"
+              value={promoCode}
+              onChange={(e) => {
+                setPromoCode(e.target.value.toUpperCase());
+                if (promoResult) setPromoResult(null);
+              }}
+              onKeyDown={handlePromoKeyDown}
+              className="flex-1 px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-[14px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all uppercase"
+              placeholder="ENTER CODE"
             />
+            <button
+              onClick={handleApplyPromo}
+              disabled={!promoCode.trim() || validatePromo.isPending}
+              className="px-4 py-2.5 rounded-lg text-[13px] font-semibold border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/08 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shrink-0"
+            >
+              {validatePromo.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+              Apply
+            </button>
           </div>
+        )}
 
-          {/* Billing Address Checkbox */}
-          <div className="flex items-center gap-3 pt-2">
-            <input
-              type="checkbox"
-              id="sameAsShipping"
-              checked={sameAsShipping}
-              onChange={(e) => setSameAsShipping(e.target.checked)}
-              className="w-5 h-5 rounded border-white/20 bg-[#1a1a1a] accent-[#D4AF37]"
-            />
-            <label htmlFor="sameAsShipping" className="text-[14px] text-white/60 cursor-pointer">
-              Billing address same as shipping address
-            </label>
+        {promoResult && !promoResult.valid && (
+          <div className="flex items-center gap-2 mt-2">
+            <XCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
+            <p className="text-[12px] text-red-400">{promoResult.message}</p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Order Confirmation Info */}
+      {/* Paystack redirect notice */}
       <div
-        className="mt-8 p-4 rounded-lg flex items-start gap-3"
-        style={{ background: "rgba(255,255,255,0.03)" }}
+        className="mt-6 p-4 rounded-xl flex items-start gap-3"
+        style={{ background: "rgba(212,175,55,0.05)", border: "1px solid rgba(212,175,55,0.12)" }}
       >
         <div
-          className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-          style={{ background: "rgba(212,175,55,0.12)" }}
+          className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+          style={{ background: "rgba(212,175,55,0.15)" }}
         >
-          <span className="text-[14px] text-[#D4AF37] font-bold">i</span>
+          <span className="text-[13px] text-[#D4AF37] font-bold">i</span>
         </div>
         <div>
-          <h4 className="text-[14px] font-semibold text-white mb-1">
-            Order Confirmation
-          </h4>
-          <p className="text-[13px] text-white/40 leading-relaxed">
-            You will receive your Order ID # and tracking information via email.
+          <p className="text-[13px] font-semibold text-white mb-1">Secure Payment via Paystack</p>
+          <p className="text-[12px] text-white/40 leading-relaxed">
+            Clicking &ldquo;Confirm &amp; Pay&rdquo; will redirect you to Paystack&rsquo;s secure payment page.
+            You&rsquo;ll be brought back here once payment is complete.
           </p>
         </div>
       </div>

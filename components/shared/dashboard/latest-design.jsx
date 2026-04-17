@@ -28,7 +28,7 @@ export default function LatestDesign() {
     );
   }
 
-  if (isError || !design) {
+  if (isError || !design || design.hasDesign === false) {
     return (
       <div className={cardClass} style={cardStyle}>
         <div className="flex items-center gap-2 mb-6">

@@ -6,6 +6,7 @@ import {
   Heart,
   Share2,
   ShoppingCart,
+  Zap,
   CheckCircle,
   XCircle,
   FolderPlus,
@@ -13,6 +14,7 @@ import {
   Tag,
   Building2,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/use-cart";
 import { useIsAuthenticated } from "@/hooks/use-auth";
 import { useIsSaved, useToggleSave } from "@/hooks/use-saved";
@@ -33,7 +35,9 @@ export default function MaterialDetailClient({
   similarProducts = [],
 }) {
   const [quantity, setQuantity] = useState(1);
+  const [buyingNow, setBuyingNow] = useState(false);
 
+  const router = useRouter();
   const addToCart = useAddToCart();
   const { isAuthenticated } = useIsAuthenticated();
   const { isSaved, savedId, isLoading: savedLoading } = useIsSaved(product.id);
@@ -72,6 +76,17 @@ export default function MaterialDetailClient({
           }),
       },
     );
+  };
+
+  const handleBuyNow = async () => {
+    setBuyingNow(true);
+    try {
+      await addToCart.mutateAsync({ product, quantity });
+      router.push("/checkout");
+    } catch (error) {
+      showToast.error({ title: "Couldn't Process", message: error.message || "Something went wrong." });
+      setBuyingNow(false);
+    }
   };
 
   const handleShare = async () => {
@@ -300,21 +315,30 @@ export default function MaterialDetailClient({
                 </div>
               )}
 
-              {/* Add to Cart */}
-              <motion.button
-                whileHover={{ scale: 1.01, y: -1 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={handleAddToCart}
-                disabled={addToCart.isPending || !product.inStock}
-                className="w-full py-4 rounded-xl bg-linear-to-br from-[#D4AF37] to-[#b8942e] text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {addToCart.isPending
-                  ? "Adding..."
-                  : product.inStock
-                    ? "Add to Cart"
-                    : "Out of Stock"}
-              </motion.button>
+              {/* Purchase actions */}
+              <div className="flex flex-col gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.01, y: -1 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={handleBuyNow}
+                  disabled={buyingNow || addToCart.isPending || !product.inStock}
+                  className="w-full py-4 rounded-xl bg-linear-to-br from-[#D4AF37] to-[#b8942e] text-black font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <Zap className="w-5 h-5" />
+                  {buyingNow ? "Processing…" : product.inStock ? "Buy Now" : "Out of Stock"}
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={handleAddToCart}
+                  disabled={addToCart.isPending || buyingNow || !product.inStock}
+                  className="w-full py-4 rounded-xl border border-white/15 text-white font-manrope font-semibold text-[11px] tracking-[0.2em] uppercase hover:border-[#D4AF37]/40 hover:text-[#D4AF37] transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  {addToCart.isPending && !buyingNow ? "Adding…" : "Add to Cart"}
+                </motion.button>
+              </div>
 
               {/* Share */}
               <motion.button

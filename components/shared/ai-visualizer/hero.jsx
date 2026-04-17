@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Upload, RefreshCcw, Sparkles, PlayCircle } from "lucide-react";
 
 export default function Hero() {
@@ -61,19 +62,22 @@ export default function Hero() {
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4"
               >
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-none font-manrope font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-black"
-                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-                >
-                  <Upload size={18} className="sm:w-5 sm:h-5" />
-                  Upload Photo
-                </motion.button>
+                <Link href="/dashboard/ai-designs">
+                  <motion.span
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-none font-manrope font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-black cursor-pointer"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                  >
+                    <Upload size={18} className="sm:w-5 sm:h-5" />
+                    Upload Photo
+                  </motion.span>
+                </Link>
 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
+                  onClick={() => document.getElementById("showcase")?.scrollIntoView({ behavior: "smooth" })}
                   className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-white rounded-none font-manrope font-semibold text-sm tracking-wide flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 transition-colors"
                 >
                   <PlayCircle size={18} className="sm:w-5 sm:h-5" />

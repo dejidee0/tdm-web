@@ -11,10 +11,10 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Mobile sidebar toggle — left-aligned, below navbar, matches sidebar slide direction */}
+      {/* Mobile-only sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="lg:hidden fixed top-19 left-4 z-30 p-2 bg-[#0d0b08] border border-white/10 rounded-lg hover:bg-white/05 transition-colors"
+        className="md:hidden fixed top-19 left-4 z-30 p-2 bg-[#0d0b08] border border-white/10 rounded-lg hover:bg-white/05 transition-colors"
         aria-label="Open sidebar"
       >
         <Menu className="w-5 h-5 text-white/60" />
@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden fixed top-16 inset-x-0 bottom-0 bg-black/70 z-40"
+            className="md:hidden fixed top-16 inset-x-0 bottom-0 bg-black/70 z-40"
           />
         )}
       </AnimatePresence>
@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }) {
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          <main className="font-manrope px-4 sm:px-6 lg:px-8 pt-4 lg:pt-6 pb-6 max-w-[1400px] mx-auto">
+          <main className="font-manrope px-4 sm:px-6 lg:px-8 pt-4 lg:pt-6 pb-6 max-w-350 mx-auto">
             {children}
           </main>
         </div>

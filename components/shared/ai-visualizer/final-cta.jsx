@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const FinalCTA = () => {
   return (
-    <section className="max-w-[1260px] mx-auto flex flex-col px-4 sm:px-6 lg:px-8 py-8 relative font-manrope">
+    <section className="max-w-315 mx-auto flex flex-col px-4 sm:px-6 lg:px-8 py-8 relative font-manrope">
       <motion.div
-        className="relative bg-[#0A0A0A] px-8 md:px-16 py-16 md:py-20 overflow-hidden"
+        className="relative bg-text-black px-8 md:px-16 py-16 md:py-20 overflow-hidden"
         initial={{ opacity: 0, scale: 0.98 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
@@ -65,22 +66,26 @@ const FinalCTA = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-8 py-4 rounded-none font-manrope font-bold text-sm tracking-wide text-black hover:opacity-90 transition-opacity"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-            >
-              Book a Designer
-            </motion.button>
+            <Link href="/contact">
+              <motion.span
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-8 py-4 rounded-none font-manrope font-bold text-sm tracking-wide text-black hover:opacity-90 transition-opacity cursor-pointer inline-block"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              >
+                Book a Designer
+              </motion.span>
+            </Link>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-8 py-4 bg-transparent text-white border border-white/20 rounded-none font-manrope font-semibold text-sm tracking-wide hover:border-white/40 transition-colors"
-            >
-              Design with Ziora Again
-            </motion.button>
+            <Link href="/dashboard/ai-designs">
+              <motion.span
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-8 py-4 bg-transparent text-white border border-white/20 rounded-none font-manrope font-semibold text-sm tracking-wide hover:border-white/40 transition-colors cursor-pointer inline-block"
+              >
+                Design with Ziora Again
+              </motion.span>
+            </Link>
           </motion.div>
 
           {/* Disclaimer Text */}

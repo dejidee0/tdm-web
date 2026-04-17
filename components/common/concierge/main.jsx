@@ -21,7 +21,7 @@ import {
 
 // ── Check auth by hitting the /api/account/me proxy (returns 401 if not logged in)
 function useIsAuthenticated() {
-  const [isAuth, setIsAuth] = useState(null); // null = loading
+  const [isAuth, setIsAuth] = useState(null);
   useEffect(() => {
     fetch("/api/account/me")
       .then((r) => setIsAuth(r.ok))
@@ -115,8 +115,8 @@ function TaskCard({ task, onStatusChange }) {
       animate={{ opacity: 1, y: 0 }}
       className="rounded-2xl px-4 py-3 text-[13px]"
       style={{
-        background: "rgba(74,124,245,0.12)",
-        border: "1px solid rgba(74,124,245,0.25)",
+        background: "rgba(212,175,55,0.10)",
+        border: "1px solid rgba(212,175,55,0.22)",
       }}
     >
       <p className="text-white/80 font-medium mb-2">
@@ -171,10 +171,7 @@ function ToolActionCard({ action, onApprove, onExecute }) {
     setApproving(true);
     const res = await proxyPost(
       `/api/assistant/tool-actions/${action.id}/approval`,
-      {
-        approve: true,
-        reason: "User approved via chat",
-      },
+      { approve: true, reason: "User approved via chat" },
     );
     if (res.ok) {
       setApproved(true);
@@ -202,16 +199,16 @@ function ToolActionCard({ action, onApprove, onExecute }) {
       animate={{ opacity: 1, y: 0 }}
       className="rounded-2xl px-4 py-3 text-[13px]"
       style={{
-        background: "rgba(255,255,255,0.07)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.10)",
       }}
     >
       <div className="flex items-center gap-2 mb-1.5">
         <span
           className="w-5 h-5 rounded flex items-center justify-center shrink-0"
-          style={{ background: "rgba(74,124,245,0.2)" }}
+          style={{ background: "rgba(212,175,55,0.18)" }}
         >
-          <Play className="w-2.5 h-2.5" style={{ color: "#4a7cf5" }} />
+          <Play className="w-2.5 h-2.5" style={{ color: "#D4AF37" }} />
         </span>
         <p className="text-white/80 font-semibold">
           {action.name || action.toolName}
@@ -227,10 +224,9 @@ function ToolActionCard({ action, onApprove, onExecute }) {
           <button
             disabled={approving}
             onClick={handleApprove}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-black"
             style={{
-              background: "linear-gradient(135deg, #4a6cf7, #2a4fd4)",
-              color: "white",
+              background: "linear-gradient(135deg, #D4AF37, #b8962e)",
               opacity: approving ? 0.6 : 1,
             }}
           >
@@ -293,11 +289,9 @@ export default function TBMConcierge() {
   const loadLatestSession = async () => {
     const res = await proxyGet("/api/assistant/sessions");
     if (!res.ok) return;
-
     const sessions = Array.isArray(res.data)
       ? res.data
       : (res.data?.data ?? res.data?.sessions ?? []);
-
     if (sessions.length > 0) {
       const latest = sessions[0];
       const sid = latest.id ?? latest.sessionId;
@@ -309,10 +303,8 @@ export default function TBMConcierge() {
   const loadSession = async (sid) => {
     const res = await proxyGet(`/api/assistant/sessions/${sid}`);
     if (!res.ok) return;
-
     const sessionData = res.data?.data ?? res.data;
     const history = sessionData?.messages ?? sessionData?.history ?? [];
-
     if (history.length > 0) {
       const mapped = history.map((m, i) => ({
         id: m.id ?? `hist-${i}`,
@@ -340,14 +332,12 @@ export default function TBMConcierge() {
     const msgText = text || input.trim();
     if (!msgText) return;
 
-    // Block unauthenticated users
     if (!isAuth) {
       setShowAuthPrompt(true);
       return;
     }
 
     setInput("");
-
     setMessages((prev) => [
       ...prev,
       {
@@ -382,7 +372,6 @@ export default function TBMConcierge() {
     }
 
     const d = res.data?.data ?? res.data;
-
     console.log("[TBM Concierge] Parsed data:", d);
 
     if (d?.sessionId && !sessionId) setSessionId(d.sessionId);
@@ -445,7 +434,7 @@ export default function TBMConcierge() {
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 z-40"
             style={{
-              background: "rgba(255,255,255,0.55)",
+              background: "rgba(0,0,0,0.60)",
               backdropFilter: "blur(6px)",
               WebkitBackdropFilter: "blur(6px)",
             }}
@@ -468,8 +457,8 @@ export default function TBMConcierge() {
               className="flex flex-col rounded-3xl overflow-hidden shadow-2xl"
               style={{
                 width: "360px",
-                background:
-                  "linear-gradient(180deg, #1e2745 0%, #1a2340 30%, #18213d 100%)",
+                background: "#0d0b08",
+                border: "1px solid rgba(255,255,255,0.08)",
                 maxHeight: "600px",
               }}
             >
@@ -477,24 +466,27 @@ export default function TBMConcierge() {
               <div
                 className="flex items-center gap-3 px-5 py-4 shrink-0"
                 style={{
-                  background:
-                    "linear-gradient(180deg, #1c2540 0%, #1a2340 100%)",
-                  borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.03)",
+                  borderBottom: "1px solid rgba(255,255,255,0.08)",
                 }}
               >
                 <div className="relative shrink-0">
                   <div
                     className="w-11 h-11 rounded-full flex items-center justify-center"
                     style={{
-                      background: "rgba(255,255,255,0.10)",
-                      border: "1px solid rgba(255,255,255,0.12)",
+                      background:
+                        "linear-gradient(135deg, rgba(212,175,55,0.25), rgba(184,150,46,0.15))",
+                      border: "1px solid rgba(212,175,55,0.30)",
                     }}
                   >
-                    <Sparkles className="w-5 h-5 text-white" />
+                    <Sparkles
+                      className="w-5 h-5"
+                      style={{ color: "#D4AF37" }}
+                    />
                   </div>
                   <span
                     className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400"
-                    style={{ border: "2px solid #1a2340" }}
+                    style={{ border: "2px solid #0d0b08" }}
                   />
                 </div>
 
@@ -512,9 +504,9 @@ export default function TBMConcierge() {
                     onClick={() => setShowTasks((p) => !p)}
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold transition-all"
                     style={{
-                      background: "rgba(74,124,245,0.2)",
-                      border: "1px solid rgba(74,124,245,0.3)",
-                      color: "#7aa3f8",
+                      background: "rgba(212,175,55,0.15)",
+                      border: "1px solid rgba(212,175,55,0.28)",
+                      color: "#D4AF37",
                     }}
                   >
                     {activeTasks.length} task
@@ -550,7 +542,7 @@ export default function TBMConcierge() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden shrink-0"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+                    style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
                   >
                     <div className="px-4 py-3 space-y-2">
                       <p className="text-white/40 text-[9px] font-bold tracking-widest mb-2">
@@ -588,22 +580,15 @@ export default function TBMConcierge() {
                           <div
                             className="w-9 h-9 rounded-full shrink-0 flex items-center justify-center mt-0.5"
                             style={{
-                              background: "rgba(255,255,255,0.10)",
-                              border: "1px solid rgba(255,255,255,0.08)",
+                              background:
+                                "linear-gradient(135deg, rgba(212,175,55,0.20), rgba(184,150,46,0.12))",
+                              border: "1px solid rgba(212,175,55,0.25)",
                             }}
                           >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                            >
-                              <path
-                                d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z"
-                                fill="white"
-                                fillOpacity="0.85"
-                              />
-                            </svg>
+                            <Sparkles
+                              className="w-4 h-4"
+                              style={{ color: "#D4AF37" }}
+                            />
                           </div>
                         )}
 
@@ -621,15 +606,17 @@ export default function TBMConcierge() {
                                 ? {
                                     background: msg.isError
                                       ? "rgba(239,68,68,0.12)"
-                                      : "rgba(255,255,255,0.09)",
+                                      : "rgba(255,255,255,0.07)",
                                     borderRadius: "4px 18px 18px 18px",
                                     maxWidth: "85%",
                                     border: msg.isError
                                       ? "1px solid rgba(239,68,68,0.25)"
-                                      : "none",
+                                      : "1px solid rgba(255,255,255,0.08)",
                                   }
                                 : {
-                                    background: "rgba(255,255,255,0.16)",
+                                    background:
+                                      "linear-gradient(135deg, rgba(212,175,55,0.18), rgba(184,150,46,0.12))",
+                                    border: "1px solid rgba(212,175,55,0.22)",
                                     borderRadius: "18px 4px 18px 18px",
                                   }
                             }
@@ -654,12 +641,12 @@ export default function TBMConcierge() {
                                 key={action.id}
                                 whileTap={{ scale: 0.97 }}
                                 onClick={() => handleSend(action.label)}
-                                className="flex items-center gap-2.5 text-[13.5px] font-medium text-left w-fit"
-                                style={{ color: "#4a7cf5" }}
+                                className="flex items-center gap-2.5 text-[13.5px] font-semibold text-left w-fit"
+                                style={{ color: "#D4AF37" }}
                               >
                                 <Eye
                                   className="w-4 h-4 shrink-0"
-                                  style={{ color: "#4a7cf5" }}
+                                  style={{ color: "#D4AF37" }}
                                 />
                                 {action.label}
                               </motion.button>
@@ -670,9 +657,9 @@ export default function TBMConcierge() {
                                 onClick={() => handleSend(action.label)}
                                 className="flex items-center gap-2.5 px-4 py-2 rounded-full text-[13px] font-medium text-left w-fit transition-all"
                                 style={{
-                                  background: "rgba(255,255,255,0.08)",
+                                  background: "rgba(255,255,255,0.06)",
                                   border: "1px solid rgba(255,255,255,0.10)",
-                                  color: "rgba(255,255,255,0.60)",
+                                  color: "rgba(255,255,255,0.55)",
                                 }}
                               >
                                 <span
@@ -725,9 +712,9 @@ export default function TBMConcierge() {
                               whileTap={{ scale: 0.96 }}
                               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all"
                               style={{
-                                background: "rgba(74,108,247,0.15)",
-                                border: "1px solid rgba(74,108,247,0.30)",
-                                color: "#7aa3f8",
+                                background: "rgba(212,175,55,0.12)",
+                                border: "1px solid rgba(212,175,55,0.25)",
+                                color: "#D4AF37",
                                 textDecoration: "none",
                               }}
                             >
@@ -753,13 +740,15 @@ export default function TBMConcierge() {
                         className="flex items-center gap-1 px-4 py-3"
                         style={{
                           borderRadius: "4px 18px 18px 18px",
-                          background: "rgba(255,255,255,0.09)",
+                          background: "rgba(255,255,255,0.07)",
+                          border: "1px solid rgba(255,255,255,0.08)",
                         }}
                       >
                         {[0, 1, 2].map((i) => (
                           <motion.span
                             key={i}
-                            className="w-1.5 h-1.5 rounded-full bg-white/50"
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ backgroundColor: "rgba(212,175,55,0.6)" }}
                             animate={{ y: [0, -4, 0] }}
                             transition={{
                               duration: 0.55,
@@ -779,9 +768,9 @@ export default function TBMConcierge() {
               {/* Input */}
               <div
                 className="px-4 pb-5 pt-3 shrink-0"
-                style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+                style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
               >
-                {/* Auth prompt — shown when unauthenticated user tries to send */}
+                {/* Auth prompt */}
                 <AnimatePresence>
                   {showAuthPrompt && (
                     <motion.div
@@ -791,18 +780,18 @@ export default function TBMConcierge() {
                       transition={{ duration: 0.22 }}
                       className="mb-3 rounded-2xl px-4 py-3.5 flex flex-col gap-3"
                       style={{
-                        background: "rgba(74,108,247,0.13)",
-                        border: "1px solid rgba(74,108,247,0.28)",
+                        background: "rgba(212,175,55,0.10)",
+                        border: "1px solid rgba(212,175,55,0.25)",
                       }}
                     >
                       <div className="flex items-start gap-2.5">
                         <div
                           className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center mt-0.5"
-                          style={{ background: "rgba(74,108,247,0.25)" }}
+                          style={{ background: "rgba(212,175,55,0.20)" }}
                         >
                           <LogIn
                             className="w-3.5 h-3.5"
-                            style={{ color: "#7aa3f8" }}
+                            style={{ color: "#D4AF37" }}
                           />
                         </div>
                         <div>
@@ -819,11 +808,10 @@ export default function TBMConcierge() {
                         <motion.button
                           whileTap={{ scale: 0.96 }}
                           onClick={() => router.push("/sign-in")}
-                          className="flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold"
+                          className="flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold text-black"
                           style={{
                             background:
-                              "linear-gradient(135deg, #4a6cf7, #2a4fd4)",
-                            color: "white",
+                              "linear-gradient(135deg, #D4AF37, #b8962e)",
                           }}
                         >
                           <LogIn className="w-3.5 h-3.5" />
@@ -844,7 +832,7 @@ export default function TBMConcierge() {
                 <div
                   className="flex items-center gap-2 rounded-full px-4 py-2.5"
                   style={{
-                    background: "rgba(255,255,255,0.07)",
+                    background: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(255,255,255,0.10)",
                   }}
                 >
@@ -858,7 +846,7 @@ export default function TBMConcierge() {
                     }
                     placeholder="Type your question here..."
                     disabled={isTyping}
-                    className="flex-1 bg-transparent text-white text-[13px] placeholder-white/30 outline-none disabled:opacity-50"
+                    className="flex-1 bg-transparent text-white text-[13px] placeholder-white/25 outline-none disabled:opacity-50"
                   />
                   <motion.button
                     whileTap={{ scale: 0.88 }}
@@ -868,13 +856,19 @@ export default function TBMConcierge() {
                     style={{
                       background:
                         input.trim() && !isTyping
-                          ? "linear-gradient(135deg, #4a6cf7, #2a4fd4)"
-                          : "rgba(74,108,247,0.4)",
+                          ? "linear-gradient(135deg, #D4AF37, #b8962e)"
+                          : "rgba(212,175,55,0.25)",
                     }}
                   >
                     <Send
-                      className="w-4 h-4 text-white"
-                      style={{ transform: "translateX(1px)" }}
+                      className="w-4 h-4"
+                      style={{
+                        color:
+                          input.trim() && !isTyping
+                            ? "#000"
+                            : "rgba(212,175,55,0.6)",
+                        transform: "translateX(1px)",
+                      }}
                     />
                   </motion.button>
                 </div>
@@ -896,14 +890,21 @@ export default function TBMConcierge() {
                 exit={{ opacity: 0, x: 12 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-2 bg-white rounded-full px-4 py-2.5 shadow-lg hover:shadow-xl transition-shadow"
+                className="flex items-center gap-2 rounded-full px-4 py-2.5 shadow-lg hover:shadow-xl transition-shadow"
+                style={{
+                  background: "#0d0b08",
+                  border: "1px solid rgba(212,175,55,0.30)",
+                }}
               >
                 <span
                   className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"
                   style={{ boxShadow: "0 0 0 3px rgba(52,211,153,0.25)" }}
                 />
-                <span className="text-[#1a2340] text-[12.5px] font-semibold whitespace-nowrap">
-                  Need help? <span className="font-bold">Ask Ziora</span>
+                <span className="text-white/70 text-[12.5px] font-semibold whitespace-nowrap">
+                  Feeling lazy?{" "}
+                  <span className="font-bold" style={{ color: "#D4AF37" }}>
+                    Task Ziora
+                  </span>
                 </span>
               </motion.button>
             )}
@@ -914,7 +915,7 @@ export default function TBMConcierge() {
             whileHover={{ scale: 1.06 }}
             onClick={() => setIsOpen((p) => !p)}
             className="relative w-14 h-14 rounded-full shadow-2xl flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #2a3560, #1a2340)" }}
+            style={{ background: "linear-gradient(135deg, #D4AF37, #b8962e)" }}
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
@@ -925,7 +926,7 @@ export default function TBMConcierge() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.18 }}
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5 text-black" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -935,7 +936,7 @@ export default function TBMConcierge() {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.18 }}
                 >
-                  <Sparkles className="w-5 h-5 text-white" />
+                  <Sparkles className="w-5 h-5 text-black" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -945,7 +946,7 @@ export default function TBMConcierge() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400"
-                style={{ border: "2.5px solid white" }}
+                style={{ border: "2.5px solid #0d0b08" }}
               />
             )}
           </motion.button>

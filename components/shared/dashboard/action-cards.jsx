@@ -10,19 +10,19 @@ const cards = [
     icon: ShoppingBag,
     title: "Shop Materials",
     description: "Browse flooring, tiles, and fixtures.",
-    href: "/shop",
+    href: "/materials",
   },
   {
     icon: Wand2,
     title: "Design with Ziora",
     description: "See your room with new styles instantly.",
-    href: "/visualizer",
+    href: "/dashboard/ai-designs",
   },
   {
     icon: Calendar,
     title: "Book Consultation",
     description: "Talk to a pro designer today.",
-    href: "/consultation",
+    href: "/contact",
   },
 ];
 
