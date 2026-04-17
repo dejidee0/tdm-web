@@ -25,7 +25,7 @@ export default function CheckoutSteps({ currentStep }) {
             {/* Step Circle */}
             <div className="flex flex-col items-center">
               <div
-                className="w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all"
+                className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 transition-all"
                 style={
                   currentStep >= step.number
                     ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", borderColor: "#D4AF37" }
@@ -33,10 +33,10 @@ export default function CheckoutSteps({ currentStep }) {
                 }
               >
                 {currentStep > step.number ? (
-                  <Check className="w-5 h-5 text-black" />
+                  <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-black" />
                 ) : (
                   <span
-                    className={`text-[16px] font-semibold ${
+                    className={`text-[12px] sm:text-[16px] font-semibold ${
                       currentStep >= step.number ? "text-black" : "text-white/30"
                     }`}
                   >
@@ -45,7 +45,7 @@ export default function CheckoutSteps({ currentStep }) {
                 )}
               </div>
               <span
-                className={`text-[13px] font-medium mt-2 ${
+                className={`text-[11px] sm:text-[13px] font-medium mt-1.5 sm:mt-2 ${
                   currentStep >= step.number ? "text-white" : "text-white/30"
                 }`}
               >
@@ -56,7 +56,7 @@ export default function CheckoutSteps({ currentStep }) {
             {/* Connecting Line */}
             {index < steps.length - 1 && (
               <div
-                className="flex-1 h-0.5 mx-4 transition-all"
+                className="flex-1 h-0.5 mx-2 sm:mx-4 mb-5 sm:mb-6 transition-all"
                 style={{
                   background: currentStep > step.number
                     ? "linear-gradient(90deg, #D4AF37, #b8962e)"

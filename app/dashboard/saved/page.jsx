@@ -55,7 +55,7 @@ export default function SavedItemsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 pt-12 md:pt-0 md:w-[62vw] w-full">
+      <div className="space-y-6 pt-12 md:pt-0 w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

@@ -1,4 +1,4 @@
-// app/dashboard/designs/page.jsx
+// app/dashboard/ai-designs/page.jsx
 "use client";
 
 import { motion } from "framer-motion";

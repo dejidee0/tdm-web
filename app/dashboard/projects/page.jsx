@@ -17,12 +17,12 @@ export default function ProjectDetailPage({ params }) {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 pt-12 md:pt-0 md:w-[60vw] w-full">
+      <div className="space-y-6 pt-12 md:pt-0 w-full">
         {/* Page Header */}
         <ProjectHeader project={project} isLoading={isLoading} />
 
         {/* Two-column grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_260px] lg:grid-cols-[1fr_300px] gap-6 items-start">
           {/* Left column */}
           <div className="space-y-6">
             <ProjectMilestones

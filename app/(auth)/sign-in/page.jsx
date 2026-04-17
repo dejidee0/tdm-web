@@ -25,7 +25,8 @@ function SignInForm() {
       setSubmitError("");
       login(values, {
         onError: (error) => {
-          setSubmitError(error.message);
+          const raw = error.message || "Something went wrong. Please try again.";
+          setSubmitError(raw.replace(/^\[\d+\]\s*/, ""));
           setSubmitting(false);
         },
         onSettled: () => {

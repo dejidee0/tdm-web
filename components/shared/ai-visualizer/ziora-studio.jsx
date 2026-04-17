@@ -78,6 +78,8 @@ export default function ZioraStudio() {
 
   const {
     isLuxury,
+    isEconomy,
+    isPremium,
     quotaExhausted,
     generationsUsed,
     generationsAllowed,
@@ -213,24 +215,38 @@ export default function ZioraStudio() {
             </p>
           </div>
 
-          {generationsAllowed !== null ? (
-            <div
-              className="shrink-0 px-4 py-2 rounded-xl text-sm font-semibold"
-              style={quotaExhausted
-                ? { background: "rgba(251,146,60,0.12)", color: "#fb923c" }
-                : { background: "rgba(212,175,55,0.08)", color: "#D4AF37" }
-              }
-            >
-              {generationsUsed} / {generationsAllowed} generations used
-            </div>
-          ) : (
-            <div
-              className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold"
-              style={{ background: "rgba(168,85,247,0.12)", color: "#c084fc" }}
-            >
-              <Crown className="w-3.5 h-3.5" /> Unlimited generations
-            </div>
-          )}
+          <div className="shrink-0 flex flex-col items-end gap-2">
+            {generationsAllowed !== null ? (
+              <div
+                className="px-4 py-2 text-sm font-semibold"
+                style={quotaExhausted
+                  ? { background: "rgba(251,146,60,0.12)", color: "#fb923c" }
+                  : { background: "rgba(212,175,55,0.08)", color: "#D4AF37" }
+                }
+              >
+                {generationsUsed} / {generationsAllowed} generations used
+              </div>
+            ) : (
+              <div
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold"
+                style={{ background: "rgba(168,85,247,0.12)", color: "#c084fc" }}
+              >
+                <Crown className="w-3.5 h-3.5" /> Unlimited generations
+              </div>
+            )}
+
+            {/* Upgrade nudge — only for Economy and Premium users */}
+            {(isEconomy || isPremium) && (
+              <a
+                href="#pricing"
+                className="flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-80 font-manrope"
+                style={{ color: "#D4AF37" }}
+              >
+                <Crown className="w-3 h-3" />
+                {isEconomy ? "Upgrade for more generations" : "Upgrade to Luxury for unlimited"}
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Studio card */}

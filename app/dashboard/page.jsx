@@ -12,13 +12,13 @@ import { motion } from "framer-motion";
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6 md:space-y-8 md:w-[60vw] w-full">
+      <div className="space-y-6 md:space-y-8 w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="pt-12 md:pt-0"
+          className="pt-12 md:pt-0 lg:pt-0"
         >
           <h1 className="text-[28px] md:text-3xl font-semibold text-white leading-tight">
             Dashboard
@@ -32,7 +32,7 @@ export default function DashboardPage() {
         <ActionCards />
 
         {/* Three Column Section - Stacks on mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           <RecentOrder />
           <LatestDesign />
           <Consultations />

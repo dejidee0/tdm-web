@@ -28,7 +28,7 @@ export default function RecentOrder() {
     );
   }
 
-  if (isError || !order) {
+  if (isError || !order || order.hasOrder === false) {
     return (
       <div className={cardClass} style={cardStyle}>
         <div className="flex items-center gap-2 mb-6">

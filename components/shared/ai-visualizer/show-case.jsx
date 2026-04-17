@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Play } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const KITCHEN_IMAGE =
   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&h=600&fit=crop";
@@ -20,7 +21,7 @@ export default function AIMultiModeShowcase() {
   });
 
   return (
-    <section className="bg-black py-16 px-4 sm:px-6 font-manrope">
+    <section id="showcase" className="bg-black py-16 px-4 sm:px-6 font-manrope">
       {/* Header */}
       <motion.div {...fadeUp(0)} className="text-center mb-12">
         <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2 tracking-tight">
@@ -73,15 +74,17 @@ export default function AIMultiModeShowcase() {
           </div>
 
           {/* CTA button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full rounded-xl py-4 flex items-center justify-center gap-2.5 font-semibold text-sm sm:text-base text-black hover:opacity-90 transition-opacity"
-            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-          >
-            <Sparkles className="w-4 h-4" />
-            Try Custom Prompt
-          </motion.button>
+          <Link href="/dashboard/ai-designs" className="block">
+            <motion.span
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full rounded-xl py-4 flex items-center justify-center gap-2.5 font-semibold text-sm sm:text-base text-black hover:opacity-90 transition-opacity cursor-pointer"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            >
+              <Sparkles className="w-4 h-4" />
+              Try Custom Prompt
+            </motion.span>
+          </Link>
         </motion.div>
 
         {/* ── TOP RIGHT — AI Generated Preview image ── */}

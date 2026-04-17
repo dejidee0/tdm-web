@@ -31,10 +31,10 @@ export default function StatsStrip() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {STATS.map((stat, i) => (
             <Reveal key={stat.label} direction="up" delay={i * 100}>
-              <div className="bg-[#111111] border border-white/8 rounded-2xl px-8 py-8 sm:py-10 flex flex-col gap-3">
+              <div className="bg-[#111111] border border-white/8 rounded-2xl px-8 py-8 sm:py-10 flex flex-col gap-3 min-w-0 overflow-hidden">
                 {/* Value */}
                 <span
-                  className={`font-poppins font-bold text-4xl sm:text-5xl leading-none tracking-tight ${stat.valueColor} ${stat.italic ? "italic" : ""}`}
+                  className={`font-poppins font-bold text-4xl leading-none tracking-tight ${stat.valueColor} ${stat.italic ? "italic" : ""}`}
                 >
                   {stat.value}
                 </span>

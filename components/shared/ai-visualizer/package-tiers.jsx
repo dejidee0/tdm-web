@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -19,7 +19,9 @@ import { usePricing } from "@/hooks/use-pricing";
 import { useCurrentUser } from "@/hooks/use-auth";
 import {
   useSubscriptionState,
+  useActivateEconomy,
   useSubscribePaid,
+  useCancelSubscription,
   useRenewSubscription,
 } from "@/hooks/use-subscription";
 import CancelModal from "@/components/shared/dashboard/designs/cancel-modal";
@@ -236,6 +238,103 @@ const TIERS = [
   },
 ];
 
+// ── Switch plan confirmation modal ────────────────────────────────────────
+
+function SwitchPlanModal({ isOpen, fromTier, toTier, accessUntil, onConfirm, onClose, isBusy, error }) {
+  const accessDate = accessUntil
+    ? new Date(accessUntil).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })
+    : null;
+
+  const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            key="sw-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 z-50"
+            onClick={() => !isBusy && onClose()}
+          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              key="sw-modal"
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-md overflow-hidden font-manrope border border-white/10"
+              style={{ background: "#0d0b08", boxShadow: "0 24px 64px rgba(0,0,0,0.6)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="px-6 pt-6 pb-2 border-b border-white/08">
+                <h2 className="text-lg font-bold text-white">Switch to {capitalize(toTier)}?</h2>
+                <p className="text-white/40 text-sm mt-1 mb-4 font-manrope">
+                  You currently have an active <span className="text-white/70 font-semibold">{capitalize(fromTier)}</span> plan.
+                </p>
+              </div>
+
+              <div className="px-6 py-5 space-y-4">
+                {/* What this means */}
+                <div
+                  className="p-4 border text-sm space-y-2 font-manrope"
+                  style={{ background: "rgba(245,158,11,0.06)", borderColor: "rgba(245,158,11,0.20)" }}
+                >
+                  <p className="font-semibold text-amber-400">What happens when you switch:</p>
+                  <ul className="space-y-1.5 text-white/60">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      Your <span className="text-white/80 font-medium">{capitalize(fromTier)}</span> plan will be canceled immediately.
+                    </li>
+                    {accessDate && (
+                      <li className="flex items-start gap-2">
+                        <span className="text-amber-400 mt-0.5">•</span>
+                        You had access until <span className="text-white/80 font-medium">{accessDate}</span>. No refund is issued for unused time.
+                      </li>
+                    )}
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      You&apos;ll be taken to payment to activate <span className="text-white/80 font-medium">{capitalize(toTier)}</span>.
+                    </li>
+                  </ul>
+                </div>
+
+                {error && (
+                  <p className="text-sm text-red-400 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" /> {error}
+                  </p>
+                )}
+
+                <div className="flex gap-3 pt-1">
+                  <button
+                    onClick={onClose}
+                    disabled={isBusy}
+                    className="flex-1 py-3 text-sm font-semibold text-white/50 border border-white/10 hover:bg-white/05 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Keep My Plan
+                  </button>
+                  <button
+                    onClick={onConfirm}
+                    disabled={isBusy}
+                    className="flex-1 py-3 text-sm font-semibold text-black flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                  >
+                    {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {isBusy ? "Processing…" : `Cancel & Switch to ${capitalize(toTier)}`}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────
 
 export default function PackageTiers({ id, onSubscribed }) {
@@ -243,10 +342,15 @@ export default function PackageTiers({ id, onSubscribed }) {
   const [pendingTier, setPendingTier] = useState(null);
   const [ctaError, setCtaError] = useState(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [switchTarget, setSwitchTarget] = useState(null); // tier id to switch to
+  const [switchError, setSwitchError] = useState(null);
+  const [promoInput, setPromoInput] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState(null);
+  const [promoStatus, setPromoStatus] = useState(null); // "applied" | "invalid" | null
 
   const router = useRouter();
   const { data: user } = useCurrentUser();
-  const { data: pricingData, isLoading: priceLoading, isError: priceError } = usePricing();
+  const { data: pricingData, isLoading: priceLoading, isError: priceError } = usePricing(appliedPromo);
 
   const {
     sub,
@@ -261,7 +365,9 @@ export default function PackageTiers({ id, onSubscribed }) {
     isLoading: subLoading,
   } = useSubscriptionState();
 
+  const activateEconomy = useActivateEconomy();
   const subscribePaid = useSubscribePaid();
+  const cancelSub = useCancelSubscription();
   const renew = useRenewSubscription();
 
   const pricing = pricingData
@@ -276,6 +382,26 @@ export default function PackageTiers({ id, onSubscribed }) {
   const TIER_ENUM = { economy: 0, premium: 1, luxury: 2 };
   const CYCLE_ENUM = { monthly: 0, yearly: 1 };
 
+  // Detect whether the applied promo code returned a valid discount
+  useEffect(() => {
+    if (!appliedPromo) return;
+    if (priceLoading) return;
+    setPromoStatus(pricingData?.activeDiscount ? "applied" : "invalid");
+  }, [appliedPromo, pricingData, priceLoading]);
+
+  const handleApplyPromo = () => {
+    const code = promoInput.trim();
+    if (!code) return;
+    setPromoStatus(null);
+    setAppliedPromo(code);
+  };
+
+  const handleRemovePromo = () => {
+    setPromoInput("");
+    setAppliedPromo(null);
+    setPromoStatus(null);
+  };
+
   const handleSubscribe = async (tierId) => {
     setCtaError(null);
     if (!user) {
@@ -284,11 +410,18 @@ export default function PackageTiers({ id, onSubscribed }) {
     }
     setPendingTier(tierId);
     try {
-      await subscribePaid.mutateAsync({
-        tier: TIER_ENUM[tierId],
-        cycle: CYCLE_ENUM[billing],
-        callbackUrl: `${window.location.origin}/ai-visualizer?subscription=success`,
-      });
+      if (tierId === "economy") {
+        await activateEconomy.mutateAsync({
+          planId: pricing?.economy?.monthlyPlanId ?? null,
+        });
+      } else {
+        await subscribePaid.mutateAsync({
+          tier: TIER_ENUM[tierId],
+          cycle: CYCLE_ENUM[billing],
+          callbackUrl: `${window.location.origin}/ai-visualizer?subscription=success`,
+          ...(appliedPromo && { promoCode: appliedPromo }),
+        });
+      }
       onSubscribed?.(tierId);
     } catch (err) {
       setCtaError(err.message || "Something went wrong. Please try again.");
@@ -306,7 +439,26 @@ export default function PackageTiers({ id, onSubscribed }) {
     }
   };
 
-  const isSubmitting = subscribePaid.isPending || renew.isPending;
+  const handleConfirmSwitch = async () => {
+    if (!switchTarget) return;
+    setSwitchError(null);
+    try {
+      await cancelSub.mutateAsync({});
+      await subscribePaid.mutateAsync({
+        tier: TIER_ENUM[switchTarget],
+        cycle: CYCLE_ENUM[billing],
+        callbackUrl: `${window.location.origin}/ai-visualizer?subscription=success`,
+        ...(appliedPromo && { promoCode: appliedPromo }),
+      });
+      setSwitchTarget(null);
+      onSubscribed?.(switchTarget);
+    } catch (err) {
+      setSwitchError(err.message || "Something went wrong. Please try again.");
+    }
+  };
+
+  const isSwitching = cancelSub.isPending || subscribePaid.isPending;
+  const isSubmitting = activateEconomy.isPending || subscribePaid.isPending || cancelSub.isPending || renew.isPending;
 
   return (
     <>
@@ -374,6 +526,62 @@ export default function PackageTiers({ id, onSubscribed }) {
                 <p className="ml-4 text-xs text-white/30">
                   Billing cycle is locked to your current plan.
                 </p>
+              )}
+            </motion.div>
+          )}
+
+          {/* ── Promo code ───────────────────────────────────────── */}
+          {!(isActive && currentTier && currentTier !== "economy") && (
+            <motion.div
+              className="mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+            >
+              {!appliedPromo ? (
+                <div className="flex items-center gap-2 max-w-xs">
+                  <input
+                    type="text"
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleApplyPromo()}
+                    placeholder="Promo code"
+                    className="flex-1 px-3 py-2 text-sm bg-white/05 border border-white/10 text-white placeholder-white/30 outline-none focus:border-gold/40 font-manrope"
+                  />
+                  <button
+                    onClick={handleApplyPromo}
+                    disabled={!promoInput.trim() || priceLoading}
+                    className="px-4 py-2 text-sm font-semibold font-manrope text-black disabled:opacity-40 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
+                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                  >
+                    Apply
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  {promoStatus === "applied" && (
+                    <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 font-manrope">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                      <span className="font-mono uppercase">{appliedPromo}</span> applied
+                    </span>
+                  )}
+                  {promoStatus === "invalid" && (
+                    <span className="flex items-center gap-1.5 text-xs font-semibold text-red-400 font-manrope">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span className="font-mono uppercase">{appliedPromo}</span> — not valid or not applicable
+                    </span>
+                  )}
+                  {promoStatus === null && (
+                    <span className="text-xs text-white/40 font-manrope">Checking…</span>
+                  )}
+                  <button
+                    onClick={handleRemovePromo}
+                    className="text-xs text-white/40 hover:text-white/70 underline font-manrope transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
               )}
             </motion.div>
           )}
@@ -613,23 +821,17 @@ export default function PackageTiers({ id, onSubscribed }) {
                       </button>
                     )}
 
-                    {/* HAS OTHER ACTIVE plan — show switch hint */}
+                    {/* HAS OTHER ACTIVE plan — open switch confirmation modal */}
                     {hasOtherActive && (
-                      <div className="space-y-1.5">
-                        <button
-                          onClick={() => handleSubscribe(tier.id)}
-                          disabled={isSubmitting || priceLoading || !!priceError}
-                          className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
-                          style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-                        >
-                          {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-                          {isBusy ? "Processing…" : `Switch to ${tier.label}`}
-                          {!isBusy && <ChevronRight className="w-4 h-4" />}
-                        </button>
-                        <p className={`text-[11px] text-center ${textMuted} font-manrope`}>
-                          Your current plan will be canceled first.
-                        </p>
-                      </div>
+                      <button
+                        onClick={() => { setSwitchError(null); setSwitchTarget(tier.id); }}
+                        disabled={isSubmitting || priceLoading || !!priceError}
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
+                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                      >
+                        {`Switch to ${tier.label}`}
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
                     )}
 
                     {/* NO subscription — normal CTA */}
@@ -669,11 +871,23 @@ export default function PackageTiers({ id, onSubscribed }) {
         </div>
       </section>
 
-      {/* Cancel modal — shared from dashboard */}
+      {/* Cancel modal — for canceling without switching */}
       <CancelModal
         isOpen={showCancelModal}
         onClose={() => setShowCancelModal(false)}
         accessUntil={sub?.endDate}
+      />
+
+      {/* Switch plan modal — cancel current then subscribe to new */}
+      <SwitchPlanModal
+        isOpen={!!switchTarget}
+        fromTier={currentTier}
+        toTier={switchTarget}
+        accessUntil={sub?.endDate}
+        onConfirm={handleConfirmSwitch}
+        onClose={() => { if (!isSwitching) { setSwitchTarget(null); setSwitchError(null); } }}
+        isBusy={isSwitching}
+        error={switchError}
       />
     </>
   );
