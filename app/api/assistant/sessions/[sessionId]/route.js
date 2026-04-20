@@ -23,3 +23,15 @@ export async function GET(request, { params }) {
     status: res.status,
   });
 }
+
+export async function DELETE(request, { params }) {
+  const { sessionId } = await params;
+  const res = await fetch(`${BASE}/ai/assistant/sessions/${sessionId}`, {
+    method: "DELETE",
+    headers: await getAuthHeaders(),
+  });
+  const text = await res.text();
+  return NextResponse.json(text ? JSON.parse(text) : {}, {
+    status: res.status,
+  });
+}
