@@ -122,31 +122,42 @@ body {
   animation-play-state: paused;
 }
 
-/* Custom scrollbar styles for tables */
+/* ============================================================
+   GLOBAL SCROLLBAR — dark theme with gold accent
+   ============================================================ */
 
-/* For Webkit browsers (Chrome, Safari, Edge) */
-.table-scroll::-webkit-scrollbar {
-  height: 8px;
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.table-scroll::-webkit-scrollbar-track {
-  background: #f8fafc;
-  border-radius: 4px;
+::-webkit-scrollbar-track {
+  background: #0d0b08;
 }
 
-.table-scroll::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.30);
+  border-radius: 9999px;
 }
 
-.table-scroll::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.60);
 }
 
-/* For Firefox */
-.table-scroll {
+::-webkit-scrollbar-corner {
+  background: #0d0b08;
+}
+
+/* Firefox */
+* {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f8fafc;
+  scrollbar-color: rgba(212, 175, 55, 0.30) #0d0b08;
+}
+
+/* Table / horizontal scroll container utility */
+.table-scroll::-webkit-scrollbar {
+  height: 6px;
 }
 
 /* Add scroll shadow indicators */
@@ -160,7 +171,7 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 20px;
+  width: 24px;
   pointer-events: none;
   z-index: 10;
   transition: opacity 0.3s;
@@ -168,20 +179,12 @@ body {
 
 .scroll-container::before {
   left: 0;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to right, #0d0b08, transparent);
 }
 
 .scroll-container::after {
   right: 0;
-  background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to left, #0d0b08, transparent);
 }
 
 /* Hide shadows when not scrollable */

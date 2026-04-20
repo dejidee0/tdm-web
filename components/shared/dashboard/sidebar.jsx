@@ -10,6 +10,7 @@ import {
   Heart,
   User,
   Sparkles,
+  FolderOpen,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,11 +18,12 @@ import { usePathname } from "next/navigation";
 import { useDashboardUser } from "@/hooks/use-user-dashboard";
 
 const navItems = [
-  { icon: LayoutGrid, label: "Overview", href: "/dashboard" },
-  { icon: Package, label: "Orders", href: "/dashboard/orders" },
-  { icon: Layers, label: "AI Designs", href: "/dashboard/ai-designs" },
-  { icon: Heart, label: "Saved Items", href: "/dashboard/saved" },
-  { icon: User, label: "Profile", href: "/dashboard/profile" },
+  { icon: LayoutGrid, label: "Overview",   href: "/dashboard" },
+  { icon: Package,    label: "Orders",     href: "/dashboard/orders" },
+  { icon: Layers,     label: "AI Designs", href: "/dashboard/ai-designs" },
+  { icon: FolderOpen, label: "Projects",   href: "/dashboard/projects" },
+  { icon: Heart,      label: "Saved Items",href: "/dashboard/saved" },
+  { icon: User,       label: "Profile",    href: "/dashboard/profile" },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -92,7 +94,9 @@ export default function Sidebar({ isOpen, onClose }) {
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = item.href === "/dashboard"
+            ? pathname === "/dashboard"
+            : pathname === item.href || pathname.startsWith(item.href + "/");
 
           return (
             <Link

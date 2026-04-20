@@ -30,7 +30,7 @@ export default function ProjectMilestones({ milestones, isLoading, projectId }) 
           <h2 className="text-[15px] font-bold text-white">Project Milestones</h2>
         </div>
         <button
-          onClick={() => router.push("/dashboard/projects/timeline")}
+          onClick={() => router.push(`/dashboard/projects/${projectId}/timeline`)}
           className="text-[13px] font-semibold text-[#D4AF37] hover:text-[#D4AF37]/70 transition-colors"
         >
           View

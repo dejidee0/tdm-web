@@ -66,7 +66,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "Materials", href: "/materials" },
     { name: "AI Visualizer", href: "/ai-visualizer" },
-    { name: "Project", href: "/project" },
+    { name: "Past Projects", href: "/project" },
+    { name: "AI Gallery", href: "/ai-gallery" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
