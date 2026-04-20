@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Heart, MoreVertical, Download, Share2, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   useToggleFavorite,
   useDeleteDesign,
@@ -12,13 +13,62 @@ import {
   useShareDesign,
 } from "@/hooks/use-designs";
 
+// Dropdown rendered via portal so it escapes overflow/stacking constraints
+function DropdownMenu({ anchorRef, onClose, children }) {
+  const [pos, setPos] = useState(null);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!anchorRef.current) return;
+    const rect = anchorRef.current.getBoundingClientRect();
+    setPos({
+      top: rect.bottom + 8,
+      right: window.innerWidth - rect.right,
+    });
+  }, [anchorRef]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target) &&
+          anchorRef.current && !anchorRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [anchorRef, onClose]);
+
+  if (!pos) return null;
+
+  return createPortal(
+    <motion.div
+      ref={menuRef}
+      initial={{ opacity: 0, scale: 0.95, y: -5 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -5 }}
+      style={{
+        position: "fixed",
+        top: pos.top,
+        right: pos.right,
+        background: "#0d0b08",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+        zIndex: 9999,
+      }}
+      className="w-48 rounded-lg border border-white/10 py-1"
+    >
+      {children}
+    </motion.div>,
+    document.body,
+  );
+}
+
 export default function DesignCard({ design, index, isList = false }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const menuRef = useRef(null);
+  const menuBtnRef = useRef(null);
 
-  const imageUrl = design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
-  const title = design.projectName ?? design.name ?? design.title ?? "Untitled";
+  const imageUrl = design.url ?? design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
+  const title = design.projectName ?? design.name ?? design.title ?? design.prompt ?? "Untitled";
   const room = design.roomType ?? design.room ?? "";
   const isFavorite = design.isFavorited ?? design.isFavorite ?? false;
   const isHighRes = design.isHighRes ?? false;
@@ -31,20 +81,28 @@ export default function DesignCard({ design, index, isList = false }) {
   const downloadDesign = useDownloadDesign();
   const shareDesign = useShareDesign();
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) setShowMenu(false);
-    };
-    if (showMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [showMenu]);
-
   const handleFavorite = (e) => { e.stopPropagation(); toggleFavorite.mutate(design.id); };
   const handleDownload = () => { downloadDesign.mutate({ designId: design.id, quality: design.isHighRes ? "high" : "standard" }); setShowMenu(false); };
   const handleShare = () => { shareDesign.mutate(design.id, { onSuccess: (data) => navigator.clipboard.writeText(data.shareUrl) }); setShowMenu(false); };
   const handleDelete = () => { deleteDesign.mutate(design.id); setShowMenu(false); setShowDeleteConfirm(false); };
+
+  const menuItems = (
+    <>
+      <button onClick={() => setShowMenu(false)} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+        <Pencil className="w-4 h-4" /> Edit
+      </button>
+      <button onClick={handleDownload} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+        <Download className="w-4 h-4" /> Download
+      </button>
+      <button onClick={handleShare} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+        <Share2 className="w-4 h-4" /> Share
+      </button>
+      <div className="h-px bg-white/06 my-1" />
+      <button onClick={() => { setShowDeleteConfirm(true); setShowMenu(false); }} className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-red-900/20 flex items-center gap-3 transition-colors">
+        <Trash2 className="w-4 h-4" /> Delete
+      </button>
+    </>
+  );
 
   if (isList) {
     return (
@@ -67,10 +125,12 @@ export default function DesignCard({ design, index, isList = false }) {
 
           <div className="flex-1 min-w-0">
             <h3 className="text-[15px] font-semibold text-white mb-1 truncate">{title}</h3>
-            <div className="flex items-center gap-2 text-[13px] text-white/40">
-              <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
-              <span>{room}</span>
-            </div>
+            {room && (
+              <div className="flex items-center gap-2 text-[13px] text-white/40">
+                <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+                <span>{room}</span>
+              </div>
+            )}
             <p className="text-[12px] text-white/25 mt-1">{createdAt}</p>
           </div>
 
@@ -121,48 +181,31 @@ export default function DesignCard({ design, index, isList = false }) {
       </div>
 
       {/* Content */}
-      <div className="p-4 relative">
+      <div className="p-4">
         <div className="flex items-start justify-between mb-2">
           <h3 className="text-[15px] font-semibold text-white line-clamp-1 flex-1 pr-2">{title}</h3>
 
-          <div className="relative z-10" ref={menuRef}>
-            <button
-              onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
-              className="p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
-            >
-              <MoreVertical className="w-5 h-5 text-white/40" />
-            </button>
+          <button
+            ref={menuBtnRef}
+            onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
+            className="p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
+          >
+            <MoreVertical className="w-5 h-5 text-white/40" />
+          </button>
 
-            {showMenu && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-white/10 py-1 z-50"
-                style={{ background: "#0d0b08", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}
-              >
-                <button onClick={() => setShowMenu(false)} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
-                  <Pencil className="w-4 h-4" /> Edit
-                </button>
-                <button onClick={handleDownload} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
-                  <Download className="w-4 h-4" /> Download
-                </button>
-                <button onClick={handleShare} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
-                  <Share2 className="w-4 h-4" /> Share
-                </button>
-                <div className="h-px bg-white/06 my-1" />
-                <button onClick={() => { setShowDeleteConfirm(true); setShowMenu(false); }} className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-red-900/20 flex items-center gap-3 transition-colors">
-                  <Trash2 className="w-4 h-4" /> Delete
-                </button>
-              </motion.div>
-            )}
+          {showMenu && (
+            <DropdownMenu anchorRef={menuBtnRef} onClose={() => setShowMenu(false)}>
+              {menuItems}
+            </DropdownMenu>
+          )}
+        </div>
+
+        {room && (
+          <div className="flex items-center gap-2 text-[13px] text-white/40 mb-3">
+            <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+            <span>{room}</span>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 text-[13px] text-white/40 mb-3">
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
-          <span>{room}</span>
-        </div>
+        )}
 
         <div className="flex items-center justify-between pt-3 border-t border-white/06">
           <span className="text-[12px] text-white/25">{createdAt}</span>

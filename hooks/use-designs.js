@@ -16,8 +16,8 @@ export function useDesigns(filters = {}) {
     staleTime: 3 * 60 * 1000,
     refetchOnWindowFocus: false,
     select: (res) => {
-      // Normalise to array
-      let items = res?.data?.items ?? res?.data ?? res?.items ?? res ?? [];
+      // API returns { designs: [...], pagination: {...} }
+      let items = res?.designs ?? res?.data?.items ?? res?.data ?? res?.items ?? [];
       if (!Array.isArray(items)) items = [];
 
       // Client-side filtering (backend doesn't support these params)
@@ -170,6 +170,27 @@ export function useAddBomToCart() {
     mutationFn: (sessionId) => designSessionsApi.addBomToCart(sessionId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+}
+
+// ── Public AI Designs gallery (no auth) ──────────────────────────────────────
+export function usePublicDesigns(params = {}) {
+  return useQuery({
+    queryKey: ["public-designs", params],
+    queryFn: () => designsApi.getPublicDesigns(params),
+    staleTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => {
+      // Response shape logged to console — adjust selector once shape is known
+      const items =
+        res?.data?.items ??
+        res?.data?.designs ??
+        res?.designs ??
+        res?.data ??
+        res?.items ??
+        [];
+      return Array.isArray(items) ? items : [];
     },
   });
 }

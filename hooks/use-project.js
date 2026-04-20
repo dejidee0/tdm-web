@@ -102,3 +102,35 @@ export function usePublicProjects(params = {}) {
     select: (res) => res?.data?.items ?? res?.data ?? res?.items ?? [],
   });
 }
+
+// ── Portfolio (public, no auth) ─────────────────────────────────────────────────
+export const portfolioKeys = {
+  all: ["portfolio"],
+  list: (params) => ["portfolio", "list", params],
+  detail: (id) => ["portfolio", id],
+};
+
+export function usePortfolio(params = {}) {
+  return useQuery({
+    queryKey: portfolioKeys.list(params),
+    queryFn: () => projectsApi.getPortfolio(params),
+    staleTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    select: (res) => ({
+      items: res?.data?.items ?? res?.data ?? res?.items ?? [],
+      totalCount: res?.data?.totalCount ?? res?.totalCount ?? 0,
+      page: res?.data?.page ?? res?.page ?? 1,
+      pageSize: res?.data?.pageSize ?? res?.pageSize ?? 12,
+    }),
+  });
+}
+
+export function usePortfolioItem(id) {
+  return useQuery({
+    queryKey: portfolioKeys.detail(id),
+    queryFn: () => projectsApi.getPortfolioItem(id),
+    enabled: !!id,
+    staleTime: 10 * 60 * 1000,
+    select: (res) => res?.data ?? res,
+  });
+}
