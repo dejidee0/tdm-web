@@ -9,6 +9,7 @@ import MaterialsBogatSection from "@/components/shared/home/materials-bogat";
 import ArchServicesSection from "@/components/shared/home/arch-services";
 import ZioraSection from "@/components/shared/home/ziora-teaser";
 import TestimonialsSection from "@/components/shared/home/testimonials";
+import AppDownloadBanner from "@/components/shared/home/app-download";
 
 export const metadata = {
   title: "TBM Building Services – Design Digitally, Build Reality.",
@@ -61,7 +62,9 @@ export default function Home() {
       <ArchServicesSection />
       {/* 10. Ziora AI teaser */}
       <ZioraSection />
-      {/* 11. Testimonials */}
+      {/* 11. App download */}
+      <AppDownloadBanner />
+      {/* 12. Testimonials */}
       <TestimonialsSection />
     </main>
   );
