@@ -24,6 +24,7 @@ const SECTIONS = [
       { label: "Blog", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Jobs", href: "/contact" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
     ],
   },
 ];
@@ -138,10 +139,16 @@ const Footer = () => {
         <div className="w-full h-px bg-white/20 mb-6" />
 
         {/* Copyright */}
-        <div className="flex justify-end">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-white/30 text-xs font-manrope tracking-wide">
             © 2026@TBM Digitals. All Rights Reserved.
           </p>
+          <Link
+            href="/privacy-policy"
+            className="text-white/30 hover:text-white/60 text-xs font-manrope tracking-wide transition-colors"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>
