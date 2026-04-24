@@ -43,7 +43,7 @@ export default function MaterialsBogatSection() {
         </Reveal>
 
         {/* 3×2 image grid */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-12 sm:mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-12 sm:mb-16">
           {MATERIALS.map((mat, i) => (
             <Reveal key={mat.src} direction="scale" delay={i * 60}>
               <div className="relative overflow-hidden rounded-xl aspect-square bg-card group">

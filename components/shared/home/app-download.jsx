@@ -169,15 +169,44 @@ function PhoneStage() {
               position: "relative",
               background: "#0a0a0a",
               aspectRatio: "9/19",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 12,
             }}
           >
+            {/* Subtle gold radial glow behind logo */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "radial-gradient(ellipse 90% 35% at 50% 50%, rgba(212,175,55,0.14) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+            {/* TBM logo */}
             <Image
-              src="/mock/3.png"
-              alt="TBM app"
-              fill
-              className="object-cover"
+              src="/tbm-logo-v2.png"
+              alt="TBM"
+              width={110}
+              height={55}
+              className="relative z-10 object-contain opacity-90"
               priority
             />
+            {/* Tagline */}
+            <p
+              className="relative z-10 font-manrope text-center"
+              style={{
+                fontSize: 8,
+                letterSpacing: "0.22em",
+                color: "rgba(212,175,55,0.55)",
+                textTransform: "uppercase",
+              }}
+            >
+              Design Digitally, Build Reality
+            </p>
             {/* Glass glare */}
             <div
               style={{
@@ -471,9 +500,14 @@ export default function AppDownloadBanner() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center overflow-hidden"
           >
-            <PhoneStage />
+            <div
+              className="scale-75 sm:scale-90 lg:scale-100 origin-center shrink-0"
+              style={{ width: 380, height: 500 }}
+            >
+              <PhoneStage />
+            </div>
           </motion.div>
 
         </div>
