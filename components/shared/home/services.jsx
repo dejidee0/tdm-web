@@ -34,7 +34,7 @@ export default function ServicesSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 lg:gap-12 items-start">
           {/* Left — 3×2 service cards grid */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {SERVICES.map(({ Icon, label }, i) => (
               <Reveal key={`${label}-${i}`} direction="up" delay={i * 60}>
                 <Link

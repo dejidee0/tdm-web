@@ -32,7 +32,7 @@ export default function ZioraSection() {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[44%_56%] items-center">
 
           {/* ── LEFT: text ───────────────────────────────────────── */}
-          <div className="px-12 py-14 sm:py-16 flex flex-col gap-5">
+          <div className="px-6 sm:px-10 lg:px-12 py-10 sm:py-14 lg:py-16 flex flex-col gap-5">
 
             <Reveal direction="left">
               <h2 className="font-poppins font-bold" style={{ lineHeight: 1.2 }}>

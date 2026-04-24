@@ -466,8 +466,8 @@ export default function TBMConcierge() {
               onClick={(e) => e.stopPropagation()}
               className="flex flex-col overflow-hidden"
               style={{
-                width: "420px",
-                maxHeight: "680px",
+                width: "min(420px, calc(100vw - 48px))",
+                maxHeight: "min(680px, calc(100vh - 200px))",
                 background: "#0f0e0b",
                 borderRadius: "20px",
                 border: "1px solid rgba(255,255,255,0.07)",
@@ -868,7 +868,7 @@ export default function TBMConcierge() {
                     onKeyDown={(e) => e.key === "Enter" && !isTyping && handleSend()}
                     placeholder="Ask Ziora anything…"
                     disabled={isTyping}
-                    className="flex-1 bg-transparent text-white text-[13.5px] placeholder-white/20 outline-none disabled:opacity-50"
+                    className="flex-1 bg-transparent text-white text-base lg:text-[13.5px] placeholder-white/20 outline-none disabled:opacity-50"
                   />
                   <motion.button
                     whileTap={input.trim() && !isTyping ? { scale: 0.88 } : {}}

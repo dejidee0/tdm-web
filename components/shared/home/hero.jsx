@@ -31,10 +31,10 @@ export default function HeroSection() {
         <div className="max-w-2xl lg:max-w-3xl">
           {/* Heading */}
           <h1 className="font-poppins font-bold leading-[1.12] tracking-tight mb-5 hero-heading">
-            <span className="block whitespace-nowrap text-white text-[42px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
+            <span className="block text-white text-[34px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
               Design Digitally,
             </span>
-            <span className="block whitespace-nowrap text-[#D4AF37] text-[42px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
+            <span className="block text-[#D4AF37] text-[34px] sm:text-[60px] lg:text-[76px] xl:text-[88px]">
               Build Reality.
             </span>
           </h1>
