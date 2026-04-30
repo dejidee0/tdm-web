@@ -1,21 +1,59 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Link from "next/link";
 
+const VIDEOS = ["/hero/videos/3.mp4", "/hero/videos/2.mp4"];
+const CROSSFADE_S = 1.5;
+
 export default function HeroSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeRef = useRef(0);
+  const switchingRef = useRef(false);
+  const videoRefs = useRef([]);
+
+  const switchTo = (next) => {
+    if (switchingRef.current) return;
+    switchingRef.current = true;
+    activeRef.current = next;
+    setActiveIndex(next);
+    const nextVid = videoRefs.current[next];
+    if (nextVid) {
+      nextVid.currentTime = 0;
+      nextVid.play().catch(() => {});
+    }
+    setTimeout(() => { switchingRef.current = false; }, CROSSFADE_S * 1000);
+  };
+
+  const handleTimeUpdate = (i) => {
+    if (activeRef.current !== i || switchingRef.current) return;
+    const vid = videoRefs.current[i];
+    if (!vid || !vid.duration) return;
+    if (vid.duration - vid.currentTime < CROSSFADE_S) {
+      switchTo((i + 1) % VIDEOS.length);
+    }
+  };
+
   return (
     <section className="relative min-h-screen bg-black flex items-center overflow-hidden">
-      {/* ── Background video ──────────────────────────────────────── */}
+      {/* ── Background videos (crossfade) ─────────────────────────── */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        >
-          <source src="/hero/videos/1.mp4" type="video/mp4" />
-        </video>
+        {VIDEOS.map((src, i) => (
+          <video
+            key={src}
+            ref={(el) => { videoRefs.current[i] = el; }}
+            autoPlay={i === 0}
+            muted
+            playsInline
+            preload="auto"
+            onTimeUpdate={() => handleTimeUpdate(i)}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1500 ease-in-out ${
+              activeIndex === i ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ))}
 
         {/* Primary dark veil */}
         <div className="absolute inset-0 bg-black/40" />
