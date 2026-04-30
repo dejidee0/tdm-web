@@ -1,26 +1,27 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen bg-black flex items-center overflow-hidden">
-      {/* ── Background image ──────────────────────────────────────── */}
+      {/* ── Background video ──────────────────────────────────────── */}
       <div className="absolute inset-0">
-        <Image
-          src="/hero/hero.png"
-          alt="TBM — Design Digitally, Build Reality"
-          fill
-          className="object-cover object-center"
-          priority
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        >
+          <source src="/hero/videos/1.mp4" type="video/mp4" />
+        </video>
 
-        {/* Primary dark veil — very heavy so building is barely a silhouette */}
-        <div className="absolute inset-0 bg-black/72" />
+        {/* Primary dark veil */}
+        <div className="absolute inset-0 bg-black/40" />
 
-        {/* Left-to-right vignette — text side is almost pure black */}
-        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
+        {/* Left-to-right vignette — keeps text readable */}
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent" />
 
         {/* Bottom fade into next section */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-black to-transparent" />

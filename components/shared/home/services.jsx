@@ -16,7 +16,7 @@ const SERVICES = [
   { Icon: Hammer, label: "Construction" },
   { Icon: HardHat, label: "Renovation" },
   { Icon: Sofa, label: "Interior Design" },
-  { Icon: LayoutGrid, label: "Interior Design" },
+  { Icon: LayoutGrid, label: "Exterior Design" },
   { Icon: ClipboardList, label: "Project Management" },
   { Icon: Building2, label: "Commercial Build" },
 ];
