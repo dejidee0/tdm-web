@@ -15,6 +15,7 @@ export default function HeroSection() {
   const switchTo = (next) => {
     if (switchingRef.current) return;
     switchingRef.current = true;
+    const prev = activeRef.current;
     activeRef.current = next;
     setActiveIndex(next);
     const nextVid = videoRefs.current[next];
@@ -22,7 +23,11 @@ export default function HeroSection() {
       nextVid.currentTime = 0;
       nextVid.play().catch(() => {});
     }
-    setTimeout(() => { switchingRef.current = false; }, CROSSFADE_S * 1000);
+    setTimeout(() => {
+      const prevVid = videoRefs.current[prev];
+      if (prevVid) { prevVid.pause(); prevVid.currentTime = 0; }
+      switchingRef.current = false;
+    }, CROSSFADE_S * 1000);
   };
 
   const handleTimeUpdate = (i) => {
@@ -32,6 +37,10 @@ export default function HeroSection() {
     if (vid.duration - vid.currentTime < CROSSFADE_S) {
       switchTo((i + 1) % VIDEOS.length);
     }
+  };
+
+  const handleEnded = (i) => {
+    if (activeRef.current === i) switchTo((i + 1) % VIDEOS.length);
   };
 
   return (
@@ -47,6 +56,7 @@ export default function HeroSection() {
             playsInline
             preload="auto"
             onTimeUpdate={() => handleTimeUpdate(i)}
+            onEnded={() => handleEnded(i)}
             className="absolute inset-0 w-full h-full object-cover object-center"
             style={{
               opacity: activeIndex === i ? 1 : 0,
