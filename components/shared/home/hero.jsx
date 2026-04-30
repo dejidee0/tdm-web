@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 
-const VIDEOS = ["/hero/videos/3.mp4", "/hero/videos/2.mp4"];
+const VIDEOS = ["/hero/videos/2.mp4", "/hero/videos/1.mp4"];
 const CROSSFADE_S = 1.5;
 
 export default function HeroSection() {
@@ -47,19 +47,21 @@ export default function HeroSection() {
             playsInline
             preload="auto"
             onTimeUpdate={() => handleTimeUpdate(i)}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1500 ease-in-out ${
-              activeIndex === i ? "opacity-100" : "opacity-0"
-            }`}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{
+              opacity: activeIndex === i ? 1 : 0,
+              transition: "opacity 1.5s ease-in-out",
+            }}
           >
             <source src={src} type="video/mp4" />
           </video>
         ))}
 
         {/* Primary dark veil */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/30" />
 
         {/* Left-to-right vignette — keeps text readable */}
-        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/10 to-transparent" />
 
         {/* Bottom fade into next section */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-black to-transparent" />
