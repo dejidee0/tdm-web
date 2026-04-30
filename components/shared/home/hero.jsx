@@ -14,7 +14,7 @@ export default function HeroSection() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover object-center"
         >
-          <source src="/hero/videos/3.mp4" type="video/mp4" />
+          <source src="/hero/videos/1.mp4" type="video/mp4" />
         </video>
 
         {/* Primary dark veil */}
