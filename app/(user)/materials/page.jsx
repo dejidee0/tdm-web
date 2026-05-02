@@ -3,13 +3,13 @@ import MaterialsClient from "./client";
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 export const metadata = {
-  title: "All Materials | TDM – Building & Construction Marketplace",
+  title: "Shop Materials | TBM — Bogat Building & Construction Marketplace",
   description:
-    "Browse our complete range of building and construction materials — bathroom fixtures, flooring, ceiling panels, doors, lighting and more. Shop or request pricing today.",
+    "Browse premium Bogat materials — bathroom fixtures, WCs, basins, faucets, tiles, water heaters, and more. Fixed pricing and request-quote options. Delivered across Nigeria.",
   keywords:
-    "building materials, bathroom fixtures, construction supplies, flooring Nigeria",
+    "Bogat materials Nigeria, bathroom fixtures Abuja, building materials Lagos, WC fittings Nigeria, tiles Nigeria",
   openGraph: {
-    title: "All Materials | TDM",
+    title: "Shop Materials | TBM Building Services",
     description:
       "Browse premium building & construction materials. Competitive pricing, fast delivery across Nigeria.",
     type: "website",

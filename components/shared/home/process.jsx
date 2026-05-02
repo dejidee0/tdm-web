@@ -5,27 +5,27 @@ import Reveal from "@/components/common/reveal";
 const STEPS = [
   {
     number: "01",
-    title: "Inspection",
+    title: "Upload, Book, or Describe",
     description:
-      "Comprehensive site analysis and feasibility studies to define structural boundaries.",
+      "Upload a room photo, book an inspection, or simply describe your space and goals — we meet you where you are.",
   },
   {
     number: "02",
-    title: "Design",
+    title: "Get Concept & Estimate",
     description:
-      "AI-enhanced conceptualization paired with detailed engineering schematics.",
+      "Receive an AI-generated design concept, material recommendations, and a transparent project estimate.",
   },
   {
     number: "03",
-    title: "Build",
+    title: "Approve Materials & Scope",
     description:
-      "Execution by our master craftsmen using premium materials and rigid QC protocols.",
+      "Review and confirm your materials, finishes, and full project scope before anything begins.",
   },
   {
     number: "04",
-    title: "Deliver",
+    title: "TBM Executes & Delivers",
     description:
-      "Final unveiling of your digital dream materialized into physical reality.",
+      "Our on-ground team takes over — building, finishing, and handing over your completed space on time.",
   },
 ];
 
@@ -37,13 +37,13 @@ export default function ProcessSection() {
         {/* Label + heading */}
         <Reveal direction="up">
           <p className="text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.3em] uppercase mb-4">
-            Framework
+            How It Works
           </p>
         </Reveal>
 
         <Reveal direction="up" delay={80}>
           <h2 className="font-poppins font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-16 sm:mb-20">
-            Methodical Excellence
+            How TBM Works
           </h2>
         </Reveal>
 

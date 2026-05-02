@@ -6,8 +6,9 @@ import Providers from "@/components/common/providers";
 import TBMConcierge from "@/components/common/concierge/main";
 
 export const metadata = {
-  title: "TDM",
-  description: "Building and Construction Company",
+  title: "TBM Building Services — Design. Price. Build.",
+  description:
+    "Premium renovation, construction materials, and AI-powered space visualization across Abuja and Lagos.",
 };
 
 export default function UserLayout({ children }) {
