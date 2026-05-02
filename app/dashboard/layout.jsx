@@ -4,8 +4,8 @@ import Providers from "@/components/common/providers";
 import Footer from "@/components/common/footer";
 
 export const metadata = {
-  title: "TDM User Dashboard",
-  description: "Building and Construction Company",
+  title: "My Dashboard | TBM Building Services",
+  description: "Manage your projects, orders, saved designs, and account settings.",
 };
 
 export default function UserDashboardLayout({ children }) {

@@ -4,8 +4,8 @@ import Navbar from "@/components/common/navbar";
 import Providers from "@/components/common/providers";
 
 export const metadata = {
-  title: "Join TDM",
-  description: "Building and Construction Company",
+  title: "Sign In | TBM Building Services",
+  description: "Log in or create your TBM account to manage projects, save designs, and shop materials.",
 };
 
 export default function AuthLayout({ children }) {

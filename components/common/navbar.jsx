@@ -64,10 +64,10 @@ export default function Navbar() {
     "U";
 
   const navLinks = [
-    { name: "Materials", href: "/materials" },
-    { name: "AI Visualizer", href: "/ai-visualizer" },
-    { name: "Past Projects", href: "/project" },
-    { name: "AI Gallery", href: "/ai-gallery" },
+    { name: "Services", href: "/services" },
+    { name: "Projects", href: "/project" },
+    { name: "Shop", href: "/materials" },
+    { name: "Ziora AI", href: "/ai-visualizer" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

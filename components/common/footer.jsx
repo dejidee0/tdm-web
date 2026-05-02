@@ -10,20 +10,21 @@ const SECTIONS = [
   {
     title: "Services",
     links: [
-      { label: "Strategy Design", href: "/services" },
-      { label: "Product Design", href: "/services" },
-      { label: "Content Strategy", href: "/services" },
-      { label: "Brand Strategy", href: "/services" },
-      { label: "Development", href: "/services" },
+      { label: "Renovation", href: "/services" },
+      { label: "Interior Fit-Out", href: "/services" },
+      { label: "Bathroom Remodeling", href: "/services" },
+      { label: "Kitchen Remodeling", href: "/services" },
+      { label: "Construction", href: "/services" },
+      { label: "Design Consultation", href: "/services" },
     ],
   },
   {
     title: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Blog", href: "/about" },
+      { label: "Projects", href: "/project" },
+      { label: "Shop Materials", href: "/materials" },
       { label: "Contact", href: "/contact" },
-      { label: "Jobs", href: "/contact" },
       { label: "Privacy Policy", href: "/privacy-policy" },
     ],
   },
@@ -124,13 +125,13 @@ const Footer = () => {
               Get In Touch
             </h3>
             <p className="text-white/40 text-sm font-manrope leading-relaxed mb-5">
-              Feel free to get in touch with us via email
+              Reach us for project inquiries, material orders, or Ziora AI support.
             </p>
             <a
-              href="mailto:tbmdigitals@gmail.com"
+              href="mailto:info@tbmbuilding.com"
               className="text-[#D4AF37] text-xl md:text-2xl font-bold hover:text-[#c49e30] transition-colors block font-manrope break-all"
             >
-              tbmdigitals@gmail.com
+              info@tbmbuilding.com
             </a>
           </div>
         </div>
@@ -141,7 +142,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-white/30 text-xs font-manrope tracking-wide">
-            © 2026@TBM Digitals. All Rights Reserved.
+            © 2026 TBM Building Services. All Rights Reserved.
           </p>
           <Link
             href="/privacy-policy"

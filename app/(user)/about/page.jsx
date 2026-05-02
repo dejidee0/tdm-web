@@ -1,3 +1,22 @@
+export const metadata = {
+  title: "About TBM Building Services",
+  description:
+    "Learn about TBM Building Services — our mission, the Bogat materials store, Ziora AI visualizer, and our execution teams across Abuja and Lagos.",
+  keywords: [
+    "about TBM Building Services",
+    "renovation company Abuja",
+    "construction company Nigeria",
+    "Bogat materials",
+    "Ziora AI",
+  ],
+  openGraph: {
+    title: "About TBM Building Services",
+    description:
+      "Premium renovation, materials, and AI-powered design — all under one roof in Abuja and Lagos.",
+    type: "website",
+  },
+};
+
 import CoreValues from "@/components/shared/about/core-values";
 import CTACards from "@/components/shared/about/cta-cards";
 import FinalCTA from "@/components/shared/about/final-cta";

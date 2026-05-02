@@ -27,8 +27,44 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "TDM ",
-  description: "Building and Construction Company",
+  title: {
+    default: "TBM Building Services — Design. Price. Build.",
+    template: "%s | TBM Building Services",
+  },
+  description:
+    "Premium renovation, construction materials, and AI-powered space visualization for homes and commercial spaces across Abuja and Lagos. Powered by Ziora AI and Bogat materials.",
+  metadataBase: new URL("https://tbmbuilding.com"),
+  keywords: [
+    "TBM Building Services",
+    "renovation Abuja",
+    "construction Nigeria",
+    "interior design Abuja",
+    "bathroom renovation Lagos",
+    "Ziora AI design",
+    "Bogat materials Nigeria",
+    "building materials Abuja",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_NG",
+    url: "https://tbmbuilding.com",
+    siteName: "TBM Building Services",
+    title: "TBM Building Services — Design. Price. Build.",
+    description:
+      "Premium renovation, AI-powered design with Ziora, and certified materials from Bogat — all in one platform across Abuja and Lagos.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TBM Building Services" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TBM Building Services",
+    description: "Premium renovation, materials, and AI visualization across Nigeria.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default function RootLayout({ children }) {
