@@ -52,18 +52,29 @@ export const metadata = {
     title: "TBM Building Services — Design. Price. Build.",
     description:
       "Premium renovation, AI-powered design with Ziora, and certified materials from Bogat — all in one platform across Abuja and Lagos.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TBM Building Services" }],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TBM Building Services",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "TBM Building Services",
-    description: "Premium renovation, materials, and AI visualization across Nigeria.",
+    description:
+      "Premium renovation, materials, and AI visualization across Nigeria.",
     images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  verification: {
+    google: "ot_-Joi-Cyk2QcWuM6_44SWPCTQKRUTSZA_8JOSs-UU",
   },
 };
 
