@@ -28,27 +28,31 @@ export default function CheckoutPage() {
 
   // Use cart data for items/totals (always available), checkout data for saved addresses
   const savedAddresses = checkoutData?.savedAddresses || [];
-  const currentAddress = savedAddresses.find((a) => a.isDefault) || savedAddresses[0];
+  const currentAddress =
+    savedAddresses.find((a) => a.isDefault) || savedAddresses[0];
 
   // Build the summary from cart — map cart items to the shape OrderSummary expects
-  const checkout = cartData ? {
-    items: (cartData.items || []).map((item) => ({
-      id: item.id,
-      name: item.name,
-      image: item.image,
-      description: item.categoryName || item.brandName || "",
-      quantity: item.quantity,
-      pricePerUnit: item.price,
-      price: item.price * item.quantity,
-      unit: null,
-    })),
-    subtotal: cartData.subtotal || 0,
-    shipping: cartData.shipping || 0,
-    tax: cartData.tax || 0,
-    discount: checkoutData?.discount || 0,
-    // Prefer server total from checkoutData if available
-    total: checkoutData?.total || cartData.total || 0,
-  } : null;
+
+  const checkout = cartData
+    ? {
+        items: (cartData.items || []).map((item) => ({
+          id: item.id,
+          name: item.name,
+          image: item.image,
+          description: item.categoryName || item.brandName || "",
+          quantity: item.quantity,
+          pricePerUnit: item.price,
+          price: item.price * item.quantity,
+          unit: null,
+        })),
+        subtotal: cartData.subtotal || 0,
+        shipping: cartData.shipping || 0,
+        tax: cartData.tax || 0,
+        discount: checkoutData?.discount || 0,
+        // Prefer server total from checkoutData if available
+        total: checkoutData?.total || cartData.total || 0,
+      }
+    : null;
 
   const handlePaymentComplete = useCallback((data) => {
     setPaymentData(data);
@@ -113,7 +117,9 @@ export default function CheckoutPage() {
           window.location.href = data.authorizationUrl;
         } else if (data?.orderId) {
           // BankTransfer or instant confirmation
-          router.push(`/checkout/verify?orderId=${data.orderId}&confirmed=true`);
+          router.push(
+            `/checkout/verify?orderId=${data.orderId}&confirmed=true`,
+          );
         }
       },
       onError: (err) => {
@@ -126,12 +132,17 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-black">
       {/* Sticky mobile bottom bar — only on payment step */}
       {currentStep === 2 && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-white/08 p-4" style={{ background: "#0d0b08" }}>
+        <div
+          className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-white/08 p-4"
+          style={{ background: "#0d0b08" }}
+        >
           <button
             onClick={handleSubmitPayment}
             disabled={submitPayment.isPending}
             className="w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 text-black disabled:opacity-50"
-            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            style={{
+              background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+            }}
           >
             {submitPayment.isPending
               ? "Redirecting to Paystack…"

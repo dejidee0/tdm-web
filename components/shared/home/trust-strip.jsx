@@ -1,49 +1,45 @@
 "use client";
 
+import { Building2, MapPin, ShieldCheck, Clock } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
-const PILLARS = [
-  {
-    label: "Abuja & Lagos Projects",
-    description: "On-the-ground execution teams in both cities.",
-  },
-  {
-    label: "Premium Materials",
-    description: "Curated Bogat collection for every finish and budget.",
-  },
-  {
-    label: "AI Visualization",
-    description: "See your space redesigned before a single tile is laid.",
-  },
-  {
-    label: "Expert Execution",
-    description: "Master craftsmen with proven project track records.",
-  },
-  {
-    label: "Fast Project Delivery",
-    description: "Structured timelines with milestone accountability.",
-  },
-  {
-    label: "After-Sales Support",
-    description: "Workmanship warranties and dedicated post-project care.",
-  },
+const STATS = [
+  { Icon: Building2, value: "700+", label: "Projects Completed" },
+  { Icon: MapPin, value: "Abuja & Lagos", label: "We Serve" },
+  { Icon: ShieldCheck, value: "Premium Quality", label: "Guaranteed" },
+  { Icon: Clock, value: "On-Time Delivery", label: "Always" },
 ];
 
 export default function TrustStrip() {
   return (
-    <section className="bg-black py-12 sm:py-16">
+    <section className="bg-[#090909] border-y border-white/5.5">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {PILLARS.map((pillar, i) => (
-            <Reveal key={pillar.label} direction="up" delay={i * 70}>
-              <div className="bg-[#111111] border border-white/8 rounded-2xl px-7 py-6 flex flex-col gap-2 min-w-0 overflow-hidden">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />
-                <span className="font-manrope font-bold text-[15px] text-white leading-snug">
-                  {pillar.label}
+        <div className="grid grid-cols-2 lg:grid-cols-4">
+          {STATS.map((stat, i) => (
+            <Reveal key={stat.label} direction="up" delay={i * 70}>
+              <div
+                className="flex items-center gap-4 px-5 py-8 sm:py-10"
+                style={{
+                  borderRight:
+                    i < 3 ? "1px solid rgba(255,255,255,0.055)" : "none",
+                  borderBottom:
+                    i < 2 ? "1px solid rgba(255,255,255,0.055)" : "none",
+                }}
+              >
+                <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#D4AF37]/[0.07] border border-[#D4AF37]/15 shrink-0">
+                  <stat.Icon
+                    className="w-4.5 h-4.5 text-[#D4AF37]"
+                    strokeWidth={1.5}
+                  />
                 </span>
-                <p className="text-white/35 text-sm font-manrope leading-relaxed">
-                  {pillar.description}
-                </p>
+                <div className="min-w-0">
+                  <p className="text-white font-poppins font-bold text-[17px] sm:text-[19px] leading-tight truncate">
+                    {stat.value}
+                  </p>
+                  <p className="text-white/70 font-manrope text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-0.5 leading-tight">
+                    {stat.label}
+                  </p>
+                </div>
               </div>
             </Reveal>
           ))}
