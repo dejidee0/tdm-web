@@ -72,7 +72,7 @@ export default function OperationalAlerts({ alerts }) {
                   <h3 className="font-manrope text-[14px] font-bold text-primary">
                     {alert.title}
                   </h3>
-                  <span className="flex-shrink-0 text-[#64748B] font-manrope text-[11px] whitespace-nowrap">
+                  <span className="shrink-0 text-[#64748B] font-manrope text-[11px] whitespace-nowrap">
                     {alert.time}
                   </span>
                 </div>
