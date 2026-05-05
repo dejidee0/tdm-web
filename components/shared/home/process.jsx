@@ -1,75 +1,119 @@
 "use client";
 
+import { Box, PenTool, HardHat, Diamond } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
 const STEPS = [
   {
+    Icon: Box,
     number: "01",
-    title: "Upload, Book, or Describe",
-    description:
-      "Upload a room photo, book an inspection, or simply describe your space and goals — we meet you where you are.",
+    title: "Design with Ziora",
+    description: "3D designs & project estimate",
   },
   {
+    Icon: PenTool,
     number: "02",
-    title: "Get Concept & Estimate",
-    description:
-      "Receive an AI-generated design concept, material recommendations, and a transparent project estimate.",
+    title: "Detailed Planning & Approval",
+    description: "We plan every detail and get your approval",
   },
   {
+    Icon: HardHat,
     number: "03",
-    title: "Approve Materials & Scope",
-    description:
-      "Review and confirm your materials, finishes, and full project scope before anything begins.",
+    title: "Structured Project Execution",
+    description: "Quality construction with strict supervision",
   },
   {
+    Icon: Diamond,
     number: "04",
-    title: "TBM Executes & Delivers",
-    description:
-      "Our on-ground team takes over — building, finishing, and handing over your completed space on time.",
+    title: "Luxury Finishing & Handover",
+    description: "Premium finishes and on-time handover",
   },
 ];
 
+/* ── Hexagonal icon container ────────────────────────────────────────── */
+function HexIcon({ Icon }) {
+  return (
+    <div className="relative shrink-0" style={{ width: 52, height: 52 }}>
+      {/* Outer hex border layer */}
+      <svg
+        viewBox="0 0 52 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="absolute inset-0 w-full h-full"
+      >
+        {/* flat-top hexagon path */}
+        <polygon
+          points="26,2 49,14 49,38 26,50 3,38 3,14"
+          fill="rgba(212,175,55,0.07)"
+          stroke="rgba(212,175,55,0.55)"
+          strokeWidth="1.2"
+        />
+      </svg>
+      {/* Icon centered inside */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.5} />
+      </div>
+    </div>
+  );
+}
+
+/* ── Arrow connector ─────────────────────────────────────────────────── */
+function StepArrow() {
+  return (
+    <div className="hidden lg:flex items-center justify-center shrink-0 px-3" style={{ marginTop: 19 }}>
+      <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="7" x2="20" y2="7" stroke="rgba(212,175,55,0.4)" strokeWidth="1.2" />
+        <polyline points="16,3 21,7 16,11" stroke="rgba(212,175,55,0.4)" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
 export default function ProcessSection() {
   return (
-    <section className="bg-black py-20 sm:py-28">
+    <section className="bg-black py-20 sm:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
 
-        {/* Label + heading */}
+        {/* Heading */}
         <Reveal direction="up">
-          <p className="text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.3em] uppercase mb-4">
-            How It Works
-          </p>
-        </Reveal>
-
-        <Reveal direction="up" delay={80}>
-          <h2 className="font-poppins font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-16 sm:mb-20">
-            How TBM Works
+          <h2 className="font-poppins font-bold text-xl sm:text-2xl text-white tracking-[0.08em] uppercase mb-14 sm:mb-16">
+            The TBM <span className="text-[#D4AF37]">×</span> Ziora System
           </h2>
         </Reveal>
 
-        {/* Steps grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        {/* Steps row — flex on desktop, vertical stack on mobile */}
+        <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-0">
           {STEPS.map((step, i) => (
-            <Reveal key={step.number} direction="up" delay={i * 100}>
-              <div className="bg-card rounded-2xl p-7 sm:p-8 flex flex-col gap-5 h-full">
-                {/* Number */}
-                <span className="font-poppins font-bold text-5xl sm:text-6xl leading-none text-white/15 tracking-tight select-none">
-                  {step.number}
-                </span>
+            <div key={step.number} className="flex lg:flex-1 lg:items-start">
 
-                {/* Title */}
-                <h3 className="font-manrope font-bold text-[17px] text-white leading-snug">
-                  {step.title}
-                </h3>
+              {/* Step content */}
+              <Reveal direction="up" delay={i * 100} as="div" className="flex items-start gap-4 lg:flex-1">
+                {/* Hex icon */}
+                <HexIcon Icon={step.Icon} />
 
-                {/* Description */}
-                <p className="text-white/40 text-sm font-manrope leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            </Reveal>
+                {/* Text stack */}
+                <div className="pt-0.5">
+                  <span
+                    className="font-poppins font-bold block mb-1"
+                    style={{ fontSize: 13, color: "#D4AF37", letterSpacing: "0.12em" }}
+                  >
+                    {step.number}
+                  </span>
+                  <h3 className="font-manrope font-bold text-white uppercase leading-snug mb-2" style={{ fontSize: 13, letterSpacing: "0.04em" }}>
+                    {step.title}
+                  </h3>
+                  <p className="font-manrope text-white/38 leading-relaxed" style={{ fontSize: 12 }}>
+                    {step.description}
+                  </p>
+                </div>
+              </Reveal>
+
+              {/* Arrow between steps (desktop only) */}
+              {i < STEPS.length - 1 && <StepArrow />}
+            </div>
           ))}
         </div>
+
       </div>
     </section>
   );

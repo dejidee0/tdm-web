@@ -26,7 +26,11 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const { isAuthenticated: isUserAuthed, user: regularUser, isLoading: userLoading } = useIsAuthenticated();
+  const {
+    isAuthenticated: isUserAuthed,
+    user: regularUser,
+    isLoading: userLoading,
+  } = useIsAuthenticated();
   const { data: profile } = useProfile();
   const { data: adminUser, isLoading: adminLoading } = useAdminUser();
   const { data: vendorUser, isLoading: vendorLoading } = useVendorUser();
@@ -39,14 +43,36 @@ export default function Navbar() {
   const isLoading = adminLoading || vendorLoading || userLoading;
 
   const activeUser = adminUser
-    ? { ...adminUser, fullName: adminUser.name || `${adminUser.firstName || ""} ${adminUser.lastName || ""}`.trim() }
+    ? {
+        ...adminUser,
+        fullName:
+          adminUser.name ||
+          `${adminUser.firstName || ""} ${adminUser.lastName || ""}`.trim(),
+      }
     : vendorUser
-    ? { ...vendorUser, fullName: vendorUser.name || `${vendorUser.firstName || ""} ${vendorUser.lastName || ""}`.trim() }
-    : regularUser;
+      ? {
+          ...vendorUser,
+          fullName:
+            vendorUser.name ||
+            `${vendorUser.firstName || ""} ${vendorUser.lastName || ""}`.trim(),
+        }
+      : regularUser;
 
-  const dashboardHref = adminUser ? "/admin/dashboard" : vendorUser ? "/vendor/dashboard" : "/dashboard";
-  const dashboardLabel = adminUser ? "Admin Dashboard" : vendorUser ? "Vendor Dashboard" : "Pro Dashboard";
-  const profileHref = adminUser ? "/admin/dashboard/settings" : vendorUser ? "/vendor/dashboard/account-settings" : "/dashboard/profile";
+  const dashboardHref = adminUser
+    ? "/admin/dashboard"
+    : vendorUser
+      ? "/vendor/dashboard"
+      : "/dashboard";
+  const dashboardLabel = adminUser
+    ? "Admin Dashboard"
+    : vendorUser
+      ? "Vendor Dashboard"
+      : "Pro Dashboard";
+  const profileHref = adminUser
+    ? "/admin/dashboard/settings"
+    : vendorUser
+      ? "/vendor/dashboard/account-settings"
+      : "/dashboard/profile";
 
   const cartCount = useCartCount();
   const pathname = usePathname();
@@ -64,12 +90,15 @@ export default function Navbar() {
     "U";
 
   const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about" },
+
     { name: "Services", href: "/services" },
+    { name: "Ziora", href: "/ai-visualizer" },
+
     { name: "Projects", href: "/project" },
-    { name: "Shop", href: "/materials" },
-    { name: "Ziora AI", href: "/ai-visualizer" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Materials(Bogat)", href: "/materials" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
   const isActive = (href) => {
@@ -84,22 +113,34 @@ export default function Navbar() {
     setIsProfileOpen(false);
     setIsMenuOpen(false);
   };
-  const isLogoutPending = adminLogout.isPending || vendorLogout.isPending || userLogout.isPending;
+  const isLogoutPending =
+    adminLogout.isPending || vendorLogout.isPending || userLogout.isPending;
 
   return (
     <>
       <nav
         className="fixed top-0 left-0 right-0 z-60"
-        style={{ background: "radial-gradient(ellipse 80% 160% at 50% 0%, #2a2a2a 0%, #141414 45%, #0a0a0a 100%)" }}
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 160% at 50% 0%, #2a2a2a 0%, #141414 45%, #0a0a0a 100%)",
+        }}
       >
         {/* Left + right white edge highlights */}
-        <div className="pointer-events-none absolute inset-0 z-10" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.07) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.07) 100%)" }} />
+        <div
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(255,255,255,0.07) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.07) 100%)",
+          }}
+        />
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
-
             {/* Logo */}
-            <Link href="/" className="shrink-0 transition-opacity hover:opacity-80">
+            <Link
+              href="/"
+              className="shrink-0 transition-opacity hover:opacity-80"
+            >
               <Image
                 src="/tbm-logo-v2.png"
                 alt="TBM"
@@ -125,7 +166,9 @@ export default function Navbar() {
                     {link.name}
                     <span
                       className={`absolute bottom-0 left-4 right-4 h-px bg-[#D4AF37] transition-transform duration-300 origin-left ${
-                        active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                        active
+                          ? "scale-x-100"
+                          : "scale-x-0 group-hover:scale-x-100"
                       }`}
                     />
                   </Link>
@@ -145,14 +188,18 @@ export default function Navbar() {
                   {/* Saved */}
                   <Link href="/dashboard/saved">
                     <button className="relative p-2 text-white/60 hover:text-white transition-colors">
-                      <Heart className={`w-5 h-5 ${isActive("/dashboard/saved") ? "fill-[#D4AF37] text-[#D4AF37]" : ""}`} />
+                      <Heart
+                        className={`w-5 h-5 ${isActive("/dashboard/saved") ? "fill-[#D4AF37] text-[#D4AF37]" : ""}`}
+                      />
                       <SavedBadge count={savedCount} />
                     </button>
                   </Link>
                   {/* Cart */}
                   <Link href="/cart">
                     <button className="relative p-2 text-white/60 hover:text-white transition-colors">
-                      <ShoppingCart className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`} />
+                      <ShoppingCart
+                        className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`}
+                      />
                       <CartBadge count={cartCount} />
                     </button>
                   </Link>
@@ -162,15 +209,27 @@ export default function Navbar() {
                       onClick={() => setIsProfileOpen(!isProfileOpen)}
                       className="flex items-center gap-2 py-1.5 px-3 rounded-full border border-white/20 hover:border-white/40 transition-colors"
                     >
-                      <Avatar initial={avatarInitial} avatar={activeUser?.avatar} name={displayName} size={7} />
-                      <span className="text-sm font-medium text-white/80">{profile?.firstName || displayName}</span>
-                      <ChevronDown className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${isProfileOpen ? "rotate-180" : ""}`} />
+                      <Avatar
+                        initial={avatarInitial}
+                        avatar={activeUser?.avatar}
+                        name={displayName}
+                        size={7}
+                      />
+                      <span className="text-sm font-medium text-white/80">
+                        {profile?.firstName || displayName}
+                      </span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${isProfileOpen ? "rotate-180" : ""}`}
+                      />
                     </button>
 
                     <AnimatePresence>
                       {isProfileOpen && (
                         <>
-                          <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)} />
+                          <div
+                            className="fixed inset-0 z-40"
+                            onClick={() => setIsProfileOpen(false)}
+                          />
                           <motion.div
                             initial={{ opacity: 0, y: -8, scale: 0.97 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -183,16 +242,26 @@ export default function Navbar() {
                               onClick={() => setIsProfileOpen(false)}
                               className="flex items-center gap-3 px-5 py-4 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                             >
-                              <User className="w-5 h-5 shrink-0" strokeWidth={1.5} />
-                              <span className="text-[15px] font-medium">Profile</span>
+                              <User
+                                className="w-5 h-5 shrink-0"
+                                strokeWidth={1.5}
+                              />
+                              <span className="text-[15px] font-medium">
+                                Profile
+                              </span>
                             </Link>
                             <Link
                               href={dashboardHref}
                               onClick={() => setIsProfileOpen(false)}
                               className="flex items-center gap-3 px-5 py-4 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                             >
-                              <LayoutDashboard className="w-5 h-5 shrink-0" strokeWidth={1.5} />
-                              <span className="text-[15px] font-medium">{dashboardLabel}</span>
+                              <LayoutDashboard
+                                className="w-5 h-5 shrink-0"
+                                strokeWidth={1.5}
+                              />
+                              <span className="text-[15px] font-medium">
+                                {dashboardLabel}
+                              </span>
                             </Link>
                             <hr className="border-white/10" />
                             <button
@@ -200,8 +269,13 @@ export default function Navbar() {
                               disabled={isLogoutPending}
                               className="flex items-center gap-3 w-full px-5 py-4 text-white/70 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-50"
                             >
-                              <LogOut className="w-5 h-5 shrink-0" strokeWidth={1.5} />
-                              <span className="text-[15px] font-medium">{isLogoutPending ? "Logging out…" : "Logout"}</span>
+                              <LogOut
+                                className="w-5 h-5 shrink-0"
+                                strokeWidth={1.5}
+                              />
+                              <span className="text-[15px] font-medium">
+                                {isLogoutPending ? "Logging out…" : "Logout"}
+                              </span>
                             </button>
                           </motion.div>
                         </>
@@ -214,7 +288,9 @@ export default function Navbar() {
                   {/* Cart */}
                   <Link href="/cart">
                     <button className="relative p-2 text-white/70 hover:text-white transition-colors">
-                      <ShoppingCart className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`} />
+                      <ShoppingCart
+                        className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`}
+                      />
                       <CartBadge count={cartCount} />
                     </button>
                   </Link>
@@ -243,14 +319,18 @@ export default function Navbar() {
               {!isLoading && isAuthenticated && (
                 <Link href="/dashboard/saved">
                   <button className="relative p-2 text-white/60">
-                    <Heart className={`w-5 h-5 ${isActive("/dashboard/saved") ? "fill-[#D4AF37] text-[#D4AF37]" : ""}`} />
+                    <Heart
+                      className={`w-5 h-5 ${isActive("/dashboard/saved") ? "fill-[#D4AF37] text-[#D4AF37]" : ""}`}
+                    />
                     <SavedBadge count={savedCount} />
                   </button>
                 </Link>
               )}
               <Link href="/cart">
                 <button className="relative p-2 text-white/60 hover:text-white transition-colors">
-                  <ShoppingCart className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`} />
+                  <ShoppingCart
+                    className={`w-5 h-5 ${isActive("/cart") ? "text-[#D4AF37]" : ""}`}
+                  />
                   <CartBadge count={cartCount} />
                 </button>
               </Link>
@@ -286,7 +366,9 @@ export default function Navbar() {
               className="fixed top-0 right-0 h-dvh z-60 w-[78vw] max-w-[320px] bg-[#0a0a0a] border-l border-white/10 shadow-2xl lg:hidden flex flex-col"
             >
               <div className="flex items-center justify-between px-5 h-16 border-b border-white/10 shrink-0">
-                <span className="text-xs font-semibold text-white/40 tracking-[0.2em] uppercase">Menu</span>
+                <span className="text-xs font-semibold text-white/40 tracking-[0.2em] uppercase">
+                  Menu
+                </span>
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="p-2 text-white/50 hover:text-white transition-colors"
@@ -299,17 +381,28 @@ export default function Navbar() {
                 {!isLoading && isAuthenticated && activeUser && (
                   <div className="px-5 py-4 border-b border-white/10">
                     <div className="flex items-center gap-3">
-                      <Avatar initial={avatarInitial} avatar={activeUser?.avatar} name={displayName} size={10} />
+                      <Avatar
+                        initial={avatarInitial}
+                        avatar={activeUser?.avatar}
+                        name={displayName}
+                        size={10}
+                      />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">{displayName}</p>
-                        <p className="text-xs text-white/40 truncate">{activeUser.email}</p>
+                        <p className="text-sm font-semibold text-white truncate">
+                          {displayName}
+                        </p>
+                        <p className="text-xs text-white/40 truncate">
+                          {activeUser.email}
+                        </p>
                       </div>
                     </div>
                   </div>
                 )}
 
                 <div className="py-4 px-3">
-                  <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">Navigate</p>
+                  <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">
+                    Navigate
+                  </p>
                   {navLinks.map((link, i) => {
                     const active = isActive(link.href);
                     return (
@@ -322,12 +415,16 @@ export default function Navbar() {
                         <Link
                           href={link.href}
                           className={`flex items-center justify-between px-3 py-3 text-[15px] font-medium rounded-lg transition-colors ${
-                            active ? "text-[#D4AF37] bg-[#D4AF37]/10" : "text-white/60 hover:text-white hover:bg-white/5"
+                            active
+                              ? "text-[#D4AF37] bg-[#D4AF37]/10"
+                              : "text-white/60 hover:text-white hover:bg-white/5"
                           }`}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {link.name}
-                          {active && <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />}
+                          {active && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />
+                          )}
                         </Link>
                       </motion.div>
                     );
@@ -336,7 +433,9 @@ export default function Navbar() {
 
                 {!isLoading && isAuthenticated && (
                   <div className="py-3 px-3 border-t border-white/10">
-                    <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">Account</p>
+                    <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">
+                      Account
+                    </p>
                     <MobileLink
                       href="/dashboard/saved"
                       icon={
@@ -353,8 +452,20 @@ export default function Navbar() {
                       active={isActive("/dashboard/saved")}
                       onClick={() => setIsMenuOpen(false)}
                     />
-                    <MobileLink href={profileHref} icon={<User className="w-4 h-4" />} label="Profile" active={isActive(profileHref)} onClick={() => setIsMenuOpen(false)} />
-                    <MobileLink href={dashboardHref} icon={<LayoutDashboard className="w-4 h-4" />} label={dashboardLabel} active={isActive(dashboardHref) && !isActive(profileHref)} onClick={() => setIsMenuOpen(false)} />
+                    <MobileLink
+                      href={profileHref}
+                      icon={<User className="w-4 h-4" />}
+                      label="Profile"
+                      active={isActive(profileHref)}
+                      onClick={() => setIsMenuOpen(false)}
+                    />
+                    <MobileLink
+                      href={dashboardHref}
+                      icon={<LayoutDashboard className="w-4 h-4" />}
+                      label={dashboardLabel}
+                      active={isActive(dashboardHref) && !isActive(profileHref)}
+                      onClick={() => setIsMenuOpen(false)}
+                    />
                   </div>
                 )}
               </div>
@@ -421,9 +532,17 @@ function CartBadge({ count }) {
 function Avatar({ initial, avatar, name, size = 8 }) {
   const sizeClass = `w-${size} h-${size}`;
   return (
-    <div className={`${sizeClass} rounded-full bg-[#D4AF37]/20 overflow-hidden flex items-center justify-center shrink-0`}>
+    <div
+      className={`${sizeClass} rounded-full bg-[#D4AF37]/20 overflow-hidden flex items-center justify-center shrink-0`}
+    >
       {avatar ? (
-        <Image src={avatar} alt={name} width={44} height={44} className="w-full h-full object-cover" />
+        <Image
+          src={avatar}
+          alt={name}
+          width={44}
+          height={44}
+          className="w-full h-full object-cover"
+        />
       ) : (
         <span className="text-sm font-bold text-[#D4AF37]">{initial}</span>
       )}
@@ -437,14 +556,20 @@ function MobileLink({ href, icon, label, active, onClick }) {
       href={href}
       onClick={onClick}
       className={`flex items-center justify-between px-3 py-3 text-[15px] font-medium rounded-lg transition-colors ${
-        active ? "text-[#D4AF37] bg-[#D4AF37]/10" : "text-white/60 hover:text-white hover:bg-white/5"
+        active
+          ? "text-[#D4AF37] bg-[#D4AF37]/10"
+          : "text-white/60 hover:text-white hover:bg-white/5"
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className={active ? "text-[#D4AF37]" : "text-white/40"}>{icon}</span>
+        <span className={active ? "text-[#D4AF37]" : "text-white/40"}>
+          {icon}
+        </span>
         {label}
       </div>
-      {active && <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />}
+      {active && (
+        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />
+      )}
     </Link>
   );
 }

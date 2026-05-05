@@ -1,31 +1,29 @@
 import HeroSection from "@/components/shared/home/hero";
 import StatsStrip from "@/components/shared/home/trust-strip";
-import ReimagineSection from "@/components/shared/home/why-tbm";
-import ServicesSection from "@/components/shared/home/services";
-import PortfolioSection from "@/components/shared/home/featured-projects";
+import ZioraSection from "@/components/shared/home/ziora-teaser";
 import TransformationSection from "@/components/shared/home/transformation";
 import ProcessSection from "@/components/shared/home/process";
+import ServicesSection from "@/components/shared/home/services";
+import PortfolioSection from "@/components/shared/home/featured-projects";
 import MaterialsBogatSection from "@/components/shared/home/materials-bogat";
-import ArchServicesSection from "@/components/shared/home/arch-services";
-import ZioraSection from "@/components/shared/home/ziora-teaser";
-import TestimonialsSection from "@/components/shared/home/testimonials";
+import WhyChooseTBM from "@/components/shared/home/why-choose-tbm";
 import AppDownloadBanner from "@/components/shared/home/app-download";
 
 export const metadata = {
-  title: "TBM Building Services – Design Digitally, Build Reality.",
+  title: "TBM Building Services – Luxury Renovation & Smart Construction",
   description:
-    "The apex construction and architecture agency. Premium renovation, construction materials, and AI-powered space visualization for homes and commercial spaces across Abuja and Lagos.",
+    "Premium renovation and construction company in Abuja & Lagos. We design, visualize, and build luxury spaces using Ziora — our AI-powered 3D design and project estimation system.",
   keywords: [
     "TBM Building Services",
-    "Ziora AI design",
-    "Bogat materials",
-    "renovation Nigeria",
-    "construction Abuja",
-    "interior design Lagos",
-    "AI visualization architecture",
-    "bespoke construction Nigeria",
     "luxury renovation Abuja",
-    "building project estimate",
+    "construction Lagos",
+    "Ziora AI design",
+    "Bogat materials Nigeria",
+    "interior design Abuja",
+    "3D home visualization",
+    "building project estimate Nigeria",
+    "smart construction Nigeria",
+    "premium renovation contractor",
   ],
   authors: [{ name: "TBM Building Services" }],
   openGraph: {
@@ -33,7 +31,7 @@ export const metadata = {
     locale: "en_NG",
     url: "https://tbmbuilding.com",
     siteName: "TBM Building Services",
-    title: "TBM Building Services – Design Digitally, Build Reality.",
+    title: "TBM Building Services – Luxury Renovation & Smart Construction",
     description:
       "Premium renovation, AI-powered design with Ziora, and certified materials from Bogat — all in one platform.",
   },
@@ -42,30 +40,35 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="bg-black min-h-screen">
-      {/* 1. Hero */}
+      {/* 1. Hero — split layout */}
       <HeroSection />
-      {/* 2. Stats — 150+ | Hubs | N550M+ */}
+
+      {/* 2. Stats — 4-stat horizontal bar */}
       <StatsStrip />
-      {/* 3. Reimagine your space */}
-      <ReimagineSection />
-      {/* 4. Our Services grid */}
-      <ServicesSection />
-      {/* 5. Explore Our Work portfolio */}
-      <PortfolioSection />
-      {/* 6. The TBM Transformation before/after */}
-      <TransformationSection />
-      {/* 7. Methodical Excellence process */}
-      <ProcessSection />
-      {/* 8. Material (Bogat) gallery */}
-      <MaterialsBogatSection />
-      {/* 9. Bespoke Architectural Services */}
-      <ArchServicesSection />
-      {/* 10. Ziora AI teaser */}
+
+      {/* 3. Ziora AI — 3-panel app mockup */}
       <ZioraSection />
-      {/* 11. App download */}
-      <AppDownloadBanner />
-      {/* 12. Testimonials */}
-      <TestimonialsSection />
+
+      {/* 4. Before & After — 4-across transformation gallery */}
+      <TransformationSection />
+      <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
+      {/* 5. The TBM × Ziora System — 4-step process */}
+      <ProcessSection />
+      <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
+      {/* 6. Our Services — 6 image cards */}
+      <ServicesSection />
+
+      {/* 7. Explore Our Work — filterable portfolio */}
+      {/* <PortfolioSection /> */}
+
+      {/* 8. Premium Materials — Bogat collection */}
+      {/* <MaterialsBogatSection /> */}
+
+      {/* 9. Why Choose TBM + Testimonials + Final CTA */}
+      <WhyChooseTBM />
+
+      {/* 10. App Download */}
+      {/* <AppDownloadBanner /> */}
     </main>
   );
 }

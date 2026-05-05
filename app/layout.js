@@ -31,6 +31,7 @@ export const metadata = {
     default: "TBM Building Services — Design. Price. Build.",
     template: "%s | TBM Building Services",
   },
+
   description:
     "Premium renovation, construction materials, and AI-powered space visualization for homes and commercial spaces across Abuja and Lagos. Powered by Ziora AI and Bogat materials.",
   metadataBase: new URL("https://tbmbuilding.com"),

@@ -5,71 +5,117 @@ import Link from "next/link";
 import {
   Hammer,
   HardHat,
-  Sofa,
-  LayoutGrid,
-  ClipboardList,
-  Building2,
+  Bath,
+  UtensilsCrossed,
+  Palette,
+  Package,
 } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
 const SERVICES = [
-  { Icon: Hammer, label: "Construction" },
-  { Icon: HardHat, label: "Renovation" },
-  { Icon: Sofa, label: "Interior Design" },
-  { Icon: LayoutGrid, label: "Exterior Design" },
-  { Icon: ClipboardList, label: "Project Management" },
-  { Icon: Building2, label: "Commercial Build" },
+  {
+    Icon: HardHat,
+    label: "Renovation",
+    desc: "Transforming existing spaces into luxury",
+    src: "/hero/re-imagine.png",
+  },
+  {
+    Icon: Hammer,
+    label: "Construction",
+    desc: "Building modern, durable structures",
+    src: "/product-4.png",
+  },
+  {
+    Icon: Bath,
+    label: "Bathrooms",
+    desc: "Luxury bathroom designs & remodeling",
+    src: "/product-3.jpg",
+  },
+  {
+    Icon: UtensilsCrossed,
+    label: "Kitchens",
+    desc: "Modern, functional kitchen spaces",
+    src: "/product-1.jpg",
+  },
+  {
+    Icon: Palette,
+    label: "Interior Finishing",
+    desc: "Exquisite finishes tailored to your style",
+    src: "/product-2.jpg",
+  },
+  {
+    Icon: Package,
+    label: "Materials (Bogat)",
+    desc: "Premium tiles, fittings and finishing materials",
+    src: "/brass.png",
+  },
 ];
 
 export default function ServicesSection() {
   return (
     <section className="bg-black py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        {/* Section title */}
-        <Reveal direction="up">
-          <h2 className="font-poppins font-bold text-3xl sm:text-4xl text-white mb-12 sm:mb-16">
-            Our Services
-          </h2>
-        </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 lg:gap-12 items-start">
-          {/* Left — 3×2 service cards grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {SERVICES.map(({ Icon, label }, i) => (
-              <Reveal key={`${label}-${i}`} direction="up" delay={i * 60}>
-                <Link
-                  href="/services"
-                  className="group flex flex-col items-center gap-4 bg-card rounded-2xl p-6 sm:p-8 hover:border hover:border-[#D4AF37]/30 border border-transparent transition-all duration-300"
-                >
-                  {/* Icon container */}
-                  <span className="flex items-center justify-center w-14 h-14 rounded-xl bg-black/50 group-hover:bg-[#D4AF37]/10 transition-colors duration-300">
-                    <Icon
-                      className="w-6 h-6 text-[#D4AF37]"
-                      strokeWidth={1.5}
-                    />
-                  </span>
-                  {/* Label */}
-                  <span className="text-white text-sm font-manrope font-medium text-center leading-snug">
-                    {label}
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Right — tall photo */}
-          <Reveal direction="right" delay={150}>
-            <div className="relative rounded-2xl overflow-hidden h-80 lg:h-full min-h-80 bg-card">
-              <Image
-                src="/hero/services.jpg"
-                alt="TBM Services"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20" />
-            </div>
+        {/* Section header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-12 sm:mb-14">
+          <Reveal direction="up">
+            <h2 className="font-poppins font-bold text-3xl sm:text-4xl text-white">
+              Our Services
+            </h2>
+          </Reveal>
+          <Reveal direction="up" delay={60}>
+            <p className="text-white/30 text-[11px] font-manrope font-semibold tracking-[0.22em] uppercase">
+              End-to-End Solutions for Luxury Spaces
+            </p>
           </Reveal>
         </div>
+
+        {/* 3×2 image card grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+          {SERVICES.map(({ Icon, label, desc, src }, i) => (
+            <Reveal key={label} direction="up" delay={i * 60}>
+              <Link
+                href="/services"
+                className="group relative overflow-hidden rounded-2xl aspect-4/3 bg-card block"
+              >
+                {/* Background image */}
+                <Image
+                  src={src}
+                  alt={label}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/90" />
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 flex items-end gap-3">
+                  <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-black/50 border border-white/10 backdrop-blur-sm shrink-0">
+                    <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-white font-manrope font-bold text-[14px] leading-tight">
+                      {label}
+                    </p>
+                    <p className="text-white/45 font-manrope text-[11px] leading-snug mt-0.5 hidden sm:block">
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <Reveal direction="up" delay={80}>
+          <div className="flex justify-center mt-12 sm:mt-14">
+            <Link href="/services" className="btn-gold">
+              Explore All Services
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

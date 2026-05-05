@@ -2,173 +2,365 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import {
+  Check,
+  Play,
+  LayoutDashboard,
+  FolderOpen,
+  Box,
+  FileText,
+  Package,
+  Sparkles,
+  Settings2,
+} from "lucide-react";
 import Reveal from "@/components/common/reveal";
+
+const CHECKLIST = [
+  "3D Visualizations",
+  "Accurate Cost Estimate",
+  "Smart Design Recommendations",
+];
+
+const ESTIMATE_ROWS = [
+  ["Construction", "₦ 16,850,000"],
+  ["Finishing", "₦ 6,950,000"],
+  ["Materials", "₦ 4,650,000"],
+];
+
+const NAV_ITEMS = [
+  { Icon: LayoutDashboard, label: "Dashboard" },
+  { Icon: FolderOpen, label: "My Projects" },
+  { Icon: Box, label: "3D Designs", active: true },
+  { Icon: FileText, label: "Estimates" },
+  { Icon: Package, label: "Materials" },
+  { Icon: Sparkles, label: "Inspiration" },
+  { Icon: Settings2, label: "Settings" },
+];
+
+const THUMBS = [
+  "/product-1.jpg",
+  "/product-2.jpg",
+  "/product-3.jpg",
+  "/product-4.png",
+];
+
+function ZioraAppMockup() {
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden w-full"
+      style={{
+        background: "#0d0b08",
+        border: "1px solid rgba(255,255,255,0.08)",
+        boxShadow:
+          "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04)",
+      }}
+    >
+      {/* ── 3-panel body ──────────────────────────────────── */}
+      <div className="flex" style={{ height: 340 }}>
+        {/* Left nav sidebar */}
+        <div
+          className="hidden sm:flex flex-col shrink-0"
+          style={{
+            width: 148,
+            background: "#090806",
+            borderRight: "1px solid rgba(255,255,255,0.055)",
+          }}
+        >
+          {/* Sidebar header */}
+          <div className="flex items-center gap-1.5 px-4 py-3.5 border-b border-white/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+            <span className="text-white font-poppins font-bold text-[12px] tracking-[0.22em]">
+              ZIORA
+            </span>
+          </div>
+
+          {/* Nav items */}
+          <nav className="flex flex-col py-2 flex-1">
+            {NAV_ITEMS.map(({ Icon, label, active }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2.5 px-4 py-2"
+                style={{
+                  background: active ? "rgba(212,175,55,0.08)" : "transparent",
+                  borderLeft: active
+                    ? "2px solid #D4AF37"
+                    : "2px solid transparent",
+                }}
+              >
+                <Icon
+                  style={{ width: 12, height: 12, flexShrink: 0 }}
+                  color={active ? "#D4AF37" : "rgba(255,255,255,0.3)"}
+                  strokeWidth={1.8}
+                />
+                <span
+                  className="font-manrope text-[10px] leading-tight truncate"
+                  style={{
+                    color: active ? "#D4AF37" : "rgba(255,255,255,0.32)",
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        {/* Centre — render image */}
+        <div className="relative flex-1 min-w-0">
+          <Image
+            src="/hero/hero.png"
+            alt="Ziora 3D visualization"
+            fill
+            className="object-cover"
+          />
+          {/* Subtle vignette */}
+          <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+        </div>
+
+        {/* Right — estimate panel */}
+        <div
+          className="hidden md:flex flex-col shrink-0 p-4"
+          style={{
+            width: 196,
+            background: "#090806",
+            borderLeft: "1px solid rgba(255,255,255,0.055)",
+          }}
+        >
+          <p
+            className="font-manrope font-bold uppercase mb-4"
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.28em",
+              color: "rgba(255,255,255,0.3)",
+            }}
+          >
+            Project Estimate
+          </p>
+
+          <p
+            className="font-manrope uppercase mb-1"
+            style={{
+              fontSize: 8,
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.22)",
+            }}
+          >
+            Total Estimate
+          </p>
+          <p
+            className="font-poppins font-bold text-white leading-tight mb-4"
+            style={{ fontSize: 19 }}
+          >
+            ₦ 28,450,000
+          </p>
+
+          {/* Line items */}
+          <div className="flex flex-col gap-3 mb-5">
+            {ESTIMATE_ROWS.map(([k, v]) => (
+              <div key={k}>
+                <div className="flex justify-between items-baseline mb-0.5">
+                  <span
+                    style={{
+                      fontSize: 9,
+                      color: "rgba(255,255,255,0.28)",
+                      fontFamily: "var(--font-manrope)",
+                    }}
+                  >
+                    {k}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,0.55)",
+                      fontFamily: "var(--font-manrope)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {v}
+                  </span>
+                </div>
+                {/* mini bar */}
+                <div
+                  style={{
+                    height: 2,
+                    background: "rgba(255,255,255,0.06)",
+                    borderRadius: 2,
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width:
+                        k === "Construction"
+                          ? "60%"
+                          : k === "Finishing"
+                            ? "25%"
+                            : "15%",
+                      background: "#D4AF37",
+                      borderRadius: 2,
+                      opacity: 0.6,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* View Full Estimate CTA */}
+          <button
+            className="w-full font-manrope uppercase text-center py-2 rounded-lg transition-colors"
+            style={{
+              fontSize: 8,
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.45)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              background: "transparent",
+            }}
+          >
+            View Full Estimate
+          </button>
+        </div>
+      </div>
+
+      {/* ── Bottom thumbnail strip ─────────────────────────── */}
+      <div
+        className="grid gap-1.5 p-3"
+        style={{
+          gridTemplateColumns: "repeat(4, 1fr)",
+          borderTop: "1px solid rgba(255,255,255,0.055)",
+          background: "#080604",
+        }}
+      >
+        {THUMBS.map((src, i) => (
+          <div
+            key={i}
+            className="relative overflow-hidden bg-[#111]"
+            style={{ borderRadius: 6, aspectRatio: "4/3" }}
+          >
+            <Image
+              src={src}
+              alt=""
+              fill
+              className="object-cover"
+              style={{ opacity: i === 0 ? 1 : 0.55 }}
+            />
+            {/* active indicator on first thumb */}
+            {i === 0 && (
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ border: "1.5px solid #D4AF37", borderRadius: 6 }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function ZioraSection() {
   return (
-    <section className="bg-black py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-      {/* ── Outer rounded card with subtle 1px border ─────────────── */}
-      <div
-        className="relative max-w-7xl mx-auto rounded-3xl overflow-hidden"
-        style={{
-          background: "#0d0b08",
-          boxShadow: "0 0 0 1px rgba(255,255,255,0.06)",
-        }}
-      >
-        {/* ── Glow: tight warm radial centred on the device side ─────
-            Starts bright gold at the device, fades left naturally.
-            Does NOT spread across the full card — left stays dark.   */}
-        {/* Ambient warm glow — wide, soft, stays right of center */}
-        <div
-          className="pointer-events-none absolute inset-0 z-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 120% at 74% 50%, rgba(212,175,55,0.50) 0%, rgba(212,175,55,0.20) 30%, rgba(212,175,55,0.07) 55%, rgba(13,11,8,0) 70%)",
-          }}
-        />
+    <section className="bg-black py-20 sm:py-28">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-14 lg:gap-16 items-center">
+          {/* ── Left: copy ───────────────────────────────────────── */}
+          <div>
+            <Reveal direction="up">
+              {/* ZIORA AI badge */}
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="font-poppins font-bold text-white text-3xl sm:text-4xl lg:text-5xl  tracking-[0.2em]">
+                  ZIORA
+                </span>
+                <span
+                  className="font-manrope font-extrabold text-black uppercase leading-none"
+                  style={{
+                    fontSize: 12,
+                    letterSpacing: "0.15em",
+                    background: "#D4AF37",
+                    padding: "5px 9px",
+                    borderRadius: 5,
+                  }}
+                >
+                  AI
+                </span>
+              </div>
 
-        {/* ── Content grid ─────────────────────────────────────────── */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[44%_56%] items-center">
-
-          {/* ── LEFT: text ───────────────────────────────────────── */}
-          <div className="px-6 sm:px-10 lg:px-12 py-10 sm:py-14 lg:py-16 flex flex-col gap-5">
-
-            <Reveal direction="left">
-              <h2 className="font-poppins font-bold" style={{ lineHeight: 1.2 }}>
-                <span className="block text-white   text-[26px] sm:text-[28px]">Ziora AI:</span>
-                <span className="block text-[#D4AF37] text-[26px] sm:text-[28px]">See Before You</span>
-                <span className="block text-[#D4AF37] text-[26px] sm:text-[28px]">Build.</span>
-              </h2>
-            </Reveal>
-
-            <Reveal direction="left" delay={100}>
               <p
-                className="text-white/45 text-[13px] font-manrope leading-relaxed"
-                style={{ maxWidth: "255px" }}
+                className="text-[#D4AF37] font-manrope font-extrabold uppercase mb-5 text-[16px]"
+                style={{ letterSpacing: "0.3em" }}
               >
-                Our exclusive Ziora Visualizer uses advanced
-                generative AI to turn your abstract desires into
-                photorealistic 4K environments in seconds. Skip the
-                guesswork.
+                3D Designs &amp; Project Estimate
+              </p>
+
+              <h2 className="font-poppins font-bold text-[34px] sm:text-[40px] text-white leading-[1.12] mb-4">
+                Design Your Space.
+                <br />
+                Know Your Cost.
+                <br />
+                Before We Build.
+              </h2>
+
+              <p
+                className="text-white/45 font-manrope leading-[1.75] mb-7"
+                style={{ fontSize: 16, maxWidth: 320 }}
+              >
+                Upload your space, choose your style and get stunning 3D designs
+                with accurate project estimates in minutes.
               </p>
             </Reveal>
 
-            <Reveal direction="left" delay={180}>
-              <Link href="/ai-visualizer" className="btn-gold gap-2.5 self-start">
-                Launch Visualizer
-                <Zap className="w-3.5 h-3.5" fill="currentColor" strokeWidth={0} />
-              </Link>
+            {/* Checklist */}
+            <Reveal direction="up" delay={100}>
+              <ul className="flex flex-col gap-3 mb-9">
+                {CHECKLIST.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="flex items-center justify-center w-4 h-4 rounded-full bg-transparent shrink-0">
+                      <Check
+                        className="w-3.5 h-3.5 text-[#D4AF37]"
+                        strokeWidth={2.5}
+                      />
+                    </span>
+                    <span
+                      className="text-white/60 font-manrope"
+                      style={{ fontSize: 13 }}
+                    >
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            {/* CTAs */}
+            <Reveal direction="up" delay={160}>
+              <div className="flex items-center gap-5 flex-wrap">
+                <Link href="/ai-visualizer" className="btn-gold">
+                  Try Ziora Now →
+                </Link>
+                <Link
+                  href="/services#how-it-works"
+                  className="flex items-center gap-2.5 group"
+                  style={{ color: "rgba(255,255,255,0.5)" }}
+                >
+                  <span className="flex items-center justify-center w-9 h-9 rounded-full border border-white/18 group-hover:border-white/35 transition-colors shrink-0">
+                    <Play
+                      className="w-3 h-3 ml-0.5 text-white"
+                      fill="currentColor"
+                      strokeWidth={0}
+                    />
+                  </span>
+                  <span className="font-manrope font-medium text-[13px] group-hover:text-white transition-colors">
+                    See How It Works
+                  </span>
+                </Link>
+              </div>
             </Reveal>
           </div>
 
-          {/* ── RIGHT: 3-D tablet ─────────────────────────────────── */}
-          <div className="relative flex items-center justify-center px-8 py-10 lg:py-14">
-
-            {/* Tight circular bloom directly behind the device */}
-            <div
-              className="pointer-events-none absolute"
-              style={{
-                width: "360px",
-                height: "360px",
-                borderRadius: "50%",
-                background:
-                  "radial-gradient(circle, rgba(212,175,55,0.45) 0%, rgba(212,175,55,0.15) 45%, rgba(13,11,8,0) 68%)",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 0,
-              }}
-            />
-
-            {/* Tablet frame */}
-            <div
-              className="relative z-10 w-full"
-              style={{
-                maxWidth: "370px",
-                /* 3-D perspective tilt — right side slightly forward */
-                transform: "perspective(1000px) rotateY(-18deg) rotateX(3deg)",
-                transformOrigin: "center center",
-                /* bezel */
-                background: "#181818",
-                borderRadius: "28px",
-                padding: "20px 20px 24px",
-                /* shadows */
-                boxShadow:
-                  "0 0 0 1.5px rgba(255,255,255,0.08)," +
-                  "inset 0 0 0 1px rgba(255,255,255,0.03)," +
-                  "0 40px 80px rgba(0,0,0,0.9)," +
-                  "0 0 60px rgba(212,175,55,0.20)",
-              }}
-            >
-              {/* Camera / front-facing sensor dot */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: "10px",
-                }}
-              >
-                <span
-                  style={{
-                    display: "block",
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "50%",
-                    background: "#2c2c2c",
-                  }}
-                />
-              </div>
-
-              {/* Screen */}
-              <div
-                style={{
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  aspectRatio: "4 / 3",
-                  position: "relative",
-                  background: "#0a0a0a",
-                }}
-              >
-                <Image
-                  src="/hero/hero.png"
-                  alt="Ziora AI — photorealistic interior visualization"
-                  fill
-                  className="object-cover"
-                />
-                {/* Top-left screen glare */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 40%)",
-                    pointerEvents: "none",
-                  }}
-                />
-              </div>
-
-              {/* Home indicator bar */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "12px",
-                }}
-              >
-                <span
-                  style={{
-                    display: "block",
-                    width: "38px",
-                    height: "4px",
-                    borderRadius: "4px",
-                    background: "#272727",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
+          {/* ── Right: 3-panel app mockup ─────────────────────────── */}
+          <Reveal direction="right" delay={80}>
+            <ZioraAppMockup />
+          </Reveal>
         </div>
       </div>
     </section>
