@@ -17,13 +17,16 @@ export default function HeroSection() {
       {/* ── Right column — luxury image (desktop) ─────────────────── */}
       <div className="hidden lg:block absolute inset-y-0 right-0 w-[50%]">
         <div className="relative h-full w-full">
-          <Image
+          {/* <Image
             src="/hero/re-imagine.png"
             alt="Luxury interior by TBM Building Services"
             fill
             priority
             className="object-cover object-center"
-          />
+          /> */}
+          <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} controls autoPlay muted loop playsInline>
+            {/* <source src="/hero/videos/2.mp4" type="video/mp4" /> */}
+          </video>
           {/* Left bleed — fades image into the black text column */}
           <div className="absolute inset-y-0 left-0 w-48 bg-linear-to-r from-black to-transparent" />
           {/* Subtle dark overlay for richness */}
@@ -35,13 +38,14 @@ export default function HeroSection() {
 
       {/* ── Mobile background image ───────────────────────────────── */}
       <div className="lg:hidden absolute inset-0">
-        <Image
+        {/* <Image
           src="/hero/re-imagine.png"
           alt="Luxury interior"
           fill
           priority
           className="object-cover object-center opacity-20"
-        />
+        /> */}
+         <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} controls autoPlay muted loop playsInline></video>
         <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/55 to-black" />
       </div>
 
