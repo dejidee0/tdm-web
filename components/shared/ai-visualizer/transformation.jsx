@@ -1,111 +1,92 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Image as ImageIcon, FileText, Video } from "lucide-react";
+import { Cpu, ReceiptText, Zap, Eye, MapPin, ShieldCheck } from "lucide-react";
 
-const paths = [
+const FEATURES = [
   {
-    icon: ImageIcon,
-    title: "Image to Image",
-    description:
-      "Upload a photo of your current room. Ziora re-skins the existing geometry with your chosen styles.",
-    features: ["Preserves room layout", "Swap furniture and materials"],
+    Icon: Cpu,
+    title: "AI-Powered",
+    desc: "Advanced AI creates realistic & stunning designs.",
   },
   {
-    icon: FileText,
-    title: "Text to Image",
-    description:
-      "Describe your dream space from scratch. Perfect for planning new additions or full-floor transformations.",
-    features: ["Complete creative freedom", "AI-guided layout generation"],
+    Icon: ReceiptText,
+    title: "Accurate Estimates",
+    desc: "Get precise project costs with detailed breakdown.",
   },
   {
-    icon: Video,
-    title: "Image to Video",
-    description:
-      "Animate your renders. Walk through your renovated kitchen or pan across your new patio in cinematic 4K.",
-    features: ["360° pan & walkthroughs", "Dynamic lighting and motion"],
+    Icon: Zap,
+    title: "Smart & Fast",
+    desc: "Save weeks of back and forth. Get results in minutes.",
+  },
+  {
+    Icon: Eye,
+    title: "Better Decisions",
+    desc: "Visualize, compare and choose the best option with confidence.",
+  },
+  {
+    Icon: MapPin,
+    title: "Built for You",
+    desc: "Tailored to your style, budget and lifestyle.",
+  },
+  {
+    Icon: ShieldCheck,
+    title: "Trusted by Experts",
+    desc: "Used by top architects, builders and homeowners.",
   },
 ];
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay },
-});
-
-export default function TransformationPath() {
+export default function WhyChooseZiora() {
   return (
-    <section className="bg-black py-16 px-4 sm:px-6 font-manrope">
-      {/* Header */}
-      <motion.div {...fadeUp(0)} className="text-center mb-10">
-        <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2.5 tracking-tight">
-          Choose Your Transformation Path
-        </h2>
-        <p className="text-white/40 text-sm sm:text-base">
-          Three powerful ways to visualize your future space.
-        </p>
-      </motion.div>
+    <section className="bg-black py-20 sm:py-24 px-4 sm:px-6 font-manrope">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <span className="text-gold text-18  font-bold uppercase tracking-[0.2em] block mb-3 font-manrope">
+            Why Ziora
+          </span>
+          <h2 className="font-primary text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            Why Choose Ziora?
+          </h2>
+        </motion.div>
 
-      {/* Cards */}
-      <div className="max-w-275 mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
-        {paths.map((path, i) => {
-          const Icon = path.icon;
-          return (
+        {/* 6-card grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/05">
+          {FEATURES.map(({ Icon, title, desc }, i) => (
             <motion.div
-              key={path.title}
-              {...fadeUp(0.1 + i * 0.1)}
-              className="rounded-2xl p-7 flex flex-col gap-4 border border-white/08"
+              key={title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.07,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="p-8 border border-white/06 flex flex-col gap-4"
               style={{ background: "#0d0b08" }}
             >
-              {/* Icon */}
               <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: "rgba(212,175,55,0.08)" }}
+                className="w-11 h-11 border border-white/10 flex items-center justify-center shrink-0"
+                style={{ background: "rgba(212,175,55,0.06)" }}
               >
-                <Icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.6} />
+                <Icon className="w-5 h-5 text-gold" strokeWidth={1.5} />
               </div>
-
-              {/* Title + Description */}
-              <div className="flex flex-col gap-2">
-                <h3 className="text-white text-lg font-bold">{path.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">
-                  {path.description}
-                </p>
+              <div>
+                <h3 className="text-white text-base font-bold font-primary mb-1.5">
+                  {title}
+                </h3>
+                <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
               </div>
-
-              {/* Feature list */}
-              <ul className="flex flex-col gap-2 mt-auto pt-2">
-                {path.features.map((feat) => (
-                  <li key={feat} className="flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4 shrink-0 text-green-500"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <circle
-                        cx="10"
-                        cy="10"
-                        r="9"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        opacity="0.3"
-                      />
-                      <path
-                        d="M6.5 10.5l2.5 2.5 4.5-5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span className="text-white/40 text-sm">{feat}</span>
-                  </li>
-                ))}
-              </ul>
             </motion.div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </section>
   );
