@@ -1,11 +1,11 @@
 "use client";
 
 import { Suspense } from "react";
-import PackageTiers from "./package-tiers";
 import Hero from "./hero";
 import HowItWorks from "./how-it-works";
-import TransformationPath from "./transformation";
-import AIMultiModeShowcase from "./show-case";
+import AppShowcase from "./show-case";
+import WhyChooseZiora from "./transformation";
+import PackageTiers from "./package-tiers";
 import CTAAndTestimonials from "./cta-testimonials";
 import FinalCTA from "./final-cta";
 
@@ -14,8 +14,8 @@ export default function AIVisualizerView() {
     <>
       <Hero />
       <HowItWorks />
-      <TransformationPath />
-      <AIMultiModeShowcase />
+      <AppShowcase />
+      <WhyChooseZiora />
       <PackageTiers id="pricing" />
       <Suspense fallback={null}>
         <CTAAndTestimonials />

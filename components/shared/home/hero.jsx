@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Layers, Sparkles, Cpu, Diamond } from "lucide-react";
+import { Layers, Sparkles, Cpu, Diamond, ArrowRight } from "lucide-react";
 
 const TRUST_CHIPS = [
   { Icon: Layers, label: "Design Excellence" },
@@ -97,7 +97,7 @@ export default function HeroSection() {
               href="/ai-visualizer"
               className="flex items-center justify-center gap-2  bg-[#D4AF37] px-7 py-3.5 text-black font-poppings font-bold text-[14px] tracking-[0.12em] uppercase hover:bg-primary transition-colors duration-200"
             >
-              Start with Ziora →
+              Start with Ziora <ArrowRight size={14} />
             </Link>
             <Link
               href="/project"
