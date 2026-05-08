@@ -42,7 +42,7 @@ export default function CartPage() {
               {isLoading ? "Loading…" : `${itemCount} item${itemCount !== 1 ? "s" : ""} ready for secure checkout`}
             </p>
           </div>
-          <Link href="/materials" className="text-[14px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors hidden md:block">
+          <Link href="/bogat/materials" className="text-[14px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors hidden md:block">
             Continue Shopping
           </Link>
         </motion.div>

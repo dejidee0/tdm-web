@@ -123,7 +123,7 @@ export default function TrendingClient({ products = [] }) {
           className="flex justify-center mt-10 sm:mt-12"
         >
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="px-7 py-3 border border-gray-300 text-gray-700 font-semibold rounded-full text-sm hover:bg-gray-50 hover:border-gray-400 transition-all"
           >
             View All Materials

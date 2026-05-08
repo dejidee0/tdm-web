@@ -36,7 +36,7 @@ export default function MaterialNotFound() {
           </Link>
 
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 bg-white text-gray-900 font-semibold rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-colors"
           >
             Browse All Materials

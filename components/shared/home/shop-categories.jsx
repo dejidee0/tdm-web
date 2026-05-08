@@ -244,7 +244,7 @@ export default function ShopCategories() {
             </p>
           </div>
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="group inline-flex items-center gap-2 text-[#0A0A0A] font-manrope font-semibold text-sm hover:gap-3 transition-all duration-200 shrink-0"
           >
             View all materials

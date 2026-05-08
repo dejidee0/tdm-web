@@ -59,7 +59,7 @@ export default function OrderConfirmation({ orderId }) {
             View Order
           </Link>
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="px-6 py-3 rounded-lg font-medium border border-white/10 text-white hover:bg-white/05 transition-colors"
           >
             Continue Shopping

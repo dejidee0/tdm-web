@@ -62,7 +62,7 @@ export default function MaterialsBogatSection() {
         {/* CTA */}
         <Reveal direction="up" delay={80}>
           <div className="flex justify-center">
-            <Link href="/materials">
+            <Link href="/bogat">
               <motion.button
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.97 }}
