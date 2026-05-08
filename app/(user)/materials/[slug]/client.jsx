@@ -148,10 +148,11 @@ export default function MaterialDetailClient({
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "Materials", href: "/materials" },
+              { label: "Bogat", href: "/bogat" },
+              { label: "Materials", href: "/bogat/materials" },
               {
                 label: product?.categoryName || "Product",
-                href: `/materials?category=${product?.categoryId}`,
+                href: `/bogat/materials?category=${product?.categoryId}`,
               },
               { label: product?.name || "Product", href: "#" },
             ]}

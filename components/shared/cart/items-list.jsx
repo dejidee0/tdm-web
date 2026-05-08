@@ -112,7 +112,7 @@ export default function CartItemsList({ cart, isLoading }) {
           transition={{ delay: 0.32, duration: 0.35 }}
         >
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-medium hover:opacity-90 transition-all duration-200 hover:gap-3 group text-black"
               style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
@@ -198,7 +198,7 @@ export default function CartItemsList({ cart, isLoading }) {
             {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
           </span>
           <Link
-            href="/materials"
+            href="/bogat/materials"
             className="text-[12px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors"
           >
             + Add more items
