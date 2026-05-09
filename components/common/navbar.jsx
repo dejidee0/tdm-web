@@ -94,7 +94,7 @@ export default function Navbar() {
     { name: "About Us", href: "/about" },
 
     { name: "Services", href: "/services" },
-    { name: "Ziora", href: "/ai-visualizer" },
+    { name: "Ziora", href: "/ziora" },
 
     { name: "Projects", href: "/project" },
     { name: "Materials(Bogat)", href: "/bogat" },

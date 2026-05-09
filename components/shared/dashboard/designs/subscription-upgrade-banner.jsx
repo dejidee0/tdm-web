@@ -96,7 +96,7 @@ export default function SubscriptionUpgradeBanner({ currentTier = "economy" }) {
         {/* CTA */}
         <div className="flex gap-3 shrink-0">
           <Link
-            href="/ai-visualizer#pricing"
+            href="/ziora#pricing"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all text-black hover:opacity-90"
             style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >

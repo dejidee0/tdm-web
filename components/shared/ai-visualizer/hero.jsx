@@ -62,13 +62,13 @@ export default function Hero() {
 
       {/* ── Main hero content overlaid ── */}
       <div className="relative z-10 max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-8 min-h-[82vh] py-32 lg:py-36">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 min-h-[85vh] py-28 lg:py-36">
           {/* Left: text block */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.75, ease: "easeOut" }}
-            className="max-w-4xl space-y-5 shrink-0"
+            className="w-full lg:max-w-xl space-y-5"
           >
             <motion.p
               initial={{ opacity: 0, y: -10 }}
@@ -83,7 +83,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.75 }}
-              className="font-primary font-extrabold text-[3.25rem] sm:text-[4rem] xl:text-[4.75rem] tracking-tight leading-[1.0] uppercase"
+              className="font-primary font-extrabold text-[2.6rem] sm:text-[3.25rem] lg:text-[4rem] xl:text-[4.75rem] tracking-tight leading-none uppercase"
             >
               <span className="text-white block">Design It.</span>
               <span className="text-white block">Visualize It.</span>
@@ -152,10 +152,10 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.65, duration: 0.7, ease: "easeOut" }}
-            className="hidden md:block shrink-0"
+            className="w-full lg:w-auto lg:shrink-0"
           >
             <div
-              className="border rounded-2xl border-white/12 p-6 w-80"
+              className="border border-white/12 p-6 w-full lg:w-80"
               style={{
                 background: "rgba(8,7,4,0.94)",
                 backdropFilter: "blur(24px)",
@@ -209,11 +209,13 @@ export default function Hero() {
         style={{ background: "rgba(5,4,2,0.92)", backdropFilter: "blur(16px)" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/08">
-            {FEATURES.map(({ Icon, label, desc }) => (
+          <div className="grid grid-cols-2 lg:grid-cols-4">
+            {FEATURES.map(({ Icon, label, desc }, i) => (
               <div
                 key={label}
-                className="flex items-center gap-3.5 px-5 sm:px-7 py-5"
+                className={`flex items-center gap-3.5 px-5 sm:px-7 py-5 border-white/08 ${
+                  i % 2 === 0 ? "border-r" : ""
+                } ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r last:lg:border-r-0`}
               >
                 <Icon
                   className="w-8 h-8 text-gold shrink-0"

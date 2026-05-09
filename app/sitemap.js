@@ -27,7 +27,7 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/ai-visualizer`,
+      url: `${BASE_URL}/ziora`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,

@@ -135,7 +135,7 @@ export default function WhyChooseTBM() {
 
               <div className="flex flex-col gap-3">
                 <Link
-                  href="/ai-visualizer"
+                  href="/ziora"
                   className="btn-gold gap-2"
                 >
                   Start with Ziora

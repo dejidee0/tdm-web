@@ -26,7 +26,7 @@ const PILLARS = [
     tagline: "Before/After · Inspiration · Estimate Guidance",
     desc: "Upload a room photo, pick a style, and see a photorealistic concept in seconds. Use the result to get an estimate, shop matching materials, or book a consultation.",
     cta: "Try Ziora AI",
-    href: "/ai-visualizer",
+    href: "/ziora",
     src: "/product-3.jpg",
   },
 ];
