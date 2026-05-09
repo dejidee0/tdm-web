@@ -208,24 +208,23 @@ export default function Hero() {
         className="relative z-10 border-t border-white/08"
         style={{ background: "rgba(5,4,2,0.92)", backdropFilter: "blur(16px)" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {FEATURES.map(({ Icon, label, desc }, i) => (
               <div
                 key={label}
-                className={`flex items-center gap-3.5 px-5 sm:px-7 py-5 border-white/08 ${
-                  i % 2 === 0 ? "border-r" : ""
-                } ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r last:lg:border-r-0`}
+                className={`flex items-start gap-2.5 sm:gap-3 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 border-white/08
+                  ${i % 2 === 0 ? "border-r" : ""}
+                  ${i < 2 ? "border-b lg:border-b-0" : ""}
+                  ${i < 3 ? "lg:border-r" : ""}
+                `}
               >
-                <Icon
-                  className="w-8 h-8 text-gold shrink-0"
-                  strokeWidth={1.5}
-                />
-                <div>
-                  <p className="text-gold text-[14px] font-bold tracking-[0.14em] uppercase font-manrope leading-none mb-0.5">
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gold shrink-0 mt-0.5" strokeWidth={1.5} />
+                <div className="min-w-0">
+                  <p className="text-gold text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase font-manrope leading-none mb-0.5 truncate">
                     {label}
                   </p>
-                  <p className="text-white/45 text-[12px] font-manrope leading-snug hidden sm:block">
+                  <p className="text-white/35 text-[10px] sm:text-xs font-manrope leading-snug line-clamp-2">
                     {desc}
                   </p>
                 </div>
