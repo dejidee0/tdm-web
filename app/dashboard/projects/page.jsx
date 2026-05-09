@@ -140,7 +140,7 @@ function EmptyState() {
         Once you pay for a renovation, your project will appear here with full tracking — timeline, gallery, documents and financials.
       </p>
       <button
-        onClick={() => window.location.href = "/ai-visualizer"}
+        onClick={() => window.location.href = "/ziora"}
         className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-semibold text-black"
         style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
       >

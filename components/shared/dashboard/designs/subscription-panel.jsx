@@ -181,7 +181,7 @@ export default function SubscriptionPanel() {
           Activate the free Economy plan or choose a paid tier to start generating.
         </p>
         <Link
-          href="/ai-visualizer#pricing"
+          href="/ziora#pricing"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity"
           style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
         >
@@ -273,7 +273,7 @@ export default function SubscriptionPanel() {
           {/* Upgrade CTA — economy, exhausted, expired */}
           {(isEconomy || isExpired || quotaExhausted) && (
             <Link
-              href="/ai-visualizer#pricing"
+              href="/ziora#pricing"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity"
               style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
             >
@@ -284,7 +284,7 @@ export default function SubscriptionPanel() {
           {/* Upgrade from Premium to Luxury */}
           {isPremium && isActive && (
             <Link
-              href="/ai-visualizer#pricing"
+              href="/ziora#pricing"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors"
               style={{ border: "1px solid rgba(168,85,247,0.30)", color: "#c084fc" }}
             >

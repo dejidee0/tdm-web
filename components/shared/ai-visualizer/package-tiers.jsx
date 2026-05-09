@@ -405,7 +405,7 @@ export default function PackageTiers({ id, onSubscribed }) {
   const handleSubscribe = async (tierId) => {
     setCtaError(null);
     if (!user) {
-      router.push(`/sign-in?from=${encodeURIComponent("/ai-visualizer#pricing")}`);
+      router.push(`/sign-in?from=${encodeURIComponent("/ziora#pricing")}`);
       return;
     }
     setPendingTier(tierId);
@@ -418,7 +418,7 @@ export default function PackageTiers({ id, onSubscribed }) {
         await subscribePaid.mutateAsync({
           tier: TIER_ENUM[tierId],
           cycle: CYCLE_ENUM[billing],
-          callbackUrl: `${window.location.origin}/ai-visualizer?subscription=success`,
+          callbackUrl: `${window.location.origin}/ziora?subscription=success`,
           ...(appliedPromo && { promoCode: appliedPromo }),
         });
       }
@@ -447,7 +447,7 @@ export default function PackageTiers({ id, onSubscribed }) {
       await subscribePaid.mutateAsync({
         tier: TIER_ENUM[switchTarget],
         cycle: CYCLE_ENUM[billing],
-        callbackUrl: `${window.location.origin}/ai-visualizer?subscription=success`,
+        callbackUrl: `${window.location.origin}/ziora?subscription=success`,
         ...(appliedPromo && { promoCode: appliedPromo }),
       });
       setSwitchTarget(null);

@@ -174,7 +174,7 @@ export default function AIGalleryPage() {
               visions and get inspired to visualize your own renovation.
             </p>
             <Link
-              href="/ai-visualizer"
+              href="/ziora"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-black text-sm font-manrope font-semibold rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
             >
               <Sparkles className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default function AIGalleryPage() {
                 </p>
               </div>
               <Link
-                href="/ai-visualizer"
+                href="/ziora"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-black text-sm font-manrope font-semibold rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
               >
                 Generate Your Design <ArrowRight className="w-4 h-4" />
@@ -231,7 +231,7 @@ export default function AIGalleryPage() {
                   shared
                 </p>
                 <Link
-                  href="/ai-visualizer"
+                  href="/ziora"
                   className="inline-flex items-center gap-1.5 text-[#D4AF37] text-sm font-manrope hover:text-[#D4AF37]/80 transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -270,7 +270,7 @@ export default function AIGalleryPage() {
               renovation concepts in seconds.
             </p>
             <Link
-              href="/ai-visualizer"
+              href="/ziora"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#D4AF37] text-black font-manrope font-semibold rounded-xl hover:bg-[#D4AF37]/90 transition-colors text-sm"
             >
               <Sparkles className="w-4 h-4" />

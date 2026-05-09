@@ -145,7 +145,7 @@ export default function Sidebar({ isOpen, onClose }) {
             Get unlimited AI renders and priority support.
           </p>
           <Link
-            href="/ai-visualizer#pricing"
+            href="/ziora#pricing"
             className="block w-full text-center text-[14px] font-medium py-2.5 px-4 rounded-lg transition-colors text-black"
             style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >

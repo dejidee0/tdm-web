@@ -94,7 +94,7 @@ export default function HeroSection() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-ctas">
             <Link
-              href="/ai-visualizer"
+              href="/ziora"
               className="flex items-center justify-center gap-2  bg-[#D4AF37] px-7 py-3.5 text-black font-poppings font-bold text-[14px] tracking-[0.12em] uppercase hover:bg-primary transition-colors duration-200"
             >
               Start with Ziora <ArrowRight size={14} />

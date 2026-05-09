@@ -334,7 +334,7 @@ export default function ZioraSection() {
             {/* CTAs */}
             <Reveal direction="up" delay={160}>
               <div className="flex items-center gap-5 flex-wrap">
-                <Link href="/ai-visualizer" className="btn-gold">
+                <Link href="/ziora" className="btn-gold">
                   Try Ziora Now →
                 </Link>
                 <Link
