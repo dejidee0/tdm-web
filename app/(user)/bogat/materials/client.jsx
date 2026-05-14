@@ -11,6 +11,7 @@ import ProductGrid from "@/components/shared/materials/product-grid";
 import Pagination from "@/components/shared/materials/pagination";
 import { productKeys } from "@/hooks/use-products";
 
+// ─── Sorting ──────────────────────────────────────────────────────────────────
 function sortItems(items = [], sortBy) {
   const arr = [...items];
   switch (sortBy) {
@@ -28,6 +29,34 @@ function sortItems(items = [], sortBy) {
   }
 }
 
+// ─── Client-side mock filtering (mirrors server-side params) ──────────────────
+function applyMockFilters(items = [], filters = {}) {
+  return items.filter((p) => {
+    if (
+      filters.categoryIds?.length &&
+      !filters.categoryIds.includes(p.categoryId)
+    )
+      return false;
+    if (filters.searchTerm) {
+      const q = filters.searchTerm.toLowerCase();
+      if (
+        !p.name?.toLowerCase().includes(q) &&
+        !p.description?.toLowerCase().includes(q) &&
+        !p.shortDescription?.toLowerCase().includes(q)
+      )
+        return false;
+    }
+    if (filters.isFeatured != null && p.isFeatured !== filters.isFeatured)
+      return false;
+    if (filters.minPrice != null && (p.price ?? 0) < filters.minPrice)
+      return false;
+    if (filters.maxPrice != null && (p.price ?? 0) > filters.maxPrice)
+      return false;
+    return true;
+  });
+}
+
+// ─── Live API fetch ───────────────────────────────────────────────────────────
 async function fetchProducts(filters, page, pageSize = 12) {
   const params = new URLSearchParams();
   params.set("pageNumber", String(page));
@@ -73,9 +102,11 @@ function extractCategories(items = []) {
   return Array.from(map.values());
 }
 
-export default function BogatMaterialsClient({ initialData }) {
+// ─── Component ────────────────────────────────────────────────────────────────
+export default function BogatMaterialsClient({ initialData, useMockData = false }) {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+  const PAGE_SIZE = 12;
 
   const [activeFilters, setActiveFilters] = useState({
     categoryIds: [],
@@ -89,10 +120,30 @@ export default function BogatMaterialsClient({ initialData }) {
   const [sortBy, setSortBy] = useState("popular");
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState("grid");
-  const PAGE_SIZE = 12;
 
+  // ── Mock mode: derive data entirely from initialData prop ─────────────────
+  const mockResult = useMemo(() => {
+    if (!useMockData || !initialData) return null;
+    const allItems = initialData.items ?? [];
+    const filtered = applyMockFilters(allItems, activeFilters);
+    const sorted = sortItems(filtered, sortBy);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = sorted.slice(start, start + PAGE_SIZE);
+    const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+    return {
+      items: pageItems,
+      totalCount: sorted.length,
+      pageNumber: currentPage,
+      pageSize: PAGE_SIZE,
+      totalPages,
+      hasPreviousPage: currentPage > 1,
+      hasNextPage: currentPage < totalPages,
+    };
+  }, [useMockData, initialData, activeFilters, sortBy, currentPage]);
+
+  // ── Live mode: seed React Query cache then run queries ────────────────────
   useEffect(() => {
-    if (initialData) {
+    if (!useMockData && initialData) {
       queryClient.setQueryData(
         productKeys.list({ filters: activeFilters, page: 1 }),
         {
@@ -109,29 +160,15 @@ export default function BogatMaterialsClient({ initialData }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { data, isLoading, isFetching, error } = useQuery({
+  const liveQuery = useQuery({
     queryKey: productKeys.list({ filters: activeFilters, page: currentPage }),
     queryFn: () => fetchProducts(activeFilters, currentPage, PAGE_SIZE),
     staleTime: 5 * 60 * 1000,
     gcTime: 15 * 60 * 1000,
     placeholderData: (prev) => prev,
     refetchOnWindowFocus: false,
+    enabled: !useMockData,
   });
-
-  const sortedItems = useMemo(
-    () => sortItems(data?.items, sortBy),
-    [data?.items, sortBy],
-  );
-
-  useEffect(() => {
-    if (data?.hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: productKeys.list({ filters: activeFilters, page: currentPage + 1 }),
-        queryFn: () => fetchProducts(activeFilters, currentPage + 1, PAGE_SIZE),
-        staleTime: 5 * 60 * 1000,
-      });
-    }
-  }, [data, activeFilters, currentPage, queryClient]);
 
   const { data: allItemsData } = useQuery({
     queryKey: ["products", "all-for-categories"],
@@ -139,9 +176,35 @@ export default function BogatMaterialsClient({ initialData }) {
     staleTime: 15 * 60 * 1000,
     gcTime: 60 * 60 * 1000,
     refetchOnWindowFocus: false,
+    enabled: !useMockData,
   });
-  const categories = extractCategories(allItemsData?.items);
 
+  useEffect(() => {
+    if (!useMockData && liveQuery.data?.hasNextPage) {
+      queryClient.prefetchQuery({
+        queryKey: productKeys.list({ filters: activeFilters, page: currentPage + 1 }),
+        queryFn: () => fetchProducts(activeFilters, currentPage + 1, PAGE_SIZE),
+        staleTime: 5 * 60 * 1000,
+      });
+    }
+  }, [useMockData, liveQuery.data, activeFilters, currentPage, queryClient]);
+
+  // ── Resolved data (mock or live) ──────────────────────────────────────────
+  const data = useMockData ? mockResult : liveQuery.data;
+  const isLoading = useMockData ? false : liveQuery.isLoading;
+  const isFetching = useMockData ? false : liveQuery.isFetching;
+  const error = useMockData ? null : liveQuery.error;
+
+  const sortedItems = useMemo(
+    () => (useMockData ? (data?.items ?? []) : sortItems(data?.items, sortBy)),
+    [useMockData, data?.items, sortBy],
+  );
+
+  const categories = useMockData
+    ? extractCategories(initialData?.items)
+    : extractCategories(allItemsData?.items);
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleFilterChange = useCallback((newFilters) => {
     setActiveFilters(newFilters);
     setCurrentPage(1);

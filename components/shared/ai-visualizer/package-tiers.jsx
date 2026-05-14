@@ -411,9 +411,7 @@ export default function PackageTiers({ id, onSubscribed }) {
     setPendingTier(tierId);
     try {
       if (tierId === "economy") {
-        await activateEconomy.mutateAsync({
-          planId: pricing?.economy?.monthlyPlanId ?? null,
-        });
+        await activateEconomy.mutateAsync({ cycle: CYCLE_ENUM[billing] });
       } else {
         await subscribePaid.mutateAsync({
           tier: TIER_ENUM[tierId],

@@ -79,7 +79,7 @@ export function useSubscriptionState() {
   };
 }
 
-/** POST /api/v1/subscription/activate — Economy */
+/** POST /api/v1/subscription/activate — Economy tier only. */
 export function useActivateEconomy() {
   const queryClient = useQueryClient();
   return useMutation({

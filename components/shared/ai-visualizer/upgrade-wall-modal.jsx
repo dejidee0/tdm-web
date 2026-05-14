@@ -123,11 +123,18 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
       ? "Your plan has expired. Renew or choose a new plan to regain access."
       : "Choose a plan to unlock the full Ziora experience.";
 
+  const TIER_ENUM = { premium: 1, luxury: 2 };
+  const CYCLE_ENUM = { monthly: 0, yearly: 1 };
+
   const handleChoose = async (tierId) => {
     setError(null);
     setPendingTier(tierId);
     try {
-      await subscribePaid.mutateAsync({ tier: tierId, billingCycle: billing });
+      await subscribePaid.mutateAsync({
+        tier: TIER_ENUM[tierId],
+        cycle: CYCLE_ENUM[billing],
+        callbackUrl: `${window.location.origin}/ziora?subscription=success`,
+      });
       onClose?.();
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
