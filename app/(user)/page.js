@@ -61,8 +61,8 @@ export default function Home() {
       {/* 7. Explore Our Work — filterable portfolio */}
       {/* <PortfolioSection /> */}
 
-      {/* 8. Premium Materials — Bogat collection */}
-      {/* <MaterialsBogatSection /> */}
+      {/* 8. Bogat Marketplace — product showcase */}
+      <MaterialsBogatSection />
 
       {/* 9. Why Choose TBM + Testimonials + Final CTA */}
       <WhyChooseTBM />

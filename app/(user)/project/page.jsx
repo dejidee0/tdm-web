@@ -17,7 +17,8 @@ const CATEGORIES = [
 
 const CATEGORY_COLORS = {
   "Guest Toilet Renovation": "bg-black/75 text-blue-300 border-blue-400/60",
-  "Construction (Shell to Finish)": "bg-black/75 text-orange-300 border-orange-400/60",
+  "Construction (Shell to Finish)":
+    "bg-black/75 text-orange-300 border-orange-400/60",
   "Outdoor / Exterior Design": "bg-black/75 text-green-300 border-green-400/60",
   "Bathroom Renovation": "bg-black/75 text-purple-300 border-purple-400/60",
   "Interior Finishing": "bg-black/75 text-pink-300 border-pink-400/60",
@@ -28,7 +29,9 @@ const CATEGORY_COLORS = {
 
 function PortfolioCard({ item }) {
   const router = useRouter();
-  const catColor = CATEGORY_COLORS[item.category] ?? "bg-black/75 text-white/70 border-white/20";
+  const catColor =
+    CATEGORY_COLORS[item.category] ??
+    "bg-black/75 text-white/70 border-white/20";
 
   return (
     <motion.div
@@ -50,13 +53,17 @@ function PortfolioCard({ item }) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white/20 text-sm">No image</div>
+          <div className="w-full h-full flex items-center justify-center text-white/20 text-sm">
+            No image
+          </div>
         )}
-        <span className={`absolute top-3 left-3 text-[11px] font-medium px-2.5 py-1 rounded-full border backdrop-blur-sm ${catColor}`}>
+        <span
+          className={`absolute top-3 left-3 text-[11px] font-medium px-2.5 py-1 rounded-full border backdrop-blur-sm ${catColor}`}
+        >
           {item.category}
         </span>
         {item.beforeImages?.length > 0 && item.afterImages?.length > 0 && (
-          <span className="absolute top-3 right-3 bg-black/60 text-white/80 text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm">
+          <span className="absolute top-3 right-3 bg-black/60 text-white/80 text-[16px] px-2 py-0.5 rounded-full backdrop-blur-sm">
             Before / After
           </span>
         )}
@@ -67,14 +74,18 @@ function PortfolioCard({ item }) {
         <h3 className="text-white font-semibold text-sm leading-snug line-clamp-2 mb-2 group-hover:text-[#D4AF37] transition-colors">
           {item.title}
         </h3>
-        <p className="text-white/40 text-xs mb-3 font-manrope line-clamp-1">{item.vendorName}</p>
+        <p className="text-white/40 text-xs mb-3 font-manrope line-clamp-1">
+          {item.vendorName}
+        </p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 text-white/40 text-xs">
             <MapPin className="w-3 h-3 shrink-0" />
             <span className="font-manrope">{item.location}</span>
           </div>
           {item.budgetDisplay && item.budgetDisplay !== "" && (
-            <span className="text-[#D4AF37] text-xs font-manrope font-medium">{item.budgetDisplay}</span>
+            <span className="text-[#D4AF37] text-xs font-manrope font-medium">
+              {item.budgetDisplay}
+            </span>
           )}
         </div>
       </div>
@@ -109,7 +120,11 @@ export default function PortfolioPage() {
       {/* Hero */}
       <section className="w-full bg-[#0A0A0A] pt-28 sm:pt-36 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <span className="inline-flex items-center gap-2.5 border border-white/15 text-white/60 text-xs font-manrope font-medium px-4 py-2 tracking-[0.15em] uppercase mb-7">
               <span className="w-1 h-1 bg-[#D4AF37] rounded-full" />
               TBM Building Services
@@ -118,7 +133,8 @@ export default function PortfolioPage() {
               Past Projects
             </h1>
             <p className="text-base sm:text-lg font-manrope text-white/55 max-w-xl">
-              Real spaces transformed by TBM. Filter by category to find inspiration for your next project.
+              Real spaces transformed by TBM. Filter by category to find
+              inspiration for your next project.
             </p>
           </motion.div>
         </div>
@@ -128,11 +144,18 @@ export default function PortfolioPage() {
       <section className="bg-[#0A0A0A] border-b border-white/8 sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            <FilterBtn active={activeCategory === null} onClick={() => handleCategoryChange(null)}>
+            <FilterBtn
+              active={activeCategory === null}
+              onClick={() => handleCategoryChange(null)}
+            >
               All
             </FilterBtn>
             {CATEGORIES.map((cat) => (
-              <FilterBtn key={cat} active={activeCategory === cat} onClick={() => handleCategoryChange(cat)}>
+              <FilterBtn
+                key={cat}
+                active={activeCategory === cat}
+                onClick={() => handleCategoryChange(cat)}
+              >
                 {cat}
               </FilterBtn>
             ))}
@@ -143,11 +166,13 @@ export default function PortfolioPage() {
       {/* Grid */}
       <section className="bg-[#0A0A0A] min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {isLoading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="bg-[#111] border border-white/8 rounded-2xl overflow-hidden animate-pulse">
+                <div
+                  key={i}
+                  className="bg-[#111] border border-white/8 rounded-2xl overflow-hidden animate-pulse"
+                >
                   <div className="aspect-[4/3] bg-white/5" />
                   <div className="p-4 space-y-2">
                     <div className="h-4 bg-white/5 rounded w-3/4" />
@@ -160,19 +185,27 @@ export default function PortfolioPage() {
 
           {isError && (
             <div className="text-center py-24">
-              <p className="text-white/40 text-sm font-manrope">Failed to load portfolio. Please try again.</p>
+              <p className="text-white/40 text-sm font-manrope">
+                Failed to load portfolio. Please try again.
+              </p>
             </div>
           )}
 
           {!isLoading && !isError && items.length === 0 && (
             <div className="text-center py-24">
-              <p className="text-white/40 text-sm font-manrope">No projects found{activeCategory ? ` in "${activeCategory}"` : ""}.</p>
+              <p className="text-white/40 text-sm font-manrope">
+                No projects found
+                {activeCategory ? ` in "${activeCategory}"` : ""}.
+              </p>
             </div>
           )}
 
           {!isLoading && items.length > 0 && (
             <>
-              <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div
+                layout
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
                 <AnimatePresence mode="popLayout">
                   {items.map((item) => (
                     <PortfolioCard key={item.id} item={item} />
@@ -189,7 +222,9 @@ export default function PortfolioPage() {
                   >
                     <ChevronLeft className="w-4 h-4" /> Prev
                   </button>
-                  <span className="text-white/40 text-sm font-manrope">{page} / {totalPages}</span>
+                  <span className="text-white/40 text-sm font-manrope">
+                    {page} / {totalPages}
+                  </span>
                   <button
                     onClick={() => setPage((p) => p + 1)}
                     disabled={!hasMore || isFetching}

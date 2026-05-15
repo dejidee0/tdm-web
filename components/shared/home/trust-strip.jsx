@@ -36,7 +36,7 @@ export default function TrustStrip() {
                   <p className="text-white font-poppins font-bold text-[17px] sm:text-[19px] leading-tight truncate">
                     {stat.value}
                   </p>
-                  <p className="text-white/70 font-manrope text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-0.5 leading-tight">
+                  <p className="text-white/70 font-manrope text-[16px] sm:text-[11px] uppercase tracking-[0.2em] mt-0.5 leading-tight">
                     {stat.label}
                   </p>
                 </div>

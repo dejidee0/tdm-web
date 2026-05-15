@@ -17,10 +17,22 @@ function AppleLogo() {
 function PlayLogo() {
   return (
     <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-      <path d="M3.18 23.76c.37.2.8.21 1.19.03l12.09-6.96-2.59-2.6-10.69 9.53z" fill="#EA4335" />
-      <path d="M22.14 10.55 19.1 8.79l-2.92 2.92 2.92 2.92 3.07-1.77c.88-.5.88-1.81-.03-2.31z" fill="#FBBC04" />
-      <path d="M3.18.24C2.8.06 2.38.08 2.02.3L13.6 11.88l2.59-2.6L4.37.27C4.01.07 3.57.04 3.18.24z" fill="#4285F4" />
-      <path d="M2.02.3C1.4.68 1 1.35 1 2.14v19.72c0 .79.4 1.46 1.02 1.84l11.58-11.58L2.02.3z" fill="#34A853" />
+      <path
+        d="M3.18 23.76c.37.2.8.21 1.19.03l12.09-6.96-2.59-2.6-10.69 9.53z"
+        fill="#EA4335"
+      />
+      <path
+        d="M22.14 10.55 19.1 8.79l-2.92 2.92 2.92 2.92 3.07-1.77c.88-.5.88-1.81-.03-2.31z"
+        fill="#FBBC04"
+      />
+      <path
+        d="M3.18.24C2.8.06 2.38.08 2.02.3L13.6 11.88l2.59-2.6L4.37.27C4.01.07 3.57.04 3.18.24z"
+        fill="#4285F4"
+      />
+      <path
+        d="M2.02.3C1.4.68 1 1.35 1 2.14v19.72c0 .79.4 1.46 1.02 1.84l11.58-11.58L2.02.3z"
+        fill="#34A853"
+      />
     </svg>
   );
 }
@@ -33,7 +45,10 @@ function StoreBadge({ platform, href = "#" }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      whileHover={{ y: -2, boxShadow: "0 6px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.2)" }}
+      whileHover={{
+        y: -2,
+        boxShadow: "0 6px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.2)",
+      }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 500, damping: 28 }}
       className="group relative flex items-center gap-3.5 overflow-hidden cursor-pointer"
@@ -42,21 +57,35 @@ function StoreBadge({ platform, href = "#" }) {
         border: "1px solid rgba(255,255,255,0.11)",
         borderRadius: 13,
         padding: "12px 20px 12px 15px",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+        boxShadow:
+          "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
       }}
     >
       <span
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ background: "linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 60%)" }}
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 60%)",
+        }}
       />
       <span className="text-white relative z-10 flex-shrink-0">
         {isApple ? <AppleLogo /> : <PlayLogo />}
       </span>
       <span className="relative z-10 flex flex-col leading-none">
-        <span className="text-white/45 font-manrope" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+        <span
+          className="text-white/45 font-manrope"
+          style={{
+            fontSize: 9,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
+        >
           {isApple ? "Download on the" : "Get it on"}
         </span>
-        <span className="text-white font-semibold font-manrope tracking-tight mt-0.5" style={{ fontSize: 15 }}>
+        <span
+          className="text-white font-semibold font-manrope tracking-tight mt-0.5"
+          style={{ fontSize: 15 }}
+        >
           {isApple ? "App Store" : "Google Play"}
         </span>
       </span>
@@ -70,13 +99,20 @@ function Feature({ icon: Icon, label, desc }) {
     <div className="flex items-start gap-3">
       <div
         className="w-8 h-8 flex items-center justify-center flex-shrink-0 mt-0.5 rounded-lg"
-        style={{ background: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.15)" }}
+        style={{
+          background: "rgba(212,175,55,0.08)",
+          border: "1px solid rgba(212,175,55,0.15)",
+        }}
       >
         <Icon size={13} color="#D4AF37" strokeWidth={1.8} />
       </div>
       <div>
-        <p className="text-white text-sm font-semibold font-poppins leading-tight">{label}</p>
-        <p className="text-white/35 text-xs font-manrope leading-snug mt-0.5">{desc}</p>
+        <p className="text-white text-sm font-semibold font-poppins leading-tight">
+          {label}
+        </p>
+        <p className="text-white/35 text-xs font-manrope leading-snug mt-0.5">
+          {desc}
+        </p>
       </div>
     </div>
   );
@@ -90,10 +126,7 @@ function PhoneStage() {
      * plus the chips that extend ~80px on each side.
      * This prevents any overflow into adjacent columns.
      */
-    <div
-      className="relative mx-auto"
-      style={{ width: 380, height: 500 }}
-    >
+    <div className="relative mx-auto" style={{ width: 380, height: 500 }}>
       {/* Floor glow */}
       <div
         className="absolute pointer-events-none"
@@ -103,7 +136,8 @@ function PhoneStage() {
           bottom: 0,
           left: "50%",
           transform: "translateX(-50%)",
-          background: "radial-gradient(ellipse, rgba(212,175,55,0.2) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse, rgba(212,175,55,0.2) 0%, transparent 70%)",
           filter: "blur(14px)",
         }}
       />
@@ -117,7 +151,8 @@ function PhoneStage() {
           bottom: 24,
           left: "50%",
           transform: "translateX(-50%)",
-          background: "radial-gradient(ellipse at 50% 80%, rgba(212,175,55,0.13) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse at 50% 80%, rgba(212,175,55,0.13) 0%, transparent 70%)",
           filter: "blur(20px)",
         }}
       />
@@ -212,7 +247,8 @@ function PhoneStage() {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, transparent 30%)",
+                background:
+                  "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, transparent 30%)",
                 pointerEvents: "none",
               }}
             />
@@ -220,7 +256,14 @@ function PhoneStage() {
 
           {/* Home bar */}
           <div className="flex justify-center mt-3">
-            <div style={{ width: 80, height: 4, borderRadius: 4, background: "rgba(255,255,255,0.15)" }} />
+            <div
+              style={{
+                width: 80,
+                height: 4,
+                borderRadius: 4,
+                background: "rgba(255,255,255,0.15)",
+              }}
+            />
           </div>
         </div>
       </motion.div>
@@ -228,7 +271,12 @@ function PhoneStage() {
       {/* ── Chip: top-left ── */}
       <motion.div
         animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.4,
+        }}
         className="absolute flex items-center gap-2 pointer-events-none"
         style={{
           top: 60,
@@ -249,7 +297,7 @@ function PhoneStage() {
           <Zap size={12} color="#D4AF37" strokeWidth={2} />
         </div>
         <div>
-          <p className="text-white text-[10px] font-semibold font-manrope leading-tight whitespace-nowrap">
+          <p className="text-white text-[16px] font-semibold font-manrope leading-tight whitespace-nowrap">
             Ziora render complete
           </p>
           <p className="text-white/40 text-[9px] font-manrope leading-tight mt-0.5 whitespace-nowrap">
@@ -261,7 +309,12 @@ function PhoneStage() {
       {/* ── Chip: middle-right ── */}
       <motion.div
         animate={{ y: [0, 7, 0] }}
-        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{
+          duration: 4.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
         className="absolute flex items-center gap-2 pointer-events-none"
         style={{
           top: "42%",
@@ -282,7 +335,7 @@ function PhoneStage() {
           <Truck size={12} color="rgba(255,255,255,0.55)" strokeWidth={2} />
         </div>
         <div>
-          <p className="text-white text-[10px] font-semibold font-manrope leading-tight whitespace-nowrap">
+          <p className="text-white text-[16px] font-semibold font-manrope leading-tight whitespace-nowrap">
             Delivery confirmed
           </p>
           <p className="text-white/40 text-[9px] font-manrope leading-tight mt-0.5 whitespace-nowrap">
@@ -294,7 +347,12 @@ function PhoneStage() {
       {/* ── Chip: bottom-left ── */}
       <motion.div
         animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.8,
+        }}
         className="absolute flex items-center gap-2 pointer-events-none"
         style={{
           bottom: 70,
@@ -315,7 +373,7 @@ function PhoneStage() {
           <BarChart3 size={12} color="#D4AF37" strokeWidth={2} />
         </div>
         <div>
-          <p className="text-white text-[10px] font-semibold font-manrope leading-tight whitespace-nowrap">
+          <p className="text-white text-[16px] font-semibold font-manrope leading-tight whitespace-nowrap">
             On schedule
           </p>
           <p className="text-white/40 text-[9px] font-manrope leading-tight mt-0.5 whitespace-nowrap">
@@ -330,7 +388,10 @@ function PhoneStage() {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function AppDownloadBanner() {
   return (
-    <section className="relative overflow-hidden" style={{ background: "#060504" }}>
+    <section
+      className="relative overflow-hidden"
+      style={{ background: "#060504" }}
+    >
       {/* Top border */}
       <div
         className="absolute top-0 inset-x-0 h-px pointer-events-none"
@@ -342,7 +403,10 @@ export default function AppDownloadBanner() {
       {/* Bottom border */}
       <div
         className="absolute bottom-0 inset-x-0 h-px pointer-events-none"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)",
+        }}
       />
 
       {/* Spotlight */}
@@ -359,7 +423,8 @@ export default function AppDownloadBanner() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(rgba(212,175,55,0.08) 1px, transparent 1px)",
+          backgroundImage:
+            "radial-gradient(rgba(212,175,55,0.08) 1px, transparent 1px)",
           backgroundSize: "30px 30px",
           maskImage:
             "radial-gradient(ellipse 65% 80% at 65% 50%, rgba(0,0,0,0.5) 0%, transparent 100%)",
@@ -368,10 +433,8 @@ export default function AppDownloadBanner() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
           {/* ── Left: copy ── */}
           <div className="flex flex-col">
-
             {/* Eyebrow */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -393,7 +456,7 @@ export default function AppDownloadBanner() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
                 Now Available
               </span>
-              <span className="text-white/25 text-[10px] font-manrope uppercase tracking-[0.15em]">
+              <span className="text-white/25 text-[16px] font-manrope uppercase tracking-[0.15em]">
                 iOS & Android
               </span>
             </motion.div>
@@ -413,7 +476,8 @@ export default function AppDownloadBanner() {
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundImage: "linear-gradient(110deg, #e8c84a 0%, #D4AF37 50%, #b8962e 100%)",
+                  backgroundImage:
+                    "linear-gradient(110deg, #e8c84a 0%, #D4AF37 50%, #b8962e 100%)",
                 }}
               >
                 In Your Pocket.
@@ -442,10 +506,26 @@ export default function AppDownloadBanner() {
               className="flex flex-col gap-5 mb-10 pb-10"
               style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <Feature icon={Zap}      label="Ziora AI Visualizer"   desc="Generate photorealistic room renders from a single photo." />
-              <Feature icon={Package}  label="Shop Premium Materials" desc="Full Bogat catalogue with live pricing and stock." />
-              <Feature icon={BarChart3} label="Project Dashboard"     desc="Timelines, docs, and site gallery in one place." />
-              <Feature icon={Truck}    label="Real-time Delivery"     desc="Track every order from warehouse to site." />
+              <Feature
+                icon={Zap}
+                label="Ziora AI Visualizer"
+                desc="Generate photorealistic room renders from a single photo."
+              />
+              <Feature
+                icon={Package}
+                label="Shop Premium Materials"
+                desc="Full Bogat catalogue with live pricing and stock."
+              />
+              <Feature
+                icon={BarChart3}
+                label="Project Dashboard"
+                desc="Timelines, docs, and site gallery in one place."
+              />
+              <Feature
+                icon={Truck}
+                label="Real-time Delivery"
+                desc="Track every order from warehouse to site."
+              />
             </motion.div>
 
             {/* Badges */}
@@ -479,18 +559,29 @@ export default function AppDownloadBanner() {
                     style={{ opacity: i === 4 ? 0.5 : 1 }}
                   />
                 ))}
-                <span className="text-white/55 text-xs font-manrope ml-1">4.8</span>
+                <span className="text-white/55 text-xs font-manrope ml-1">
+                  4.8
+                </span>
               </div>
 
-              <span className="w-px h-3.5" style={{ background: "rgba(255,255,255,0.1)" }} />
+              <span
+                className="w-px h-3.5"
+                style={{ background: "rgba(255,255,255,0.1)" }}
+              />
 
               <span className="text-white/35 text-xs font-manrope">
-                <span className="text-white/60 font-semibold">10K+</span> downloads
+                <span className="text-white/60 font-semibold">10K+</span>{" "}
+                downloads
               </span>
 
-              <span className="w-px h-3.5" style={{ background: "rgba(255,255,255,0.1)" }} />
+              <span
+                className="w-px h-3.5"
+                style={{ background: "rgba(255,255,255,0.1)" }}
+              />
 
-              <span className="text-white/35 text-xs font-manrope">Free forever</span>
+              <span className="text-white/35 text-xs font-manrope">
+                Free forever
+              </span>
             </motion.div>
           </div>
 
@@ -509,7 +600,6 @@ export default function AppDownloadBanner() {
               <PhoneStage />
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

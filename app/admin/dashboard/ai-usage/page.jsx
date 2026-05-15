@@ -23,13 +23,26 @@ import { useAdminUsers } from "@/hooks/use-admin-users";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const METRICS = [
-  { key: "totalGenerations",   label: "Generations",   color: "#7B2FBE" },
-  { key: "totalCreditsUsed",   label: "Credits Used",  color: "#1A4A8A" },
+  { key: "totalGenerations", label: "Generations", color: "#7B2FBE" },
+  { key: "totalCreditsUsed", label: "Credits Used", color: "#1A4A8A" },
   { key: "totalEstimatedCost", label: "Est. Cost (₦)", color: "#1A7A4A" },
-  { key: "distinctUsers",      label: "Active Users",  color: "#F59E0B" },
+  { key: "distinctUsers", label: "Active Users", color: "#F59E0B" },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -47,13 +60,15 @@ function SectionUnavailable({ message }) {
 
 function initials(user) {
   const name = user?.name || user?.fullName || user?.firstName || "";
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2) || (user?.email?.[0] || "U").toUpperCase();
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || (user?.email?.[0] || "U").toUpperCase()
+  );
 }
 
 // ─── Monthly Spend Chart ──────────────────────────────────────────────────────
@@ -68,22 +83,30 @@ function MonthlySpendChart({ data, metric }) {
       {data.map((d, i) => {
         const val = d[metric] ?? 0;
         const barH = Math.round((val / max) * 168);
-        const label = `${MONTH_NAMES[(d.month ?? 1) - 1]} ${d.year ?? ""}`.trim();
+        const label =
+          `${MONTH_NAMES[(d.month ?? 1) - 1]} ${d.year ?? ""}`.trim();
 
         return (
-          <div key={i} className="flex flex-col items-center gap-1 min-w-9 flex-1 group">
+          <div
+            key={i}
+            className="flex flex-col items-center gap-1 min-w-9 flex-1 group"
+          >
             <div className="relative w-full flex flex-col items-center">
-              <span className="font-manrope text-[10px] text-white/40 group-hover:font-bold group-hover:text-white transition-all truncate">
+              <span className="font-manrope text-[16px] text-white/40 group-hover:font-bold group-hover:text-white transition-all truncate">
                 {val.toLocaleString()}
               </span>
-              <div className="flex flex-col-reverse items-center w-full" style={{ height: 168 }}>
+              <div
+                className="flex flex-col-reverse items-center w-full"
+                style={{ height: 168 }}
+              >
                 <motion.div
                   initial={{ height: 0 }}
                   animate={{ height: barH }}
                   transition={{ duration: 0.45, delay: i * 0.04 }}
                   className="w-full rounded-t cursor-default"
                   style={{
-                    backgroundColor: val === 0 ? "rgba(255,255,255,0.08)" : color,
+                    backgroundColor:
+                      val === 0 ? "rgba(255,255,255,0.08)" : color,
                     minHeight: 2,
                     opacity: val === 0 ? 0.5 : 1,
                   }}
@@ -91,7 +114,7 @@ function MonthlySpendChart({ data, metric }) {
                 />
               </div>
             </div>
-            <span className="font-manrope text-[10px] text-white/40 text-center leading-tight truncate w-full">
+            <span className="font-manrope text-[16px] text-white/40 text-center leading-tight truncate w-full">
               {label}
             </span>
           </div>
@@ -112,14 +135,22 @@ function SummaryCards({ data }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
       {METRICS.map((m) => (
-        <div key={m.key} className="p-3 rounded-xl border border-white/08 bg-[#0d0b08]">
+        <div
+          key={m.key}
+          className="p-3 rounded-xl border border-white/08 bg-[#0d0b08]"
+        >
           <div
             className="w-6 h-6 rounded-md mb-2 flex items-center justify-center"
             style={{ backgroundColor: `${m.color}1A` }}
           >
-            <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: m.color }} />
+            <span
+              className="w-2 h-2 rounded-full inline-block"
+              style={{ backgroundColor: m.color }}
+            />
           </div>
-          <p className="font-manrope text-[11px] text-white/40 leading-tight mb-0.5">{m.label}</p>
+          <p className="font-manrope text-[11px] text-white/40 leading-tight mb-0.5">
+            {m.label}
+          </p>
           <p className="font-manrope text-[18px] font-bold text-white">
             {totals[m.key].toLocaleString()}
           </p>
@@ -158,12 +189,15 @@ function UserPicker({ selectedUser, onSelect }) {
 
   const users = usersData?.users || [];
 
-  const handleSelect = useCallback((user) => {
-    onSelect(user);
-    setOpen(false);
-    setSearch("");
-    setDebouncedSearch("");
-  }, [onSelect]);
+  const handleSelect = useCallback(
+    (user) => {
+      onSelect(user);
+      setOpen(false);
+      setSearch("");
+      setDebouncedSearch("");
+    },
+    [onSelect],
+  );
 
   return (
     <div ref={ref} className="relative">
@@ -196,11 +230,17 @@ function UserPicker({ selectedUser, onSelect }) {
         </div>
       ) : (
         <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
+          />
           <input
             type="text"
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setOpen(true); }}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setOpen(true);
+            }}
             onFocus={() => setOpen(true)}
             placeholder="Search by name, email, or ID…"
             className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
@@ -221,7 +261,10 @@ function UserPicker({ selectedUser, onSelect }) {
             {isLoading ? (
               <div className="p-4 space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-3 animate-pulse">
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 animate-pulse"
+                  >
                     <div className="w-9 h-9 bg-white/08 rounded-full shrink-0" />
                     <div className="flex-1 space-y-1.5">
                       <div className="h-3 bg-white/08 rounded w-3/4" />
@@ -237,7 +280,9 @@ function UserPicker({ selectedUser, onSelect }) {
             ) : (
               <ul className="divide-y divide-white/08">
                 {users.map((user) => {
-                  const userRole = Array.isArray(user?.roles) ? user.roles[0] : user?.role;
+                  const userRole = Array.isArray(user?.roles)
+                    ? user.roles[0]
+                    : user?.role;
                   return (
                     <li key={user.id}>
                       <button
@@ -254,8 +299,12 @@ function UserPicker({ selectedUser, onSelect }) {
                           <div
                             className="w-9 h-9 rounded-full flex items-center justify-center font-manrope text-[13px] font-bold shrink-0"
                             style={{
-                              backgroundColor: user.colorScheme?.bg || "rgba(255,255,255,0.08)",
-                              color: user.colorScheme?.text || "rgba(255,255,255,0.6)",
+                              backgroundColor:
+                                user.colorScheme?.bg ||
+                                "rgba(255,255,255,0.08)",
+                              color:
+                                user.colorScheme?.text ||
+                                "rgba(255,255,255,0.6)",
                             }}
                           >
                             {user.initials || initials(user)}
@@ -268,7 +317,7 @@ function UserPicker({ selectedUser, onSelect }) {
                           <p className="font-manrope text-[11px] text-white/40 truncate">
                             {user.email}
                             {userRole && (
-                              <span className="ml-2 text-[10px] font-semibold text-white/30 uppercase">
+                              <span className="ml-2 text-[16px] font-semibold text-white/30 uppercase">
                                 · {userRole}
                               </span>
                             )}
@@ -290,7 +339,12 @@ function UserPicker({ selectedUser, onSelect }) {
 // ─── Credit Panel ─────────────────────────────────────────────────────────────
 
 function CreditPanel({ userId }) {
-  const { data: credits, isLoading, error, refetch } = useAdminAIUserCredits(userId);
+  const {
+    data: credits,
+    isLoading,
+    error,
+    refetch,
+  } = useAdminAIUserCredits(userId);
   const { mutate: adjust, isPending } = useAdminAIAdjustCredits();
 
   const [form, setForm] = useState({ amount: "", reason: "", type: "add" });
@@ -300,7 +354,11 @@ function CreditPanel({ userId }) {
 
   const handleAdjust = () => {
     setMsg(null);
-    if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) {
+    if (
+      !form.amount ||
+      isNaN(Number(form.amount)) ||
+      Number(form.amount) <= 0
+    ) {
       setMsg({ type: "error", text: "Enter a valid positive amount." });
       return;
     }
@@ -308,29 +366,46 @@ function CreditPanel({ userId }) {
       setMsg({ type: "error", text: "Reason is required." });
       return;
     }
-    const amount = form.type === "add"
-      ? Math.abs(Number(form.amount))
-      : -Math.abs(Number(form.amount));
+    const amount =
+      form.type === "add"
+        ? Math.abs(Number(form.amount))
+        : -Math.abs(Number(form.amount));
 
     adjust(
       { userId, amount, reason: form.reason.trim() },
       {
         onSuccess: () => {
-          setMsg({ type: "success", text: `Credits ${form.type === "add" ? "added" : "deducted"} successfully.` });
+          setMsg({
+            type: "success",
+            text: `Credits ${form.type === "add" ? "added" : "deducted"} successfully.`,
+          });
           setForm((f) => ({ ...f, amount: "", reason: "" }));
           refetch();
         },
         onError: (err) => {
-          setMsg({ type: "error", text: err?.response?.data?.message || "Adjustment failed." });
+          setMsg({
+            type: "error",
+            text: err?.response?.data?.message || "Adjustment failed.",
+          });
         },
-      }
+      },
     );
   };
 
-  if (isLoading) return <div className="h-20 bg-white/08 rounded-lg animate-pulse" />;
-  if (error) return <SectionUnavailable message={`Could not load credits: ${error.message}`} />;
+  if (isLoading)
+    return <div className="h-20 bg-white/08 rounded-lg animate-pulse" />;
+  if (error)
+    return (
+      <SectionUnavailable
+        message={`Could not load credits: ${error.message}`}
+      />
+    );
 
-  const balance = credits?.balance ?? credits?.credits ?? credits?.total ?? credits?.remainingCredits;
+  const balance =
+    credits?.balance ??
+    credits?.credits ??
+    credits?.total ??
+    credits?.remainingCredits;
 
   return (
     <div className="space-y-4">
@@ -344,14 +419,19 @@ function CreditPanel({ userId }) {
             {balance != null ? Number(balance).toLocaleString() : "—"}
           </p>
         </div>
-        <button onClick={() => refetch()} className="p-2 rounded-lg hover:bg-[#D4AF37]/20 transition-colors">
+        <button
+          onClick={() => refetch()}
+          className="p-2 rounded-lg hover:bg-[#D4AF37]/20 transition-colors"
+        >
           <RefreshCw size={15} className="text-[#D4AF37]" />
         </button>
       </div>
 
       {/* Adjust */}
       <div>
-        <p className="font-manrope text-[13px] font-semibold text-white mb-2">Adjust Credits</p>
+        <p className="font-manrope text-[13px] font-semibold text-white mb-2">
+          Adjust Credits
+        </p>
 
         {/* Add / Deduct tabs */}
         <div className="flex rounded-lg border border-white/08 overflow-hidden mb-3">
@@ -361,7 +441,9 @@ function CreditPanel({ userId }) {
               onClick={() => setForm((f) => ({ ...f, type: t }))}
               className={`flex-1 flex items-center justify-center gap-1.5 py-2 font-manrope text-[13px] font-semibold transition-colors capitalize ${
                 form.type === t
-                  ? t === "add" ? "bg-[#1A7A4A] text-white" : "bg-red-500 text-white"
+                  ? t === "add"
+                    ? "bg-[#1A7A4A] text-white"
+                    : "bg-red-500 text-white"
                   : "bg-white/05 text-white/50 hover:bg-white/08"
               }`}
             >
@@ -390,7 +472,9 @@ function CreditPanel({ userId }) {
         </div>
 
         {msg && (
-          <p className={`font-manrope text-[12px] mt-2 ${msg.type === "error" ? "text-red-400" : "text-[#10B981]"}`}>
+          <p
+            className={`font-manrope text-[12px] mt-2 ${msg.type === "error" ? "text-red-400" : "text-[#10B981]"}`}
+          >
             {msg.text}
           </p>
         )}
@@ -399,7 +483,9 @@ function CreditPanel({ userId }) {
           onClick={handleAdjust}
           disabled={isPending || !form.amount || !form.reason.trim()}
           className="mt-3 w-full py-2.5 rounded-lg font-manrope text-[13px] font-semibold text-black transition-opacity disabled:opacity-50"
-          style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+          style={{
+            background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+          }}
         >
           {isPending ? "Applying…" : "Apply Adjustment"}
         </button>
@@ -415,7 +501,11 @@ function UserUsagePanel({ userId }) {
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
 
-  const { data: usage, isLoading, error } = useAdminAIUserUsage(userId, { year, month });
+  const {
+    data: usage,
+    isLoading,
+    error,
+  } = useAdminAIUserUsage(userId, { year, month });
 
   console.log("[AI Usage] user-usage →", usage, "| error:", error?.message);
 
@@ -430,10 +520,15 @@ function UserUsagePanel({ userId }) {
             className="appearance-none w-full px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
           >
             {MONTH_NAMES.map((m, i) => (
-              <option key={i} value={i + 1}>{m}</option>
+              <option key={i} value={i + 1}>
+                {m}
+              </option>
             ))}
           </select>
-          <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+          <ChevronDown
+            size={13}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
+          />
         </div>
         <input
           type="number"
@@ -447,19 +542,31 @@ function UserUsagePanel({ userId }) {
 
       {isLoading ? (
         <div className="grid grid-cols-2 gap-3">
-          {[1,2,3,4].map((i) => <div key={i} className="h-16 bg-white/08 rounded-lg animate-pulse" />)}
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="h-16 bg-white/08 rounded-lg animate-pulse"
+            />
+          ))}
         </div>
       ) : error ? (
-        <SectionUnavailable message={`Could not load usage: ${error.message}`} />
+        <SectionUnavailable
+          message={`Could not load usage: ${error.message}`}
+        />
       ) : usage && Object.keys(usage).length > 0 ? (
         <div className="grid grid-cols-2 gap-3">
           {Object.entries(usage).map(([key, val]) => (
-            <div key={key} className="p-3 bg-white/05 rounded-lg border border-white/08">
+            <div
+              key={key}
+              className="p-3 bg-white/05 rounded-lg border border-white/08"
+            >
               <p className="font-manrope text-[11px] text-white/40 capitalize mb-0.5 leading-tight">
                 {key.replace(/([A-Z])/g, " $1").trim()}
               </p>
               <p className="font-manrope text-[16px] font-bold text-white">
-                {typeof val === "number" ? val.toLocaleString() : String(val ?? "—")}
+                {typeof val === "number"
+                  ? val.toLocaleString()
+                  : String(val ?? "—")}
               </p>
             </div>
           ))}
@@ -484,7 +591,11 @@ function AIUsageContent() {
     const userName = searchParams.get("userName");
     const userEmail = searchParams.get("userEmail");
     if (userId) {
-      setSelectedUser({ id: userId, name: userName || "", email: userEmail || "" });
+      setSelectedUser({
+        id: userId,
+        name: userName || "",
+        email: userEmail || "",
+      });
     }
   }, [searchParams]);
 
@@ -538,7 +649,11 @@ function AIUsageContent() {
                           ? "text-white"
                           : "bg-transparent text-white/50 hover:bg-white/05"
                       }`}
-                      style={activeMetric === m.key ? { backgroundColor: m.color } : {}}
+                      style={
+                        activeMetric === m.key
+                          ? { backgroundColor: m.color }
+                          : {}
+                      }
                     >
                       {m.label}
                     </button>
@@ -555,7 +670,10 @@ function AIUsageContent() {
                     <option value={6}>6 mo</option>
                     <option value={12}>12 mo</option>
                   </select>
-                  <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+                  <ChevronDown
+                    size={12}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
+                  />
                 </div>
                 <button
                   onClick={refetchSpend}
@@ -570,7 +688,10 @@ function AIUsageContent() {
             <div className="flex items-center gap-2 mb-4">
               <span
                 className="w-3 h-3 rounded-sm inline-block"
-                style={{ backgroundColor: METRICS.find((m) => m.key === activeMetric)?.color }}
+                style={{
+                  backgroundColor: METRICS.find((m) => m.key === activeMetric)
+                    ?.color,
+                }}
               />
               <span className="font-manrope text-[12px] text-white/40">
                 {METRICS.find((m) => m.key === activeMetric)?.label}
@@ -580,7 +701,9 @@ function AIUsageContent() {
             {spendLoading ? (
               <div className="h-48 bg-white/05 rounded-lg animate-pulse" />
             ) : spendError ? (
-              <SectionUnavailable message={`Could not load data: ${spendError.message}`} />
+              <SectionUnavailable
+                message={`Could not load data: ${spendError.message}`}
+              />
             ) : spendData.length === 0 ? (
               <SectionUnavailable message="No spend data available." />
             ) : (
@@ -600,7 +723,10 @@ function AIUsageContent() {
                 <div className="flex items-center justify-between mb-5">
                   <div>
                     <h2 className="font-manrope text-[16px] font-bold text-white">
-                      Usage — {selectedUser.name || selectedUser.fullName || selectedUser.email}
+                      Usage —{" "}
+                      {selectedUser.name ||
+                        selectedUser.fullName ||
+                        selectedUser.email}
                     </h2>
                     <p className="font-manrope text-[12px] text-white/40 mt-0.5">
                       Per-month AI generation breakdown
@@ -626,7 +752,10 @@ function AIUsageContent() {
             <h2 className="font-manrope text-[15px] font-bold text-white mb-3">
               Select User
             </h2>
-            <UserPicker selectedUser={selectedUser} onSelect={setSelectedUser} />
+            <UserPicker
+              selectedUser={selectedUser}
+              onSelect={setSelectedUser}
+            />
 
             {!selectedUser && (
               <p className="font-manrope text-[12px] text-white/40 mt-3 text-center">
@@ -659,7 +788,11 @@ function AIUsageContent() {
 
 export default function AIUsagePage() {
   return (
-    <Suspense fallback={<div className="max-w-360 mx-auto animate-pulse h-96 bg-[#0d0b08] rounded-xl border border-white/08" />}>
+    <Suspense
+      fallback={
+        <div className="max-w-360 mx-auto animate-pulse h-96 bg-[#0d0b08] rounded-xl border border-white/08" />
+      }
+    >
       <AIUsageContent />
     </Suspense>
   );

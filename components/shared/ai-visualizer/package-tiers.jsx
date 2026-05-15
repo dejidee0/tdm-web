@@ -42,7 +42,15 @@ function fmt(dateStr) {
  * "current-active" | "current-canceled" | "current-expired" | "current-paused"
  * | "has-other-active" | "none"
  */
-function resolveTierState(tierId, sub, status, isActive, isCanceled, isExpired, isPaused) {
+function resolveTierState(
+  tierId,
+  sub,
+  status,
+  isActive,
+  isCanceled,
+  isExpired,
+  isPaused,
+) {
   if (!sub) return "none";
   const isCurrentTier = sub.tier === tierId;
   if (isCurrentTier) {
@@ -77,7 +85,9 @@ function TierPrice({ tier, billing, pricing, discount }) {
     return (
       <div className="mt-4">
         <span className={`text-4xl font-extrabold ${textMain}`}>Free</span>
-        <span className={`text-sm ${textMuted} ml-1 font-manrope`}>forever</span>
+        <span className={`text-sm ${textMuted} ml-1 font-manrope`}>
+          forever
+        </span>
       </div>
     );
   }
@@ -99,8 +109,8 @@ function TierPrice({ tier, billing, pricing, discount }) {
 
   const discountedPrice = activeDiscount
     ? isYearly
-      ? data.discountedYearlyMonthlyEquiv ?? null
-      : data.discountedMonthlyPrice ?? null
+      ? (data.discountedYearlyMonthlyEquiv ?? null)
+      : (data.discountedMonthlyPrice ?? null)
     : null;
 
   return (
@@ -117,22 +127,39 @@ function TierPrice({ tier, billing, pricing, discount }) {
         {activeDiscount && discountedPrice != null ? (
           <>
             <span className={`text-4xl font-extrabold ${textMain}`}>
-              ₦{Number(discountedPrice).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ₦
+              {Number(discountedPrice).toLocaleString("en-NG", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </span>
             <span className={`text-sm ${textMuted} line-through mb-1.5`}>
-              ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ₦
+              {Number(basePrice).toLocaleString("en-NG", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </span>
           </>
         ) : (
           <span className={`text-4xl font-extrabold ${textMain}`}>
-            ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ₦
+            {Number(basePrice).toLocaleString("en-NG", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </span>
         )}
         <span className={`text-sm ${textMuted} mb-1.5 font-manrope`}>/mo</span>
       </div>
       {isYearly && (
         <p className={`text-sm ${textMuted} mt-1 font-manrope`}>
-          ₦{Number(annualTotal).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} billed annually
+          ₦
+          {Number(annualTotal).toLocaleString("en-NG", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}{" "}
+          billed annually
         </p>
       )}
       {activeDiscount?.endDate && (
@@ -163,9 +190,13 @@ function QuotaBar({ used, allowed }) {
 
   return (
     <div className="mt-4 space-y-1.5">
-      <div className={`flex items-center justify-between text-xs ${textColor} font-manrope`}>
+      <div
+        className={`flex items-center justify-between text-xs ${textColor} font-manrope`}
+      >
         <span>Generations used</span>
-        <span className={`font-bold ${countColor}`}>{used} / {allowed}</span>
+        <span className={`font-bold ${countColor}`}>
+          {used} / {allowed}
+        </span>
       </div>
       <div className={`h-1.5 ${trackBg} overflow-hidden`}>
         <motion.div
@@ -173,9 +204,13 @@ function QuotaBar({ used, allowed }) {
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="h-full"
-          style={isHigh
-            ? { background: "#fb923c" }
-            : { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+          style={
+            isHigh
+              ? { background: "#fb923c" }
+              : {
+                  background:
+                    "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                }
           }
         />
       </div>
@@ -240,12 +275,25 @@ const TIERS = [
 
 // ── Switch plan confirmation modal ────────────────────────────────────────
 
-function SwitchPlanModal({ isOpen, fromTier, toTier, accessUntil, onConfirm, onClose, isBusy, error }) {
+function SwitchPlanModal({
+  isOpen,
+  fromTier,
+  toTier,
+  accessUntil,
+  onConfirm,
+  onClose,
+  isBusy,
+  error,
+}) {
   const accessDate = accessUntil
-    ? new Date(accessUntil).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })
+    ? new Date(accessUntil).toLocaleDateString("en-NG", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
     : null;
 
-  const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+  const capitalize = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "");
 
   return (
     <AnimatePresence>
@@ -267,13 +315,22 @@ function SwitchPlanModal({ isOpen, fromTier, toTier, accessUntil, onConfirm, onC
               exit={{ opacity: 0, y: 24, scale: 0.96 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               className="w-full max-w-md overflow-hidden font-manrope border border-white/10"
-              style={{ background: "#0d0b08", boxShadow: "0 24px 64px rgba(0,0,0,0.6)" }}
+              style={{
+                background: "#0d0b08",
+                boxShadow: "0 24px 64px rgba(0,0,0,0.6)",
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="px-6 pt-6 pb-2 border-b border-white/08">
-                <h2 className="text-lg font-bold text-white">Switch to {capitalize(toTier)}?</h2>
+                <h2 className="text-lg font-bold text-white">
+                  Switch to {capitalize(toTier)}?
+                </h2>
                 <p className="text-white/40 text-sm mt-1 mb-4 font-manrope">
-                  You currently have an active <span className="text-white/70 font-semibold">{capitalize(fromTier)}</span> plan.
+                  You currently have an active{" "}
+                  <span className="text-white/70 font-semibold">
+                    {capitalize(fromTier)}
+                  </span>{" "}
+                  plan.
                 </p>
               </div>
 
@@ -281,23 +338,40 @@ function SwitchPlanModal({ isOpen, fromTier, toTier, accessUntil, onConfirm, onC
                 {/* What this means */}
                 <div
                   className="p-4 border text-sm space-y-2 font-manrope"
-                  style={{ background: "rgba(245,158,11,0.06)", borderColor: "rgba(245,158,11,0.20)" }}
+                  style={{
+                    background: "rgba(245,158,11,0.06)",
+                    borderColor: "rgba(245,158,11,0.20)",
+                  }}
                 >
-                  <p className="font-semibold text-amber-400">What happens when you switch:</p>
+                  <p className="font-semibold text-amber-400">
+                    What happens when you switch:
+                  </p>
                   <ul className="space-y-1.5 text-white/60">
                     <li className="flex items-start gap-2">
                       <span className="text-amber-400 mt-0.5">•</span>
-                      Your <span className="text-white/80 font-medium">{capitalize(fromTier)}</span> plan will be canceled immediately.
+                      Your{" "}
+                      <span className="text-white/80 font-medium">
+                        {capitalize(fromTier)}
+                      </span>{" "}
+                      plan will be canceled immediately.
                     </li>
                     {accessDate && (
                       <li className="flex items-start gap-2">
                         <span className="text-amber-400 mt-0.5">•</span>
-                        You had access until <span className="text-white/80 font-medium">{accessDate}</span>. No refund is issued for unused time.
+                        You had access until{" "}
+                        <span className="text-white/80 font-medium">
+                          {accessDate}
+                        </span>
+                        . No refund is issued for unused time.
                       </li>
                     )}
                     <li className="flex items-start gap-2">
                       <span className="text-amber-400 mt-0.5">•</span>
-                      You&apos;ll be taken to payment to activate <span className="text-white/80 font-medium">{capitalize(toTier)}</span>.
+                      You&apos;ll be taken to payment to activate{" "}
+                      <span className="text-white/80 font-medium">
+                        {capitalize(toTier)}
+                      </span>
+                      .
                     </li>
                   </ul>
                 </div>
@@ -319,11 +393,16 @@ function SwitchPlanModal({ isOpen, fromTier, toTier, accessUntil, onConfirm, onC
                   <button
                     onClick={onConfirm}
                     disabled={isBusy}
-                    className="flex-1 py-3 text-sm font-semibold text-black flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
-                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    className="flex-1 py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                    style={{
+                      background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 0 18px rgba(212,175,55,0.28)",
+                    }}
                   >
                     {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {isBusy ? "Processing…" : `Cancel & Switch to ${capitalize(toTier)}`}
+                    {isBusy
+                      ? "Processing…"
+                      : `Cancel & Switch to ${capitalize(toTier)}`}
                   </button>
                 </div>
               </div>
@@ -350,7 +429,11 @@ export default function PackageTiers({ id, onSubscribed }) {
 
   const router = useRouter();
   const { data: user } = useCurrentUser();
-  const { data: pricingData, isLoading: priceLoading, isError: priceError } = usePricing(appliedPromo);
+  const {
+    data: pricingData,
+    isLoading: priceLoading,
+    isError: priceError,
+  } = usePricing(appliedPromo);
 
   const {
     sub,
@@ -371,7 +454,11 @@ export default function PackageTiers({ id, onSubscribed }) {
   const renew = useRenewSubscription();
 
   const pricing = pricingData
-    ? { economy: pricingData.economy, premium: pricingData.premium, luxury: pricingData.luxury }
+    ? {
+        economy: pricingData.economy,
+        premium: pricingData.premium,
+        luxury: pricingData.luxury,
+      }
     : null;
   const activeDiscount = pricingData?.activeDiscount ?? null;
   const yearlyDiscountPct =
@@ -456,13 +543,19 @@ export default function PackageTiers({ id, onSubscribed }) {
   };
 
   const isSwitching = cancelSub.isPending || subscribePaid.isPending;
-  const isSubmitting = activateEconomy.isPending || subscribePaid.isPending || cancelSub.isPending || renew.isPending;
+  const isSubmitting =
+    activateEconomy.isPending ||
+    subscribePaid.isPending ||
+    cancelSub.isPending ||
+    renew.isPending;
 
   return (
     <>
-      <section id={id} className="bg-black py-16 sm:py-20 font-manrope scroll-mt-20">
+      <section
+        id={id}
+        className="bg-black py-16 sm:py-20 font-manrope scroll-mt-20"
+      >
         <div className="max-w-315 mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* ── Section header ───────────────────────────────────── */}
           <motion.div
             className="mb-12"
@@ -495,7 +588,10 @@ export default function PackageTiers({ id, onSubscribed }) {
             >
               <div
                 className="inline-flex items-center gap-0 border p-1"
-                style={{ background: "#0d0b08", borderColor: "rgba(255,255,255,0.10)" }}
+                style={{
+                  background: "#0d0b08",
+                  borderColor: "rgba(255,255,255,0.10)",
+                }}
               >
                 {["monthly", "yearly"].map((cycle) => (
                   <button
@@ -504,15 +600,24 @@ export default function PackageTiers({ id, onSubscribed }) {
                     className="relative px-5 py-2 text-sm font-semibold transition-colors font-manrope text-black"
                     style={
                       billing === cycle
-                        ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
-                        : { background: "transparent", color: "rgba(255,255,255,0.40)" }
+                        ? {
+                            background:
+                              "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                          }
+                        : {
+                            background: "transparent",
+                            color: "rgba(255,255,255,0.40)",
+                          }
                     }
                   >
                     {cycle === "monthly" ? "Monthly" : "Yearly"}
                     {cycle === "yearly" && yearlyDiscountPct != null && (
                       <span
-                        className="ml-2 px-1.5 py-0.5 text-[10px] font-bold"
-                        style={{ background: "rgba(212,175,55,0.15)", color: "#D4AF37" }}
+                        className="ml-2 px-1.5 py-0.5 text-[16px] font-bold"
+                        style={{
+                          background: "rgba(212,175,55,0.15)",
+                          color: "#D4AF37",
+                        }}
                       >
                         Save {Math.round(yearlyDiscountPct)}%
                       </span>
@@ -550,8 +655,11 @@ export default function PackageTiers({ id, onSubscribed }) {
                   <button
                     onClick={handleApplyPromo}
                     disabled={!promoInput.trim() || priceLoading}
-                    className="px-4 py-2 text-sm font-semibold font-manrope text-black disabled:opacity-40 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
-                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    className="px-4 py-2 text-sm font-semibold font-manrope text-white disabled:opacity-40 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
+                    style={{
+                      background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 0 14px rgba(212,175,55,0.22)",
+                    }}
                   >
                     Apply
                   </button>
@@ -561,17 +669,25 @@ export default function PackageTiers({ id, onSubscribed }) {
                   {promoStatus === "applied" && (
                     <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 font-manrope">
                       <BadgeCheck className="w-3.5 h-3.5" />
-                      <span className="font-mono uppercase">{appliedPromo}</span> applied
+                      <span className="font-mono uppercase">
+                        {appliedPromo}
+                      </span>{" "}
+                      applied
                     </span>
                   )}
                   {promoStatus === "invalid" && (
                     <span className="flex items-center gap-1.5 text-xs font-semibold text-red-400 font-manrope">
                       <AlertCircle className="w-3.5 h-3.5" />
-                      <span className="font-mono uppercase">{appliedPromo}</span> — not valid or not applicable
+                      <span className="font-mono uppercase">
+                        {appliedPromo}
+                      </span>{" "}
+                      — not valid or not applicable
                     </span>
                   )}
                   {promoStatus === null && (
-                    <span className="text-xs text-white/40 font-manrope">Checking…</span>
+                    <span className="text-xs text-white/40 font-manrope">
+                      Checking…
+                    </span>
                   )}
                   <button
                     onClick={handleRemovePromo}
@@ -595,7 +711,10 @@ export default function PackageTiers({ id, onSubscribed }) {
           {ctaError && (
             <div
               className="flex items-start gap-3 p-4 mb-6 border font-manrope"
-              style={{ background: "rgba(245,158,11,0.08)", borderColor: "rgba(245,158,11,0.25)" }}
+              style={{
+                background: "rgba(245,158,11,0.08)",
+                borderColor: "rgba(245,158,11,0.25)",
+              }}
             >
               <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
               <p className="text-sm text-amber-400">{ctaError}</p>
@@ -613,7 +732,13 @@ export default function PackageTiers({ id, onSubscribed }) {
               if (isHidden) return null;
 
               const tierState = resolveTierState(
-                tier.id, sub, status, isActive, isCanceled, isExpired, isPaused
+                tier.id,
+                sub,
+                status,
+                isActive,
+                isCanceled,
+                isExpired,
+                isPaused,
               );
 
               const isCurrentActive = tierState === "current-active";
@@ -621,13 +746,15 @@ export default function PackageTiers({ id, onSubscribed }) {
               const isCurrentExpired = tierState === "current-expired";
               const isCurrentPaused = tierState === "current-paused";
               const hasOtherActive = tierState === "has-other-active";
-              const isCurrent = isCurrentActive || isCurrentCanceled || isCurrentExpired || isCurrentPaused;
+              const isCurrent =
+                isCurrentActive ||
+                isCurrentCanceled ||
+                isCurrentExpired ||
+                isCurrentPaused;
 
               const isBusy = isSubmitting && pendingTier === tier.id;
 
-              const cardBg = tier.dark
-                ? "rgba(212,175,55,0.04)"
-                : "#0d0b08";
+              const cardBg = tier.dark ? "rgba(212,175,55,0.04)" : "#0d0b08";
               const cardBorder = tier.dark
                 ? "rgba(212,175,55,0.20)"
                 : "rgba(255,255,255,0.08)";
@@ -638,12 +765,18 @@ export default function PackageTiers({ id, onSubscribed }) {
 
               // Outer ring for current plan
               const ringStyle = isCurrentActive
-                ? { outline: "2px solid rgba(212,175,55,0.50)", outlineOffset: "-2px" }
+                ? {
+                    outline: "2px solid rgba(212,175,55,0.50)",
+                    outlineOffset: "-2px",
+                  }
                 : isCurrentCanceled
-                ? { outline: "2px solid #f59e0b", outlineOffset: "-2px" }
-                : isCurrentExpired || isCurrentPaused
-                ? { outline: "2px solid rgba(239,68,68,0.60)", outlineOffset: "-2px" }
-                : {};
+                  ? { outline: "2px solid #f59e0b", outlineOffset: "-2px" }
+                  : isCurrentExpired || isCurrentPaused
+                    ? {
+                        outline: "2px solid rgba(239,68,68,0.60)",
+                        outlineOffset: "-2px",
+                      }
+                    : {};
 
               return (
                 <motion.div
@@ -653,7 +786,11 @@ export default function PackageTiers({ id, onSubscribed }) {
                   viewport={{ once: true }}
                   transition={{ duration: 0.55, delay: i * 0.1 }}
                   className={`relative flex flex-col p-8 border ${hasOtherActive ? "opacity-60" : ""}`}
-                  style={{ background: cardBg, borderColor: cardBorder, ...ringStyle }}
+                  style={{
+                    background: cardBg,
+                    borderColor: cardBorder,
+                    ...ringStyle,
+                  }}
                 >
                   {/* ── Top badges ── */}
                   <div className="absolute top-5 right-5 flex flex-col items-end gap-1.5">
@@ -661,7 +798,10 @@ export default function PackageTiers({ id, onSubscribed }) {
                     {isCurrentActive && (
                       <span
                         className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-black uppercase tracking-wide font-manrope"
-                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        style={{
+                          background:
+                            "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                        }}
                       >
                         <BadgeCheck className="w-3 h-3" /> Your Plan
                       </span>
@@ -696,8 +836,12 @@ export default function PackageTiers({ id, onSubscribed }) {
                   >
                     <Icon className="w-5 h-5 text-[#D4AF37]" />
                   </div>
-                  <h3 className={`text-xl font-bold ${textMain} font-primary`}>{tier.label}</h3>
-                  <p className={`text-sm ${textMuted} mt-0.5 font-manrope`}>{tier.tagline}</p>
+                  <h3 className={`text-xl font-bold ${textMain} font-primary`}>
+                    {tier.label}
+                  </h3>
+                  <p className={`text-sm ${textMuted} mt-0.5 font-manrope`}>
+                    {tier.tagline}
+                  </p>
 
                   {/* Price */}
                   {priceLoading && tier.id !== "economy" ? (
@@ -731,7 +875,9 @@ export default function PackageTiers({ id, onSubscribed }) {
 
                   {/* Subscription status info */}
                   {isCurrentActive && sub?.endDate && (
-                    <div className={`flex items-center gap-1.5 mt-3 text-xs ${textMuted} font-manrope`}>
+                    <div
+                      className={`flex items-center gap-1.5 mt-3 text-xs ${textMuted} font-manrope`}
+                    >
                       <CalendarClock className="w-3.5 h-3.5 shrink-0" />
                       Renews {fmt(sub.endDate)}
                     </div>
@@ -756,7 +902,10 @@ export default function PackageTiers({ id, onSubscribed }) {
                   {/* Features list */}
                   <ul className="flex-1 space-y-3">
                     {tier.features.map((f) => (
-                      <li key={f} className={`flex items-start gap-2.5 text-sm ${textMuted} font-manrope`}>
+                      <li
+                        key={f}
+                        className={`flex items-start gap-2.5 text-sm ${textMuted} font-manrope`}
+                      >
                         <Check className="w-4 h-4 text-gold mt-0.5 shrink-0" />
                         {f}
                       </li>
@@ -765,13 +914,14 @@ export default function PackageTiers({ id, onSubscribed }) {
 
                   {/* ── CTA area ── */}
                   <div className="mt-8 space-y-2">
-
                     {/* ACTIVE current plan */}
                     {isCurrentActive && (
                       <>
                         {/* Economy: no cancel — just a status indicator */}
                         {tier.id === "economy" ? (
-                          <div className={`w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 border ${divider} ${textMuted}`}>
+                          <div
+                            className={`w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 border ${divider} ${textMuted}`}
+                          >
                             <BadgeCheck className="w-4 h-4" /> Active Plan
                           </div>
                         ) : (
@@ -807,8 +957,11 @@ export default function PackageTiers({ id, onSubscribed }) {
                       <button
                         onClick={handleRenew}
                         disabled={renew.isPending}
-                        className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 text-black hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
-                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm transition-colors flex items-center justify-center gap-2 text-white hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide"
+                        style={{
+                          background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 0 18px rgba(212,175,55,0.28)",
+                        }}
                       >
                         {renew.isPending ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -822,10 +975,16 @@ export default function PackageTiers({ id, onSubscribed }) {
                     {/* HAS OTHER ACTIVE plan — open switch confirmation modal */}
                     {hasOtherActive && (
                       <button
-                        onClick={() => { setSwitchError(null); setSwitchTarget(tier.id); }}
+                        onClick={() => {
+                          setSwitchError(null);
+                          setSwitchTarget(tier.id);
+                        }}
                         disabled={isSubmitting || priceLoading || !!priceError}
-                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
-                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-white hover:opacity-90 transition-opacity"
+                        style={{
+                          background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 0 18px rgba(212,175,55,0.28)",
+                        }}
                       >
                         {`Switch to ${tier.label}`}
                         <ChevronRight className="w-4 h-4" />
@@ -836,9 +995,16 @@ export default function PackageTiers({ id, onSubscribed }) {
                     {tierState === "none" && !subLoading && (
                       <button
                         onClick={() => handleSubscribe(tier.id)}
-                        disabled={isSubmitting || (tier.id !== "economy" && (priceLoading || !!priceError))}
-                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-black hover:opacity-90 transition-opacity"
-                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        disabled={
+                          isSubmitting ||
+                          (tier.id !== "economy" &&
+                            (priceLoading || !!priceError))
+                        }
+                        className="w-full py-3 px-6 font-manrope font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed tracking-wide text-white hover:opacity-90 transition-opacity"
+                        style={{
+                          background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 0 18px rgba(212,175,55,0.28)",
+                        }}
                       >
                         {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
                         {isBusy ? "Processing…" : `Choose ${tier.label}`}
@@ -863,8 +1029,8 @@ export default function PackageTiers({ id, onSubscribed }) {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            All plans include Nigerian materials context. Upgrade or cancel anytime.
-            No credit card required for Economy.
+            All plans include Nigerian materials context. Upgrade or cancel
+            anytime. No credit card required for Economy.
           </motion.p>
         </div>
       </section>
@@ -883,7 +1049,12 @@ export default function PackageTiers({ id, onSubscribed }) {
         toTier={switchTarget}
         accessUntil={sub?.endDate}
         onConfirm={handleConfirmSwitch}
-        onClose={() => { if (!isSwitching) { setSwitchTarget(null); setSwitchError(null); } }}
+        onClose={() => {
+          if (!isSwitching) {
+            setSwitchTarget(null);
+            setSwitchError(null);
+          }
+        }}
         isBusy={isSwitching}
         error={switchError}
       />

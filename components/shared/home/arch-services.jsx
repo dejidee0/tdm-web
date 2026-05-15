@@ -35,10 +35,9 @@ export default function ThreePillarsSection() {
   return (
     <section className="bg-black py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-
         {/* Title */}
         <Reveal direction="up">
-          <p className="text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.3em] uppercase mb-4">
+          <p className="text-[#D4AF37] text-[16px] font-manrope font-semibold tracking-[0.3em] uppercase mb-4">
             What We Offer
           </p>
         </Reveal>
@@ -65,7 +64,7 @@ export default function ThreePillarsSection() {
                   <h3 className="font-poppins font-bold text-xl text-white leading-snug">
                     {label}
                   </h3>
-                  <p className="text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.18em] uppercase">
+                  <p className="text-[#D4AF37] text-[16px] font-manrope font-semibold tracking-[0.18em] uppercase">
                     {tagline}
                   </p>
                   <p className="text-white/50 text-sm font-manrope leading-relaxed">

@@ -75,44 +75,46 @@ export default function SystemLogPage() {
     return value?.toString() || "0";
   };
 
-  const statsData = stats ? [
-    {
-      label: "Critical Errors (24H)",
-      value: stats?.errorCount?.toString() || "0",
-      change: 0,
-      changeType: "neutral",
-      subtitle: "Errors",
-      key: "criticalErrors",
-      icon: criticalErrorsIcon,
-    },
-    {
-      label: "Active Warnings",
-      value: stats?.warningCount?.toString() || "0",
-      change: 0,
-      changeType: "neutral",
-      subtitle: "Warnings",
-      key: "activeWarnings",
-      icon: activeWarningsIcon,
-    },
-    {
-      label: "Info Logs",
-      value: stats?.infoCount?.toString() || "0",
-      change: 0,
-      changeType: "neutral",
-      subtitle: "Info",
-      key: "avgResponseTime",
-      icon: avgResponseIcon,
-    },
-    {
-      label: "Total Logs",
-      value: formatStatsValue(stats?.totalLogs || 0),
-      change: 0,
-      changeType: "neutral",
-      subtitle: "All logs",
-      key: "logsIngested",
-      icon: logsIngestedIcon,
-    },
-  ] : [];
+  const statsData = stats
+    ? [
+        {
+          label: "Critical Errors (24H)",
+          value: stats?.errorCount?.toString() || "0",
+          change: 0,
+          changeType: "neutral",
+          subtitle: "Errors",
+          key: "criticalErrors",
+          icon: criticalErrorsIcon,
+        },
+        {
+          label: "Active Warnings",
+          value: stats?.warningCount?.toString() || "0",
+          change: 0,
+          changeType: "neutral",
+          subtitle: "Warnings",
+          key: "activeWarnings",
+          icon: activeWarningsIcon,
+        },
+        {
+          label: "Info Logs",
+          value: stats?.infoCount?.toString() || "0",
+          change: 0,
+          changeType: "neutral",
+          subtitle: "Info",
+          key: "avgResponseTime",
+          icon: avgResponseIcon,
+        },
+        {
+          label: "Total Logs",
+          value: formatStatsValue(stats?.totalLogs || 0),
+          change: 0,
+          changeType: "neutral",
+          subtitle: "All logs",
+          key: "logsIngested",
+          icon: logsIngestedIcon,
+        },
+      ]
+    : [];
 
   const severityFilters = [
     { label: "All Events", value: "all" },
@@ -150,7 +152,9 @@ export default function SystemLogPage() {
             onClick={() => exportLogs()}
             disabled={isExporting}
             className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold text-black transition-opacity disabled:opacity-50 whitespace-nowrap"
-            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            style={{
+              background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+            }}
           >
             <Download size={14} className="sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Export Logs</span>
@@ -321,7 +325,14 @@ export default function SystemLogPage() {
           <table className="w-full">
             <thead>
               <tr className="bg-white/05 border-b border-white/08">
-                {["Timestamp", "Severity", "Service Source", "Message", "User/Actor", "Action"].map((h) => (
+                {[
+                  "Timestamp",
+                  "Severity",
+                  "Service Source",
+                  "Message",
+                  "User/Actor",
+                  "Action",
+                ].map((h) => (
                   <th
                     key={h}
                     className="px-2 sm:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[11px] md:text-[13px] font-semibold text-white/40 uppercase tracking-[0.67px]"
@@ -333,7 +344,8 @@ export default function SystemLogPage() {
             </thead>
             <tbody>
               {logs?.logs?.map((log, index) => {
-                const severityStyle = severityColors[log?.severity] || severityColors.INFO;
+                const severityStyle =
+                  severityColors[log?.severity] || severityColors.INFO;
 
                 return (
                   <tr
@@ -345,7 +357,7 @@ export default function SystemLogPage() {
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[10px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle?.badge}`}
+                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[16px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle?.badge}`}
                       >
                         {log?.severity || "N/A"}
                       </span>
@@ -353,8 +365,14 @@ export default function SystemLogPage() {
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <Image
-                          src={getServiceIcon(log?.service?.name || log?.category)}
-                          alt={log?.service?.displayName || log?.category || "Service"}
+                          src={getServiceIcon(
+                            log?.service?.name || log?.category,
+                          )}
+                          alt={
+                            log?.service?.displayName ||
+                            log?.category ||
+                            "Service"
+                          }
                           width={20}
                           height={20}
                         />
@@ -371,10 +389,14 @@ export default function SystemLogPage() {
                         <div
                           className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white shrink-0"
                           style={{
-                            backgroundColor: log?.actor?.colorScheme?.bg || "rgba(255,255,255,0.12)",
+                            backgroundColor:
+                              log?.actor?.colorScheme?.bg ||
+                              "rgba(255,255,255,0.12)",
                           }}
                         >
-                          {log?.actor?.initials || log?.userId?.charAt(0) || "U"}
+                          {log?.actor?.initials ||
+                            log?.userId?.charAt(0) ||
+                            "U"}
                         </div>
                         <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-white/60 hidden sm:inline">
                           {log?.actor?.name || log?.userId || "N/A"}
@@ -399,7 +421,8 @@ export default function SystemLogPage() {
             <p className="font-inter text-[13px] sm:text-[14px] md:text-[16px] text-white/50">
               Showing{" "}
               <span className="font-medium text-white">
-                {(page - 1) * 6 + 1}-{Math.min(page * 6, logs?.pagination?.total || 0)}
+                {(page - 1) * 6 + 1}-
+                {Math.min(page * 6, logs?.pagination?.total || 0)}
               </span>{" "}
               of{" "}
               <span className="font-medium text-white">

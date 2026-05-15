@@ -116,34 +116,21 @@ export default function Hero() {
               transition={{ delay: 0.55, duration: 0.6 }}
               className="flex flex-wrap gap-3 pt-2"
             >
-              <Link href="/dashboard/ai-designs">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 font-manrope font-extrabold text-sm tracking-widest uppercase text-black cursor-pointer hover:opacity-90 transition-opacity"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
-                  }}
-                >
-                  Start Designing <ArrowRight size={14} />
-                </motion.span>
+              <Link href="/dashboard/ai-designs" className="btn-gold px-7 py-3.5">
+                Start Designing <ArrowRight size={14} />
               </Link>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+              <button
                 onClick={() =>
                   document
                     .getElementById("how-it-works")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="inline-flex items-center gap-2 px-7 py-3.5 font-manrope font-semibold text-sm tracking-widest uppercase text-white border border-white/25 hover:border-white/45 transition-colors"
-                style={{ background: "rgba(255,255,255,0.06)" }}
+                className="btn-outline px-7 py-3.5"
               >
                 <Play size={12} className="fill-white" />
                 See How It Works
-              </motion.button>
+              </button>
             </motion.div>
           </motion.div>
 
@@ -187,10 +174,10 @@ export default function Hero() {
                 ))}
               </div>
               <button
-                className="w-full py-2.5 text-[14px] font-extrabold tracking-[0.18em] uppercase text-black hover:opacity-90 transition-opacity"
+                className="w-full py-2.5 text-[14px] font-extrabold tracking-[0.18em] uppercase text-white"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                  background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 0 18px rgba(212,175,55,0.28)",
                 }}
               >
                 View Full Estimate
@@ -219,12 +206,15 @@ export default function Hero() {
                   ${i < 3 ? "lg:border-r" : ""}
                 `}
               >
-                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gold shrink-0 mt-0.5" strokeWidth={1.5} />
+                <Icon
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-gold shrink-0 mt-0.5"
+                  strokeWidth={1.5}
+                />
                 <div className="min-w-0">
-                  <p className="text-gold text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase font-manrope leading-none mb-0.5 truncate">
+                  <p className="text-gold text-[9px] sm:text-[16px] font-bold tracking-[0.12em] uppercase font-manrope leading-none mb-0.5 truncate">
                     {label}
                   </p>
-                  <p className="text-white/35 text-[10px] sm:text-xs font-manrope leading-snug line-clamp-2">
+                  <p className="text-white/35 text-[16px] sm:text-xs font-manrope leading-snug line-clamp-2">
                     {desc}
                   </p>
                 </div>

@@ -81,13 +81,12 @@ export default function AddProductModal({
     fetchProductTypes();
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchBrandTypes = async () => {
       try {
         const brandTypeData = await lookupsAPI.getBrandTypes();
 
         setBrandTypeEnum(brandTypeData?.data || []);
-
       } catch (error) {
         console.error("Failed to fetch brandTypes:", error);
       }
@@ -438,8 +437,7 @@ export default function AddProductModal({
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
-                            formik.touched.brandType &&
-                            formik.errors.brandType
+                            formik.touched.brandType && formik.errors.brandType
                               ? "border-red-500"
                               : "border-[#E5E7EB]"
                           }`}
@@ -761,7 +759,7 @@ export default function AddProductModal({
                           >
                             <X size={14} />
                           </button>
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] px-2 py-1 truncate">
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[16px] px-2 py-1 truncate">
                             {image.name}
                           </div>
                         </div>

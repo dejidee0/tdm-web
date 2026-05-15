@@ -92,12 +92,11 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
-
     { name: "Services", href: "/services" },
     { name: "Ziora", href: "/ziora" },
-
     { name: "Projects", href: "/project" },
-    { name: "Materials(Bogat)", href: "/bogat" },
+    { name: "Bogat", href: "/bogat" },
+    { name: "Marketplace", href: "/bogat/materials", featured: true },
     { name: "Contact Us", href: "/contact" },
   ];
 
@@ -155,6 +154,21 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => {
                 const active = isActive(link.href);
+                if (link.featured) {
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      className={`relative px-4 py-1.5 text-[13px] font-manrope font-semibold tracking-wide transition-all duration-200 rounded-full ${
+                        active
+                          ? "bg-[#D4AF37] text-black"
+                          : "bg-[#D4AF37]/12 text-[#D4AF37] hover:bg-[#D4AF37]/22 border border-[#D4AF37]/30 hover:border-[#D4AF37]/60"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                }
                 return (
                   <Link
                     key={link.name}
@@ -400,7 +414,7 @@ export default function Navbar() {
                 )}
 
                 <div className="py-4 px-3">
-                  <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">
+                  <p className="px-2 pb-2 text-[16px] font-semibold text-white/30 uppercase tracking-[0.2em]">
                     Navigate
                   </p>
                   {navLinks.map((link, i) => {
@@ -415,15 +429,21 @@ export default function Navbar() {
                         <Link
                           href={link.href}
                           className={`flex items-center justify-between px-3 py-3 text-[15px] font-medium rounded-lg transition-colors ${
-                            active
-                              ? "text-[#D4AF37] bg-[#D4AF37]/10"
-                              : "text-white/60 hover:text-white hover:bg-white/5"
+                            link.featured
+                              ? active
+                                ? "text-black bg-[#D4AF37]"
+                                : "text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20"
+                              : active
+                                ? "text-[#D4AF37] bg-[#D4AF37]/10"
+                                : "text-white/60 hover:text-white hover:bg-white/5"
                           }`}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {link.name}
                           {active && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0" />
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full shrink-0 ${link.featured && active ? "bg-black" : "bg-[#D4AF37]"}`}
+                            />
                           )}
                         </Link>
                       </motion.div>
@@ -433,7 +453,7 @@ export default function Navbar() {
 
                 {!isLoading && isAuthenticated && (
                   <div className="py-3 px-3 border-t border-white/10">
-                    <p className="px-2 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em]">
+                    <p className="px-2 pb-2 text-[16px] font-semibold text-white/30 uppercase tracking-[0.2em]">
                       Account
                     </p>
                     <MobileLink

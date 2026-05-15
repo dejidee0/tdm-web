@@ -28,7 +28,10 @@ export default function OrderSummary({ cart, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-white/08 p-6" style={{ background: "#0d0b08" }}>
+      <div
+        className="rounded-2xl border border-white/08 p-6"
+        style={{ background: "#0d0b08" }}
+      >
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-white/08 rounded w-1/2" />
           <div className="h-12 bg-white/08 rounded" />
@@ -90,7 +93,9 @@ export default function OrderSummary({ cart, isLoading }) {
             onClick={handleApplyPromo}
             disabled={!promoCode || applyPromo.isPending}
             className="px-4 py-2.5 rounded-lg text-[14px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed text-black"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            style={{
+              background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+            }}
           >
             {applyPromo.isPending ? "…" : "Apply"}
           </button>
@@ -150,7 +155,9 @@ export default function OrderSummary({ cart, isLoading }) {
       <Link
         href="/checkout"
         className="block w-full text-center py-4 rounded-lg font-medium hover:opacity-90 transition-opacity text-black"
-        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+        style={{
+          background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+        }}
       >
         <div className="flex items-center justify-center gap-2">
           <Lock className="w-5 h-5" />
@@ -162,19 +169,19 @@ export default function OrderSummary({ cart, isLoading }) {
       <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#e5e5e5]">
         <div className="text-center">
           <Shield className="w-6 h-6 text-white/45 mx-auto mb-1" />
-          <p className="text-[10px] text-[#999999] uppercase tracking-wide">
+          <p className="text-[16px] text-[#999999] uppercase tracking-wide">
             Secure
           </p>
         </div>
         <div className="text-center">
           <CheckCircle className="w-6 h-6 text-white/45 mx-auto mb-1" />
-          <p className="text-[10px] text-[#999999] uppercase tracking-wide">
+          <p className="text-[16px] text-[#999999] uppercase tracking-wide">
             Verified
           </p>
         </div>
         <div className="text-center">
           <Lock className="w-6 h-6 text-white/45 mx-auto mb-1" />
-          <p className="text-[10px] text-[#999999] uppercase tracking-wide">
+          <p className="text-[16px] text-[#999999] uppercase tracking-wide">
             Encrypted
           </p>
         </div>

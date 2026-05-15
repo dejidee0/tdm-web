@@ -8,6 +8,7 @@ import WhyChooseZiora from "./transformation";
 import PackageTiers from "./package-tiers";
 import CTAAndTestimonials from "./cta-testimonials";
 import FinalCTA from "./final-cta";
+import ZioraGuideBanner from "./guide-banner";
 
 export default function AIVisualizerView() {
   return (
@@ -17,6 +18,7 @@ export default function AIVisualizerView() {
       <AppShowcase />
       <WhyChooseZiora />
       <PackageTiers id="pricing" />
+      <ZioraGuideBanner />
       <Suspense fallback={null}>
         <CTAAndTestimonials />
       </Suspense>

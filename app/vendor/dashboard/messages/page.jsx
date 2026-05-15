@@ -72,16 +72,13 @@ export default function MessagesPage() {
 
   // Set initial conversation if none selected
   useEffect(() => {
-    if (
-      conversationsData?.conversations?.length > 0 &&
-      !activeConversation
-    ) {
+    if (conversationsData?.conversations?.length > 0 && !activeConversation) {
       setActiveConversation(conversationsData.conversations[0].id);
     }
   }, [conversationsData, activeConversation]);
 
   const activeConv = conversationsData?.conversations?.find(
-    (c) => c.id === activeConversation
+    (c) => c.id === activeConversation,
   );
 
   return (
@@ -197,13 +194,13 @@ export default function MessagesPage() {
               </div>
             ) : (
               conversationsData?.conversations?.map((conversation, index) => (
-              <motion.button
-                key={conversation.id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                onClick={() => handleSelectConversation(conversation.id)}
-                className={`
+                <motion.button
+                  key={conversation.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  onClick={() => handleSelectConversation(conversation.id)}
+                  className={`
                   w-full p-4 flex items-start gap-3 border-b border-[#E5E7EB] transition-colors text-left
                   ${
                     activeConversation === conversation.id
@@ -211,45 +208,45 @@ export default function MessagesPage() {
                       : "hover:bg-[#F8FAFC]"
                   }
                 `}
-              >
-                {/* Avatar */}
-                <div className="relative shrink-0">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-manrope text-[14px] font-bold"
-                    style={{
-                      backgroundColor: conversation.contactColor + "20",
-                      color: conversation.contactColor,
-                    }}
-                  >
-                    {conversation.contactInitials}
+                >
+                  {/* Avatar */}
+                  <div className="relative shrink-0">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center font-manrope text-[14px] font-bold"
+                      style={{
+                        backgroundColor: conversation.contactColor + "20",
+                        color: conversation.contactColor,
+                      }}
+                    >
+                      {conversation.contactInitials}
+                    </div>
+                    {conversation.unread && (
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#10B981] rounded-full border-2 border-white" />
+                    )}
                   </div>
-                  {conversation.unread && (
-                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#10B981] rounded-full border-2 border-white" />
-                  )}
-                </div>
 
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-1">
-                    <h3 className="font-manrope text-[14px] font-bold text-primary truncate">
-                      {conversation.contactName}
-                    </h3>
-                    <span className="font-manrope text-[12px] text-[#64748B] shrink-0 ml-2">
-                      {conversation.timestamp}
-                    </span>
-                  </div>
-                  <p
-                    className={`
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between mb-1">
+                      <h3 className="font-manrope text-[14px] font-bold text-primary truncate">
+                        {conversation.contactName}
+                      </h3>
+                      <span className="font-manrope text-[12px] text-[#64748B] shrink-0 ml-2">
+                        {conversation.timestamp}
+                      </span>
+                    </div>
+                    <p
+                      className={`
                       font-manrope text-[13px] truncate
                       ${conversation.unread ? "text-primary font-medium" : "text-[#64748B]"}
                       ${conversation.status === "Missed Call" ? "text-[#EF4444]" : ""}
                     `}
-                  >
-                    {conversation.lastMessage}
-                  </p>
-                </div>
-              </motion.button>
-            ))
+                    >
+                      {conversation.lastMessage}
+                    </p>
+                  </div>
+                </motion.button>
+              ))
             )}
           </div>
         </div>
@@ -280,12 +277,12 @@ export default function MessagesPage() {
                       {activeConv.contactName}
                     </h2>
                     {activeConv.contactRole && (
-                      <span className="px-2 py-0.5 bg-[#10B981] text-white rounded font-manrope text-[10px] font-bold shrink-0">
+                      <span className="px-2 py-0.5 bg-[#10B981] text-white rounded font-manrope text-[16px] font-bold shrink-0">
                         {activeConv.contactRole}
                       </span>
                     )}
                     {activeConv.orderId && (
-                      <span className="px-2 py-0.5 bg-primary text-white rounded font-manrope text-[10px] font-bold shrink-0">
+                      <span className="px-2 py-0.5 bg-primary text-white rounded font-manrope text-[16px] font-bold shrink-0">
                         {activeConv.orderId}
                       </span>
                     )}
@@ -361,7 +358,7 @@ export default function MessagesPage() {
                       <p className="font-manrope text-[13px] md:text-[14px] leading-relaxed wrap-break-word">
                         {message.message}
                       </p>
-                      <p className="font-manrope text-[10px] md:text-[11px] text-[#64748B] mt-1">
+                      <p className="font-manrope text-[16px] md:text-[11px] text-[#64748B] mt-1">
                         {message.timestamp}
                       </p>
                     </div>
