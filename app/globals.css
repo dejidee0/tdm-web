@@ -26,12 +26,17 @@
   --font-poppins: var(--font-poppins);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope), var(--font-inter), sans-serif;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
+
 
 /* Prevent iOS Safari from zooming in when an input is focused.
    Must use !important to beat Tailwind utility class specificity. */
@@ -117,6 +122,15 @@ body {
 .reveal-scale.revealed {
   opacity: 1;
   transform: scale(1);
+}
+
+/* On mobile, horizontal reveals fall back to vertical so they can't
+   overflow the viewport and trigger horizontal scroll. */
+@media (max-width: 639px) {
+  .reveal-left  { transform: translateY(30px); }
+  .reveal-right { transform: translateY(30px); }
+  .reveal-left.revealed  { transform: translateY(0); }
+  .reveal-right.revealed { transform: translateY(0); }
 }
 
 /* Marquee / infinite ticker */

@@ -260,9 +260,9 @@ function ZioraAppMockup() {
 
 export default function ZioraSection() {
   return (
-    <section className="bg-black py-20 sm:py-28">
+    <section className="bg-black py-16 sm:py-28 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-14 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-10 lg:gap-16 items-center">
           {/* ── Left: copy ───────────────────────────────────────── */}
           <div>
             <Reveal direction="up">
@@ -292,7 +292,7 @@ export default function ZioraSection() {
                 3D Designs &amp; Project Estimate
               </p>
 
-              <h2 className="font-poppins font-bold text-[34px] sm:text-[40px] text-white leading-[1.12] mb-4">
+              <h2 className="font-poppins font-bold text-[26px] sm:text-[34px] md:text-[40px] text-white leading-[1.12] mb-4">
                 Design Your Space.
                 <br />
                 Know Your Cost.
