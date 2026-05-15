@@ -41,7 +41,6 @@ export default function HowItWorks() {
       style={{ background: "#080704" }}
     >
       <div className="max-w-7xl mx-auto">
-
         {/* ── Header ── */}
         <motion.div
           className="text-center mb-12 sm:mb-16"
@@ -60,12 +59,11 @@ export default function HowItWorks() {
 
         {/* ── Steps ── */}
         <div className="relative">
-
           {/* Dashed connector — desktop only, sits behind the circles */}
           <div
             className="hidden lg:block absolute z-0 pointer-events-none"
             style={{
-              top: "calc(1rem + 0.75rem + 2.5rem)", /* step-num + mb-3 + half-circle-h */
+              top: "calc(1rem + 0.75rem + 2.5rem)" /* step-num + mb-3 + half-circle-h */,
               left: "calc(12.5% + 2.5rem)",
               right: "calc(12.5% + 2.5rem)",
               height: "1px",
@@ -80,11 +78,15 @@ export default function HowItWorks() {
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.55,
+                  delay: i * 0.12,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="flex flex-col items-center text-center relative z-10 px-2 sm:px-4"
               >
                 {/* Step number */}
-                <span className="text-white/30 text-[10px] font-bold tracking-[0.18em] uppercase font-manrope mb-3">
+                <span className="text-white/30 text-[16px] font-bold tracking-[0.18em] uppercase font-manrope mb-3">
                   {number}
                 </span>
 
@@ -114,7 +116,7 @@ export default function HowItWorks() {
                 {cta && (
                   <Link
                     href="/dashboard/ai-designs"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[10px] font-bold text-gold hover:opacity-75 transition-opacity tracking-[0.15em] uppercase"
+                    className="mt-4 inline-flex items-center gap-1.5 text-[16px] font-bold text-gold hover:opacity-75 transition-opacity tracking-[0.15em] uppercase"
                   >
                     Learn More <ArrowRight className="w-3 h-3" />
                   </Link>
@@ -123,7 +125,6 @@ export default function HowItWorks() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

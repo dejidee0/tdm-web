@@ -27,7 +27,10 @@ export default function ProjectHeader({ project, isLoading }) {
       {/* Left: title block */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold tracking-widest uppercase" style={{ background: "rgba(212,175,55,0.12)", color: "#D4AF37" }}>
+          <span
+            className="inline-flex items-center px-2.5 py-1 rounded-md text-[16px] font-bold tracking-widest uppercase"
+            style={{ background: "rgba(212,175,55,0.12)", color: "#D4AF37" }}
+          >
             In Progress
           </span>
           <span className="text-[12px] text-white/30">
@@ -48,13 +51,23 @@ export default function ProjectHeader({ project, isLoading }) {
       </div>
 
       {/* Right: progress card */}
-      <div className="rounded-2xl border border-white/08 px-5 py-4 min-w-55" style={{ background: "#0d0b08" }}>
+      <div
+        className="rounded-2xl border border-white/08 px-5 py-4 min-w-55"
+        style={{ background: "#0d0b08" }}
+      >
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[13px] font-medium text-white/40">Overall Progress</span>
-          <span className="text-[22px] font-extrabold text-white">{progressPercent}%</span>
+          <span className="text-[13px] font-medium text-white/40">
+            Overall Progress
+          </span>
+          <span className="text-[22px] font-extrabold text-white">
+            {progressPercent}%
+          </span>
         </div>
 
-        <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+        <div
+          className="h-2 rounded-full overflow-hidden"
+          style={{ background: "rgba(255,255,255,0.06)" }}
+        >
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progressPercent}%` }}

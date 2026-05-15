@@ -30,22 +30,15 @@ export default function ServicesHero() {
             From full-scale renovation and interior fit-outs to maintenance and design consultation — TBM delivers expert execution at every stage.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link href="/contact?type=consultation">
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-3 font-manrope font-bold px-8 py-4 text-black group hover:opacity-90 transition-opacity text-[11px] tracking-[0.18em] uppercase"
-                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-              >
-                Book Inspection
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+            <Link href="/contact?type=consultation" className="btn-gold px-8 py-4">
+              Book Inspection
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/contact?type=estimate">
               <motion.button
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-3 border border-white/15 hover:border-white/35 text-white font-manrope font-semibold px-8 py-4 transition-all duration-200 text-[11px] tracking-[0.18em] uppercase"
+                className="btn-outline px-8 py-4"
               >
                 Get Quote
               </motion.button>

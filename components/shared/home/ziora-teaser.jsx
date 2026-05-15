@@ -93,7 +93,7 @@ function ZioraAppMockup() {
                   strokeWidth={1.8}
                 />
                 <span
-                  className="font-manrope text-[10px] leading-tight truncate"
+                  className="font-manrope text-[16px] leading-tight truncate"
                   style={{
                     color: active ? "#D4AF37" : "rgba(255,255,255,0.32)",
                   }}

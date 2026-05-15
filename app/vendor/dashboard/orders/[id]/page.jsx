@@ -386,7 +386,7 @@ export default function OrderDetailPage() {
               <div className="absolute inset-0 flex items-center justify-center text-[#94A3B8]">
                 <MapPin size={48} />
               </div>
-              <div className="absolute bottom-3 right-3 px-2 py-1 bg-white rounded text-[10px] font-manrope font-medium text-[#64748B]">
+              <div className="absolute bottom-3 right-3 px-2 py-1 bg-white rounded text-[16px] font-manrope font-medium text-[#64748B]">
                 Google Maps
               </div>
             </div>
@@ -468,7 +468,7 @@ export default function OrderDetailPage() {
             </div>
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-8 bg-[#1A1F71] rounded flex items-center justify-center text-white text-[10px] font-bold">
+              <div className="w-10 h-8 bg-[#1A1F71] rounded flex items-center justify-center text-white text-[16px] font-bold">
                 VISA
               </div>
               <div>

@@ -39,7 +39,7 @@ function AccordionSection({ title, links }) {
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between py-4 md:py-0 md:cursor-default md:pointer-events-none"
       >
-        <h3 className="text-[#D4AF37] text-[10px] font-bold tracking-[0.25em] uppercase font-manrope">
+        <h3 className="text-[#D4AF37] text-[16px] font-bold tracking-[0.25em] uppercase font-manrope">
           {title}
         </h3>
         <ChevronDown
@@ -121,11 +121,12 @@ const Footer = () => {
 
           {/* Get In Touch */}
           <div className="pt-4 md:pt-0">
-            <h3 className="text-[#D4AF37] text-[10px] font-bold mb-5 md:mb-7 tracking-[0.25em] uppercase font-manrope">
+            <h3 className="text-[#D4AF37] text-[16px] font-bold mb-5 md:mb-7 tracking-[0.25em] uppercase font-manrope">
               Get In Touch
             </h3>
             <p className="text-white/40 text-sm font-manrope leading-relaxed mb-5">
-              Reach us for project inquiries, material orders, or Ziora AI support.
+              Reach us for project inquiries, material orders, or Ziora AI
+              support.
             </p>
             <a
               href="mailto:info@tbmbuilding.com"

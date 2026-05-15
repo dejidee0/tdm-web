@@ -176,7 +176,9 @@ export default function FinancialReportPage() {
               onClick={() => exportReport()}
               disabled={isExporting}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-inter text-[14px] font-bold text-black transition-opacity disabled:opacity-50 w-full sm:w-auto"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              style={{
+                background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+              }}
             >
               <Download size={16} />
               Export Report
@@ -331,22 +333,22 @@ export default function FinancialReportPage() {
           <table className="w-full">
             <thead className="bg-white/05 border-b border-white/08">
               <tr>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Transaction ID
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Date
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden sm:table-cell">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden sm:table-cell">
                   User
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden md:table-cell">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden md:table-cell">
                   Service Type
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Amount
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Status
                 </th>
                 <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 hidden sm:table-cell"></th>
@@ -362,14 +364,14 @@ export default function FinancialReportPage() {
                     <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-white/50">
                       {txn?.date || "N/A"}
                     </p>
-                    <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-white/30">
+                    <p className="font-inter text-[16px] sm:text-[11px] md:text-[12px] text-white/30">
                       {txn?.time || ""}
                     </p>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[10px] sm:text-[12px]"
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[16px] sm:text-[12px]"
                         style={{
                           backgroundColor: txn?.user?.colorScheme?.bg || "#ccc",
                           color: txn?.user?.colorScheme?.text || "#000",
@@ -381,7 +383,7 @@ export default function FinancialReportPage() {
                         <p className="font-inter text-[12px] sm:text-[14px] font-medium text-white">
                           {txn?.user?.name || "N/A"}
                         </p>
-                        <p className="font-inter text-[10px] sm:text-[12px] text-white/40">
+                        <p className="font-inter text-[16px] sm:text-[12px] text-white/40">
                           {txn?.user?.type || ""}
                         </p>
                       </div>
@@ -395,7 +397,7 @@ export default function FinancialReportPage() {
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
                     <span
-                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[10px] sm:text-[11px] md:text-[12px] font-medium ${txn?.statusColor?.bg || "bg-gray-100"} ${txn?.statusColor?.text || "text-gray-600"}`}
+                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[16px] sm:text-[11px] md:text-[12px] font-medium ${txn?.statusColor?.bg || "bg-gray-100"} ${txn?.statusColor?.text || "text-gray-600"}`}
                     >
                       <span
                         className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"

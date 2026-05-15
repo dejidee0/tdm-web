@@ -42,7 +42,7 @@ export default function NotificationCard({ notification, index }) {
             <div className="flex items-center gap-3 flex-wrap">
               <span
                 className={`
-                  px-2.5 py-1 rounded font-manrope text-[10px] font-bold uppercase tracking-wider
+                  px-2.5 py-1 rounded font-manrope text-[16px] font-bold uppercase tracking-wider
                   ${
                     isRead
                       ? "bg-white/20 text-white"

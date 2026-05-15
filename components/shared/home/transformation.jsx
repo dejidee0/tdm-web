@@ -34,11 +34,29 @@ const PROJECTS = [
 ───────────────────────────────────────────────────────────────────────── */
 function HandleIcon() {
   return (
-    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="16"
+      height="12"
+      viewBox="0 0 16 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       {/* Left chevron */}
-      <path d="M5 2L2 6L5 10" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M5 2L2 6L5 10"
+        stroke="#111"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       {/* Right chevron */}
-      <path d="M11 2L14 6L11 10" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M11 2L14 6L11 10"
+        stroke="#111"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -75,7 +93,7 @@ function BeforeAfterCard({ label, before, after, delay }) {
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseup", onUp);
     },
-    [updatePos]
+    [updatePos],
   );
 
   /* Touch */
@@ -96,7 +114,7 @@ function BeforeAfterCard({ label, before, after, delay }) {
       window.addEventListener("touchmove", onMove, { passive: false });
       window.addEventListener("touchend", onEnd);
     },
-    [updatePos]
+    [updatePos],
   );
 
   /* Also allow clicking anywhere on the card to jump the slider */
@@ -105,7 +123,7 @@ function BeforeAfterCard({ label, before, after, delay }) {
       if (e.target.closest("[data-handle]")) return; // handled by handle itself
       updatePos(e.clientX);
     },
-    [updatePos]
+    [updatePos],
   );
 
   return (
@@ -205,12 +223,11 @@ export default function TransformationSection() {
   return (
     <section className="bg-black py-20 sm:py-14">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 sm:mb-14">
           <div>
             <Reveal direction="up">
-              <p className="text-[#D4AF37] text-[10px] font-manrope font-extrabold tracking-[0.32em] uppercase mb-3">
+              <p className="text-[#D4AF37] text-[16px] font-manrope font-extrabold tracking-[0.32em] uppercase mb-3">
                 Real Transformations
               </p>
             </Reveal>
@@ -237,7 +254,6 @@ export default function TransformationSection() {
             <BeforeAfterCard key={p.label} {...p} delay={i * 70} />
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -10,6 +10,8 @@ import {
   TrendingUp,
   CheckCircle,
   Clock,
+  BookOpen,
+  ArrowRight,
 } from "lucide-react";
 
 const APP_SCREENSHOT = "/kitchen.png";
@@ -203,8 +205,7 @@ function TabletMockup() {
             height: DEVICE_H - 56, // inset ~28px each end for the border-radius
             // Gradient: bright at front edge (z=0 = left of original div),
             // dark toward the back (z=−DEPTH = right of original div)
-            background:
-              "linear-gradient(to right, #3a3a3a 0%, #181818 100%)",
+            background: "linear-gradient(to right, #3a3a3a 0%, #181818 100%)",
             transform: "rotateY(90deg)",
             transformOrigin: "left center",
           }}
@@ -223,8 +224,7 @@ function TabletMockup() {
             left: "1.75rem",
             width: DEVICE_W - 56,
             height: DEVICE_DEPTH,
-            background:
-              "linear-gradient(to bottom, #3e3e3e 0%, #1c1c1c 100%)",
+            background: "linear-gradient(to bottom, #3e3e3e 0%, #1c1c1c 100%)",
             transform: "rotateX(90deg)",
             transformOrigin: "top center",
           }}
@@ -253,13 +253,16 @@ export default function FinalCTA() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-20 py-16 md:py-24">
-
             {/* ── Text — first on mobile, second on desktop ── */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.7,
+                delay: 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="space-y-6 order-first lg:order-last"
             >
               {/* Eyebrow */}
@@ -267,7 +270,8 @@ export default function FinalCTA() {
                 <div
                   className="h-px w-8 shrink-0"
                   style={{
-                    background: "linear-gradient(to right, #D4AF37, transparent)",
+                    background:
+                      "linear-gradient(to right, #D4AF37, transparent)",
                   }}
                 />
                 <p className="text-gold text-[11px] font-bold tracking-[0.28em] uppercase font-manrope">
@@ -295,39 +299,34 @@ export default function FinalCTA() {
               </p>
 
               <div className="flex flex-wrap gap-3 pt-2">
-                <Link href="/dashboard/ai-designs">
-                  <motion.span
-                    whileHover={{
-                      scale: 1.03,
-                      boxShadow: "0 0 32px rgba(212,175,55,0.30)",
-                    }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 font-manrope font-bold text-sm tracking-widest uppercase text-black cursor-pointer transition-shadow"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #D4AF37 0%, #e8c840 40%, #b8962e 100%)",
-                    }}
-                  >
-                    Start Designing Now →
-                  </motion.span>
+                <Link
+                  href="/dashboard/ai-designs"
+                  className="btn-gold px-7 py-3.5"
+                >
+                  Start Designing Now <ArrowRight size={13} />
                 </Link>
 
-                <Link href="/contact">
-                  <motion.span
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/15 text-white font-manrope font-semibold text-sm tracking-widest uppercase hover:border-white/30 transition-colors cursor-pointer"
-                    style={{ background: "rgba(255,255,255,0.03)" }}
-                  >
-                    <MessageSquare size={13} />
-                    Book a Consultation
-                  </motion.span>
+                <Link href="/contact" className="btn-outline px-7 py-3.5">
+                  <MessageSquare size={13} />
+                  Book a Consultation
                 </Link>
               </div>
 
               <p className="text-white/20 text-xs font-manrope pt-1">
                 No commitment required &mdash; your first design is free.
               </p>
+
+              <Link
+                href="/ziora/guide"
+                className="inline-flex items-center gap-2 text-white/30 hover:text-[#D4AF37]/70 text-xs font-manrope transition-colors duration-200 group pt-1"
+              >
+                <BookOpen size={11} className="shrink-0" />
+                New here? Read our 9-step guide with screenshots
+                <ArrowRight
+                  size={10}
+                  className="group-hover:translate-x-0.5 transition-transform duration-200"
+                />
+              </Link>
             </motion.div>
 
             {/* ── Tablet — second on mobile, first on desktop ── */}
@@ -348,9 +347,16 @@ export default function FinalCTA() {
                   }}
                 >
                   <div
-                    style={{ aspectRatio: "4 / 3", borderRadius: "0.9rem", overflow: "hidden" }}
+                    style={{
+                      aspectRatio: "4 / 3",
+                      borderRadius: "0.9rem",
+                      overflow: "hidden",
+                    }}
                   >
-                    <div className="relative w-full h-full" style={{ minHeight: "195px" }}>
+                    <div
+                      className="relative w-full h-full"
+                      style={{ minHeight: "195px" }}
+                    >
                       <Image
                         src={APP_SCREENSHOT}
                         alt="Ziora AI"
@@ -362,7 +368,11 @@ export default function FinalCTA() {
                   </div>
                   <div
                     className="mx-auto mt-2 rounded-full"
-                    style={{ width: "32px", height: "3px", background: "#383838" }}
+                    style={{
+                      width: "32px",
+                      height: "3px",
+                      background: "#383838",
+                    }}
                   />
                 </div>
               </div>
@@ -386,7 +396,7 @@ export default function FinalCTA() {
         transition={{ duration: 0.6 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.06]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/6">
             {STATS.map(({ Icon, value, label }, i) => (
               <motion.div
                 key={label}

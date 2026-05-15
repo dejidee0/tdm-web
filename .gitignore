@@ -44,6 +44,7 @@ next-env.d.ts
 /.claude/
 docs/api-reference.md
 tdl.md
+.playwright-mcp/
 .playwright-mcp/console-2026-04-30T08-10-14-379Z.log
 .playwright-mcp/console-2026-04-30T08-11-21-931Z.log
 .playwright-mcp/page-2026-04-30T08-11-22-728Z.yml

@@ -17,7 +17,13 @@ export default function MissionVision() {
             className="relative"
           >
             <div className="aspect-4/3 overflow-hidden relative">
-              <Image src="/about2.png" alt="Modern kitchen interior" fill className="object-cover" priority />
+              <Image
+                src="/about2.png"
+                alt="Modern kitchen interior"
+                fill
+                className="object-cover"
+                priority
+              />
               {/* Impact Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
@@ -28,13 +34,27 @@ export default function MissionVision() {
               >
                 <div className="bg-black/80 backdrop-blur-sm px-5 py-4 flex items-center gap-4 border border-white/10">
                   <div className="w-10 h-10 border border-[#D4AF37]/50 flex items-center justify-center shrink-0">
-                    <svg className="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-[#D4AF37]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <div className="text-[10px] font-semibold text-[#D4AF37] uppercase tracking-[0.2em]">Impact</div>
-                    <div className="text-sm font-medium text-white leading-snug">Over 10,000 homes transformed</div>
+                    <div className="text-[16px] font-semibold text-[#D4AF37] uppercase tracking-[0.2em]">
+                      Impact
+                    </div>
+                    <div className="text-sm font-medium text-white leading-snug">
+                      Over 10,000 homes transformed
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -57,17 +77,35 @@ export default function MissionVision() {
             </h2>
             <p className="text-base text-white/50 leading-relaxed max-w-xl">
               We are dedicated to{" "}
-              <span className="font-semibold text-white">empowering homeowners</span>{" "}
-              with the tools and expertise to create spaces they love. Our vision is to become
-              Nigeria&apos;s leading platform for home renovation.
+              <span className="font-semibold text-white">
+                empowering homeowners
+              </span>{" "}
+              with the tools and expertise to create spaces they love. Our
+              vision is to become Nigeria&apos;s leading platform for home
+              renovation.
             </p>
 
             {/* Value Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-3 gap-px"
+              style={{ background: "rgba(255,255,255,0.06)" }}
+            >
               {[
-                { label: "Empowerment", desc: "Tools that put you in control.", path: "M13 10V3L4 14h7v7l9-11h-7z" },
-                { label: "Innovation", desc: "AI-driven design solutions.", path: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" },
-                { label: "Satisfaction", desc: "Guaranteed quality results.", path: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+                {
+                  label: "Empowerment",
+                  desc: "Tools that put you in control.",
+                  path: "M13 10V3L4 14h7v7l9-11h-7z",
+                },
+                {
+                  label: "Innovation",
+                  desc: "AI-driven design solutions.",
+                  path: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+                },
+                {
+                  label: "Satisfaction",
+                  desc: "Guaranteed quality results.",
+                  path: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+                },
               ].map((card, i) => (
                 <motion.div
                   key={i}
@@ -78,12 +116,26 @@ export default function MissionVision() {
                   className="bg-[#0d0b08] p-6"
                 >
                   <div className="w-9 h-9 border border-white/10 flex items-center justify-center mb-4">
-                    <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={card.path} />
+                    <svg
+                      className="w-4 h-4 text-[#D4AF37]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d={card.path}
+                      />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white mb-1.5 tracking-wide">{card.label}</h3>
-                  <p className="text-xs text-white/40 leading-relaxed">{card.desc}</p>
+                  <h3 className="text-sm font-bold text-white mb-1.5 tracking-wide">
+                    {card.label}
+                  </h3>
+                  <p className="text-xs text-white/40 leading-relaxed">
+                    {card.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>

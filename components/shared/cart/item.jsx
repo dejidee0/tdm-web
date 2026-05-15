@@ -159,7 +159,7 @@ export default function CartItem({ item, index }) {
           {/* Stock badge + unit price */}
           <div className="flex items-center gap-2">
             <span
-              className={`inline-block px-2 py-0.5 text-[10px] font-medium rounded-md ${
+              className={`inline-block px-2 py-0.5 text-[16px] font-medium rounded-md ${
                 isInStock
                   ? "bg-green-900/30 text-green-400"
                   : "bg-red-900/20 text-red-400"

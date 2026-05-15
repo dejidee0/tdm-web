@@ -27,8 +27,8 @@ function CardPrice({ tier, billing, pricing, discount }) {
 
   const discountedPrice = activeDiscount
     ? isYearly
-      ? data.discountedYearlyMonthlyEquiv ?? null
-      : data.discountedMonthlyPrice ?? null
+      ? (data.discountedYearlyMonthlyEquiv ?? null)
+      : (data.discountedMonthlyPrice ?? null)
     : null;
 
   return (
@@ -37,22 +37,35 @@ function CardPrice({ tier, billing, pricing, discount }) {
         {activeDiscount && discountedPrice != null ? (
           <>
             <span className="text-2xl font-extrabold text-white">
-              ₦{Number(discountedPrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+              ₦
+              {Number(discountedPrice).toLocaleString("en-NG", {
+                minimumFractionDigits: 2,
+              })}
             </span>
             <span className="text-sm text-white/50 line-through mb-0.5">
-              ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+              ₦
+              {Number(basePrice).toLocaleString("en-NG", {
+                minimumFractionDigits: 2,
+              })}
             </span>
           </>
         ) : (
           <span className="text-2xl font-extrabold text-white">
-            ₦{Number(basePrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+            ₦
+            {Number(basePrice).toLocaleString("en-NG", {
+              minimumFractionDigits: 2,
+            })}
           </span>
         )}
         <span className="text-sm text-white/60 mb-0.5">/mo</span>
       </div>
       {isYearly && (
         <p className="text-xs text-white/50 mt-0.5">
-          ₦{Number(data.annualPrice).toLocaleString("en-NG", { minimumFractionDigits: 2 })} billed annually
+          ₦
+          {Number(data.annualPrice).toLocaleString("en-NG", {
+            minimumFractionDigits: 2,
+          })}{" "}
+          billed annually
         </p>
       )}
     </div>
@@ -76,7 +89,11 @@ const PAID_TIERS = [
     label: "Luxury",
     icon: Crown,
     tagline: "Unlimited · full execution",
-    features: ["Unlimited generations", "Full BOQ", "Start Project · Buy Materials"],
+    features: [
+      "Unlimited generations",
+      "Full BOQ",
+      "Start Project · Buy Materials",
+    ],
     cta: "Choose Luxury",
     accent: "bg-purple-500 hover:bg-purple-400",
     border: "border-purple-400/30",
@@ -84,7 +101,11 @@ const PAID_TIERS = [
   },
 ];
 
-export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) {
+export default function UpgradeWallModal({
+  isOpen,
+  reason = "quota",
+  onClose,
+}) {
   const [billing, setBilling] = useState("monthly");
   const [pendingTier, setPendingTier] = useState(null);
   const [error, setError] = useState(null);
@@ -95,7 +116,9 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
   // Escape key closes only when onClose is provided (per spec: not dismissible by default)
   useEffect(() => {
     if (!onClose || !isOpen) return;
-    const handler = (e) => { if (e.key === "Escape") onClose(); };
+    const handler = (e) => {
+      if (e.key === "Escape") onClose();
+    };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
@@ -113,15 +136,15 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
     reason === "quota"
       ? "You've reached your limit"
       : reason === "expired"
-      ? "Your access has ended"
-      : "Upgrade to continue";
+        ? "Your access has ended"
+        : "Upgrade to continue";
 
   const subtext =
     reason === "quota"
       ? "You've used your one free Economy generation. Upgrade to keep designing."
       : reason === "expired"
-      ? "Your plan has expired. Renew or choose a new plan to regain access."
-      : "Choose a plan to unlock the full Ziora experience.";
+        ? "Your plan has expired. Renew or choose a new plan to regain access."
+        : "Choose a plan to unlock the full Ziora experience.";
 
   const TIER_ENUM = { premium: 1, luxury: 2 };
   const CYCLE_ENUM = { monthly: 0, yearly: 1 };
@@ -197,14 +220,22 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
                       key={cycle}
                       onClick={() => setBilling(cycle)}
                       className="px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors"
-                      style={billing === cycle
-                        ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", color: "#000" }
-                        : { background: "transparent", color: "rgba(255,255,255,0.50)" }
+                      style={
+                        billing === cycle
+                          ? {
+                              background:
+                                "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                              color: "#000",
+                            }
+                          : {
+                              background: "transparent",
+                              color: "rgba(255,255,255,0.50)",
+                            }
                       }
                     >
                       {cycle === "monthly" ? "Monthly" : "Yearly"}
                       {cycle === "yearly" && yearlyDiscountPct != null && (
-                        <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-green-500/20 text-green-300">
+                        <span className="ml-1.5 px-1.5 py-0.5 text-[16px] font-bold rounded-full bg-green-500/20 text-green-300">
                           -{Math.round(yearlyDiscountPct)}%
                         </span>
                       )}
@@ -241,7 +272,9 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
                     >
                       <div className="flex items-center gap-2 mb-1">
                         <Icon className="w-4 h-4 text-white/70" />
-                        <span className="text-white font-bold">{tier.label}</span>
+                        <span className="text-white font-bold">
+                          {tier.label}
+                        </span>
                       </div>
                       <p className="text-white/50 text-xs">{tier.tagline}</p>
 
@@ -271,12 +304,13 @@ export default function UpgradeWallModal({ isOpen, reason = "quota", onClose }) 
                       <button
                         onClick={() => handleChoose(tier.id)}
                         disabled={
-                          subscribePaid.isPending ||
-                          isLoading ||
-                          isError
+                          subscribePaid.isPending || isLoading || isError
                         }
                         className="mt-5 w-full py-2.5 rounded-xl text-sm font-semibold text-black flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
-                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                        }}
                       >
                         {isBusy && <Loader2 className="w-4 h-4 animate-spin" />}
                         {isBusy ? "Processing…" : tier.cta}

@@ -42,32 +42,71 @@ const CONTEXT_CATEGORIES = [
   {
     label: "Interior Design",
     tags: [
-      "Living room design", "Bedroom design", "Kitchen design", "Bathroom design",
-      "Office interior", "Commercial interior", "Minimalist interior", "Luxury interior",
-      "Modern interior", "Contemporary interior", "Scandinavian style", "Industrial style",
+      "Living room design",
+      "Bedroom design",
+      "Kitchen design",
+      "Bathroom design",
+      "Office interior",
+      "Commercial interior",
+      "Minimalist interior",
+      "Luxury interior",
+      "Modern interior",
+      "Contemporary interior",
+      "Scandinavian style",
+      "Industrial style",
       "Traditional interior",
     ],
   },
   {
     label: "Construction",
     tags: [
-      "Residential construction", "Commercial construction", "Renovation", "Remodeling",
-      "Structural work", "Finishing work", "Civil works", "Drywall installation",
-      "Flooring installation", "Roofing", "Plumbing", "Electrical works", "Painting & finishing",
+      "Residential construction",
+      "Commercial construction",
+      "Renovation",
+      "Remodeling",
+      "Structural work",
+      "Finishing work",
+      "Civil works",
+      "Drywall installation",
+      "Flooring installation",
+      "Roofing",
+      "Plumbing",
+      "Electrical works",
+      "Painting & finishing",
     ],
   },
   {
     label: "Furniture",
     tags: [
-      "Sofas", "Chairs", "Tables", "Wardrobes", "Cabinets",
-      "TV units", "Bed frames", "Shelving", "Office desks", "Reception desks",
+      "Sofas",
+      "Chairs",
+      "Tables",
+      "Wardrobes",
+      "Cabinets",
+      "TV units",
+      "Bed frames",
+      "Shelving",
+      "Office desks",
+      "Reception desks",
     ],
   },
   {
     label: "Materials",
     tags: [
-      "Wood", "MDF", "Plywood", "Marble", "Granite", "Tiles", "PVC panels",
-      "Gypsum board", "Concrete", "Steel", "Aluminum", "Glass", "Laminate", "Veneer",
+      "Wood",
+      "MDF",
+      "Plywood",
+      "Marble",
+      "Granite",
+      "Tiles",
+      "PVC panels",
+      "Gypsum board",
+      "Concrete",
+      "Steel",
+      "Aluminum",
+      "Glass",
+      "Laminate",
+      "Veneer",
     ],
   },
 ];
@@ -90,8 +129,14 @@ const GENERATION_STAGES = [
 function useGenerationStage(active) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    if (!active) { setIndex(0); return; }
-    const id = setInterval(() => setIndex((i) => (i + 1) % GENERATION_STAGES.length), 3200);
+    if (!active) {
+      setIndex(0);
+      return;
+    }
+    const id = setInterval(
+      () => setIndex((i) => (i + 1) % GENERATION_STAGES.length),
+      3200,
+    );
     return () => clearInterval(id);
   }, [active]);
   return GENERATION_STAGES[index];
@@ -102,14 +147,19 @@ function ContextTagPicker({ contextTags, setContextTags }) {
 
   const toggle = (tag) =>
     setContextTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
 
   return (
-    <div className="border border-white/10 rounded-xl divide-y divide-white/08 overflow-hidden mb-1" style={{ background: "#0d0b08" }}>
+    <div
+      className="border border-white/10 rounded-xl divide-y divide-white/08 overflow-hidden mb-1"
+      style={{ background: "#0d0b08" }}
+    >
       {CONTEXT_CATEGORIES.map(({ label, tags }) => {
         const isOpen = openCategory === label;
-        const selectedInCategory = tags.filter((t) => contextTags.includes(t)).length;
+        const selectedInCategory = tags.filter((t) =>
+          contextTags.includes(t),
+        ).length;
         return (
           <div key={label}>
             <button
@@ -124,7 +174,10 @@ function ContextTagPicker({ contextTags, setContextTags }) {
                 {selectedInCategory > 0 && (
                   <span
                     className="text-[11px] font-bold px-1.5 py-0.5 rounded-full text-black leading-none"
-                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                    }}
                   >
                     {selectedInCategory}
                   </span>
@@ -145,7 +198,10 @@ function ContextTagPicker({ contextTags, setContextTags }) {
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="flex flex-wrap gap-2 px-3 pb-3 pt-1" style={{ background: "rgba(255,255,255,0.02)" }}>
+                  <div
+                    className="flex flex-wrap gap-2 px-3 pb-3 pt-1"
+                    style={{ background: "rgba(255,255,255,0.02)" }}
+                  >
                     {tags.map((tag) => {
                       const active = contextTags.includes(tag);
                       return (
@@ -156,8 +212,17 @@ function ContextTagPicker({ contextTags, setContextTags }) {
                           className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap"
                           style={
                             active
-                              ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)", color: "#000", border: "1px solid transparent" }
-                              : { background: "transparent", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.12)" }
+                              ? {
+                                  background:
+                                    "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                                  color: "#000",
+                                  border: "1px solid transparent",
+                                }
+                              : {
+                                  background: "transparent",
+                                  color: "rgba(255,255,255,0.45)",
+                                  border: "1px solid rgba(255,255,255,0.12)",
+                                }
                           }
                         >
                           {tag}
@@ -173,9 +238,13 @@ function ContextTagPicker({ contextTags, setContextTags }) {
       })}
 
       {contextTags.length > 0 && (
-        <div className="flex items-center justify-between px-3 py-2.5" style={{ background: "rgba(212,175,55,0.04)" }}>
+        <div
+          className="flex items-center justify-between px-3 py-2.5"
+          style={{ background: "rgba(212,175,55,0.04)" }}
+        >
           <p className="text-xs font-semibold text-[#D4AF37]">
-            {contextTags.length} tag{contextTags.length !== 1 ? "s" : ""} selected
+            {contextTags.length} tag{contextTags.length !== 1 ? "s" : ""}{" "}
+            selected
           </p>
           <button
             type="button"
@@ -195,12 +264,16 @@ function StepLabel({ number, title, note }) {
     <div className="flex items-center gap-2.5 mb-3">
       <span
         className="w-5 h-5 rounded-full text-black text-[11px] font-bold flex items-center justify-center shrink-0"
-        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+        style={{
+          background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+        }}
       >
         {number}
       </span>
       <span className="text-sm font-bold text-white">{title}</span>
-      {note && <span className="text-xs font-medium text-white/35 ml-0.5">{note}</span>}
+      {note && (
+        <span className="text-xs font-medium text-white/35 ml-0.5">{note}</span>
+      )}
     </div>
   );
 }
@@ -227,15 +300,20 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
   const generationStage = useGenerationStage(step === "generating");
 
   useEffect(() => {
-    return () => { if (filePreview) URL.revokeObjectURL(filePreview); };
+    return () => {
+      if (filePreview) URL.revokeObjectURL(filePreview);
+    };
   }, [filePreview]);
 
-  const applyFile = useCallback((chosen) => {
-    if (!chosen) return;
-    if (filePreview) URL.revokeObjectURL(filePreview);
-    setFile(chosen);
-    setFilePreview(URL.createObjectURL(chosen));
-  }, [filePreview]);
+  const applyFile = useCallback(
+    (chosen) => {
+      if (!chosen) return;
+      if (filePreview) URL.revokeObjectURL(filePreview);
+      setFile(chosen);
+      setFilePreview(URL.createObjectURL(chosen));
+    },
+    [filePreview],
+  );
 
   const handleFileChange = (e) => {
     applyFile(e.target.files?.[0] ?? null);
@@ -248,13 +326,17 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
     setFilePreview(null);
   };
 
-  const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
   const handleDragLeave = () => setIsDragging(false);
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     const dropped = e.dataTransfer.files?.[0];
-    if (dropped && /^image\/(jpeg|png|webp)$/.test(dropped.type)) applyFile(dropped);
+    if (dropped && /^image\/(jpeg|png|webp)$/.test(dropped.type))
+      applyFile(dropped);
   };
 
   const canSubmit = prompt.trim() && file && step === "form";
@@ -278,7 +360,8 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
         prompt,
         contextTags: contextTags.length > 0 ? contextTags : undefined,
       });
-      const projectId = projectRes?.id ?? projectRes?.data?.id ?? projectRes?.data?.projectId;
+      const projectId =
+        projectRes?.id ?? projectRes?.data?.id ?? projectRes?.data?.projectId;
       if (!projectId) throw new Error("Project creation failed.");
 
       if (outputType === 1) {
@@ -350,7 +433,8 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                     Create a New Design
                   </p>
                   <p className="text-sm text-white/40 mt-0.5">
-                    Fill in the steps below — Ziora will generate your space from your description.
+                    Fill in the steps below — Ziora will generate your space
+                    from your description.
                   </p>
                 </div>
                 <button
@@ -364,19 +448,22 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
 
               {/* Body */}
               <div className="flex-1 overflow-y-auto px-5 sm:px-7 py-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
-
                 {/* Generating */}
                 {step === "generating" && (
                   <div className="flex flex-col items-center justify-center text-center py-16 gap-5">
                     <div className="relative">
-                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: "rgba(212,175,55,0.10)" }}>
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center"
+                        style={{ background: "rgba(212,175,55,0.10)" }}
+                      >
                         <Sparkles className="w-6 h-6 text-[#D4AF37]" />
                       </div>
                       <Loader2 className="w-14 h-14 animate-spin text-[#D4AF37]/30 absolute inset-0" />
                     </div>
                     <div>
                       <p className="text-base font-semibold text-white">
-                        Working on your {outputType === 2 ? "video tour" : "design"}…
+                        Working on your{" "}
+                        {outputType === 2 ? "video tour" : "design"}…
                       </p>
                       <AnimatePresence mode="wait">
                         <motion.p
@@ -409,7 +496,10 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                     <button
                       onClick={handleClose}
                       className="mt-1 px-6 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity"
-                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                      }}
                     >
                       View Designs
                     </button>
@@ -421,13 +511,20 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                   <div className="flex flex-col items-center justify-center text-center py-16 gap-4">
                     <AlertCircle className="w-12 h-12 text-red-400" />
                     <div>
-                      <p className="text-base font-semibold text-white">Something went wrong</p>
-                      <p className="text-sm text-white/40 mt-0.5 max-w-xs">{errorMsg}</p>
+                      <p className="text-base font-semibold text-white">
+                        Something went wrong
+                      </p>
+                      <p className="text-sm text-white/40 mt-0.5 max-w-xs">
+                        {errorMsg}
+                      </p>
                     </div>
                     <button
                       onClick={() => setStep("form")}
                       className="mt-1 px-6 py-2.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity"
-                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                      }}
                     >
                       Try Again
                     </button>
@@ -437,10 +534,12 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                 {/* Form */}
                 {step === "form" && (
                   <div className="space-y-7">
-
                     {/* STEP 1 — Output type */}
                     <div>
-                      <StepLabel number="1" title="What do you want to create?" />
+                      <StepLabel
+                        number="1"
+                        title="What do you want to create?"
+                      />
                       <div className="grid grid-cols-2 gap-3">
                         {OUTPUT_TYPES.map(({ id, label, sublabel, Icon }) => (
                           <button
@@ -450,25 +549,40 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             className="flex flex-col items-start gap-2 p-4 rounded-xl text-left transition-all border"
                             style={
                               outputType === id
-                                ? { borderColor: "rgba(212,175,55,0.50)", background: "rgba(212,175,55,0.06)" }
-                                : { borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }
+                                ? {
+                                    borderColor: "rgba(212,175,55,0.50)",
+                                    background: "rgba(212,175,55,0.06)",
+                                  }
+                                : {
+                                    borderColor: "rgba(255,255,255,0.08)",
+                                    background: "rgba(255,255,255,0.02)",
+                                  }
                             }
                           >
                             <div
                               className="w-9 h-9 rounded-lg flex items-center justify-center"
                               style={
                                 outputType === id
-                                  ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+                                  ? {
+                                      background:
+                                        "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                                    }
                                   : { background: "rgba(255,255,255,0.06)" }
                               }
                             >
-                              <Icon className={`w-4 h-4 ${outputType === id ? "text-black" : "text-white/40"}`} />
+                              <Icon
+                                className={`w-4 h-4 ${outputType === id ? "text-black" : "text-white/40"}`}
+                              />
                             </div>
                             <div>
-                              <p className={`text-sm font-semibold ${outputType === id ? "text-[#D4AF37]" : "text-white/70"}`}>
+                              <p
+                                className={`text-sm font-semibold ${outputType === id ? "text-[#D4AF37]" : "text-white/70"}`}
+                              >
                                 {label}
                               </p>
-                              <p className={`text-xs leading-snug mt-0.5 ${outputType === id ? "text-[#D4AF37]/60" : "text-white/35"}`}>
+                              <p
+                                className={`text-xs leading-snug mt-0.5 ${outputType === id ? "text-[#D4AF37]/60" : "text-white/35"}`}
+                              >
                                 {sublabel}
                               </p>
                             </div>
@@ -479,11 +593,16 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
 
                     {/* STEP 2 — Prompt */}
                     <div>
-                      <StepLabel number="2" title="Describe what you want the space to look like" />
+                      <StepLabel
+                        number="2"
+                        title="Describe what you want the space to look like"
+                      />
                       <textarea
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && e.metaKey && handleCreate()}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && e.metaKey && handleCreate()
+                        }
                         rows={3}
                         placeholder={
                           outputType === 2
@@ -496,7 +615,9 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
 
                       {!prompt && (
                         <div className="mt-2.5">
-                          <p className="text-xs font-medium text-white/35 mb-1.5">Try an example:</p>
+                          <p className="text-xs font-medium text-white/35 mb-1.5">
+                            Try an example:
+                          </p>
                           <div className="flex flex-wrap gap-1.5">
                             {EXAMPLE_PROMPTS.map((ex) => (
                               <button
@@ -504,7 +625,10 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                                 type="button"
                                 onClick={() => setPrompt(ex)}
                                 className="text-xs font-medium px-2.5 py-1 rounded-full transition-colors text-white/45 hover:text-[#D4AF37]"
-                                style={{ border: "1px solid rgba(255,255,255,0.12)", background: "transparent" }}
+                                style={{
+                                  border: "1px solid rgba(255,255,255,0.12)",
+                                  background: "transparent",
+                                }}
                               >
                                 {ex.length > 42 ? ex.slice(0, 42) + "…" : ex}
                               </button>
@@ -516,19 +640,28 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
 
                     {/* STEP 3 — Context */}
                     <div>
-                      <StepLabel number="3" title="Add context" note="— photo required" />
+                      <StepLabel
+                        number="3"
+                        title="Add context"
+                        note="— photo required"
+                      />
 
                       <p className="text-xs font-medium text-white/35 mb-2">
                         Tag your project — select all that apply
                       </p>
-                      <ContextTagPicker contextTags={contextTags} setContextTags={setContextTags} />
+                      <ContextTagPicker
+                        contextTags={contextTags}
+                        setContextTags={setContextTags}
+                      />
                       <div className="mb-4" />
 
                       <p className="text-xs font-semibold mb-2 flex items-center gap-1.5 text-white/60">
                         <Camera className="w-3.5 h-3.5 text-[#D4AF37]" />
                         Photo of the current space
                         <span className="text-red-400">*</span>
-                        <span className="text-white/30 font-normal">— Ziora needs this to generate your design</span>
+                        <span className="text-white/30 font-normal">
+                          — Ziora needs this to generate your design
+                        </span>
                       </p>
 
                       <AnimatePresence mode="wait">
@@ -554,7 +687,9 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             >
                               <X className="w-3 h-3" />
                             </button>
-                            <p className="mt-1 text-xs text-white/35 truncate max-w-xs">{file?.name}</p>
+                            <p className="mt-1 text-xs text-white/35 truncate max-w-xs">
+                              {file?.name}
+                            </p>
                           </motion.div>
                         ) : (
                           <motion.div
@@ -570,15 +705,25 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                             className="flex items-center gap-4 px-4 py-4 border-2 border-dashed rounded-xl cursor-pointer transition-colors"
                             style={
                               isDragging
-                                ? { borderColor: "rgba(212,175,55,0.60)", background: "rgba(212,175,55,0.05)" }
-                                : { borderColor: "rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.02)" }
+                                ? {
+                                    borderColor: "rgba(212,175,55,0.60)",
+                                    background: "rgba(212,175,55,0.05)",
+                                  }
+                                : {
+                                    borderColor: "rgba(255,255,255,0.12)",
+                                    background: "rgba(255,255,255,0.02)",
+                                  }
                             }
                           >
-                            <UploadCloud className={`w-8 h-8 shrink-0 ${isDragging ? "text-[#D4AF37]" : "text-white/25"}`} />
+                            <UploadCloud
+                              className={`w-8 h-8 shrink-0 ${isDragging ? "text-[#D4AF37]" : "text-white/25"}`}
+                            />
                             <div>
                               <p className="text-sm font-medium text-white/60">
                                 Drag your photo here, or{" "}
-                                <span className="text-[#D4AF37] underline underline-offset-2">click to browse</span>
+                                <span className="text-[#D4AF37] underline underline-offset-2">
+                                  click to browse
+                                </span>
                               </p>
                               <p className="text-xs text-white/30 mt-0.5">
                                 JPG, PNG or WEBP · 1 image max
@@ -592,9 +737,12 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                       {!filePreview && (
                         <div
                           className="mt-3 px-3.5 py-3 rounded-xl border"
-                          style={{ borderColor: "rgba(251,146,60,0.20)", background: "rgba(251,146,60,0.04)" }}
+                          style={{
+                            borderColor: "rgba(251,146,60,0.20)",
+                            background: "rgba(251,146,60,0.04)",
+                          }}
                         >
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-orange-400/70 mb-2">
+                          <p className="text-[16px] font-bold uppercase tracking-wider text-orange-400/70 mb-2">
                             Avoid uploading:
                           </p>
                           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
@@ -605,7 +753,10 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                               "Blurry images",
                               "Dark or poorly lit rooms",
                             ].map((w) => (
-                              <li key={w} className="flex items-center gap-1.5 text-[11px] text-white/40">
+                              <li
+                                key={w}
+                                className="flex items-center gap-1.5 text-[11px] text-white/40"
+                              >
                                 <span className="shrink-0">🚫</span>
                                 {w}
                               </li>
@@ -630,24 +781,28 @@ export default function CreateNewDesignModal({ isOpen, onClose }) {
                         onClick={handleCreate}
                         disabled={!canSubmit}
                         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold text-black hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-                        style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                        }}
                       >
                         <Sparkles className="w-4 h-4" />
-                        {outputType === 2 ? "Generate Video Tour" : "Generate My Design"}
+                        {outputType === 2
+                          ? "Generate Video Tour"
+                          : "Generate My Design"}
                       </motion.button>
                       {!canSubmit && (
                         <p className="text-center text-xs font-medium text-white/30 mt-2">
                           {prompt && file
                             ? null
                             : prompt
-                            ? "Upload a photo of the space to continue"
-                            : file
-                            ? "Write a description above to continue"
-                            : "Add a description and upload a photo to continue"}
+                              ? "Upload a photo of the space to continue"
+                              : file
+                                ? "Write a description above to continue"
+                                : "Add a description and upload a photo to continue"}
                         </p>
                       )}
                     </div>
-
                   </div>
                 )}
               </div>

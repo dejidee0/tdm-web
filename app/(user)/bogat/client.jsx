@@ -17,6 +17,10 @@ import {
   CheckCircle,
   RotateCcw,
   Phone,
+  Search,
+  ShoppingCart,
+  PackageSearch,
+  BookOpen,
 } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
@@ -118,17 +122,42 @@ const BRANDS = [
   "Porcelanosa",
 ];
 
+const HOW_TO_SHOP = [
+  {
+    step: "01",
+    Icon: Search,
+    title: "Browse & Search",
+    desc: "Head to the Marketplace and filter by category, brand, or price — or search by product name.",
+  },
+  {
+    step: "02",
+    Icon: PackageSearch,
+    title: "Explore the Product",
+    desc: "View the full gallery, select your variant (size or finish), and read the specifications.",
+  },
+  {
+    step: "03",
+    Icon: ShoppingCart,
+    title: "Add to Cart or Request Price",
+    desc: "Products with visible pricing go straight to cart. Premium items allow you to request a tailored quote.",
+  },
+  {
+    step: "04",
+    Icon: Truck,
+    title: "Receive at Your Door",
+    desc: "Confirm your delivery address at checkout. We deliver across Abuja and Lagos within 3–7 business days.",
+  },
+];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function BogatClient() {
   return (
     <div className="min-h-screen bg-black font-manrope">
-
       {/* ═══════════════════════════════════════════════════════════════════
           HERO
       ═══════════════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-
         {/* Desktop — right image column */}
         <div className="hidden lg:block absolute inset-y-0 right-0 w-[48%]">
           <div className="relative h-full w-full">
@@ -160,7 +189,6 @@ export default function BogatClient() {
         {/* Content column */}
         <div className="relative z-10 w-full lg:w-[56%]">
           <div className="px-6 sm:px-10 lg:pl-16 xl:pl-20 2xl:pl-28 pt-32 pb-24 sm:pt-36 sm:pb-28">
-
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,15 +250,31 @@ export default function BogatClient() {
             >
               <Link
                 href="/bogat/materials"
-                className="flex items-center justify-center gap-2 bg-[#D4AF37] px-7 py-3.5 text-black font-poppins font-bold text-[13px] tracking-[0.12em] uppercase hover:bg-[#c49e30] transition-colors duration-200"
+                className="btn-gold px-8 py-3.5"
               >
                 Explore Materials <ArrowRight size={14} />
               </Link>
               <Link
                 href="/contact"
-                className="flex items-center justify-center border border-white/18 px-7 py-3.5 text-white/80 font-semibold text-[13px] tracking-[0.22em] uppercase hover:border-[#D4AF37]/60 hover:text-white transition-all duration-200"
+                className="btn-outline px-8 py-3.5"
               >
                 Book Showroom Visit
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.46 }}
+              className="mt-5"
+            >
+              <Link
+                href="/bogat/guide"
+                className="inline-flex items-center gap-2 text-white/30 hover:text-[#D4AF37]/70 text-xs font-manrope transition-colors duration-200 group"
+              >
+                <BookOpen size={11} className="shrink-0" />
+                First time here? Read our 6-step shopping guide
+                <ArrowRight size={10} className="group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
             </motion.div>
           </div>
@@ -240,7 +284,10 @@ export default function BogatClient() {
       {/* ═══════════════════════════════════════════════════════════════════
           CATEGORY NAVIGATION STRIP
       ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: "#0d0b08" }} className="border-y border-white/[0.08]">
+      <section
+        style={{ background: "#0d0b08" }}
+        className="border-y border-white/[0.08]"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-6 divide-x divide-white/[0.08]">
             {CATEGORIES.map(({ Icon, label, href }) => (
@@ -255,7 +302,7 @@ export default function BogatClient() {
                     strokeWidth={1.5}
                   />
                 </div>
-                <span className="text-white/50 group-hover:text-white/85 text-[10px] font-semibold tracking-[0.14em] uppercase transition-colors duration-200 leading-snug">
+                <span className="text-white/50 group-hover:text-white/85 text-[16px] font-semibold tracking-[0.14em] uppercase transition-colors duration-200 leading-snug">
                   {label}
                 </span>
               </Link>
@@ -269,12 +316,11 @@ export default function BogatClient() {
       ═══════════════════════════════════════════════════════════════════ */}
       <section className="bg-black py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-
           {/* Section header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-12">
             <div>
               <Reveal direction="up">
-                <p className="text-[#D4AF37] text-[10px] font-semibold uppercase tracking-[0.28em] mb-3">
+                <p className="text-[#D4AF37] text-[16px] font-semibold uppercase tracking-[0.28em] mb-3">
                   Our Premium Collections
                 </p>
               </Reveal>
@@ -317,7 +363,7 @@ export default function BogatClient() {
                     <p className="text-white/80 font-poppins font-semibold text-[13px] sm:text-sm leading-snug mb-3">
                       {description}
                     </p>
-                    <span className="inline-flex items-center gap-1.5 text-white/40 group-hover:text-white/80 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200">
+                    <span className="inline-flex items-center gap-1.5 text-white/40 group-hover:text-white/80 text-[16px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200">
                       Explore <ArrowRight size={9} />
                     </span>
                   </div>
@@ -329,14 +375,191 @@ export default function BogatClient() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════
+          GUIDE BANNER
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section
+        className="relative overflow-hidden border-y"
+        style={{ background: "#0c0a06", borderColor: "rgba(212,175,55,0.12)" }}
+      >
+        {/* Gold top hairline */}
+        <div
+          className="absolute top-0 left-0 right-0 h-px"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent)" }}
+        />
+
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-16 sm:py-20">
+          <Reveal direction="up">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-20 justify-between">
+
+              {/* Left */}
+              <div className="flex items-start gap-5 sm:gap-8 flex-1 min-w-0">
+                {/* Ghost "6" */}
+                <div
+                  aria-hidden
+                  className="hidden sm:block shrink-0 select-none leading-none"
+                  style={{ opacity: 0.04 }}
+                >
+                  <span
+                    className="font-poppins font-extrabold text-white"
+                    style={{ fontSize: "clamp(90px, 12vw, 160px)" }}
+                  >
+                    6
+                  </span>
+                </div>
+
+                <div>
+                  <span
+                    className="block text-[10px] font-bold tracking-[0.42em] uppercase font-manrope mb-4"
+                    style={{ color: "rgba(212,175,55,0.65)" }}
+                  >
+                    Complete Shopping Guide
+                  </span>
+                  <h3
+                    className="font-poppins font-extrabold text-white leading-[1.08] mb-4"
+                    style={{ fontSize: "clamp(24px, 3.2vw, 44px)" }}
+                  >
+                    New to Bogat?<br />
+                    <span className="text-[#D4AF37]">We&apos;ve got your guide.</span>
+                  </h3>
+                  <p className="text-white/40 text-sm sm:text-[15px] leading-relaxed max-w-xl mb-6">
+                    6 steps — browsing the catalogue, filtering by category, selecting your variant,
+                    adding to cart, and receiving delivery at your door.
+                  </p>
+
+                  {/* Step trail */}
+                  <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
+                    {["Browse", "Filter", "Select", "Add to Cart", "Checkout", "Delivery"].map((s, i) => (
+                      <span key={s} className="flex items-center gap-1">
+                        <span
+                          className="text-[9px] font-bold font-manrope"
+                          style={{ color: "rgba(212,175,55,0.45)" }}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-[12px] text-white/35 font-manrope">{s}</span>
+                        {i < 5 && (
+                          <ArrowRight size={9} className="text-white/15 mx-0.5" />
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: CTA */}
+              <div className="shrink-0 flex flex-col items-start lg:items-end gap-3">
+                <Link href="/bogat/guide" className="btn-gold px-10 py-4">
+                  Read the Full Guide <ArrowRight size={14} />
+                </Link>
+                <p
+                  className="text-[11px] font-manrope"
+                  style={{ color: "rgba(255,255,255,0.22)" }}
+                >
+                  6 steps · Free · With screenshots
+                </p>
+              </div>
+
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Gold bottom hairline */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent)" }}
+        />
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          HOW TO SHOP — 4-STEP STRIP
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section
+        style={{ background: "#0a0806" }}
+        className="py-16 sm:py-20 border-y border-white/5"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-10">
+            <div>
+              <Reveal direction="up">
+                <p className="text-[#D4AF37] text-[16px] font-semibold uppercase tracking-[0.28em] mb-2">
+                  How to Shop
+                </p>
+              </Reveal>
+              <Reveal direction="up" delay={60}>
+                <h2 className="font-poppins font-bold text-2xl sm:text-3xl text-white">
+                  From Browse to Doorstep in 4 Steps
+                </h2>
+              </Reveal>
+            </div>
+            <Reveal direction="up" delay={80}>
+              <Link
+                href="/bogat/guide"
+                className="flex items-center gap-1.5 text-[#D4AF37]/60 hover:text-[#D4AF37] text-[16px] font-semibold transition-colors duration-200 whitespace-nowrap shrink-0"
+              >
+                Full Shopping Guide <ArrowRight size={12} />
+              </Link>
+            </Reveal>
+          </div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5">
+            {HOW_TO_SHOP.map(({ step, Icon, title, desc }, i) => (
+              <Reveal key={step} direction="up" delay={i * 60}>
+                <div
+                  className="p-6 sm:p-7 flex flex-col gap-4 h-full"
+                  style={{ background: "#0a0806" }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full border flex items-center justify-center shrink-0"
+                      style={{
+                        borderColor: "rgba(212,175,55,0.22)",
+                        background: "rgba(212,175,55,0.05)",
+                      }}
+                    >
+                      <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-white/22 text-[11px] font-bold tracking-[0.25em] uppercase font-manrope">
+                      Step {step}
+                    </span>
+                  </div>
+                  <h3 className="font-poppins font-bold text-white text-[14px] leading-snug">
+                    {title}
+                  </h3>
+                  <p className="text-white/40 text-[13px] leading-relaxed">{desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* CTA row */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+            <Link
+              href="/bogat/materials"
+              className="btn-gold"
+            >
+              <ShoppingCart size={13} />
+              Start Shopping
+            </Link>
+            <Link
+              href="/bogat/guide"
+              className="btn-outline"
+            >
+              Read the Full Guide <ArrowRight size={12} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
           WHY BOGAT — TRUST GRID
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: "#080808" }} className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-
           <div className="text-center mb-14">
             <Reveal direction="up">
-              <p className="text-[#D4AF37] text-[10px] font-semibold uppercase tracking-[0.28em] mb-3">
+              <p className="text-[#D4AF37] text-[16px] font-semibold uppercase tracking-[0.28em] mb-3">
                 Why Bogat
               </p>
             </Reveal>
@@ -352,7 +575,10 @@ export default function BogatClient() {
               <Reveal key={title} direction="up" delay={i * 55}>
                 <div className="bg-[#080808] p-7 sm:p-8 group hover:bg-[#0f0d0a] transition-colors duration-200 h-full">
                   <div className="w-10 h-10 rounded-full border border-[#D4AF37]/25 flex items-center justify-center mb-5 group-hover:border-[#D4AF37]/50 transition-colors duration-200">
-                    <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
+                    <Icon
+                      className="w-4 h-4 text-[#D4AF37]"
+                      strokeWidth={1.5}
+                    />
                   </div>
                   <h3 className="font-poppins font-semibold text-white text-[14px] mb-2">
                     {title}
@@ -373,7 +599,7 @@ export default function BogatClient() {
       <section className="bg-black py-16 border-y border-white/[0.06] overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 mb-10">
           <Reveal direction="up">
-            <p className="text-white/30 text-[10px] font-semibold uppercase tracking-[0.3em] text-center">
+            <p className="text-white/30 text-[16px] font-semibold uppercase tracking-[0.3em] text-center">
               Our Trusted Brands
             </p>
           </Reveal>
@@ -403,7 +629,6 @@ export default function BogatClient() {
       <section style={{ background: "#0d0b08" }} className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
             {/* Image */}
             <Reveal direction="left">
               <div className="relative overflow-hidden aspect-[4/5] lg:aspect-auto lg:h-[520px] bg-[#111]">
@@ -421,7 +646,7 @@ export default function BogatClient() {
             {/* Content */}
             <div>
               <Reveal direction="up">
-                <p className="text-[#D4AF37] text-[10px] font-semibold uppercase tracking-[0.28em] mb-4">
+                <p className="text-[#D4AF37] text-[16px] font-semibold uppercase tracking-[0.28em] mb-4">
                   Visit Our Showroom
                 </p>
               </Reveal>
@@ -442,7 +667,7 @@ export default function BogatClient() {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 bg-[#D4AF37] px-7 py-3.5 text-black font-poppins font-bold text-[13px] tracking-[0.12em] uppercase hover:bg-[#c49e30] transition-colors duration-200"
+                    className="btn-gold px-8 py-3.5"
                   >
                     Book a Showroom Visit <ArrowRight size={14} />
                   </Link>

@@ -95,13 +95,13 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-ctas">
             <Link
               href="/ziora"
-              className="flex items-center justify-center gap-2  bg-[#D4AF37] px-7 py-3.5 text-black font-poppings font-bold text-[14px] tracking-[0.12em] uppercase hover:bg-primary transition-colors duration-200"
+              className="btn-gold px-8 py-3.5"
             >
               Start with Ziora <ArrowRight size={14} />
             </Link>
             <Link
               href="/project"
-              className="flex items-center justify-center border border-white/18 px-7 py-3.5 text-white/80 font-manrope font-semibold text-[14px] tracking-[0.22em] uppercase text-center hover:border-primary hover:text-white hover:bg-white/4 transition-all duration-200"
+              className="btn-outline px-8 py-3.5"
             >
               View Projects
             </Link>

@@ -196,7 +196,7 @@ export default function SettingsPage() {
                       </span>
                     </div>
                     {profile?.isVerifiedVendor && (
-                      <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-white rounded-full font-manrope text-[10px] font-bold">
+                      <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-white rounded-full font-manrope text-[16px] font-bold">
                         Verified Vendor
                       </div>
                     )}

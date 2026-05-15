@@ -2,7 +2,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, MoreVertical, Download, Share2, Pencil, Trash2 } from "lucide-react";
+import {
+  Heart,
+  MoreVertical,
+  Download,
+  Share2,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -29,8 +36,12 @@ function DropdownMenu({ anchorRef, onClose, children }) {
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target) &&
-          anchorRef.current && !anchorRef.current.contains(e.target)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        anchorRef.current &&
+        !anchorRef.current.contains(e.target)
+      ) {
         onClose();
       }
     };
@@ -67,13 +78,27 @@ export default function DesignCard({ design, index, isList = false }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const menuBtnRef = useRef(null);
 
-  const imageUrl = design.url ?? design.generatedImageUrl ?? design.imageUrl ?? design.image ?? "/placeholder-design.jpg";
-  const title = design.projectName ?? design.name ?? design.title ?? design.prompt ?? "Untitled";
+  const imageUrl =
+    design.url ??
+    design.generatedImageUrl ??
+    design.imageUrl ??
+    design.image ??
+    "/placeholder-design.jpg";
+  const title =
+    design.projectName ??
+    design.name ??
+    design.title ??
+    design.prompt ??
+    "Untitled";
   const room = design.roomType ?? design.room ?? "";
   const isFavorite = design.isFavorited ?? design.isFavorite ?? false;
   const isHighRes = design.isHighRes ?? false;
   const createdAt = design.createdAt
-    ? new Date(design.createdAt).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })
+    ? new Date(design.createdAt).toLocaleDateString("en-NG", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
     : "";
 
   const toggleFavorite = useToggleFavorite();
@@ -81,24 +106,57 @@ export default function DesignCard({ design, index, isList = false }) {
   const downloadDesign = useDownloadDesign();
   const shareDesign = useShareDesign();
 
-  const handleFavorite = (e) => { e.stopPropagation(); toggleFavorite.mutate(design.id); };
-  const handleDownload = () => { downloadDesign.mutate({ designId: design.id, quality: design.isHighRes ? "high" : "standard" }); setShowMenu(false); };
-  const handleShare = () => { shareDesign.mutate(design.id, { onSuccess: (data) => navigator.clipboard.writeText(data.shareUrl) }); setShowMenu(false); };
-  const handleDelete = () => { deleteDesign.mutate(design.id); setShowMenu(false); setShowDeleteConfirm(false); };
+  const handleFavorite = (e) => {
+    e.stopPropagation();
+    toggleFavorite.mutate(design.id);
+  };
+  const handleDownload = () => {
+    downloadDesign.mutate({
+      designId: design.id,
+      quality: design.isHighRes ? "high" : "standard",
+    });
+    setShowMenu(false);
+  };
+  const handleShare = () => {
+    shareDesign.mutate(design.id, {
+      onSuccess: (data) => navigator.clipboard.writeText(data.shareUrl),
+    });
+    setShowMenu(false);
+  };
+  const handleDelete = () => {
+    deleteDesign.mutate(design.id);
+    setShowMenu(false);
+    setShowDeleteConfirm(false);
+  };
 
   const menuItems = (
     <>
-      <button onClick={() => setShowMenu(false)} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+      <button
+        onClick={() => setShowMenu(false)}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors"
+      >
         <Pencil className="w-4 h-4" /> Edit
       </button>
-      <button onClick={handleDownload} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+      <button
+        onClick={handleDownload}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors"
+      >
         <Download className="w-4 h-4" /> Download
       </button>
-      <button onClick={handleShare} className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors">
+      <button
+        onClick={handleShare}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors"
+      >
         <Share2 className="w-4 h-4" /> Share
       </button>
       <div className="h-px bg-white/06 my-1" />
-      <button onClick={() => { setShowDeleteConfirm(true); setShowMenu(false); }} className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-red-900/20 flex items-center gap-3 transition-colors">
+      <button
+        onClick={() => {
+          setShowDeleteConfirm(true);
+          setShowMenu(false);
+        }}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-[#ef4444] hover:bg-red-900/20 flex items-center gap-3 transition-colors"
+      >
         <Trash2 className="w-4 h-4" /> Delete
       </button>
     </>
@@ -117,14 +175,24 @@ export default function DesignCard({ design, index, isList = false }) {
       >
         <div className="flex items-center gap-4">
           <div className="relative w-28 h-24 shrink-0 bg-[#1a1a1a] rounded-lg overflow-hidden">
-            <Image src={imageUrl} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="112px" />
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="112px"
+            />
             {isHighRes && (
-              <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded">HIGH RES</div>
+              <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[16px] font-medium px-2 py-0.5 rounded">
+                HIGH RES
+              </div>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3 className="text-[15px] font-semibold text-white mb-1 truncate">{title}</h3>
+            <h3 className="text-[15px] font-semibold text-white mb-1 truncate">
+              {title}
+            </h3>
             {room && (
               <div className="flex items-center gap-2 text-[13px] text-white/40">
                 <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
@@ -135,13 +203,24 @@ export default function DesignCard({ design, index, isList = false }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <button onClick={handleFavorite} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
-              <Heart className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/30"}`} />
+            <button
+              onClick={handleFavorite}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+            >
+              <Heart
+                className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/30"}`}
+              />
             </button>
-            <button onClick={handleDownload} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
+            <button
+              onClick={handleDownload}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+            >
               <Download className="w-5 h-5 text-white/30" />
             </button>
-            <button onClick={handleShare} className="p-2 hover:bg-white/05 rounded-lg transition-colors">
+            <button
+              onClick={handleShare}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+            >
               <Share2 className="w-5 h-5 text-white/30" />
             </button>
           </div>
@@ -170,31 +249,43 @@ export default function DesignCard({ design, index, isList = false }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         />
         {isHighRes && (
-          <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md">HIGH RES</div>
+          <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md">
+            HIGH RES
+          </div>
         )}
         <button
           onClick={handleFavorite}
           className="absolute top-3 right-3 w-9 h-9 bg-black/60 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
         >
-          <Heart className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/50"}`} />
+          <Heart
+            className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/50"}`}
+          />
         </button>
       </div>
 
       {/* Content */}
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-[15px] font-semibold text-white line-clamp-1 flex-1 pr-2">{title}</h3>
+          <h3 className="text-[15px] font-semibold text-white line-clamp-1 flex-1 pr-2">
+            {title}
+          </h3>
 
           <button
             ref={menuBtnRef}
-            onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowMenu(!showMenu);
+            }}
             className="p-1 hover:bg-white/05 rounded-md transition-colors shrink-0"
           >
             <MoreVertical className="w-5 h-5 text-white/40" />
           </button>
 
           {showMenu && (
-            <DropdownMenu anchorRef={menuBtnRef} onClose={() => setShowMenu(false)}>
+            <DropdownMenu
+              anchorRef={menuBtnRef}
+              onClose={() => setShowMenu(false)}
+            >
               {menuItems}
             </DropdownMenu>
           )}
@@ -210,10 +301,24 @@ export default function DesignCard({ design, index, isList = false }) {
         <div className="flex items-center justify-between pt-3 border-t border-white/06">
           <span className="text-[12px] text-white/25">{createdAt}</span>
           <div className="flex items-center gap-1">
-            <button onClick={(e) => { e.stopPropagation(); handleDownload(); }} className="p-1.5 hover:bg-white/05 rounded-md transition-colors" aria-label="Download">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload();
+              }}
+              className="p-1.5 hover:bg-white/05 rounded-md transition-colors"
+              aria-label="Download"
+            >
               <Download className="w-4 h-4 text-white/40" />
             </button>
-            <button onClick={(e) => { e.stopPropagation(); handleShare(); }} className="p-1.5 hover:bg-white/05 rounded-md transition-colors" aria-label="Share">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShare();
+              }}
+              className="p-1.5 hover:bg-white/05 rounded-md transition-colors"
+              aria-label="Share"
+            >
               <Share2 className="w-4 h-4 text-white/40" />
             </button>
           </div>
@@ -230,15 +335,24 @@ export default function DesignCard({ design, index, isList = false }) {
             style={{ background: "#0d0b08" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-[18px] font-semibold text-white mb-2">Delete Design?</h3>
+            <h3 className="text-[18px] font-semibold text-white mb-2">
+              Delete Design?
+            </h3>
             <p className="text-[14px] text-white/50 mb-6">
-              This action cannot be undone. The design will be permanently removed.
+              This action cannot be undone. The design will be permanently
+              removed.
             </p>
             <div className="flex gap-3">
-              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 px-4 py-2.5 bg-white/06 text-white rounded-lg text-[14px] font-medium hover:bg-white/10 transition-colors">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 px-4 py-2.5 bg-white/06 text-white rounded-lg text-[14px] font-medium hover:bg-white/10 transition-colors"
+              >
                 Cancel
               </button>
-              <button onClick={handleDelete} className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-[14px] font-medium hover:bg-red-700 transition-colors">
+              <button
+                onClick={handleDelete}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-[14px] font-medium hover:bg-red-700 transition-colors"
+              >
                 Delete
               </button>
             </div>

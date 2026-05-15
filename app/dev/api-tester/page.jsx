@@ -74,16 +74,24 @@ function ResponsePanel({ response }) {
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
       {/* Meta bar */}
       <div className="flex items-center gap-4 px-4 py-2.5 border-b border-zinc-800">
-        <span className={`text-sm font-semibold ${STATUS_COLOR(response.status)}`}>
+        <span
+          className={`text-sm font-semibold ${STATUS_COLOR(response.status)}`}
+        >
           {response.status} {response.statusText}
         </span>
         <span className="text-xs text-zinc-500">{response.time}ms</span>
         {response.ok ? (
-          <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded-full">OK</span>
+          <span className="text-[16px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded-full">
+            OK
+          </span>
         ) : (
-          <span className="text-[10px] bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-0.5 rounded-full">Error</span>
+          <span className="text-[16px] bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-0.5 rounded-full">
+            Error
+          </span>
         )}
-        <span className="ml-auto text-[10px] text-zinc-600 truncate max-w-65">{response.url}</span>
+        <span className="ml-auto text-[16px] text-zinc-600 truncate max-w-65">
+          {response.url}
+        </span>
       </div>
 
       {/* Tabs */}
@@ -107,9 +115,13 @@ function ResponsePanel({ response }) {
           </button>
         ))}
         <button
-          onClick={() => navigator.clipboard.writeText(
-            tab === "body" ? formatJson(response.data) : JSON.stringify(response.resHeaders, null, 2)
-          )}
+          onClick={() =>
+            navigator.clipboard.writeText(
+              tab === "body"
+                ? formatJson(response.data)
+                : JSON.stringify(response.resHeaders, null, 2),
+            )
+          }
           className="ml-auto px-4 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
         >
           Copy
@@ -119,9 +131,11 @@ function ResponsePanel({ response }) {
       {/* Body */}
       {tab === "body" && (
         <pre className="p-4 text-xs text-zinc-300 overflow-auto max-h-120 leading-relaxed whitespace-pre-wrap wrap-break-word">
-          {response.data.trim() === ""
-            ? <span className="text-zinc-600 italic">empty body</span>
-            : formatJson(response.data)}
+          {response.data.trim() === "" ? (
+            <span className="text-zinc-600 italic">empty body</span>
+          ) : (
+            formatJson(response.data)
+          )}
         </pre>
       )}
 
@@ -185,7 +199,9 @@ export default function ApiTesterPage() {
 
       // Capture all response headers
       const resHeaders = {};
-      res.headers.forEach((value, key) => { resHeaders[key] = value; });
+      res.headers.forEach((value, key) => {
+        resHeaders[key] = value;
+      });
 
       setResponse({
         status: res.status,
@@ -213,12 +229,12 @@ export default function ApiTesterPage() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6 font-mono">
       <div className="max-w-4xl mx-auto space-y-6">
-
         {/* Header */}
         <div>
           <h1 className="text-lg font-semibold text-zinc-100">API Tester</h1>
           <p className="text-xs text-zinc-500 mt-0.5">
-            Requests proxied through <span className="text-zinc-400">/api/proxy/v1</span>
+            Requests proxied through{" "}
+            <span className="text-zinc-400">/api/proxy/v1</span>
           </p>
         </div>
 
@@ -276,11 +292,12 @@ export default function ApiTesterPage() {
                 }`}
               >
                 {tab}
-                {tab === "headers" && headers.filter((h) => h.key).length > 0 && (
-                  <span className="ml-1.5 bg-zinc-700 text-zinc-300 text-[10px] px-1.5 py-0.5 rounded-full">
-                    {headers.filter((h) => h.key).length}
-                  </span>
-                )}
+                {tab === "headers" &&
+                  headers.filter((h) => h.key).length > 0 && (
+                    <span className="ml-1.5 bg-zinc-700 text-zinc-300 text-[16px] px-1.5 py-0.5 rounded-full">
+                      {headers.filter((h) => h.key).length}
+                    </span>
+                  )}
               </button>
             ))}
           </div>
@@ -300,15 +317,24 @@ export default function ApiTesterPage() {
               <HeadersEditor headers={headers} onChange={setHeaders} />
             )}
             {activeTab === "body" && !hasBody && (
-              <p className="text-zinc-600 text-xs">GET requests have no body.</p>
+              <p className="text-zinc-600 text-xs">
+                GET requests have no body.
+              </p>
             )}
           </div>
         </div>
 
         {/* Keyboard hint */}
         <p className="text-[11px] text-zinc-600">
-          Press <kbd className="bg-zinc-800 border border-zinc-700 rounded px-1">Ctrl</kbd> +{" "}
-          <kbd className="bg-zinc-800 border border-zinc-700 rounded px-1">Enter</kbd> to send
+          Press{" "}
+          <kbd className="bg-zinc-800 border border-zinc-700 rounded px-1">
+            Ctrl
+          </kbd>{" "}
+          +{" "}
+          <kbd className="bg-zinc-800 border border-zinc-700 rounded px-1">
+            Enter
+          </kbd>{" "}
+          to send
         </p>
 
         {/* Response */}

@@ -33,8 +33,8 @@ function useIsAuthenticated() {
 // ── Constants ─────────────────────────────────────────────────────────────────
 const QUICK_ACTIONS = [
   { id: "visualize", label: "How Ziora works", Icon: Eye },
-  { id: "shipping",  label: "Shipping times",  Icon: Truck },
-  { id: "designer",  label: "Book a designer", Icon: CalendarDays },
+  { id: "shipping", label: "Shipping times", Icon: Truck },
+  { id: "designer", label: "Book a designer", Icon: CalendarDays },
 ];
 
 const INITIAL_MESSAGE = {
@@ -52,15 +52,21 @@ async function proxyPost(path, body) {
     body: JSON.stringify(body),
   });
   const text = await res.text();
-  try { return { ok: res.ok, status: res.status, data: JSON.parse(text) }; }
-  catch { return { ok: res.ok, status: res.status, data: text }; }
+  try {
+    return { ok: res.ok, status: res.status, data: JSON.parse(text) };
+  } catch {
+    return { ok: res.ok, status: res.status, data: text };
+  }
 }
 
 async function proxyGet(path) {
   const res = await fetch(path);
   const text = await res.text();
-  try { return { ok: res.ok, data: JSON.parse(text) }; }
-  catch { return { ok: res.ok, data: text }; }
+  try {
+    return { ok: res.ok, data: JSON.parse(text) };
+  } catch {
+    return { ok: res.ok, data: text };
+  }
 }
 
 async function proxyPatch(path, body) {
@@ -70,15 +76,21 @@ async function proxyPatch(path, body) {
     body: JSON.stringify(body),
   });
   const text = await res.text();
-  try { return { ok: res.ok, data: JSON.parse(text) }; }
-  catch { return { ok: res.ok, data: text }; }
+  try {
+    return { ok: res.ok, data: JSON.parse(text) };
+  } catch {
+    return { ok: res.ok, data: text };
+  }
 }
 
 async function proxyDelete(path) {
   const res = await fetch(path, { method: "DELETE" });
   const text = await res.text();
-  try { return { ok: res.ok, data: JSON.parse(text) }; }
-  catch { return { ok: res.ok, data: text }; }
+  try {
+    return { ok: res.ok, data: JSON.parse(text) };
+  } catch {
+    return { ok: res.ok, data: text };
+  }
 }
 
 // ── Bubble border-radius — first message in group gets the "tail" ─────────────
@@ -121,7 +133,10 @@ function TaskCard({ task, onStatusChange }) {
           onClick={() => handleStatus("completed")}
           className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-opacity"
           style={{
-            background: task.status === "completed" ? "rgba(52,211,153,0.18)" : "rgba(52,211,153,0.10)",
+            background:
+              task.status === "completed"
+                ? "rgba(52,211,153,0.18)"
+                : "rgba(52,211,153,0.10)",
             border: "1px solid rgba(52,211,153,0.25)",
             color: "#34d399",
             opacity: updating ? 0.5 : 1,
@@ -158,17 +173,26 @@ function ToolActionCard({ action, onApprove, onExecute }) {
     setApproving(true);
     const aid = action.id ?? action.actionId;
     const res = await proxyPost(`/api/assistant/tool-actions/${aid}/approval`, {
-      approve: true, reason: "User approved via chat",
+      approve: true,
+      reason: "User approved via chat",
     });
-    if (res.ok) { setApproved(true); onApprove?.(aid); }
+    if (res.ok) {
+      setApproved(true);
+      onApprove?.(aid);
+    }
     setApproving(false);
   };
 
   const handleExecute = async () => {
     const aid = action.id ?? action.actionId;
     setExecuting(true);
-    const res = await proxyPost(`/api/assistant/tool-actions/${aid}/execute`, { dryRun: false });
-    if (res.ok) { setExecuted(true); onExecute?.(aid, res.data); }
+    const res = await proxyPost(`/api/assistant/tool-actions/${aid}/execute`, {
+      dryRun: false,
+    });
+    if (res.ok) {
+      setExecuted(true);
+      onExecute?.(aid, res.data);
+    }
     setExecuting(false);
   };
 
@@ -177,7 +201,10 @@ function ToolActionCard({ action, onApprove, onExecute }) {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       className="rounded-xl px-3.5 py-3"
-      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
     >
       <div className="flex items-center gap-2 mb-1.5">
         <span
@@ -193,7 +220,9 @@ function ToolActionCard({ action, onApprove, onExecute }) {
         </p>
       </div>
       {action.description && (
-        <p className="text-white/35 text-[11px] mb-3 pl-7">{action.description}</p>
+        <p className="text-white/35 text-[11px] mb-3 pl-7">
+          {action.description}
+        </p>
       )}
       <div className="flex gap-2 pl-7">
         {!approved && !executed && (
@@ -201,7 +230,10 @@ function ToolActionCard({ action, onApprove, onExecute }) {
             disabled={approving}
             onClick={handleApprove}
             className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-semibold text-black transition-opacity cursor-pointer"
-            style={{ background: "linear-gradient(135deg, #D4AF37, #b8962e)", opacity: approving ? 0.6 : 1 }}
+            style={{
+              background: "linear-gradient(135deg, #D4AF37, #b8962e)",
+              opacity: approving ? 0.6 : 1,
+            }}
           >
             {approving ? "Approving…" : "Approve"}
           </button>
@@ -222,7 +254,10 @@ function ToolActionCard({ action, onApprove, onExecute }) {
           </button>
         )}
         {executed && (
-          <span className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: "#34d399" }}>
+          <span
+            className="flex items-center gap-1 text-[11px] font-semibold"
+            style={{ color: "#34d399" }}
+          >
             <Check className="w-3 h-3" /> Executed
           </span>
         )}
@@ -235,9 +270,17 @@ function ToolActionCard({ action, onApprove, onExecute }) {
 function renderInline(str) {
   const parts = str.split(/\*\*(.*?)\*\*/g);
   return parts.map((part, i) =>
-    i % 2 === 1
-      ? <strong key={i} className="font-semibold" style={{ color: "rgba(255,255,255,0.95)" }}>{part}</strong>
-      : part
+    i % 2 === 1 ? (
+      <strong
+        key={i}
+        className="font-semibold"
+        style={{ color: "rgba(255,255,255,0.95)" }}
+      >
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
   );
 }
 
@@ -277,30 +320,36 @@ function MessageContent({ text }) {
 export default function TBMConcierge() {
   const router = useRouter();
   const isAuth = useIsAuthenticated();
-  const [isOpen, setIsOpen]             = useState(false);
-  const [messages, setMessages]         = useState([INITIAL_MESSAGE]);
-  const [input, setInput]               = useState("");
-  const [isTyping, setIsTyping]         = useState(false);
-  const [sessionId, setSessionId]       = useState(null);
-  const [tasks, setTasks]               = useState([]);
-  const [showTasks, setShowTasks]       = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [showTasks, setShowTasks] = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const messagesEndRef = useRef(null);
-  const inputRef       = useRef(null);
+  const inputRef = useRef(null);
 
   const formatTime = (ts) => {
     if (!ts) return null;
-    return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Date(ts).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   // Enrich messages with group positioning flags
-  const enrichedMessages = useMemo(() =>
-    messages.map((msg, i) => ({
-      ...msg,
-      isFirstInGroup: i === 0 || messages[i - 1].role !== msg.role,
-      isLastInGroup:  i === messages.length - 1 || messages[i + 1].role !== msg.role,
-    })),
-  [messages]);
+  const enrichedMessages = useMemo(
+    () =>
+      messages.map((msg, i) => ({
+        ...msg,
+        isFirstInGroup: i === 0 || messages[i - 1].role !== msg.role,
+        isLastInGroup:
+          i === messages.length - 1 || messages[i + 1].role !== msg.role,
+      })),
+    [messages],
+  );
 
   // ── Session loaders ───────────────────────────────────────────────────────
   const loadSession = useCallback(async (sid) => {
@@ -366,12 +415,20 @@ export default function TBMConcierge() {
   const handleSend = async (text) => {
     const msgText = text || input.trim();
     if (!msgText) return;
-    if (!isAuth) { setShowAuthPrompt(true); return; }
+    if (!isAuth) {
+      setShowAuthPrompt(true);
+      return;
+    }
 
     setInput("");
     setMessages((prev) => [
       ...prev,
-      { id: `user-${Date.now()}`, role: "user", text: msgText, ts: new Date().toISOString() },
+      {
+        id: `user-${Date.now()}`,
+        role: "user",
+        text: msgText,
+        ts: new Date().toISOString(),
+      },
     ]);
     setIsTyping(true);
 
@@ -384,13 +441,16 @@ export default function TBMConcierge() {
     setIsTyping(false);
 
     if (!res.ok) {
-      setMessages((prev) => [...prev, {
-        id: `err-${Date.now()}`,
-        role: "assistant",
-        text: "Sorry, I encountered an error. Please try again.",
-        ts: new Date().toISOString(),
-        isError: true,
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `err-${Date.now()}`,
+          role: "assistant",
+          text: "Sorry, I encountered an error. Please try again.",
+          ts: new Date().toISOString(),
+          isError: true,
+        },
+      ]);
       return;
     }
 
@@ -398,36 +458,50 @@ export default function TBMConcierge() {
     if (d?.sessionId && !sessionId) setSessionId(d.sessionId);
 
     const replyText =
-      d?.assistantReply ?? d?.reply ?? d?.message ?? d?.response ??
-      d?.content ?? d?.text ??
-      (typeof d === "string" ? d : "I received your message. How else can I assist?");
+      d?.assistantReply ??
+      d?.reply ??
+      d?.message ??
+      d?.response ??
+      d?.content ??
+      d?.text ??
+      (typeof d === "string"
+        ? d
+        : "I received your message. How else can I assist?");
 
-    const newTasks    = d?.suggestedTasks ?? d?.tasks ?? [];
+    const newTasks = d?.suggestedTasks ?? d?.tasks ?? [];
     const toolActions = d?.toolActions ?? d?.tool_actions ?? [];
-    const links       = d?.links ?? [];
+    const links = d?.links ?? [];
 
     const standaloneTasks = newTasks.filter((t) => !t.toolActionId);
-    if (standaloneTasks.length > 0) { setTasks((prev) => [...prev, ...standaloneTasks]); setShowTasks(true); }
+    if (standaloneTasks.length > 0) {
+      setTasks((prev) => [...prev, ...standaloneTasks]);
+      setShowTasks(true);
+    }
 
-    setMessages((prev) => [...prev, {
-      id: `ai-${Date.now()}`,
-      role: "assistant",
-      text: replyText,
-      ts: new Date().toISOString(),
-      tasks: newTasks,
-      toolActions,
-      links,
-    }]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `ai-${Date.now()}`,
+        role: "assistant",
+        text: replyText,
+        ts: new Date().toISOString(),
+        tasks: newTasks,
+        toolActions,
+        links,
+      },
+    ]);
   };
 
   const handleTaskStatusChange = useCallback((taskId, status) => {
     setTasks((prev) =>
-      prev.map((t) => (t.id ?? t.taskId) === taskId ? { ...t, status } : t)
+      prev.map((t) => ((t.id ?? t.taskId) === taskId ? { ...t, status } : t)),
     );
   }, []);
 
-  const activeTasks  = tasks.filter((t) => t.status !== "completed" && t.status !== "dismissed");
-  const isFreshChat  = messages.length === 1;
+  const activeTasks = tasks.filter(
+    (t) => t.status !== "completed" && t.status !== "dismissed",
+  );
+  const isFreshChat = messages.length === 1;
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
@@ -453,7 +527,6 @@ export default function TBMConcierge() {
       </AnimatePresence>
 
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-
         {/* ── Chat Panel ─────────────────────────────────────────────────────── */}
         <AnimatePresence>
           {isOpen && (
@@ -494,7 +567,10 @@ export default function TBMConcierge() {
                 <div className="relative shrink-0">
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden"
-                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                    }}
                   >
                     <Image
                       src="/ziora-logo.png"
@@ -508,39 +584,53 @@ export default function TBMConcierge() {
                     className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400"
                     style={{ border: "2px solid #0f0e0b" }}
                     animate={{ scale: [1, 1.35, 1] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{
+                      duration: 2.2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                   />
                 </div>
 
                 {/* Name / status */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-white text-[14px] font-bold leading-none">Ziora</p>
+                    <p className="text-white text-[14px] font-bold leading-none">
+                      Ziora
+                    </p>
                     <span
                       className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
-                      style={{ background: "rgba(212,175,55,0.12)", color: "#D4AF37" }}
+                      style={{
+                        background: "rgba(212,175,55,0.12)",
+                        color: "#D4AF37",
+                      }}
                     >
                       AI
                     </span>
                   </div>
-                  <p className="text-white/35 text-[11px] mt-0.5">TBM Design Assistant</p>
+                  <p className="text-white/35 text-[11px] mt-0.5">
+                    TBM Design Assistant
+                  </p>
                 </div>
 
                 {/* Tasks badge */}
                 {activeTasks.length > 0 && (
                   <button
                     onClick={() => setShowTasks((p) => !p)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[16px] font-bold transition-colors"
                     style={{
                       background: "rgba(212,175,55,0.10)",
                       border: "1px solid rgba(212,175,55,0.22)",
                       color: "#D4AF37",
                     }}
                   >
-                    {activeTasks.length} task{activeTasks.length !== 1 ? "s" : ""}
-                    {showTasks
-                      ? <ChevronUp className="w-3 h-3 ml-0.5" />
-                      : <ChevronDown className="w-3 h-3 ml-0.5" />}
+                    {activeTasks.length} task
+                    {activeTasks.length !== 1 ? "s" : ""}
+                    {showTasks ? (
+                      <ChevronUp className="w-3 h-3 ml-0.5" />
+                    ) : (
+                      <ChevronDown className="w-3 h-3 ml-0.5" />
+                    )}
                   </button>
                 )}
 
@@ -578,7 +668,11 @@ export default function TBMConcierge() {
                         Suggested Tasks
                       </p>
                       {activeTasks.map((task) => (
-                        <TaskCard key={task.id ?? task.taskId} task={task} onStatusChange={handleTaskStatusChange} />
+                        <TaskCard
+                          key={task.id ?? task.taskId}
+                          task={task}
+                          onStatusChange={handleTaskStatusChange}
+                        />
                       ))}
                     </div>
                   </motion.div>
@@ -605,7 +699,10 @@ export default function TBMConcierge() {
                           {msg.role === "assistant" && msg.isFirstInGroup && (
                             <div
                               className="w-7 h-7 rounded-full flex items-center justify-center overflow-hidden"
-                              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                              }}
                             >
                               <Image
                                 src="/ziora-logo.png"
@@ -626,8 +723,13 @@ export default function TBMConcierge() {
                           <div
                             className="px-4 py-3 text-[13.5px] leading-relaxed"
                             style={{
-                              borderRadius: getBubbleRadius(msg.role, msg.isFirstInGroup),
-                              color: msg.isError ? "#f87171" : "rgba(255,255,255,0.90)",
+                              borderRadius: getBubbleRadius(
+                                msg.role,
+                                msg.isFirstInGroup,
+                              ),
+                              color: msg.isError
+                                ? "#f87171"
+                                : "rgba(255,255,255,0.90)",
                               ...(msg.role === "assistant"
                                 ? {
                                     background: msg.isError
@@ -656,17 +758,23 @@ export default function TBMConcierge() {
 
                           {/* Timestamp — only on last message of group */}
                           {msg.isLastInGroup && (
-                            <p className="text-white/20 text-[10px] px-1">
+                            <p className="text-white/20 text-[16px] px-1">
                               {msg.role === "user" ? "You" : "Ziora"}
-                              {formatTime(msg.ts) ? ` · ${formatTime(msg.ts)}` : ""}
+                              {formatTime(msg.ts)
+                                ? ` · ${formatTime(msg.ts)}`
+                                : ""}
                             </p>
                           )}
 
                           {/* Link chips — skip raw API URLs, only show frontend routes */}
-                          {msg.links?.filter((l) => l.url && !l.url.startsWith("/api/")).length > 0 && (
+                          {msg.links?.filter(
+                            (l) => l.url && !l.url.startsWith("/api/"),
+                          ).length > 0 && (
                             <div className="flex flex-wrap gap-1.5 mt-1">
                               {msg.links
-                                .filter((l) => l.url && !l.url.startsWith("/api/"))
+                                .filter(
+                                  (l) => l.url && !l.url.startsWith("/api/"),
+                                )
                                 .map((link, i) => (
                                   <a
                                     key={i}
@@ -690,18 +798,26 @@ export default function TBMConcierge() {
                           {msg.toolActions?.length > 0 && (
                             <div className="flex flex-col gap-2 mt-1.5 w-full">
                               {msg.toolActions.map((action) => (
-                                <ToolActionCard key={action.id ?? action.actionId} action={action} />
+                                <ToolActionCard
+                                  key={action.id ?? action.actionId}
+                                  action={action}
+                                />
                               ))}
                             </div>
                           )}
 
                           {/* Standalone tasks only — skip any task that is already represented by a toolAction */}
-                          {msg.tasks?.filter((t) => !t.toolActionId).length > 0 && (
+                          {msg.tasks?.filter((t) => !t.toolActionId).length >
+                            0 && (
                             <div className="flex flex-col gap-2 mt-1.5 w-full">
                               {msg.tasks
                                 .filter((t) => !t.toolActionId)
                                 .map((task) => (
-                                  <TaskCard key={task.id ?? task.taskId} task={task} onStatusChange={handleTaskStatusChange} />
+                                  <TaskCard
+                                    key={task.id ?? task.taskId}
+                                    task={task}
+                                    onStatusChange={handleTaskStatusChange}
+                                  />
                                 ))}
                             </div>
                           )}
@@ -721,7 +837,10 @@ export default function TBMConcierge() {
                       >
                         <div
                           className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center self-end overflow-hidden"
-                          style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                          }}
                         >
                           <Image
                             src="/ziora-logo.png"
@@ -743,7 +862,9 @@ export default function TBMConcierge() {
                             <motion.span
                               key={i}
                               className="w-1.5 h-1.5 rounded-full"
-                              style={{ backgroundColor: "rgba(212,175,55,0.65)" }}
+                              style={{
+                                backgroundColor: "rgba(212,175,55,0.65)",
+                              }}
                               animate={{ y: [0, -4, 0] }}
                               transition={{
                                 duration: 0.6,
@@ -821,7 +942,10 @@ export default function TBMConcierge() {
                           className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center mt-0.5"
                           style={{ background: "rgba(212,175,55,0.15)" }}
                         >
-                          <LogIn className="w-3.5 h-3.5" style={{ color: "#D4AF37" }} />
+                          <LogIn
+                            className="w-3.5 h-3.5"
+                            style={{ color: "#D4AF37" }}
+                          />
                         </div>
                         <div>
                           <p className="text-white text-[13px] font-semibold leading-snug">
@@ -837,7 +961,10 @@ export default function TBMConcierge() {
                           whileTap={{ scale: 0.96 }}
                           onClick={() => router.push("/sign-in")}
                           className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-bold text-black"
-                          style={{ background: "linear-gradient(135deg, #D4AF37, #b8962e)" }}
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #D4AF37, #b8962e)",
+                          }}
                         >
                           <LogIn className="w-3.5 h-3.5" /> Log in
                         </motion.button>
@@ -865,7 +992,9 @@ export default function TBMConcierge() {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && !isTyping && handleSend()}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && !isTyping && handleSend()
+                    }
                     placeholder="Ask Ziora anything…"
                     disabled={isTyping}
                     className="flex-1 bg-transparent text-white text-base lg:text-[13.5px] placeholder-white/20 outline-none disabled:opacity-50"
@@ -886,7 +1015,9 @@ export default function TBMConcierge() {
                       className="w-3.5 h-3.5"
                       style={{
                         color:
-                          input.trim() && !isTyping ? "#000" : "rgba(255,255,255,0.22)",
+                          input.trim() && !isTyping
+                            ? "#000"
+                            : "rgba(255,255,255,0.22)",
                         transform: "translateX(1px)",
                       }}
                     />
@@ -899,7 +1030,6 @@ export default function TBMConcierge() {
 
         {/* ── FAB row ─────────────────────────────────────────────────────── */}
         <div className="flex items-center gap-3">
-
           {/* Pill */}
           <AnimatePresence>
             {!isOpen && (
@@ -914,7 +1044,8 @@ export default function TBMConcierge() {
                 style={{
                   background: "#0f0e0b",
                   border: "1px solid rgba(212,175,55,0.28)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,175,55,0.05)",
+                  boxShadow:
+                    "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,175,55,0.05)",
                 }}
               >
                 <span
@@ -933,13 +1064,14 @@ export default function TBMConcierge() {
 
           {/* FAB */}
           <motion.button
-            whileTap={{ scale: 0.90 }}
+            whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.05 }}
             onClick={handleOpen}
             className="relative w-14 h-14 rounded-full flex items-center justify-center"
             style={{
               background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
-              boxShadow: "0 8px 32px rgba(212,175,55,0.28), 0 2px 8px rgba(0,0,0,0.4)",
+              boxShadow:
+                "0 8px 32px rgba(212,175,55,0.28), 0 2px 8px rgba(0,0,0,0.4)",
             }}
           >
             <AnimatePresence mode="wait">
@@ -983,7 +1115,6 @@ export default function TBMConcierge() {
             )}
           </motion.button>
         </div>
-
       </div>
     </>
   );

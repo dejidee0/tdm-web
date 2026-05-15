@@ -48,24 +48,79 @@ const FEATURE_ICONS = {
 function TrustIcon({ index }) {
   const icons = [
     // 100% Authentic
-    <svg key="auth" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+    <svg
+      key="auth"
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+      />
     </svg>,
     // Quality
-    <svg key="quality" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+    <svg
+      key="quality"
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
+      />
     </svg>,
     // Fast Delivery
-    <svg key="delivery" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+    <svg
+      key="delivery"
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
+      />
     </svg>,
     // Expert Support
-    <svg key="support" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+    <svg
+      key="support"
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+      />
     </svg>,
     // Bogat Promise
-    <svg key="promise" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+    <svg
+      key="promise"
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+      />
     </svg>,
   ];
   return icons[index] ?? icons[0];
@@ -142,7 +197,12 @@ export default function MaterialDetailClient({
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleAddToCart = () => {
     const cartProduct = selectedVariant
-      ? { ...product, price: selectedVariant.price, priceDisplay: selectedVariant.priceDisplay, name: `${product.name} — ${selectedVariant.label}` }
+      ? {
+          ...product,
+          price: selectedVariant.price,
+          priceDisplay: selectedVariant.priceDisplay,
+          name: `${product.name} — ${selectedVariant.label}`,
+        }
       : product;
     addToCart.mutate(
       { product: cartProduct, quantity },
@@ -164,13 +224,21 @@ export default function MaterialDetailClient({
   const handleBuyNow = async () => {
     setBuyingNow(true);
     const cartProduct = selectedVariant
-      ? { ...product, price: selectedVariant.price, priceDisplay: selectedVariant.priceDisplay, name: `${product.name} — ${selectedVariant.label}` }
+      ? {
+          ...product,
+          price: selectedVariant.price,
+          priceDisplay: selectedVariant.priceDisplay,
+          name: `${product.name} — ${selectedVariant.label}`,
+        }
       : product;
     try {
       await addToCart.mutateAsync({ product: cartProduct, quantity });
       router.push("/checkout");
     } catch (error) {
-      showToast.error({ title: "Couldn't Process", message: error.message || "Something went wrong." });
+      showToast.error({
+        title: "Couldn't Process",
+        message: error.message || "Something went wrong.",
+      });
       setBuyingNow(false);
     }
   };
@@ -178,24 +246,38 @@ export default function MaterialDetailClient({
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: product?.name || "Product", text: product?.shortDescription || "", url: window.location.href });
+        await navigator.share({
+          title: product?.name || "Product",
+          text: product?.shortDescription || "",
+          url: window.location.href,
+        });
       } catch (error) {
         if (error.name !== "AbortError")
-          showToast.error({ title: "Share Failed", message: "Unable to share." });
+          showToast.error({
+            title: "Share Failed",
+            message: "Unable to share.",
+          });
       }
     } else {
       try {
         await navigator.clipboard.writeText(window.location.href);
-        showToast.success({ title: "Link Copied", message: "Product link copied to your clipboard." });
+        showToast.success({
+          title: "Link Copied",
+          message: "Product link copied to your clipboard.",
+        });
       } catch {
-        showToast.error({ title: "Copy Failed", message: "Unable to copy the link." });
+        showToast.error({
+          title: "Copy Failed",
+          message: "Unable to copy the link.",
+        });
       }
     }
   };
 
   const handleToggleSave = () => {
     if (!isAuthenticated) {
-      window.location.href = "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
+      window.location.href =
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
       return;
     }
     toggleSave.mutate({ productId: product.id, savedId, isSaved });
@@ -215,16 +297,21 @@ export default function MaterialDetailClient({
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-black font-manrope pt-20">
-
       {/* ── Breadcrumb ─────────────────────────────────────────────────────── */}
-      <div className="border-b border-white/[0.07]" style={{ background: "#0d0b08" }}>
+      <div
+        className="border-b border-white/[0.07]"
+        style={{ background: "#0d0b08" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
               { label: "Bogat", href: "/bogat" },
               { label: "Materials", href: "/bogat/materials" },
-              { label: product?.categoryName || "Product", href: `/bogat/materials?category=${product?.categoryId}` },
+              {
+                label: product?.categoryName || "Product",
+                href: `/bogat/materials?category=${product?.categoryId}`,
+              },
               { label: product?.name || "Product", href: "#" },
             ]}
           />
@@ -234,7 +321,9 @@ export default function MaterialDetailClient({
       {/* ── Collection header strip ────────────────────────────────────────── */}
       <div
         className="border-b border-[#D4AF37]/20"
-        style={{ background: "linear-gradient(90deg, #0d0b08 0%, #111008 100%)" }}
+        style={{
+          background: "linear-gradient(90deg, #0d0b08 0%, #111008 100%)",
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1">
           <div className="flex items-center gap-3">
@@ -262,10 +351,12 @@ export default function MaterialDetailClient({
       </div>
 
       {/* ── HERO: image + purchase panel ──────────────────────────────────── */}
-      <section style={{ background: "#0a0a08" }} className="border-b border-white/6">
+      <section
+        style={{ background: "#0a0a08" }}
+        className="border-b border-white/6"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 lg:gap-10">
-
             {/* Left — hero image + thumbnail strip */}
             <div className="flex flex-col gap-3">
               {/* Main image */}
@@ -302,12 +393,12 @@ export default function MaterialDetailClient({
                 {/* Badges overlay */}
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                   {product.isFeatured && (
-                    <span className="text-[10px] font-bold px-2.5 py-1 tracking-widest uppercase bg-[#D4AF37] text-black">
+                    <span className="text-[16px] font-bold px-2.5 py-1 tracking-widest uppercase bg-[#D4AF37] text-black">
                       Featured
                     </span>
                   )}
                   {hasDiscount && (
-                    <span className="text-[10px] font-bold px-2.5 py-1 tracking-widest uppercase bg-emerald-500 text-white">
+                    <span className="text-[16px] font-bold px-2.5 py-1 tracking-widest uppercase bg-emerald-500 text-white">
                       -{discountPct}% OFF
                     </span>
                   )}
@@ -323,9 +414,10 @@ export default function MaterialDetailClient({
                       onClick={() => setActiveGalleryIndex(i)}
                       className="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 overflow-hidden transition-all duration-200"
                       style={{
-                        border: i === activeGalleryIndex
-                          ? "2px solid #D4AF37"
-                          : "2px solid rgba(255,255,255,0.08)",
+                        border:
+                          i === activeGalleryIndex
+                            ? "2px solid #D4AF37"
+                            : "2px solid rgba(255,255,255,0.08)",
                         background: "#111",
                       }}
                     >
@@ -371,7 +463,11 @@ export default function MaterialDetailClient({
                 >
                   <Heart
                     className={`w-5 h-5 transition-colors duration-200 ${
-                      savedLoading ? "text-white/20" : isSaved ? "fill-[#D4AF37] text-[#D4AF37]" : "text-white/40 hover:text-[#D4AF37]"
+                      savedLoading
+                        ? "text-white/20"
+                        : isSaved
+                          ? "fill-[#D4AF37] text-[#D4AF37]"
+                          : "text-white/40 hover:text-[#D4AF37]"
                     }`}
                   />
                 </motion.button>
@@ -413,7 +509,9 @@ export default function MaterialDetailClient({
                 ) : (
                   <>
                     <XCircle className="text-red-500 w-4 h-4 shrink-0" />
-                    <span className="text-sm text-red-400 font-medium">Out of Stock</span>
+                    <span className="text-sm text-red-400 font-medium">
+                      Out of Stock
+                    </span>
                   </>
                 )}
               </div>
@@ -451,7 +549,10 @@ export default function MaterialDetailClient({
                       >
                         <div className="flex items-center gap-3 text-left">
                           {variant.image && (
-                            <div className="relative w-10 h-10 shrink-0 overflow-hidden" style={{ background: "#1a1a1a" }}>
+                            <div
+                              className="relative w-10 h-10 shrink-0 overflow-hidden"
+                              style={{ background: "#1a1a1a" }}
+                            >
                               <ProductImage
                                 src={variant.image}
                                 alt={variant.label}
@@ -462,9 +563,13 @@ export default function MaterialDetailClient({
                             </div>
                           )}
                           <div>
-                            <p className="text-sm font-semibold text-white">{variant.label}</p>
+                            <p className="text-sm font-semibold text-white">
+                              {variant.label}
+                            </p>
                             {variant.dimensions && (
-                              <p className="text-xs text-white/35 mt-0.5">{variant.dimensions}</p>
+                              <p className="text-xs text-white/35 mt-0.5">
+                                {variant.dimensions}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -490,7 +595,9 @@ export default function MaterialDetailClient({
                 <div>
                   {product.showPrice ? (
                     <div className="flex items-baseline gap-3">
-                      <span className="text-3xl font-bold text-white">{activePriceDisplay}</span>
+                      <span className="text-3xl font-bold text-white">
+                        {activePriceDisplay}
+                      </span>
                       {hasDiscount && (
                         <span className="text-base text-white/30 line-through">
                           ₦{product.compareAtPrice?.toLocaleString()}.00
@@ -498,7 +605,9 @@ export default function MaterialDetailClient({
                       )}
                     </div>
                   ) : (
-                    <span className="text-xl font-semibold text-[#D4AF37]">Request Price</span>
+                    <span className="text-xl font-semibold text-[#D4AF37]">
+                      Request Price
+                    </span>
                   )}
                 </div>
               )}
@@ -507,9 +616,14 @@ export default function MaterialDetailClient({
               {product.showPrice && product.inStock && (
                 <div
                   className="rounded-none p-4 space-y-2"
-                  style={{ background: "#0d0b08", border: "1px solid rgba(255,255,255,0.06)" }}
+                  style={{
+                    background: "#0d0b08",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
                 >
-                  <p className="text-xs font-semibold text-white/40 tracking-widest uppercase">Quantity</p>
+                  <p className="text-xs font-semibold text-white/40 tracking-widest uppercase">
+                    Quantity
+                  </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center border border-white/10 overflow-hidden">
                       <button
@@ -518,11 +632,15 @@ export default function MaterialDetailClient({
                       >
                         −
                       </button>
-                      <span className="w-12 text-center text-white font-semibold">{quantity}</span>
+                      <span className="w-12 text-center text-white font-semibold">
+                        {quantity}
+                      </span>
                       <button
                         onClick={() =>
                           setQuantity((q) =>
-                            product.stockQuantity ? Math.min(product.stockQuantity, q + 1) : q + 1,
+                            product.stockQuantity
+                              ? Math.min(product.stockQuantity, q + 1)
+                              : q + 1,
                           )
                         }
                         className="w-10 h-10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
@@ -548,23 +666,36 @@ export default function MaterialDetailClient({
                   whileHover={{ scale: 1.01, y: -1 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={handleBuyNow}
-                  disabled={buyingNow || addToCart.isPending || !product.inStock}
+                  disabled={
+                    buyingNow || addToCart.isPending || !product.inStock
+                  }
                   className="w-full py-4 text-black font-manrope font-bold text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
-                  style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8942e 100%)" }}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #D4AF37 0%, #b8942e 100%)",
+                  }}
                 >
                   <Zap className="w-4 h-4" />
-                  {buyingNow ? "Processing…" : product.inStock ? "Buy Now" : "Out of Stock"}
+                  {buyingNow
+                    ? "Processing…"
+                    : product.inStock
+                      ? "Buy Now"
+                      : "Out of Stock"}
                 </motion.button>
 
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={handleAddToCart}
-                  disabled={addToCart.isPending || buyingNow || !product.inStock}
+                  disabled={
+                    addToCart.isPending || buyingNow || !product.inStock
+                  }
                   className="w-full py-4 border border-white/15 text-white font-manrope font-bold text-[11px] tracking-[0.25em] uppercase hover:border-[#D4AF37]/40 hover:text-[#D4AF37] transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  {addToCart.isPending && !buyingNow ? "Adding…" : "Add to Cart"}
+                  {addToCart.isPending && !buyingNow
+                    ? "Adding…"
+                    : "Add to Cart"}
                 </motion.button>
 
                 <motion.button
@@ -624,14 +755,19 @@ export default function MaterialDetailClient({
                         border: "1px solid rgba(212,175,55,0.25)",
                       }}
                     >
-                      <Icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.5} />
+                      <Icon
+                        className="w-5 h-5 text-[#D4AF37]"
+                        strokeWidth={1.5}
+                      />
                     </div>
                     <div>
                       <p className="text-xs font-bold text-white tracking-wider uppercase leading-tight">
                         {feat.label}
                       </p>
                       {feat.description && (
-                        <p className="text-xs text-white/35 mt-1">{feat.description}</p>
+                        <p className="text-xs text-white/35 mt-1">
+                          {feat.description}
+                        </p>
                       )}
                     </div>
                   </motion.div>
@@ -650,11 +786,10 @@ export default function MaterialDetailClient({
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-
               {/* Material close-ups */}
               {hasMaterialDetails && (
                 <div>
-                  <p className="text-[10px] font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-5">
+                  <p className="text-[16px] font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-5">
                     Material Details
                   </p>
                   <div className="grid grid-cols-3 gap-3">
@@ -702,7 +837,7 @@ export default function MaterialDetailClient({
               {/* Component highlights */}
               {hasComponents && (
                 <div>
-                  <p className="text-[10px] font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-5">
+                  <p className="text-[16px] font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-5">
                     Component Highlights
                   </p>
                   <div className="grid grid-cols-2 gap-3">
@@ -736,7 +871,9 @@ export default function MaterialDetailClient({
                             {comp.label}
                           </p>
                           {comp.description && (
-                            <p className="text-[11px] text-white/40 mt-0.5">{comp.description}</p>
+                            <p className="text-[11px] text-white/40 mt-0.5">
+                              {comp.description}
+                            </p>
                           )}
                         </div>
                       </motion.div>
@@ -758,7 +895,9 @@ export default function MaterialDetailClient({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
             <div
               className="grid gap-px"
-              style={{ gridTemplateColumns: `repeat(${Math.min(product.trustBadges.length, 5)}, 1fr)` }}
+              style={{
+                gridTemplateColumns: `repeat(${Math.min(product.trustBadges.length, 5)}, 1fr)`,
+              }}
             >
               {product.trustBadges.map((badge, i) => (
                 <div
@@ -769,11 +908,11 @@ export default function MaterialDetailClient({
                     <TrustIcon index={i} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] font-bold text-white tracking-wider uppercase">
+                    <p className="text-[16px] font-bold text-white tracking-wider uppercase">
                       {badge.label}
                     </p>
                     {badge.description && (
-                      <p className="text-[10px] text-white/35 mt-0.5 leading-snug">
+                      <p className="text-[16px] text-white/35 mt-0.5 leading-snug">
                         {badge.description}
                       </p>
                     )}

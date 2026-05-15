@@ -23,7 +23,11 @@ import {
 
 const TOC = [
   { id: "introduction", label: "Introduction", icon: Info },
-  { id: "information-we-collect", label: "Information We Collect", icon: Database },
+  {
+    id: "information-we-collect",
+    label: "Information We Collect",
+    icon: Database,
+  },
   { id: "how-we-use", label: "How We Use Your Information", icon: Eye },
   { id: "how-we-share", label: "How We Share Your Information", icon: Users },
   { id: "data-storage", label: "Data Storage & Security", icon: Lock },
@@ -57,7 +61,7 @@ function SectionLabel({ number, label }) {
   return (
     <div className="flex items-center gap-3 mb-4">
       <span
-        className="inline-flex items-center justify-center w-7 h-7 text-[10px] font-bold font-manrope"
+        className="inline-flex items-center justify-center w-7 h-7 text-[16px] font-bold font-manrope"
         style={{
           background: "rgba(212,175,55,0.12)",
           border: "1px solid rgba(212,175,55,0.25)",
@@ -110,7 +114,9 @@ function BulletList({ items }) {
             className="inline-block w-1 h-1 rounded-full mt-[10px] flex-shrink-0"
             style={{ background: "#D4AF37" }}
           />
-          <span className="text-white/55 text-sm leading-7 font-manrope">{item}</span>
+          <span className="text-white/55 text-sm leading-7 font-manrope">
+            {item}
+          </span>
         </li>
       ))}
     </ul>
@@ -122,7 +128,12 @@ function Callout({ type = "info", children }) {
     warning: {
       bg: "rgba(212,175,55,0.06)",
       border: "rgba(212,175,55,0.25)",
-      icon: <AlertTriangle size={16} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />,
+      icon: (
+        <AlertTriangle
+          size={16}
+          className="text-[#D4AF37] flex-shrink-0 mt-0.5"
+        />
+      ),
       label: "Important Notice",
       labelColor: "#D4AF37",
     },
@@ -136,7 +147,12 @@ function Callout({ type = "info", children }) {
     success: {
       bg: "rgba(212,175,55,0.04)",
       border: "rgba(212,175,55,0.2)",
-      icon: <CheckCircle size={16} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />,
+      icon: (
+        <CheckCircle
+          size={16}
+          className="text-[#D4AF37] flex-shrink-0 mt-0.5"
+        />
+      ),
       label: "Commitment",
       labelColor: "#D4AF37",
     },
@@ -151,12 +167,14 @@ function Callout({ type = "info", children }) {
         {c.icon}
         <div>
           <span
-            className="block text-[10px] font-bold uppercase tracking-[0.18em] font-manrope mb-1.5"
+            className="block text-[16px] font-bold uppercase tracking-[0.18em] font-manrope mb-1.5"
             style={{ color: c.labelColor }}
           >
             {c.label}
           </span>
-          <div className="text-white/60 text-sm leading-7 font-manrope">{children}</div>
+          <div className="text-white/60 text-sm leading-7 font-manrope">
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -199,7 +217,7 @@ function TableOfContents({ activeId }) {
           boxShadow: "0 0 40px rgba(0,0,0,0.4)",
         }}
       >
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#D4AF37] font-manrope mb-4">
+        <p className="text-[16px] font-bold uppercase tracking-[0.22em] text-[#D4AF37] font-manrope mb-4">
           Contents
         </p>
         <nav className="space-y-0.5">
@@ -272,7 +290,7 @@ export default function PrivacyPolicyPage() {
         ([entry]) => {
           if (entry.isIntersecting) setActiveId(id);
         },
-        { rootMargin: "-25% 0px -70% 0px", threshold: 0 }
+        { rootMargin: "-25% 0px -70% 0px", threshold: 0 },
       );
       obs.observe(el);
       observers.push(obs);
@@ -316,7 +334,7 @@ export default function PrivacyPolicyPage() {
             className="flex items-center gap-2 mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 border text-white/60 text-[10px] font-medium px-4 py-2 tracking-[0.22em] uppercase font-manrope"
+              className="inline-flex items-center gap-2 border text-white/60 text-[16px] font-medium px-4 py-2 tracking-[0.22em] uppercase font-manrope"
               style={{ borderColor: "rgba(255,255,255,0.12)" }}
             >
               <Shield size={10} className="text-[#D4AF37]" />
@@ -352,7 +370,9 @@ export default function PrivacyPolicyPage() {
               className="w-1 h-1 rounded-full hidden sm:block"
               style={{ background: "rgba(255,255,255,0.2)" }}
             />
-            <span className="text-white/35 text-sm">Last Updated: April 21, 2026</span>
+            <span className="text-white/35 text-sm">
+              Last Updated: April 21, 2026
+            </span>
             <span
               className="w-1 h-1 rounded-full hidden sm:block"
               style={{ background: "rgba(255,255,255,0.2)" }}
@@ -367,9 +387,9 @@ export default function PrivacyPolicyPage() {
             transition={{ duration: 0.6, delay: 0.32 }}
             className="text-white/50 text-base sm:text-lg leading-relaxed max-w-2xl"
           >
-            We are committed to protecting your privacy and ensuring the security of
-            your personal information. This document explains exactly how we handle
-            your data.
+            We are committed to protecting your privacy and ensuring the
+            security of your personal information. This document explains
+            exactly how we handle your data.
           </motion.p>
 
           {/* Stat pills */}
@@ -409,7 +429,6 @@ export default function PrivacyPolicyPage() {
 
         {/* Main content */}
         <div className="flex-1 min-w-0 max-w-3xl">
-
           {/* Opening commitment */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -423,9 +442,7 @@ export default function PrivacyPolicyPage() {
                 "0 0 0 1px rgba(255,255,255,0.03), 0 24px 48px rgba(0,0,0,0.3)",
             }}
           >
-            <div
-              className="flex items-start gap-4"
-            >
+            <div className="flex items-start gap-4">
               <div
                 className="w-10 h-10 flex items-center justify-center flex-shrink-0 mt-0.5"
                 style={{
@@ -440,10 +457,11 @@ export default function PrivacyPolicyPage() {
                   Your Privacy Matters to Us
                 </p>
                 <p className="text-white/60 text-sm leading-7 font-manrope">
-                  At TBM Building Services ("The Building Doctor"), we are committed to protecting
-                  your privacy and ensuring the security of your personal information. This Privacy
-                  Policy explains how we collect, use, store, and protect your data when you use
-                  our platform, mobile application, and services.
+                  At TBM Building Services ("The Building Doctor"), we are
+                  committed to protecting your privacy and ensuring the security
+                  of your personal information. This Privacy Policy explains how
+                  we collect, use, store, and protect your data when you use our
+                  platform, mobile application, and services.
                 </p>
               </div>
             </div>
@@ -458,14 +476,16 @@ export default function PrivacyPolicyPage() {
             delay={0}
           >
             <BodyText>
-              TBM Building Services operates an AI-powered e-commerce platform and mobile
-              application (collectively, "the Platform") that provides building materials,
-              construction services, AI-powered design tools, and project management solutions.
+              TBM Building Services operates an AI-powered e-commerce platform
+              and mobile application (collectively, "the Platform") that
+              provides building materials, construction services, AI-powered
+              design tools, and project management solutions.
             </BodyText>
             <Callout type="critical">
-              By accessing or using our Platform, you acknowledge that you have read, understood,
-              and agree to be bound by this Privacy Policy. If you do not agree with our practices,
-              please do not use our services.
+              By accessing or using our Platform, you acknowledge that you have
+              read, understood, and agree to be bound by this Privacy Policy. If
+              you do not agree with our practices, please do not use our
+              services.
             </Callout>
           </Section>
 
@@ -477,7 +497,9 @@ export default function PrivacyPolicyPage() {
             heading="Information We Collect"
           >
             <SubHeading>2.1 Account Information</SubHeading>
-            <BodyText>When you create an account with TBM Building Services, we collect:</BodyText>
+            <BodyText>
+              When you create an account with TBM Building Services, we collect:
+            </BodyText>
             <BulletList
               items={[
                 "Personal Identifiers: First name, last name, email address, phone number",
@@ -498,10 +520,15 @@ export default function PrivacyPolicyPage() {
             />
 
             <SubHeading>2.3 Payment Information</SubHeading>
-            <BodyText>For payment processing we collect your payment method selection, transaction confirmations, payment reference numbers and transaction status.</BodyText>
+            <BodyText>
+              For payment processing we collect your payment method selection,
+              transaction confirmations, payment reference numbers and
+              transaction status.
+            </BodyText>
             <Callout type="warning">
-              We DO NOT store credit card details, debit card numbers, or banking credentials. All
-              payment processing is handled securely by our third-party payment processor,{" "}
+              We DO NOT store credit card details, debit card numbers, or
+              banking credentials. All payment processing is handled securely by
+              our third-party payment processor,{" "}
               <strong className="text-[#D4AF37]">Paystack</strong>.
             </Callout>
 
@@ -517,7 +544,9 @@ export default function PrivacyPolicyPage() {
             />
 
             <SubHeading>2.5 AI & Design Feature Data</SubHeading>
-            <BodyText>When you use our AI-powered design tools, we collect:</BodyText>
+            <BodyText>
+              When you use our AI-powered design tools, we collect:
+            </BodyText>
             <BulletList
               items={[
                 "Room Photos: Images you upload for AI design generation",
@@ -551,10 +580,11 @@ export default function PrivacyPolicyPage() {
             />
 
             <Callout type="warning">
-              <strong>Age Restriction:</strong> Our Platform is intended for users aged{" "}
-              <strong>18 years and older</strong>. We do not knowingly collect personal information
-              from individuals under 18. If we become aware that we have collected information from
-              a minor, we will take immediate steps to delete such information.
+              <strong>Age Restriction:</strong> Our Platform is intended for
+              users aged <strong>18 years and older</strong>. We do not
+              knowingly collect personal information from individuals under 18.
+              If we become aware that we have collected information from a
+              minor, we will take immediate steps to delete such information.
             </Callout>
           </Section>
 
@@ -608,7 +638,9 @@ export default function PrivacyPolicyPage() {
               ]}
             />
 
-            <SubHeading>3.5 Marketing & Communications (with your consent)</SubHeading>
+            <SubHeading>
+              3.5 Marketing & Communications (with your consent)
+            </SubHeading>
             <BulletList
               items={[
                 "Send promotional offers, product updates, and newsletters",
@@ -638,14 +670,17 @@ export default function PrivacyPolicyPage() {
             heading="How We Share Your Information"
           >
             <Callout type="success">
-              <strong>We do not sell your personal information to third parties.</strong> We may share
-              your information only in the specific circumstances described below.
+              <strong>
+                We do not sell your personal information to third parties.
+              </strong>{" "}
+              We may share your information only in the specific circumstances
+              described below.
             </Callout>
 
             <SubHeading>4.1 Service Providers & Partners</SubHeading>
             <BodyText>
-              We share data with trusted third-party service providers who help us operate our
-              platform:
+              We share data with trusted third-party service providers who help
+              us operate our platform:
             </BodyText>
             <BulletList
               items={[
@@ -658,25 +693,31 @@ export default function PrivacyPolicyPage() {
               ]}
             />
             <BodyText className="mt-3">
-              These service providers are contractually obligated to use your information only for
-              the purposes we specify and to maintain appropriate security measures.
+              These service providers are contractually obligated to use your
+              information only for the purposes we specify and to maintain
+              appropriate security measures.
             </BodyText>
 
             <SubHeading>4.2 Vendors & Delivery Partners</SubHeading>
             <BodyText>
-              When you place an order, we share your delivery address and contact information with
-              assigned vendors and delivery agents — only to the extent needed to complete delivery.
+              When you place an order, we share your delivery address and
+              contact information with assigned vendors and delivery agents —
+              only to the extent needed to complete delivery.
             </BodyText>
 
             <SubHeading>4.3 Business Transfers</SubHeading>
             <BodyText>
-              In the event of a merger, acquisition, reorganization, or sale of assets, your
-              information may be transferred to the acquiring entity. We will notify you of any such
-              change via email or prominent notice on our platform.
+              In the event of a merger, acquisition, reorganization, or sale of
+              assets, your information may be transferred to the acquiring
+              entity. We will notify you of any such change via email or
+              prominent notice on our platform.
             </BodyText>
 
             <SubHeading>4.4 Legal Requirements</SubHeading>
-            <BodyText>We may disclose your information if required by law or in response to:</BodyText>
+            <BodyText>
+              We may disclose your information if required by law or in response
+              to:
+            </BodyText>
             <BulletList
               items={[
                 "Valid legal processes (court orders, subpoenas, warrants)",
@@ -689,7 +730,8 @@ export default function PrivacyPolicyPage() {
 
             <SubHeading>4.5 With Your Consent</SubHeading>
             <BodyText>
-              We may share your information for purposes not listed here with your explicit consent.
+              We may share your information for purposes not listed here with
+              your explicit consent.
             </BodyText>
           </Section>
 
@@ -702,13 +744,16 @@ export default function PrivacyPolicyPage() {
           >
             <SubHeading>5.1 Where We Store Your Data</SubHeading>
             <BodyText>
-              Your data is stored on secure servers provided by reputable cloud hosting providers.
-              Data may be stored and processed in Nigeria and other jurisdictions where our service
-              providers operate.
+              Your data is stored on secure servers provided by reputable cloud
+              hosting providers. Data may be stored and processed in Nigeria and
+              other jurisdictions where our service providers operate.
             </BodyText>
 
             <SubHeading>5.2 Security Measures</SubHeading>
-            <BodyText>We implement industry-standard security measures to protect your information:</BodyText>
+            <BodyText>
+              We implement industry-standard security measures to protect your
+              information:
+            </BodyText>
             <BulletList
               items={[
                 "Encryption: All passwords are encrypted using strong cryptographic algorithms",
@@ -721,7 +766,9 @@ export default function PrivacyPolicyPage() {
             />
 
             <SubHeading>5.3 Data Retention</SubHeading>
-            <BodyText>We retain your personal information for as long as necessary to:</BodyText>
+            <BodyText>
+              We retain your personal information for as long as necessary to:
+            </BodyText>
             <BulletList
               items={[
                 "Provide you with our services",
@@ -731,14 +778,16 @@ export default function PrivacyPolicyPage() {
               ]}
             />
             <BodyText className="mt-3">
-              When data is no longer needed, we securely delete or anonymize it. Account information
-              for inactive accounts may be retained in accordance with applicable legal requirements.
+              When data is no longer needed, we securely delete or anonymize it.
+              Account information for inactive accounts may be retained in
+              accordance with applicable legal requirements.
             </BodyText>
 
             <Callout type="warning">
-              <strong>Data Breach Notification:</strong> In the unlikely event of a data breach
-              affecting your personal information, we will notify you promptly via email and take
-              immediate steps to mitigate any harm.
+              <strong>Data Breach Notification:</strong> In the unlikely event
+              of a data breach affecting your personal information, we will
+              notify you promptly via email and take immediate steps to mitigate
+              any harm.
             </Callout>
           </Section>
 
@@ -749,7 +798,9 @@ export default function PrivacyPolicyPage() {
             labelText="Your Rights"
             heading="Your Privacy Rights"
           >
-            <BodyText>You have the following rights regarding your personal information:</BodyText>
+            <BodyText>
+              You have the following rights regarding your personal information:
+            </BodyText>
 
             {[
               {
@@ -811,14 +862,20 @@ export default function PrivacyPolicyPage() {
                 {[
                   { label: "Email", value: "support@tbmbuilding.com" },
                   { label: "Subject Line", value: '"Privacy Rights Request"' },
-                  { label: "Include", value: "Your full name, email address, and specific request" },
+                  {
+                    label: "Include",
+                    value:
+                      "Your full name, email address, and specific request",
+                  },
                   { label: "Response Time", value: "Within 30 days" },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex items-start gap-3">
                     <span className="text-white/30 text-sm font-manrope w-28 flex-shrink-0">
                       {label}
                     </span>
-                    <span className="text-white/65 text-sm font-manrope">{value}</span>
+                    <span className="text-white/65 text-sm font-manrope">
+                      {value}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -843,8 +900,8 @@ export default function PrivacyPolicyPage() {
 
             <SubHeading>7.2 Your Control</SubHeading>
             <BodyText>
-              You can control cookies through your browser settings. Note that disabling essential
-              cookies may affect platform functionality.
+              You can control cookies through your browser settings. Note that
+              disabling essential cookies may affect platform functionality.
             </BodyText>
           </Section>
 
@@ -888,9 +945,10 @@ export default function PrivacyPolicyPage() {
 
             <SubHeading>8.4 External Links</SubHeading>
             <BodyText>
-              Our Platform may contain links to external websites or services. We are not responsible
-              for the privacy practices of these third parties. We encourage you to review their
-              privacy policies before providing any information.
+              Our Platform may contain links to external websites or services.
+              We are not responsible for the privacy practices of these third
+              parties. We encourage you to review their privacy policies before
+              providing any information.
             </BodyText>
           </Section>
 
@@ -902,8 +960,9 @@ export default function PrivacyPolicyPage() {
             heading="International Data Transfers"
           >
             <BodyText>
-              TBM Building Services operates primarily in Nigeria. However, some of our service
-              providers may be located in other countries. When we transfer data internationally:
+              TBM Building Services operates primarily in Nigeria. However, some
+              of our service providers may be located in other countries. When
+              we transfer data internationally:
             </BodyText>
             <BulletList
               items={[
@@ -922,20 +981,23 @@ export default function PrivacyPolicyPage() {
             heading="Children's Privacy"
           >
             <Callout type="warning">
-              <strong>Age Restriction — 18+:</strong> Our Platform and services are intended
-              exclusively for users aged <strong>18 years and older</strong>. We do not knowingly
-              collect, use, or disclose personal information from children under 18.
+              <strong>Age Restriction — 18+:</strong> Our Platform and services
+              are intended exclusively for users aged{" "}
+              <strong>18 years and older</strong>. We do not knowingly collect,
+              use, or disclose personal information from children under 18.
             </Callout>
             <BodyText className="mt-4">
-              If you are a parent or guardian and believe your child has provided us with personal
-              information, please contact us immediately at{" "}
+              If you are a parent or guardian and believe your child has
+              provided us with personal information, please contact us
+              immediately at{" "}
               <a
                 href="mailto:support@tbmbuilding.com"
                 className="text-[#D4AF37] hover:underline"
               >
                 support@tbmbuilding.com
               </a>
-              . We will take prompt steps to delete such information from our systems.
+              . We will take prompt steps to delete such information from our
+              systems.
             </BodyText>
           </Section>
 
@@ -965,9 +1027,10 @@ export default function PrivacyPolicyPage() {
             heading="Changes to This Privacy Policy"
           >
             <BodyText>
-              We may update this Privacy Policy from time to time to reflect changes in our
-              practices or services, legal or regulatory requirements, and technology improvements or
-              security enhancements.
+              We may update this Privacy Policy from time to time to reflect
+              changes in our practices or services, legal or regulatory
+              requirements, and technology improvements or security
+              enhancements.
             </BodyText>
             <SubHeading>When We Make Material Changes</SubHeading>
             <BulletList
@@ -978,8 +1041,8 @@ export default function PrivacyPolicyPage() {
               ]}
             />
             <BodyText className="mt-4">
-              We encourage you to review this Privacy Policy periodically to stay informed about how
-              we protect your information.
+              We encourage you to review this Privacy Policy periodically to
+              stay informed about how we protect your information.
             </BodyText>
           </Section>
 
@@ -1009,8 +1072,9 @@ export default function PrivacyPolicyPage() {
             heading="Contact Information"
           >
             <BodyText>
-              If you have questions, concerns, or requests regarding this Privacy Policy or how we
-              handle your personal information, please contact us:
+              If you have questions, concerns, or requests regarding this
+              Privacy Policy or how we handle your personal information, please
+              contact us:
             </BodyText>
 
             {/* Contact card */}
@@ -1032,18 +1096,22 @@ export default function PrivacyPolicyPage() {
 
               <div className="p-6 sm:p-8 grid sm:grid-cols-2 gap-8">
                 <div>
-                  <p className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
+                  <p className="text-[#D4AF37] text-[16px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
                     Company
                   </p>
                   <p className="text-white font-semibold font-poppins text-sm mb-0.5">
                     TBM Building Services
                   </p>
-                  <p className="text-white/40 text-sm font-manrope">"The Building Doctor"</p>
-                  <p className="text-white/40 text-sm font-manrope mt-2">Nigeria</p>
+                  <p className="text-white/40 text-sm font-manrope">
+                    "The Building Doctor"
+                  </p>
+                  <p className="text-white/40 text-sm font-manrope mt-2">
+                    Nigeria
+                  </p>
                 </div>
 
                 <div>
-                  <p className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
+                  <p className="text-[#D4AF37] text-[16px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
                     Contact
                   </p>
                   <div className="space-y-2">
@@ -1066,8 +1134,11 @@ export default function PrivacyPolicyPage() {
                   </div>
                 </div>
 
-                <div className="sm:col-span-2 pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                  <p className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
+                <div
+                  className="sm:col-span-2 pt-6"
+                  style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+                >
+                  <p className="text-[#D4AF37] text-[16px] font-bold uppercase tracking-[0.2em] font-manrope mb-3">
                     For Privacy Rights Requests
                   </p>
                   <div className="flex flex-wrap gap-x-8 gap-y-2">
@@ -1077,8 +1148,12 @@ export default function PrivacyPolicyPage() {
                       { label: "Response", value: "Within 30 days" },
                     ].map(({ label, value }) => (
                       <div key={label}>
-                        <span className="text-white/30 text-xs font-manrope block">{label}</span>
-                        <span className="text-white/60 text-sm font-manrope">{value}</span>
+                        <span className="text-white/30 text-xs font-manrope block">
+                          {label}
+                        </span>
+                        <span className="text-white/60 text-sm font-manrope">
+                          {value}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -1103,8 +1178,8 @@ export default function PrivacyPolicyPage() {
               ]}
             />
             <BodyText className="mt-4">
-              For marketing communications, we will obtain separate consent, and you can opt out at
-              any time.
+              For marketing communications, we will obtain separate consent, and
+              you can opt out at any time.
             </BodyText>
           </Section>
 
@@ -1151,14 +1226,16 @@ export default function PrivacyPolicyPage() {
                 Committed to Your Privacy
               </h2>
               <p className="text-white/45 text-sm leading-7 font-manrope max-w-md mx-auto mb-8">
-                Questions about this policy? Our team is here to help and will respond within 30 days.
+                Questions about this policy? Our team is here to help and will
+                respond within 30 days.
               </p>
 
               <a
                 href="mailto:support@tbmbuilding.com"
                 className="inline-flex items-center gap-2 px-8 py-4 text-black font-semibold text-[11px] tracking-[0.18em] uppercase font-manrope transition-opacity hover:opacity-90"
                 style={{
-                  background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                  background:
+                    "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
                 }}
               >
                 <Mail size={14} />
@@ -1166,7 +1243,8 @@ export default function PrivacyPolicyPage() {
               </a>
 
               <p className="text-white/20 text-xs font-manrope mt-8">
-                © 2026 TBM Building Services. All rights reserved. · Version 1.0 · Last updated April 21, 2026
+                © 2026 TBM Building Services. All rights reserved. · Version 1.0
+                · Last updated April 21, 2026
               </p>
             </div>
           </motion.div>

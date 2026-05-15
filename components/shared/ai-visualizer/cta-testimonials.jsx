@@ -76,28 +76,14 @@ const CTAAndTestimonials = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 shrink-0">
-            <Link href={designHref}>
-              <motion.span
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-black hover:opacity-90 transition-opacity cursor-pointer"
-                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-              >
-                <Sparkles className="w-4 h-4" />
-                {user ? "Open Ziora Studio" : "Start Designing Free"}
-              </motion.span>
+            <Link href={designHref} className="btn-gold px-6 py-3">
+              <Sparkles className="w-4 h-4" />
+              {user ? "Open Ziora Studio" : "Start Designing Free"}
             </Link>
 
-            <Link href="/contact">
-              <motion.span
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm border border-white/15 text-white/70 hover:bg-white/05 transition-colors cursor-pointer"
-                style={{ background: "rgba(255,255,255,0.04)" }}
-              >
-                <CalendarDays className="w-4 h-4" />
-                Book a Consultation
-              </motion.span>
+            <Link href="/contact" className="btn-outline px-6 py-3">
+              <CalendarDays className="w-4 h-4" />
+              Book a Consultation
             </Link>
           </div>
         </div>

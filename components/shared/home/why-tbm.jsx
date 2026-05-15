@@ -77,7 +77,7 @@ export default function ReimagineSection() {
               {/* Bottom card label */}
               <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
                 <div>
-                  <span className="block text-[#D4AF37] text-[10px] font-manrope font-semibold tracking-[0.25em] uppercase mb-1">
+                  <span className="block text-[#D4AF37] text-[16px] font-manrope font-semibold tracking-[0.25em] uppercase mb-1">
                     Perspective
                   </span>
                   <span className="block text-white text-base font-manrope font-semibold">
