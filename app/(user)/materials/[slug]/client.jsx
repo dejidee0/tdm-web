@@ -355,8 +355,8 @@ export default function MaterialDetailClient({
         style={{ background: "#0a0a08" }}
         className="border-b border-white/6"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 lg:gap-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-5 lg:gap-10">
             {/* Left — hero image + thumbnail strip */}
             <div className="flex flex-col gap-3">
               {/* Main image */}
@@ -368,7 +368,7 @@ export default function MaterialDetailClient({
                 style={{
                   aspectRatio: "4/3",
                   border: "1px solid rgba(212,175,55,0.2)",
-                  background: "#111",
+                  background: "#0d0b09",
                 }}
               >
                 <AnimatePresence mode="wait">
@@ -384,7 +384,7 @@ export default function MaterialDetailClient({
                       src={images[activeGalleryIndex]}
                       alt={product?.name || "Product"}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       sizes="(max-width: 1024px) 100vw, 60vw"
                     />
                   </motion.div>
@@ -444,7 +444,7 @@ export default function MaterialDetailClient({
               {/* Title row */}
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h1 className="font-poppins font-bold text-3xl sm:text-4xl text-white leading-tight tracking-tight uppercase">
+                  <h1 className="font-poppins font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight tracking-tight uppercase">
                     {product?.name || "Product Name"}
                   </h1>
                   {product.tagline && (
@@ -669,10 +669,11 @@ export default function MaterialDetailClient({
                   disabled={
                     buyingNow || addToCart.isPending || !product.inStock
                   }
-                  className="w-full py-4 text-black font-manrope font-bold text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                  className="w-full py-4 text-white font-manrope font-bold text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #D4AF37 0%, #b8942e 100%)",
+                    background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.18), 0 0 0 1px rgba(184,148,10,0.6), 0 0 22px rgba(212,175,55,0.32)",
+                    textShadow: "0 1px 2px rgba(0,0,0,0.45)",
                   }}
                 >
                   <Zap className="w-4 h-4" />
@@ -730,12 +731,7 @@ export default function MaterialDetailClient({
           style={{ background: "#0d0b08" }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div
-              className="grid gap-px"
-              style={{
-                gridTemplateColumns: `repeat(${Math.min(product.features.length, 5)}, 1fr)`,
-              }}
-            >
+            <div className="grid gap-px grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
               {product.features.map((feat, i) => {
                 const Icon = FEATURE_ICONS[feat.icon] ?? Shield;
                 return (
@@ -792,7 +788,7 @@ export default function MaterialDetailClient({
                   <p className="text-[16px] font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-5">
                     Material Details
                   </p>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {product.materialDetails.map((mat, i) => (
                       <motion.div
                         key={i}
@@ -893,12 +889,7 @@ export default function MaterialDetailClient({
           style={{ background: "#0d0b08" }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div
-              className="grid gap-px"
-              style={{
-                gridTemplateColumns: `repeat(${Math.min(product.trustBadges.length, 5)}, 1fr)`,
-              }}
-            >
+            <div className="grid gap-px grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
               {product.trustBadges.map((badge, i) => (
                 <div
                   key={i}

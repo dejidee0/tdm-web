@@ -24,7 +24,7 @@ export default function HeroSection() {
             priority
             className="object-cover object-center"
           /> */}
-          <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} controls autoPlay muted loop playsInline>
+          <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} autoPlay muted loop playsInline>
             {/* <source src="/hero/videos/2.mp4" type="video/mp4" /> */}
           </video>
           {/* Left bleed — fades image into the black text column */}
@@ -45,7 +45,7 @@ export default function HeroSection() {
           priority
           className="object-cover object-center opacity-20"
         /> */}
-         <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} controls autoPlay muted loop playsInline></video>
+         <video className="object-cover object-center w-full h-full" src={"/hero/videos/2.mp4"} autoPlay muted loop playsInline></video>
         <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/55 to-black" />
       </div>
 
@@ -59,14 +59,14 @@ export default function HeroSection() {
 
           {/* Headline */}
           <h1 className="font-poppins font-bold leading-[1.2] tracking-tight mb-6 hero-heading">
-            <span className="block text-white text-[34px] sm:text-[52px] lg:text-[52px] xl:text-[58px]">
+            <span className="block text-white text-[28px] sm:text-[52px] lg:text-[52px] xl:text-[58px]">
               Luxury Renovation &amp;
             </span>
-            <span className="block text-[34px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
+            <span className="block text-[28px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
               <span className="text-[#D4AF37]">Smart</span>
               <span className="text-white"> Construction</span>
             </span>
-            <span className="block text-white text-[34px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
+            <span className="block text-white text-[28px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
               Experts
             </span>
           </h1>
