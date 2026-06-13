@@ -24,6 +24,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@next/swc-darwin-arm64": "^16.2.9",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",

@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <main className="bg-black min-h-screen">
       {/* ── PUBLIC GATE: remove this component to reveal the site ── */}
-      <UnderConstruction />
+      {/* <UnderConstruction /> */}
       {/* 1. Hero — split layout */}
       <HeroSection />
 
