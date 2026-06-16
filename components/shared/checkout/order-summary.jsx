@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Lock, ArrowRight, Loader2 } from "lucide-react";
 
+const PLACEHOLDER =
+  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop";
+
 function SkeletonLine({ w = "w-full", h = "h-3" }) {
   return <div className={`${w} ${h} rounded bg-white/06 animate-pulse`} />;
 }
@@ -51,9 +54,13 @@ export default function OrderSummary({
           checkout.items?.map((item) => (
             <div key={item.id} className="flex gap-3">
               <div className="relative w-16 h-16 shrink-0 bg-[#1a1a1a] rounded-lg overflow-hidden">
-                {item.image && (
-                  <Image src={item.image} alt={item.name} fill className="object-cover" sizes="64px" />
-                )}
+                <Image
+                  src={item.image || PLACEHOLDER}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-[14px] font-semibold text-white mb-1 line-clamp-1">{item.name}</h3>

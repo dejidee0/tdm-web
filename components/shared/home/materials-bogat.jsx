@@ -4,13 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ShoppingBag, Star } from "lucide-react";
-import { BOGAT_PRODUCTS } from "@/lib/mock/bogat-products";
+import { useQuery } from "@tanstack/react-query";
 
-// Pick 8 products to display — featured ones first
-const SHOWCASE_PRODUCTS = [
-  ...BOGAT_PRODUCTS.filter((p) => p.isFeatured),
-  ...BOGAT_PRODUCTS.filter((p) => !p.isFeatured),
-].slice(0, 8);
+async function fetchShowcaseProducts() {
+  const params = new URLSearchParams({
+    pageSize: "8",
+    ActiveOnly: "true",
+    isFeatured: "true",
+  });
+  const res = await fetch(`/api/products?${params.toString()}`);
+  if (!res.ok) throw new Error("Failed to fetch products");
+  const json = await res.json();
+  return json.data?.items ?? [];
+}
 
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=600&fit=crop";
@@ -109,7 +115,31 @@ function ProductCard({ product, index }) {
   );
 }
 
+function SkeletonCard() {
+  return (
+    <div
+      className="overflow-hidden animate-pulse"
+      style={{ background: "#0d0b08", border: "1px solid rgba(255,255,255,0.06)" }}
+    >
+      <div className="w-full bg-white/4" style={{ aspectRatio: "4/3" }} />
+      <div className="p-4 space-y-2">
+        <div className="h-2.5 w-16 bg-white/5 rounded" />
+        <div className="h-3.5 w-3/4 bg-white/[0.07] rounded" />
+        <div className="h-3 w-1/3 bg-white/5 rounded" />
+      </div>
+    </div>
+  );
+}
+
 export default function MaterialsBogatSection() {
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["products", "homepage-showcase"],
+    queryFn: fetchShowcaseProducts,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <section
       className="py-20 sm:py-28 relative overflow-hidden"
@@ -181,9 +211,11 @@ export default function MaterialsBogatSection() {
 
         {/* ── Product grid ─────────────────────────────────────────── */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-10">
-          {SHOWCASE_PRODUCTS.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
-          ))}
+          {isLoading
+            ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+            : products.map((product, i) => (
+                <ProductCard key={product.id} product={product} index={i} />
+              ))}
         </div>
 
         {/* ── Bottom row: trust chips + mobile CTA ─────────────────── */}

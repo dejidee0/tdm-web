@@ -151,7 +151,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden xl:flex items-center gap-1">
               {navLinks.map((link) => {
                 const active = isActive(link.href);
                 if (link.featured) {
@@ -191,7 +191,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Right Actions */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-3">
               {isLoading ? (
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse" />
@@ -329,7 +329,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Right */}
-            <div className="lg:hidden flex items-center gap-1">
+            <div className="xl:hidden flex items-center gap-1">
               {!isLoading && isAuthenticated && (
                 <Link href="/dashboard/saved">
                   <button className="relative p-2 text-white/60">
@@ -369,7 +369,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-55 bg-black/70 lg:hidden"
+              className="fixed inset-0 z-55 bg-black/70 xl:hidden"
               onClick={() => setIsMenuOpen(false)}
             />
             <motion.div
@@ -377,7 +377,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
-              className="fixed top-0 right-0 h-dvh z-60 w-[78vw] max-w-[320px] bg-[#0a0a0a] border-l border-white/10 shadow-2xl lg:hidden flex flex-col"
+              className="fixed top-0 right-0 h-dvh z-60 w-[78vw] max-w-[320px] bg-[#0a0a0a] border-l border-white/10 shadow-2xl xl:hidden flex flex-col"
             >
               <div className="flex items-center justify-between px-5 h-16 border-b border-white/10 shrink-0">
                 <span className="text-xs font-semibold text-white/40 tracking-[0.2em] uppercase">

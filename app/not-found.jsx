@@ -2,15 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Package, Home, CalendarCheck, ArrowRight } from "lucide-react";
+import { Home, Package, Phone, ArrowRight } from "lucide-react";
 
 const LINKS = [
-  {
-    Icon: Package,
-    label: "Browse All Materials",
-    desc: "Explore the full Bogat collection",
-    href: "/bogat/materials",
-  },
   {
     Icon: Home,
     label: "Back to Home",
@@ -18,28 +12,34 @@ const LINKS = [
     href: "/",
   },
   {
-    Icon: CalendarCheck,
-    label: "Book a Consultation",
-    desc: "Let our team help you find what you need",
-    href: "/contact?type=consultation",
+    Icon: Package,
+    label: "Browse Materials",
+    desc: "Explore the Bogat collection",
+    href: "/bogat/materials",
+  },
+  {
+    Icon: Phone,
+    label: "Contact Us",
+    desc: "Talk to our team directly",
+    href: "/contact",
   },
 ];
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.25 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 22 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
-export default function MaterialNotFound() {
+export default function NotFound() {
   return (
     <div
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden font-manrope px-4 py-20"
@@ -50,7 +50,7 @@ export default function MaterialNotFound() {
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern
-              id="mnf-grid"
+              id="nf-grid"
               width="64"
               height="64"
               patternUnits="userSpaceOnUse"
@@ -58,16 +58,16 @@ export default function MaterialNotFound() {
               <path
                 d="M 64 0 L 0 0 0 64"
                 fill="none"
-                stroke="rgba(212,175,55,0.04)"
+                stroke="rgba(212,175,55,0.045)"
                 strokeWidth="0.6"
               />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#mnf-grid)" />
+          <rect width="100%" height="100%" fill="url(#nf-grid)" />
         </svg>
       </div>
 
-      {/* Ambient large text */}
+      {/* Ambient 404 behind content */}
       <div
         aria-hidden
         className="pointer-events-none select-none absolute inset-0 flex items-center justify-center"
@@ -75,8 +75,8 @@ export default function MaterialNotFound() {
         <span
           className="font-primary font-bold leading-none"
           style={{
-            fontSize: "clamp(10rem, 28vw, 32rem)",
-            color: "rgba(212,175,55,0.03)",
+            fontSize: "clamp(12rem, 30vw, 36rem)",
+            color: "rgba(212,175,55,0.032)",
             userSelect: "none",
             letterSpacing: "-0.04em",
           }}
@@ -85,141 +85,132 @@ export default function MaterialNotFound() {
         </span>
       </div>
 
-      {/* Animated product tag sketch */}
+      {/* Animated floor-plan sketch */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.1 }}
+        transition={{ duration: 1.4, delay: 0.1 }}
         aria-hidden
         className="pointer-events-none absolute inset-0 flex items-center justify-center"
       >
         <svg
-          width="560"
-          height="380"
-          viewBox="0 0 560 380"
+          width="640"
+          height="420"
+          viewBox="0 0 640 420"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Outer frame */}
+          {/* Outer boundary */}
           <motion.rect
             x="80"
             y="60"
-            width="400"
-            height="240"
-            stroke="rgba(212,175,55,0.12)"
+            width="480"
+            height="280"
+            stroke="rgba(212,175,55,0.14)"
             strokeWidth="0.8"
             strokeDasharray="10 5"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 2.4, delay: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 2.8, delay: 0.4, ease: "easeInOut" }}
           />
-          {/* Inner product silhouette box */}
+          {/* Room A */}
           <motion.rect
-            x="180"
+            x="130"
             y="110"
-            width="200"
-            height="140"
-            stroke="rgba(212,175,55,0.15)"
+            width="150"
+            height="120"
+            stroke="rgba(212,175,55,0.18)"
             strokeWidth="0.7"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.6, delay: 1.0, ease: "easeInOut" }}
+            transition={{ duration: 1.8, delay: 1.0, ease: "easeInOut" }}
           />
-          {/* X through box — item missing */}
-          <motion.line
-            x1="180"
-            y1="110"
-            x2="380"
-            y2="250"
-            stroke="rgba(212,175,55,0.08)"
-            strokeWidth="0.6"
-            strokeDasharray="6 3"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.7 }}
-          />
-          <motion.line
-            x1="380"
-            y1="110"
-            x2="180"
-            y2="250"
-            stroke="rgba(212,175,55,0.08)"
-            strokeWidth="0.6"
-            strokeDasharray="6 3"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.9 }}
-          />
-          {/* Label tag stem */}
-          <motion.line
-            x1="380"
-            y1="110"
-            x2="430"
-            y2="75"
-            stroke="rgba(212,175,55,0.12)"
-            strokeWidth="0.6"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 2.2 }}
-          />
-          {/* Label tag box */}
+          {/* Room B — dashed, "missing" */}
           <motion.rect
-            x="430"
-            y="45"
-            width="60"
-            height="30"
-            stroke="rgba(212,175,55,0.12)"
-            strokeWidth="0.6"
+            x="340"
+            y="110"
+            width="160"
+            height="120"
+            stroke="rgba(212,175,55,0.1)"
+            strokeWidth="0.7"
+            strokeDasharray="5 3"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 2.4 }}
+            transition={{ duration: 1.8, delay: 1.5, ease: "easeInOut" }}
           />
+          {/* Question mark in missing room */}
           <motion.text
-            x="460"
-            y="64"
+            x="420"
+            y="178"
             textAnchor="middle"
-            fill="rgba(212,175,55,0.14)"
-            fontSize="9"
-            fontFamily="monospace"
+            fill="rgba(212,175,55,0.12)"
+            fontSize="42"
+            fontWeight="300"
+            fontFamily="sans-serif"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.8 }}
+            transition={{ delay: 2.4, duration: 0.8 }}
           >
-            N / A
+            ?
           </motion.text>
-          {/* Dimension line */}
+          {/* Corridor */}
+          <motion.line
+            x1="280"
+            y1="110"
+            x2="340"
+            y2="110"
+            stroke="rgba(212,175,55,0.1)"
+            strokeWidth="0.6"
+            strokeDasharray="4 3"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 2.0 }}
+          />
+          <motion.line
+            x1="280"
+            y1="230"
+            x2="340"
+            y2="230"
+            stroke="rgba(212,175,55,0.1)"
+            strokeWidth="0.6"
+            strokeDasharray="4 3"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 2.1 }}
+          />
+          {/* Dimension line bottom */}
           <motion.line
             x1="80"
-            y1="336"
-            x2="480"
-            y2="336"
-            stroke="rgba(212,175,55,0.08)"
+            y1="370"
+            x2="560"
+            y2="370"
+            stroke="rgba(212,175,55,0.1)"
             strokeWidth="0.5"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.4, delay: 2.1 }}
+            transition={{ duration: 1.6, delay: 2.3 }}
           />
           <motion.line
             x1="80"
-            y1="331"
+            y1="365"
             x2="80"
-            y2="341"
-            stroke="rgba(212,175,55,0.08)"
+            y2="375"
+            stroke="rgba(212,175,55,0.1)"
             strokeWidth="0.5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.6 }}
+            transition={{ delay: 2.9 }}
           />
           <motion.line
-            x1="480"
-            y1="331"
-            x2="480"
-            y2="341"
-            stroke="rgba(212,175,55,0.08)"
+            x1="560"
+            y1="365"
+            x2="560"
+            y2="375"
+            stroke="rgba(212,175,55,0.1)"
             strokeWidth="0.5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.6 }}
+            transition={{ delay: 2.9 }}
           />
         </svg>
       </motion.div>
@@ -236,7 +227,7 @@ export default function MaterialNotFound() {
           variants={item}
           className="text-[#D4AF37] text-[10px] font-semibold uppercase tracking-[0.32em] mb-5 font-manrope"
         >
-          Material · Not Found
+          Error · 404
         </motion.p>
 
         {/* Heading */}
@@ -244,7 +235,7 @@ export default function MaterialNotFound() {
           variants={item}
           className="font-primary font-bold text-4xl sm:text-5xl text-white leading-tight tracking-tight mb-4"
         >
-          This product doesn&apos;t exist
+          Page not found
         </motion.h1>
 
         {/* Gold rule */}
@@ -262,8 +253,8 @@ export default function MaterialNotFound() {
           variants={item}
           className="text-white/40 text-sm sm:text-base font-manrope leading-relaxed mb-10"
         >
-          We couldn&apos;t locate this material. It may have been removed,
-          renamed, or the link might be incorrect.
+          This space is missing from our blueprint. The page you&apos;re
+          looking for may have been moved or doesn&apos;t exist.
         </motion.p>
 
         {/* Action links */}

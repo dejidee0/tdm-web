@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import BogatMaterialsClient from "./client";
-import { getMockProductList } from "@/lib/mock/bogat-products";
 
 export const metadata = {
   title: "Shop Bogat Materials | TBM — Premium Building Materials Nigeria",
@@ -32,19 +31,10 @@ export const metadata = {
   },
 };
 
-// ─── Toggle ───────────────────────────────────────────────────────────────────
-// Set to false to re-enable live API fetching.
-const USE_MOCK_DATA = true;
-// ─────────────────────────────────────────────────────────────────────────────
-
 async function getInitialProducts() {
-  if (USE_MOCK_DATA) {
-    return getMockProductList({ page: 1, pageSize: 12 });
-  }
-
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!baseUrl) return null;
     const res = await fetch(
       `${baseUrl}/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
       { next: { revalidate: 60 } },
@@ -62,7 +52,7 @@ export default async function BogatMaterialsPage() {
 
   return (
     <Suspense fallback={null}>
-      <BogatMaterialsClient initialData={initialData} useMockData={USE_MOCK_DATA} />
+      <BogatMaterialsClient initialData={initialData} />
     </Suspense>
   );
 }

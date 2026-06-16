@@ -1,22 +1,11 @@
 import { notFound } from "next/navigation";
 import MaterialDetailClient from "./client";
-import {
-  getMockProductBySlug,
-  getMockSimilarProducts,
-} from "@/lib/mock/bogat-products";
 
-// ─── Toggle ───────────────────────────────────────────────────────────────────
-// Set to false to re-enable live API fetching.
-const USE_MOCK_DATA = true;
-// ─────────────────────────────────────────────────────────────────────────────
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
-
-// ─── Server-side fetchers ──────────────────────────────────────────────────────
+// ─── Server-side fetchers ─────────────────────────────────────────────────────
 async function getProduct(slug) {
-  if (USE_MOCK_DATA) return getMockProductBySlug(slug);
-
+  if (!BASE_URL) return null;
   try {
     const res = await fetch(`${BASE_URL}/Products/slug/${slug}`, {
       next: { revalidate: 120 },
@@ -37,9 +26,7 @@ async function getProduct(slug) {
 }
 
 async function getSimilarProducts(categoryId, excludeId) {
-  if (USE_MOCK_DATA) return getMockSimilarProducts(categoryId, excludeId);
-
-  if (!categoryId) return [];
+  if (!BASE_URL || !categoryId) return [];
   try {
     const params = new URLSearchParams({
       categoryId,
