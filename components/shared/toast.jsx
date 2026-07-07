@@ -122,7 +122,6 @@ export function TBMToaster() {
       position="top-center"
       containerStyle={{ zIndex: 9999, top: 20 }}
       gutter={10}
-      toastOptions={{ duration: Infinity }}
     />
   );
 }

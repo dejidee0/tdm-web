@@ -5,7 +5,7 @@ import { checkoutApi } from "@/lib/api/checkout";
 export function useCheckoutData() {
   return useQuery({
     queryKey: ["checkout"],
-    queryFn: checkoutApi.getCheckoutData,
+    queryFn: () => checkoutApi.getCheckoutData(),
     staleTime: 30 * 1000, // 30 seconds
     retry: 1, // Only retry once if cart is empty
   });
