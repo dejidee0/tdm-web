@@ -1,12 +1,18 @@
 // app/checkout/page.jsx
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useCheckoutData, useSubmitPayment } from "@/hooks/use-checkout";
 import { useCart } from "@/hooks/use-cart";
+import { useCurrentUser } from "@/hooks/use-auth";
+import {
+  usePersistedState,
+  clearPersistedState,
+  CHECKOUT_KEYS,
+} from "@/hooks/use-persisted-state";
 import { checkoutApi } from "@/lib/api/checkout";
 import CheckoutSteps from "@/components/shared/checkout/steps";
 import DeliveryInformation from "@/components/shared/checkout/info";
@@ -15,15 +21,25 @@ import OrderConfirmation from "@/components/shared/checkout/order-confirmation";
 import OrderSummary from "@/components/shared/checkout/order-summary";
 
 export default function CheckoutPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [deliveryData, setDeliveryData] = useState(null);
-  const [paymentData, setPaymentData] = useState(null);
-  const [promoCode, setPromoCode] = useState("");
-  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [currentStep, setCurrentStep] = usePersistedState(CHECKOUT_KEYS.step, 1);
+  const [deliveryData, setDeliveryData] = usePersistedState(
+    CHECKOUT_KEYS.delivery,
+    null,
+  );
+  const [paymentData, setPaymentData] = usePersistedState(
+    CHECKOUT_KEYS.payment,
+    null,
+  );
+  const [promoCode, setPromoCode] = usePersistedState(CHECKOUT_KEYS.promoCode, "");
+  const [promoDiscount, setPromoDiscount] = usePersistedState(
+    CHECKOUT_KEYS.promoDiscount,
+    0,
+  );
 
   const router = useRouter();
   const { data: cartData } = useCart();
   const { data: checkoutData } = useCheckoutData();
+  const { data: currentUser } = useCurrentUser();
   const submitPayment = useSubmitPayment();
 
   // Use cart data for items/totals (always available), checkout data for saved addresses
@@ -54,15 +70,21 @@ export default function CheckoutPage() {
       }
     : null;
 
-  const handlePaymentComplete = useCallback((data) => {
-    setPaymentData(data);
-    if (data.promoCode) setPromoCode(data.promoCode);
-  }, []);
+  const handlePaymentComplete = useCallback(
+    (data) => {
+      setPaymentData(data);
+      if (data.promoCode) setPromoCode(data.promoCode);
+    },
+    [setPaymentData, setPromoCode],
+  );
 
-  const handlePromoChange = useCallback((code, discount) => {
-    setPromoCode(code);
-    setPromoDiscount(discount || 0);
-  }, []);
+  const handlePromoChange = useCallback(
+    (code, discount) => {
+      setPromoCode(code);
+      setPromoDiscount(discount || 0);
+    },
+    [setPromoCode, setPromoDiscount],
+  );
 
   // Redirect if cart is empty
   if (cartData && cartData.items?.length === 0) {
@@ -91,28 +113,46 @@ export default function CheckoutPage() {
       serverTotal = serverTotal || cartData?.total || 0;
     }
 
+    const isGuest = !currentUser;
+
+    // A checkout originating from an AI design flow arrives as
+    // /checkout?designSessionId=… — forward it when present.
+    const designSessionId =
+      new URLSearchParams(window.location.search).get("designSessionId") ||
+      undefined;
+
     const payload = {
+      designSessionId,
+      // Guest identity — only sent for guests; authenticated users are
+      // identified by their bearer token, so these stay omitted.
+      guestEmail: isGuest ? deliveryData?.email || undefined : undefined,
+      guestPhone: isGuest
+        ? deliveryData?.phone || delivery.phone || undefined
+        : undefined,
+      guestSessionId: isGuest ? cartData?.guestSessionId || undefined : undefined,
       delivery: {
-        fullName: delivery.fullName || "",
-        phone: delivery.phone || "",
-        address: delivery.address || delivery.line1 || "",
-        city: delivery.city || "",
-        state: delivery.state || "",
-        notes: delivery.notes || "",
-        customerNotes: delivery.notes || "",
+        fullName: delivery.fullName || null,
+        phone: delivery.phone || null,
+        address: delivery.address || delivery.line1 || null,
+        city: delivery.city || null,
+        state: delivery.state || null,
+        notes: delivery.notes || null,
+        customerNotes: delivery.notes || null,
       },
       payment: {
         method: payment.method || "Paystack",
-        reference: "",
+        reference: null,
         callbackUrl: `${window.location.origin}/checkout/verify`,
       },
       total: serverTotal,
       promoCode: promoCode || undefined,
-      idempotencyKey: crypto.randomUUID(),
     };
 
     submitPayment.mutate(payload, {
       onSuccess: (data) => {
+        // Order placed — clear the persisted checkout draft so a fresh
+        // visit starts clean.
+        clearPersistedState(Object.values(CHECKOUT_KEYS));
         if (data?.authorizationUrl) {
           window.location.href = data.authorizationUrl;
         } else if (data?.orderId) {
@@ -182,9 +222,10 @@ export default function CheckoutPage() {
           <div className="order-last lg:order-first space-y-6">
             {currentStep === 1 && (
               <DeliveryInformation
-                savedAddress={currentAddress}
+                savedAddress={deliveryData || currentAddress}
                 savedAddresses={savedAddresses}
                 onComplete={handleDeliveryComplete}
+                isGuest={!currentUser}
               />
             )}
 

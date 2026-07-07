@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Pencil, CheckCircle } from "lucide-react";
 import EditDeliveryModal from "./edit-delivery-modal";
+import { NIGERIA_STATES } from "@/lib/data/nigeria-states";
+import { usePersistedState, CHECKOUT_KEYS } from "@/hooks/use-persisted-state";
 
 const inputClass =
   "w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-lg text-[14px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/20 transition-all disabled:cursor-not-allowed disabled:opacity-60";
@@ -17,23 +19,36 @@ export default function DeliveryInformation({
   onComplete,
   readonly = false,
   onEdit,
+  isGuest = false,
 }) {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [fullName, setFullName] = useState(savedAddress?.fullName || "");
-  const [phone, setPhone] = useState(savedAddress?.phone || "");
-  const [address, setAddress] = useState(savedAddress?.address || savedAddress?.line1 || "");
-  const [city, setCity] = useState(savedAddress?.city || "");
-  const [state, setState] = useState(savedAddress?.state || "");
-  const [notes, setNotes] = useState("");
+
+  // Live form fields, persisted so they survive a refresh / back-and-edit.
+  const [form, setForm] = usePersistedState(CHECKOUT_KEYS.form, {
+    fullName: savedAddress?.fullName || "",
+    phone: savedAddress?.phone || "",
+    address: savedAddress?.address || savedAddress?.line1 || "",
+    city: savedAddress?.city || "",
+    state: savedAddress?.state || "",
+    notes: savedAddress?.notes || "",
+    email: savedAddress?.email || "",
+  });
+
+  const { fullName, phone, address, city, state, notes, email } = form;
+  const setField = (key) => (e) =>
+    setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const handleModalSave = (data) => {
     const addr = data.address;
-    setFullName(addr.fullName || "");
-    setPhone(addr.phone || "");
-    setAddress(addr.address || addr.line1 || addr.streetAddress || "");
-    setCity(addr.city || "");
-    setState(addr.state || "");
-    setNotes(data.deliveryInstructions || "");
+    setForm((f) => ({
+      ...f,
+      fullName: addr.fullName || "",
+      phone: addr.phone || "",
+      address: addr.address || addr.line1 || addr.streetAddress || "",
+      city: addr.city || "",
+      state: addr.state || "",
+      notes: data.deliveryInstructions || "",
+    }));
     setShowEditModal(false);
   };
 
@@ -41,7 +56,7 @@ export default function DeliveryInformation({
     if (!fullName.trim() || !phone.trim() || !address.trim() || !city.trim() || !state.trim()) {
       return;
     }
-    onComplete?.({ fullName, phone, address, city, state, notes });
+    onComplete?.({ fullName, phone, address, city, state, notes, email: isGuest ? email : undefined });
   };
 
   if (readonly) {
@@ -92,7 +107,7 @@ export default function DeliveryInformation({
   }
 
   const hasSavedAddresses = savedAddresses.length > 0;
-  const isFormComplete = fullName.trim() && phone.trim() && address.trim() && city.trim() && state.trim();
+  const isFormComplete = fullName.trim() && phone.trim() && address.trim() && city.trim() && state.trim() && (!isGuest || email.trim());
 
   return (
     <>
@@ -124,7 +139,7 @@ export default function DeliveryInformation({
               <input
                 type="text"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={setField("fullName")}
                 className={inputClass}
                 placeholder="John Doe"
                 autoComplete="name"
@@ -135,7 +150,7 @@ export default function DeliveryInformation({
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={setField("phone")}
                 className={inputClass}
                 placeholder="+234 800 000 0000"
                 autoComplete="tel"
@@ -143,13 +158,28 @@ export default function DeliveryInformation({
             </div>
           </div>
 
+          {/* Email — guests only */}
+          {isGuest && (
+            <div>
+              <label className={labelClass}>Email Address *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={setField("email")}
+                className={inputClass}
+                placeholder="you@example.com"
+                autoComplete="email"
+              />
+            </div>
+          )}
+
           {/* Address */}
           <div>
             <label className={labelClass}>Street Address *</label>
             <input
               type="text"
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={setField("address")}
               className={inputClass}
               placeholder="123 Lagos Street, Victoria Island"
               autoComplete="street-address"
@@ -163,7 +193,7 @@ export default function DeliveryInformation({
               <input
                 type="text"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={setField("city")}
                 className={inputClass}
                 placeholder="Lagos"
                 autoComplete="address-level2"
@@ -171,14 +201,30 @@ export default function DeliveryInformation({
             </div>
             <div>
               <label className={labelClass}>State *</label>
-              <input
-                type="text"
+              <select
                 value={state}
-                onChange={(e) => setState(e.target.value)}
-                className={inputClass}
-                placeholder="Lagos State"
+                onChange={setField("state")}
+                className={`${inputClass} appearance-none pr-10 ${
+                  state ? "text-white" : "text-white/25"
+                }`}
+                style={{
+                  backgroundImage:
+                    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 1rem center",
+                  backgroundSize: "16px 16px",
+                }}
                 autoComplete="address-level1"
-              />
+              >
+                <option value="" disabled className="text-black">
+                  Select state
+                </option>
+                {NIGERIA_STATES.map((s) => (
+                  <option key={s} value={s} className="text-black">
+                    {s}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -187,7 +233,7 @@ export default function DeliveryInformation({
             <label className={labelClass}>Delivery Note <span className="normal-case text-white/20 tracking-normal">(optional)</span></label>
             <textarea
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={setField("notes")}
               rows={3}
               className={`${inputClass} resize-none`}
               placeholder='"Gate code is 4451. Please leave at front door."'
