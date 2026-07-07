@@ -142,12 +142,12 @@ export default function OrderSummary({
         </div>
       </div>
 
-      {/* Confirm Button — always visible on step 2 */}
+      {/* Confirm Button — desktop only; mobile/tablet use the sticky bottom bar */}
       {currentStep === 2 && (
         <button
           onClick={onSubmitPayment}
           disabled={isSubmitting}
-          className="w-full py-4 rounded-lg font-semibold flex items-center justify-center gap-2 group transition-opacity hover:opacity-90 text-black disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full py-4 rounded-lg font-semibold hidden lg:flex items-center justify-center gap-2 group transition-opacity hover:opacity-90 text-black disabled:opacity-60 disabled:cursor-not-allowed"
           style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
         >
           {isSubmitting ? (
