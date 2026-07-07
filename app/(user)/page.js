@@ -41,8 +41,11 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="bg-black min-h-screen">
-      {/* ── PUBLIC GATE: remove this component to reveal the site ── */}
-      {/* <UnderConstruction /> */}
+      {/* ── PUBLIC GATE ──
+          Shows UnderConstruction unless NEXT_PUBLIC_SITE_LIVE === "true".
+          Prod: leave the var unset → gate shows. Launch = set it to "true".
+          Staging/local: set NEXT_PUBLIC_SITE_LIVE=true to view the real site. */}
+      {process.env.NEXT_PUBLIC_SITE_LIVE !== "true" && <UnderConstruction />}
       {/* 1. Hero — split layout */}
       <HeroSection />
 
