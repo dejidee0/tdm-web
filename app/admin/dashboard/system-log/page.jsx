@@ -9,7 +9,7 @@ import {
   useSystemLogs,
   useExportLogs,
 } from "@/hooks/use-system-logs";
-import { severityColors } from "@/lib/mock/system-logs";
+import { severityBadge } from "@/lib/theme/severity";
 import aiJobEngineIcon from "@/public/assets/svgs/systemLogs/ajJobEngine.svg";
 import paymentGwIcon from "@/public/assets/svgs/systemLogs/paymentGw.svg";
 import userAuthIcon from "@/public/assets/svgs/systemLogs/userAuth.svg";
@@ -344,8 +344,7 @@ export default function SystemLogPage() {
             </thead>
             <tbody>
               {logs?.logs?.map((log, index) => {
-                const severityStyle =
-                  severityColors[log?.severity] || severityColors.INFO;
+                const badgeCls = severityBadge(log?.severity);
 
                 return (
                   <tr
@@ -357,7 +356,7 @@ export default function SystemLogPage() {
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[16px] sm:text-[11px] md:text-[13px] font-bold uppercase ${severityStyle?.badge}`}
+                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[16px] sm:text-[11px] md:text-[13px] font-bold uppercase ${badgeCls}`}
                       >
                         {log?.severity || "N/A"}
                       </span>

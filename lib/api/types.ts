@@ -1,27 +1,49 @@
 // lib/api/types.ts
 //
-// Shapes of the .NET backend's responses, as observed against the live API —
-// not invented. Where a field was null in every sampled response, it is typed
-// `unknown` rather than guessed at; narrow it at the call site, or widen this
-// type once you have seen real data.
+// Types for the .NET backend's responses. Every one is inferred from the Zod
+// schema that validates it, so the runtime check and the compile-time type
+// cannot drift apart — there is one definition, in lib/api/schemas/.
 //
-// This is the boundary. Everything upstream of it is `any`, everything
-// downstream of it should be typed.
+// This module is safe to import from client code **with `import type`**. The
+// schema imports below are type-only, so Zod is erased at compile time and
+// never reaches the browser bundle. Value-importing lib/api/schemas/* from a
+// client component is a lint error.
+//
+// The shapes were derived by calling the live API, not invented: the backend's
+// OpenAPI document declares all 266 operations as a bare `200: OK` with no body
+// type. Fields that were null in every observed response are `unknown` on
+// purpose. See CLAUDE.md, "Backend response shapes".
 
-/**
- * Every endpoint under /api/v1 wraps its payload in this envelope.
- *
- * The one exception is GET /flooring, which returns FlooringResponse bare —
- * see the note there.
- */
+import type { z } from "zod";
+import type {
+  brandTypeSchema,
+  categoryListResponse,
+  categoryResponse,
+  categorySchema,
+  flooringResponse,
+  materialListResponse,
+  materialSummarySchema,
+  productArrayResponse,
+  productListResponse,
+  productResponse,
+  productSchema,
+} from "./schemas/catalog";
+import type {
+  listFiltersSchema,
+  listPaginationSchema,
+} from "./schemas/common";
+
+// ── Envelopes ────────────────────────────────────────────────────────────────
+
+/** `{ success, message, data, errors }` — the wrapper on most of /api/v1. */
 export interface ApiEnvelope<T> {
   success: boolean;
   message: string;
   data: T;
-  errors: string[] | null;
+  errors: unknown;
 }
 
-/** Standard pagination wrapper, used by /products and /materials. */
+/** Pagination inside the envelope, used by /products and /materials. */
 export interface Paged<T> {
   items: T[];
   pageNumber: number;
@@ -32,172 +54,37 @@ export interface Paged<T> {
   hasPreviousPage: boolean;
 }
 
-/** BrandType is an integer on the wire. */
-export const BrandType = {
-  TBM: 1,
-  Bogat: 2,
-} as const;
-export type BrandType = (typeof BrandType)[keyof typeof BrandType];
+// ── Domain ───────────────────────────────────────────────────────────────────
+
+/** TBM = 1, Bogat = 2. */
+export type BrandType = z.infer<typeof brandTypeSchema>;
 
 /**
- * Pricing is a discriminated union, and this is the single most useful thing in
- * this file.
- *
- * The backend returns `price: null` for quote-only products, and signals it with
- * `showPrice: false` + `priceDisplay: "Request Price"`. Verified across every
- * sampled product: `price === null` if and only if `showPrice === false`.
- *
- * So you cannot reach `.price` without first narrowing on `showPrice`, and the
- * always-safe field to render is `priceDisplay`.
+ * `price` is `null` exactly when `showPrice` is `false` (quote-only products,
+ * `priceDisplay: "Request Price"`). Narrow on `showPrice` before touching
+ * `price`; render `priceDisplay` when in doubt — it is always a string.
  */
-export type ProductPricing =
-  | {
-      showPrice: true;
-      price: number;
-      priceDisplay: string;
-      compareAtPrice: number | null;
-    }
-  | {
-      showPrice: false;
-      price: null;
-      priceDisplay: string;
-      compareAtPrice: number | null;
-    };
+export type Product = z.infer<typeof productSchema>;
+export type Category = z.infer<typeof categorySchema>;
 
-interface ProductFields {
-  id: string;
-  name: string;
-  description: string;
-  shortDescription: string;
-  slug: string;
-  sku: string;
+/** /materials/list returns this, not a Product. `price` is nullable with no discriminant. */
+export type MaterialSummary = z.infer<typeof materialSummarySchema>;
 
-  brandType: BrandType;
-  brandName: string;
-  /** Integer discriminator; `productTypeName` is the readable form (e.g. "PhysicalProduct"). */
-  productType: number;
-  productTypeName: string;
+export type ListPagination = z.infer<typeof listPaginationSchema>;
+export type ListFilters = z.infer<typeof listFiltersSchema>;
 
-  categoryId: string;
-  categoryName: string;
+// ── Whole-response types ─────────────────────────────────────────────────────
 
-  stockQuantity: number;
-  inStock: boolean;
-  trackInventory: boolean;
-  isActive: boolean;
-  isFeatured: boolean;
+export type ProductListResponse = z.infer<typeof productListResponse>;
+export type ProductResponse = z.infer<typeof productResponse>;
+export type ProductArrayResponse = z.infer<typeof productArrayResponse>;
+export type CategoryListResponse = z.infer<typeof categoryListResponse>;
+export type CategoryResponse = z.infer<typeof categoryResponse>;
 
-  /** Rendered directly as an <Image src>, so: absolute or root-relative URLs. */
-  images: string[];
-  primaryImageUrl: string | null;
-  similarProducts: Product[];
-
-  /** ISO 8601. */
-  createdAt: string;
-  updatedAt: string;
-
-  // ── Never observed non-null ────────────────────────────────────────────────
-  // Typed `unknown` on purpose. Every sampled response returned null for these,
-  // so their element type is unknown — guessing `string[]` here would be a lie
-  // the compiler then enforces. Narrow at the call site, and replace `unknown`
-  // with the real type the first time you see one populated.
-  tags: unknown;
-  aiKeywords: unknown;
-  materialType: unknown;
-  qualityTier: unknown;
-  recommendedFor: unknown;
-  specifications: unknown;
-  keyFeatures: unknown;
-  whatsIncluded: unknown;
-  whatsNotIncluded: unknown;
-  dimensions: unknown;
-  warranty: unknown;
-  finishType: unknown;
-  installationType: unknown;
-  material: unknown;
-  color: unknown;
-}
-
-/** Identical shape from /products, /products/{id}, /products/{id}/related, /materials. */
-export type Product = ProductFields & ProductPricing;
-
-export interface Category {
-  id: string;
-  name: string;
-  description: string;
-  slug: string;
-  brandType: BrandType;
-  brandName: string;
-  parentCategoryId: string | null;
-  parentCategoryName: string | null;
-  imageUrl: string | null;
-  displayOrder: number;
-  isActive: boolean;
-  subCategories: Category[];
-  productCount: number;
-}
-
-// ── The list endpoints: a second envelope, and a second product shape ────────
-//
-// GET /flooring and GET /materials/list do not use ApiEnvelope. They return
-// `{ pagination, filters, <collection> }` with their own pagination field names
-// (`page`/`limit`/`total`/`hasMore`, not `pageNumber`/`pageSize`/`totalCount`/
-// `hasNextPage`). Do not reach for `Paged` here.
-//
-// They also disagree with each other: /flooring returns full Products, while
-// /materials/list returns a flattened summary with different field names and no
-// `showPrice` discriminator.
-
-export interface ListPagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasMore: boolean;
-}
-
-export interface ListFilters {
-  category: string | null;
-  materialType: string | null;
-  minPrice: number | null;
-  maxPrice: number | null;
-  isFeatured: boolean | null;
-  sort: string | null;
-}
-
-/** GET /flooring — full Products, bare (no ApiEnvelope). */
-export interface FlooringResponse {
-  products: Product[];
-  pagination: ListPagination;
-  filters: ListFilters;
-}
-
-/**
- * GET /materials/list — a flattened projection, NOT a Product.
- *
- * Note `price` is nullable here with no `showPrice` flag to discriminate on,
- * so unlike Product there is no way to know whether null means "quote only" or
- * "missing". Check for null before formatting.
- */
-export interface MaterialSummary {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number | null;
-  /** Never observed non-null; a URL when present. */
-  image: string | null;
-  /** Category name, not an id. */
-  category: string;
-  inStock: boolean;
-  similarProducts: unknown[];
-}
-
-export interface MaterialListResponse {
-  materials: MaterialSummary[];
-  pagination: ListPagination;
-  filters: ListFilters;
-}
+/** /flooring — no envelope. */
+export type FlooringResponse = z.infer<typeof flooringResponse>;
+/** /materials/list — no envelope, and not Product[]. */
+export type MaterialListResponse = z.infer<typeof materialListResponse>;
 
 // ── Request params ───────────────────────────────────────────────────────────
 

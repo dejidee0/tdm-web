@@ -4,6 +4,10 @@ on:
   pull_request:
   push:
     branches: [main, develop]
+  schedule:
+    # 06:00 UTC daily — the contract job below only runs on this trigger.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -11,9 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 24, not 22: scripts/ use module.registerHooks() and native type
+      # stripping to import the .ts schema modules without a bundler.
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - run: npm ci
@@ -28,6 +34,13 @@ jobs:
       # checked strictly. See tsconfig.json.
       - name: Typecheck
         run: npm run typecheck
+
+      # Offline: diffs contracts/manifest.json against the OpenAPI snapshot. Fails
+      # if a response schema was deleted, renamed, or unlinked — coverage is easy
+      # to lose by accident, and a silent drop looks identical to never having had
+      # it. Also catches a manifest key that no longer exists upstream.
+      - name: Contract coverage must not regress
+        run: npm run contract:coverage -- --check
 
       # lib/env.js throws when API_URL / ADMIN_API_URL are missing, so this
       # step also proves the deploy is configured. Set these as repo secrets.
@@ -55,7 +68,39 @@ jobs:
           fi
           echo "Backend host absent from client bundle."
 
+      # Response validation runs server-side, so Zod must never reach a client
+      # chunk. This is what buys full types at zero bundle cost — if it fails,
+      # something value-imported lib/api/schemas from a client component.
+      - name: Zod must not be in the client bundle
+        run: |
+          hits=$(grep -rl "looseObject\|ZodError" .next/static 2>/dev/null | wc -l)
+          if [ "$hits" -ne 0 ]; then
+            echo "::error::Zod found in $hits client chunk(s) — a schema was value-imported from client code."
+            grep -rl "looseObject\|ZodError" .next/static | head
+            exit 1
+          fi
+          echo "Zod absent from client bundle."
+
       # Non-blocking: surfaces the ~40 legacy React warnings without failing PRs.
       - name: Full lint (informational)
         run: npm run lint
         continue-on-error: true
+
+  # Deliberately NOT part of `verify`: this hits the live dev backend, so an
+  # upstream outage would otherwise block every merge. Failure means "the
+  # backend changed shape — go look", not "revert this PR".
+  contract:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Response contracts still hold
+        run: npm run contract:check
+        env:
+          API_URL: ${{ secrets.API_URL }}

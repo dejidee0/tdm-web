@@ -13,7 +13,7 @@ export default function VendorDashboardLayout({ children }) {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-white text-primary rounded-lg shadow-md"
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-surface-raised text-white rounded-lg shadow-md"
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -37,7 +37,7 @@ export default function VendorDashboardLayout({ children }) {
         animate={{
           x: isSidebarOpen ? 0 : "-100%",
         }}
-        className="lg:translate-x-0 fixed top-0 left-0 h-full w-60 bg-white border-r border-[#E5E7EB] z-40 lg:z-auto transition-transform duration-300 lg:transition-none"
+        className="lg:translate-x-0 fixed top-0 left-0 h-full w-60 bg-surface border-r border-white/08 z-40 lg:z-auto transition-transform duration-300 lg:transition-none"
       >
         <VendorSidebar />
       </motion.aside>

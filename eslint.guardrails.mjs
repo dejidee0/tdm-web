@@ -97,17 +97,80 @@ const SESSION_OWNERS = [
   "app/api/auth/session/route.js",
 ];
 
+// Response schemas are server-only: value-importing one pulls Zod (~14 kb gz)
+// into whatever bundle the file lands in. Client code imports the *types* from
+// lib/api/types.ts, which are z.infer'red and erased at compile time — full type
+// safety, zero client bytes. Verified by the bundle check in CI.
+//
+// `import type { … }` is fine — it is erased. But do NOT select on
+// [importKind="value"]: espree leaves importKind *undefined* on plain JS
+// imports, so that selector silently matches nothing in .jsx — precisely the
+// files this rule exists to guard. Negating the type case covers both parsers.
+const schemasAreServerOnly = {
+  selector:
+    'ImportDeclaration:not([importKind="type"])[source.value=/^@\\/lib\\/api\\/(schemas|contract)/]',
+  message:
+    "lib/api/schemas/* and lib/api/contract.ts are server-only — a value import ships Zod to the browser. Import the inferred types from @/lib/api/types instead (`import type { Product }`), and validate in the route handler or lib/proxy.js.",
+};
+
+// An error boundary receives an *uncaught* exception. Its message can carry a
+// stack frame, a SQL fragment, or a token that leaked into the exception string
+// — the same class of leak lib/log.js prevents server-side, except this one
+// renders in the user's browser. Boundaries show `error.digest`, a hash you grep
+// the server logs for.
+//
+// This is scoped to boundary files only. Errors thrown by lib/api/* and
+// lib/axios.js are a different thing: their `.message` has already been replaced
+// by getFriendlyMessage(), so rendering those is safe and common.
+const noRawErrorInBoundary = {
+  selector:
+    'MemberExpression[object.name="error"][property.name=/^(message|stack)$/]',
+  message:
+    "Never surface a raw exception in an error boundary — it can carry a stack frame or a token. Render error.digest instead. (A query error's .message is already normalised by lib/errors.js and is safe; this rule only covers boundaries.)",
+};
+
+const ERROR_BOUNDARIES = ["app/**/error.jsx", "app/global-error.jsx"];
+
 // The one file allowed to mount Providers.
 const ROOT_LAYOUT = "app/layout.js";
 
-// Each file must match exactly one of the three blocks below: ESLint's flat
+// Server-only modules: route handlers validate responses, and the schema /
+// contract modules import each other. Everything here runs on the server, so a
+// value import of Zod costs the client nothing.
+const SCHEMA_OWNERS = [
+  "app/api/**/*.{js,ts}",
+  "lib/api/schemas/*.ts",
+  "lib/api/contract.ts",
+  "lib/proxy.js",
+];
+
+// Each file must match exactly one of the four blocks below: ESLint's flat
 // config lets a later block silently replace an earlier one's rule of the same
 // name, so these scopes are partitioned, not layered.
 export const guardrailConfig = [
   {
-    // Everything else.
+    // Everything else. Client-reachable, so schemas are off-limits.
     files: SOURCE,
-    ignores: [...SESSION_OWNERS, ROOT_LAYOUT],
+    ignores: [
+      ...SESSION_OWNERS,
+      ROOT_LAYOUT,
+      ...ERROR_BOUNDARIES,
+      ...SCHEMA_OWNERS,
+    ],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        ...guardrails,
+        singleSessionQuery,
+        providersMountedOnce,
+        schemasAreServerOnly,
+      ],
+    },
+  },
+  {
+    // Server-only: may value-import schemas and lib/api/contract.
+    // Still bound by the session and Providers rules.
+    files: SCHEMA_OWNERS,
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -118,17 +181,41 @@ export const guardrailConfig = [
     },
   },
   {
+    // Error boundaries: everything above, plus the no-raw-exception rule.
+    files: ERROR_BOUNDARIES,
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        ...guardrails,
+        singleSessionQuery,
+        providersMountedOnce,
+        schemasAreServerOnly,
+        noRawErrorInBoundary,
+      ],
+    },
+  },
+  {
     // May name an auth endpoint; may not mount Providers.
     files: SESSION_OWNERS,
     rules: {
-      "no-restricted-syntax": ["error", ...guardrails, providersMountedOnce],
+      "no-restricted-syntax": [
+        "error",
+        ...guardrails,
+        providersMountedOnce,
+        schemasAreServerOnly,
+      ],
     },
   },
   {
     // May mount Providers; may not name an auth endpoint.
     files: [ROOT_LAYOUT],
     rules: {
-      "no-restricted-syntax": ["error", ...guardrails, singleSessionQuery],
+      "no-restricted-syntax": [
+        "error",
+        ...guardrails,
+        singleSessionQuery,
+        schemasAreServerOnly,
+      ],
     },
   },
   {

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { API_URL } from "@/lib/env";
+import { parseResponse } from "@/lib/api/contract";
+import { productListResponse } from "@/lib/api/schemas/catalog";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -31,8 +33,9 @@ export async function GET(request) {
   if (maxPrice !== null && maxPrice !== undefined)
     params.set("MaxPrice", maxPrice);
 
+  let res;
   try {
-    const res = await fetch(`${API_URL}/products?${params.toString()}`, {
+    res = await fetch(`${API_URL}/products?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",
         ...(process.env.API_KEY
@@ -41,26 +44,26 @@ export async function GET(request) {
       },
       next: { revalidate: 60 },
     });
-
-    if (!res.ok) {
-      console.error("❌ Products API error:", res.status, res.statusText);
-      return NextResponse.json(
-        { error: "Failed to fetch products" },
-        { status: res.status },
-      );
-    }
-
-    const data = await res.json();
-    return NextResponse.json(data, {
-      headers: {
-        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
-      },
-    });
   } catch (err) {
-    console.error("❌ Products fetch failed:", err);
+    console.error("[products] fetch failed:", err.message);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+
+  if (!res.ok) {
+    console.error("[products] upstream:", res.status, res.statusText);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
+      { error: "Failed to fetch products" },
+      { status: res.status },
     );
   }
+
+  // Parsed outside the try so a contract mismatch surfaces rather than being
+  // swallowed into a generic 500.
+  const data = parseResponse(productListResponse, await res.json(), "GET /products");
+
+  return NextResponse.json(data, {
+    headers: {
+      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+    },
+  });
 }

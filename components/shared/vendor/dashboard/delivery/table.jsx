@@ -7,28 +7,28 @@ import { useUpdateDeliveryAssignment } from "@/hooks/use-delivery";
 
 const statusStyles = {
   warning: {
-    bg: "bg-[#FEF3C7]",
-    text: "text-[#92400E]",
+    bg: "bg-warning/10",
+    text: "text-warning",
     icon: "⏱",
   },
   info: {
-    bg: "bg-[#DBEAFE]",
-    text: "text-[#1E40AF]",
+    bg: "bg-info/10",
+    text: "text-info",
     icon: "★",
   },
   success: {
-    bg: "bg-[#D1FAE5]",
-    text: "text-[#065F46]",
+    bg: "bg-success/10",
+    text: "text-success",
     icon: "●",
   },
   error: {
-    bg: "bg-[#FEF2F2]",
-    text: "text-[#DC2626]",
+    bg: "bg-danger/10",
+    text: "text-danger",
     icon: "⚠",
   },
   purple: {
-    bg: "bg-[#F3E8FF]",
-    text: "text-[#6B21A8]",
+    bg: "bg-chart-1/10",
+    text: "text-chart-1",
     icon: "★",
   },
 };
@@ -87,10 +87,10 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-background rounded-xl border border-[#E5E7EB]">
+      <div className="bg-surface rounded-xl border border-white/08">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+          <div className="w-12 h-12 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted font-manrope text-[14px]">
             Loading assignments...
           </p>
         </div>
@@ -100,8 +100,8 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
 
   if (!assignments || assignments.length === 0) {
     return (
-      <div className="bg-background rounded-xl border border-[#E5E7EB] p-12 text-center">
-        <p className="text-[#64748B] font-manrope text-[14px]">
+      <div className="bg-surface rounded-xl border border-white/08 p-12 text-center">
+        <p className="text-muted font-manrope text-[14px]">
           No assignments found
         </p>
       </div>
@@ -109,43 +109,43 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
   }
 
   return (
-    <div className="bg-background rounded-xl border border-[#E5E7EB] overflow-hidden">
+    <div className="bg-surface rounded-xl border border-white/08 overflow-hidden">
       {/* Table Header */}
       <div className="overflow-x-auto table-scroll">
-        <div className="px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB] min-w-[1020px]">
+        <div className="px-6 py-4 bg-white/05 border-b border-white/08 min-w-[1020px]">
           <div className="grid grid-cols-[40px_100px_140px_260px_120px_180px_180px_100px] gap-4 items-center">
             <input
               type="checkbox"
               checked={selectedAssignments.length === assignments.length}
               onChange={handleSelectAll}
-              className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+              className="w-4 h-4 rounded border-white/08 text-white focus:ring-2 focus:ring-accent/40 cursor-pointer"
             />
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               STATUS
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               ORDER ID
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               CUSTOMER DETAILS
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               EXP. DATE
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               DELIVERY PARTNER
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               TRACKING #
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               ACTIONS
             </span>
           </div>
         </div>
 
         {/* Table Body */}
-        <div className="divide-y divide-[#E5E7EB] overflow-x-auto table-scroll">
+        <div className="divide-y divide-white/08 overflow-x-auto table-scroll">
           {assignments.map((assignment, index) => {
             const statusStyle = statusStyles[assignment.statusColor];
             const isSelected = selectedAssignments.includes(assignment.id);
@@ -158,7 +158,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
                 className={`px-6 py-4 transition-colors min-w-[1020px] ${
-                  isSelected ? "bg-[#F8FAFC]" : "hover:bg-[#F8FAFC]"
+                  isSelected ? "bg-white/05" : "hover:bg-white/05"
                 }`}
               >
                 <div className="grid grid-cols-[40px_100px_140px_260px_120px_180px_180px_100px] gap-4 items-center">
@@ -167,7 +167,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => handleSelectAssignment(assignment.id)}
-                    className="w-4 h-4 rounded border-[#E5E7EB] text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                    className="w-4 h-4 rounded border-white/08 text-white focus:ring-2 focus:ring-accent/40 cursor-pointer"
                   />
 
                   {/* Status */}
@@ -181,16 +181,16 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                   </div>
 
                   {/* Order ID */}
-                  <span className="font-manrope text-[14px] font-bold text-primary">
+                  <span className="font-manrope text-[14px] font-bold text-white">
                     #{assignment.orderId}
                   </span>
 
                   {/* Customer Details */}
                   <div>
-                    <p className="font-manrope text-[14px] font-medium text-primary mb-0.5">
+                    <p className="font-manrope text-[14px] font-medium text-white mb-0.5">
                       {assignment.customer.name}
                     </p>
-                    <p className="font-manrope text-[12px] text-[#64748B] truncate">
+                    <p className="font-manrope text-[12px] text-muted truncate">
                       {assignment.customer.address}
                     </p>
                   </div>
@@ -199,8 +199,8 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                   <span
                     className={`font-manrope text-[13px] ${
                       assignment.isOverdue
-                        ? "text-[#DC2626] font-bold"
-                        : "text-primary"
+                        ? "text-danger font-bold"
+                        : "text-white"
                     }`}
                   >
                     {assignment.expectedDate}
@@ -217,7 +217,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           deliveryPartner: e.target.value,
                         }))
                       }
-                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+                      className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
                     >
                       <option value="">Select Partner</option>
                       {deliveryPartners.map((partner) => (
@@ -230,10 +230,10 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     <div className="flex items-center gap-2">
                       {assignment.deliveryPartner ? (
                         <>
-                          <span className="w-4 h-4 bg-primary rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
+                          <span className="w-4 h-4 bg-accent-solid rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
                             📦
                           </span>
-                          <span className="font-manrope text-[13px] text-primary truncate">
+                          <span className="font-manrope text-[13px] text-white truncate">
                             {assignment.deliveryPartner}
                           </span>
                         </>
@@ -246,7 +246,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                               deliveryPartner: e.target.value,
                             }));
                           }}
-                          className="w-full px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+                          className="w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
                         >
                           <option value="">Select Partner</option>
                           {deliveryPartners.map((partner) => (
@@ -271,12 +271,12 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           trackingNumber: e.target.value,
                         }))
                       }
-                      className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
                     />
                   ) : (
                     <>
                       {assignment.trackingNumber ? (
-                        <span className="font-manrope text-[13px] text-primary font-mono">
+                        <span className="font-manrope text-[13px] text-white font-mono">
                           {assignment.trackingNumber}
                         </span>
                       ) : (
@@ -284,7 +284,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           type="text"
                           placeholder="Enter Tracking #"
                           onFocus={() => handleEdit(assignment)}
-                          className="px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#94A3B8] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
+                          className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-muted placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
                         />
                       )}
                     </>
@@ -298,7 +298,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleSave(assignment.id)}
-                          className="p-2 text-[#10B981] hover:bg-[#D1FAE5] rounded-lg transition-colors"
+                          className="p-2 text-success hover:bg-success/10 rounded-lg transition-colors"
                           title="Save"
                         >
                           ✓
@@ -307,7 +307,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handleCancel}
-                          className="p-2 text-[#EF4444] hover:bg-[#FEF2F2] rounded-lg transition-colors"
+                          className="p-2 text-danger hover:bg-danger/10 rounded-lg transition-colors"
                           title="Cancel"
                         >
                           ✕
@@ -316,12 +316,12 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                     ) : (
                       <>
                         {assignment.status === "Picked Up" && (
-                          <button className="font-manrope text-[13px] text-[#06B6D4] hover:underline font-medium">
+                          <button className="font-manrope text-[13px] text-info hover:underline font-medium">
                             Track
                           </button>
                         )}
                         {assignment.status === "In Transit" && (
-                          <button className="font-manrope text-[13px] text-[#06B6D4] hover:underline font-medium">
+                          <button className="font-manrope text-[13px] text-info hover:underline font-medium">
                             Track
                           </button>
                         )}
@@ -331,7 +331,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleEdit(assignment)}
-                            className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
+                            className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
                             title="Assign"
                           >
                             <Package size={18} />
@@ -342,7 +342,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleEdit(assignment)}
-                            className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
+                            className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
                             title="Edit"
                           >
                             <Edit2 size={18} />
@@ -351,7 +351,7 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors"
+                          className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
                           title="More"
                         >
                           <MoreVertical size={18} />

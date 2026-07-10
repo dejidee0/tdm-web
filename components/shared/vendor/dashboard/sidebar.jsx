@@ -51,7 +51,7 @@ export default function VendorSidebar() {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Logo/Header */}
-      <div className="p-6 border-b border-[#E5E7EB]">
+      <div className="p-6 border-b border-white/08">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
@@ -65,17 +65,17 @@ export default function VendorSidebar() {
               />
             </div>
             <div>
-              <h1 className="font-manrope font-bold text-[15px] text-primary">
+              <h1 className="font-manrope font-bold text-[15px] text-white">
                 TBM & Bogat
               </h1>
-              <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
+              <p className="font-manrope text-[11px] text-muted uppercase tracking-wider">
                 VENDOR PORTAL
               </p>
             </div>
           </div>
 
           {/* Notification Icon */}
-          <button className="relative p-2 hover:bg-[#F8FAFC] rounded-lg transition-colors">
+          <button className="relative p-2 hover:bg-white/05 rounded-lg transition-colors">
             <Image
               src={notificationIcon}
               alt="Notifications"
@@ -83,7 +83,7 @@ export default function VendorSidebar() {
               height={16}
             />
             {/* Notification Badge */}
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#EF4444] rounded-full"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-danger-solid rounded-full"></span>
           </button>
         </div>
       </div>
@@ -105,8 +105,8 @@ export default function VendorSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-[#64748B] hover:bg-[#F8FAFC]"
+                          ? "bg-white/08 text-white font-medium"
+                          : "text-muted hover:bg-white/05"
                       }
                     `}
                   >
@@ -121,7 +121,7 @@ export default function VendorSidebar() {
                       <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="ml-auto w-5 h-5 bg-[#EF4444] text-white text-[11px] font-bold rounded-full flex items-center justify-center"
+                        className="ml-auto w-5 h-5 bg-danger-solid text-white text-[11px] font-bold rounded-full flex items-center justify-center"
                       >
                         {item.badge}
                       </motion.span>
@@ -135,12 +135,12 @@ export default function VendorSidebar() {
       </nav>
 
       {/* Settings + Back to Site */}
-      <div className="p-4 border-t border-[#E5E7EB] space-y-1">
+      <div className="p-4 border-t border-white/08 space-y-1">
         <Link href="/vendor/dashboard/account-settings">
           <motion.div
             whileHover={{ x: 4 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#64748B] hover:bg-[#F8FAFC] font-manrope text-[14px] transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted hover:bg-white/05 font-manrope text-[14px] transition-colors"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -150,7 +150,7 @@ export default function VendorSidebar() {
           <motion.div
             whileHover={{ x: 4 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#64748B] hover:bg-[#F8FAFC] font-manrope text-[14px] transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted hover:bg-white/05 font-manrope text-[14px] transition-colors"
           >
             <ExternalLink size={20} />
             <span>Back to Main Site</span>
@@ -159,16 +159,16 @@ export default function VendorSidebar() {
       </div>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-[#E5E7EB]">
+      <div className="p-4 border-t border-white/08">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#F59E0B] rounded-full flex items-center justify-center text-white font-manrope font-bold text-[14px]">
+          <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-black font-manrope font-bold text-[14px]">
             AM
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-manrope font-medium text-[14px] text-primary truncate">
+            <p className="font-manrope font-medium text-[14px] text-white truncate">
               Alex Morgan
             </p>
-            <p className="font-manrope text-[12px] text-[#64748B] truncate">
+            <p className="font-manrope text-[12px] text-muted truncate">
               Vendor ID: #8939
             </p>
           </div>

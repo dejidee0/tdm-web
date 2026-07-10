@@ -240,7 +240,7 @@ export default function AddProductModal({
   // Error message component
   const ErrorMessage = ({ name }) => {
     return formik.touched[name] && formik.errors[name] ? (
-      <p className="text-red-500 text-[11px] mt-1 font-manrope">
+      <p className="text-danger text-[11px] mt-1 font-manrope">
         {formik.errors[name]}
       </p>
     ) : null;
@@ -259,8 +259,9 @@ export default function AddProductModal({
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
           />
 
-          {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none bg-background">
+          {/* Modal — positioning only. A background here paints over the scrim
+              above it and kills the backdrop blur. */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -268,16 +269,16 @@ export default function AddProductModal({
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
               onSubmit={formik.handleSubmit}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-160 max-h-[90vh] overflow-hidden pointer-events-auto"
+              className="bg-surface rounded-2xl shadow-2xl w-full max-w-160 max-h-[90vh] overflow-hidden pointer-events-auto"
             >
               {/* Header */}
-              <div className="px-8 py-6 border-b border-[#E5E7EB]">
+              <div className="px-8 py-6 border-b border-white/08">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="font-manrope text-[20px] font-bold text-[#1E293B] mb-1">
+                    <h2 className="font-manrope text-[20px] font-bold text-white mb-1">
                       Add New Product
                     </h2>
-                    <p className="font-manrope text-[13px] text-[#64748B]">
+                    <p className="font-manrope text-[13px] text-muted">
                       Enter the details to add a new item to the Bogat
                       inventory.
                     </p>
@@ -286,7 +287,7 @@ export default function AddProductModal({
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={onClose}
-                    className="text-[#94A3B8] hover:text-[#64748B] transition-colors"
+                    className="text-muted hover:text-muted transition-colors"
                   >
                     <X size={24} />
                   </motion.button>
@@ -304,14 +305,14 @@ export default function AddProductModal({
                       width={20}
                       height={20}
                     />
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-white">
                       General Information
                     </h3>
                   </div>
 
                   {/* Product Name */}
                   <div className="mb-4">
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       Product Name
                     </label>
                     <input
@@ -321,10 +322,10 @@ export default function AddProductModal({
                       value={formik.values.productName}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                      className={`w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                         formik.touched.productName && formik.errors.productName
-                          ? "border-red-500"
-                          : "border-[#E5E7EB]"
+                          ? "border-danger"
+                          : "border-white/08"
                       }`}
                     />
                     <ErrorMessage name="productName" />
@@ -334,7 +335,7 @@ export default function AddProductModal({
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     {/* SKU */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         SKU
                       </label>
                       <div className="flex items-center gap-2">
@@ -346,10 +347,10 @@ export default function AddProductModal({
                             value={formik.values.sku}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                            className={`w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                               formik.touched.sku && formik.errors.sku
-                                ? "border-red-500"
-                                : "border-[#E5E7EB]"
+                                ? "border-danger"
+                                : "border-white/08"
                             }`}
                           />
                           <ErrorMessage name="sku" />
@@ -359,7 +360,7 @@ export default function AddProductModal({
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handleGenerateSKU}
-                          className="flex items-center gap-1.5 px-3 py-2.5 bg-[#F1F5F9] border border-[#E5E7EB] rounded-lg text-[#64748B] hover:bg-[#E2E8F0] transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1.5 px-3 py-2.5 bg-white/08 border border-white/08 rounded-lg text-muted hover:bg-white/10 transition-colors whitespace-nowrap"
                         >
                           <RefreshCw size={12} />
                           <span className="font-manrope text-[11px] font-medium">
@@ -371,7 +372,7 @@ export default function AddProductModal({
 
                     {/* Category */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Category
                       </label>
                       <div className="relative">
@@ -380,11 +381,11 @@ export default function AddProductModal({
                           value={formik.values.categoryId}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                          className={`w-full px-4 py-2.5 pr-10 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent appearance-none cursor-pointer ${
                             formik.touched.categoryId &&
                             formik.errors.categoryId
-                              ? "border-red-500"
-                              : "border-[#E5E7EB]"
+                              ? "border-danger"
+                              : "border-white/08"
                           }`}
                         >
                           <option value="">Select Category</option>
@@ -396,7 +397,7 @@ export default function AddProductModal({
                         </select>
                         <ChevronDown
                           size={16}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
                         />
                       </div>
                       <ErrorMessage name="categoryId" />
@@ -407,7 +408,7 @@ export default function AddProductModal({
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     {/* Brand Type */}
                     {/* <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Brand Type
                       </label>
                       <input
@@ -418,16 +419,16 @@ export default function AddProductModal({
                         value={formik.values.brandType}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                        className={`w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                           formik.touched.brandType && formik.errors.brandType
-                            ? "border-red-500"
-                            : "border-[#E5E7EB]"
+                            ? "border-danger"
+                            : "border-white/08"
                         }`}
                       />
                       <ErrorMessage name="brandType" />
                     </div> */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Brand Type
                       </label>
                       <div className="relative">
@@ -436,10 +437,10 @@ export default function AddProductModal({
                           value={formik.values.brandType}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                          className={`w-full px-4 py-2.5 pr-10 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent appearance-none cursor-pointer ${
                             formik.touched.brandType && formik.errors.brandType
-                              ? "border-red-500"
-                              : "border-[#E5E7EB]"
+                              ? "border-danger"
+                              : "border-white/08"
                           }`}
                         >
                           <option value="">Select Brand Type</option>
@@ -451,7 +452,7 @@ export default function AddProductModal({
                         </select>
                         <ChevronDown
                           size={16}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
                         />
                       </div>
                       <ErrorMessage name="brandType" />
@@ -459,7 +460,7 @@ export default function AddProductModal({
 
                     {/* Product Type */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Product Type
                       </label>
                       <div className="relative">
@@ -468,11 +469,11 @@ export default function AddProductModal({
                           value={formik.values.productType}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className={`w-full px-4 py-2.5 pr-10 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer ${
+                          className={`w-full px-4 py-2.5 pr-10 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent appearance-none cursor-pointer ${
                             formik.touched.productType &&
                             formik.errors.productType
-                              ? "border-red-500"
-                              : "border-[#E5E7EB]"
+                              ? "border-danger"
+                              : "border-white/08"
                           }`}
                         >
                           <option value="">Select Product Type</option>
@@ -484,7 +485,7 @@ export default function AddProductModal({
                         </select>
                         <ChevronDown
                           size={16}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
                         />
                       </div>
                       <ErrorMessage name="productType" />
@@ -493,7 +494,7 @@ export default function AddProductModal({
 
                   {/* Description */}
                   <div className="mb-4">
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       Description
                     </label>
                     <textarea
@@ -503,10 +504,10 @@ export default function AddProductModal({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       rows={4}
-                      className={`w-full px-4 py-3 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none ${
+                      className={`w-full px-4 py-3 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent resize-none ${
                         formik.touched.description && formik.errors.description
-                          ? "border-red-500"
-                          : "border-[#E5E7EB]"
+                          ? "border-danger"
+                          : "border-white/08"
                       }`}
                     />
                     <ErrorMessage name="description" />
@@ -514,7 +515,7 @@ export default function AddProductModal({
 
                   {/* Short Description */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       Short Description
                     </label>
                     <textarea
@@ -524,11 +525,11 @@ export default function AddProductModal({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       rows={2}
-                      className={`w-full px-4 py-3 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none ${
+                      className={`w-full px-4 py-3 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent resize-none ${
                         formik.touched.shortDescription &&
                         formik.errors.shortDescription
-                          ? "border-red-500"
-                          : "border-[#E5E7EB]"
+                          ? "border-danger"
+                          : "border-white/08"
                       }`}
                     />
                     <ErrorMessage name="shortDescription" />
@@ -544,7 +545,7 @@ export default function AddProductModal({
                       width={20}
                       height={20}
                     />
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-white">
                       Inventory & Pricing
                     </h3>
                   </div>
@@ -553,7 +554,7 @@ export default function AddProductModal({
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     {/* Warehouse Location */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Warehouse Location
                       </label>
                       <div className="relative">
@@ -562,7 +563,7 @@ export default function AddProductModal({
                           value={formik.values.warehouseLocation}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className="w-full px-4 py-2.5 pr-10 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent appearance-none cursor-pointer"
+                          className="w-full px-4 py-2.5 pr-10 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent appearance-none cursor-pointer"
                         >
                           <option value="">Select Warehouse</option>
                           <option value="warehouse-a">Warehouse A</option>
@@ -572,14 +573,14 @@ export default function AddProductModal({
                         </select>
                         <ChevronDown
                           size={16}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
                         />
                       </div>
                     </div>
 
                     {/* Initial Quantity */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Initial Quantity
                       </label>
                       <input
@@ -590,11 +591,11 @@ export default function AddProductModal({
                         value={formik.values.initialQuantity}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                        className={`w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                           formik.touched.initialQuantity &&
                           formik.errors.initialQuantity
-                            ? "border-red-500"
-                            : "border-[#E5E7EB]"
+                            ? "border-danger"
+                            : "border-white/08"
                         }`}
                       />
                       <ErrorMessage name="initialQuantity" />
@@ -602,7 +603,7 @@ export default function AddProductModal({
 
                     {/* Reorder Point */}
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         Reorder Point
                       </label>
                       <input
@@ -613,11 +614,11 @@ export default function AddProductModal({
                         value={formik.values.reorderPoint}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`w-full px-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                        className={`w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                           formik.touched.reorderPoint &&
                           formik.errors.reorderPoint
-                            ? "border-red-500"
-                            : "border-[#E5E7EB]"
+                            ? "border-danger"
+                            : "border-white/08"
                         }`}
                       />
                       <ErrorMessage name="reorderPoint" />
@@ -626,11 +627,11 @@ export default function AddProductModal({
 
                   {/* Unit Price */}
                   <div className="mb-4">
-                    <label className="block font-manrope text-[13px] font-medium text-[#1E293B] mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       Unit Price ($)
                     </label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8] font-manrope text-[13px]">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-manrope text-[13px]">
                         $
                       </span>
                       <input
@@ -642,10 +643,10 @@ export default function AddProductModal({
                         value={formik.values.unitPrice}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`w-full pl-8 pr-4 py-2.5 bg-white border rounded-lg font-manrope text-[13px] text-[#1E293B] placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent ${
+                        className={`w-full pl-8 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent ${
                           formik.touched.unitPrice && formik.errors.unitPrice
-                            ? "border-red-500"
-                            : "border-[#E5E7EB]"
+                            ? "border-danger"
+                            : "border-white/08"
                         }`}
                       />
                     </div>
@@ -655,8 +656,8 @@ export default function AddProductModal({
                   {/* Toggles Row */}
                   <div className="grid grid-cols-2 gap-4">
                     {/* Is Active Toggle */}
-                    <div className="flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg">
-                      <label className="font-manrope text-[13px] font-medium text-[#1E293B] cursor-pointer">
+                    <div className="flex items-center justify-between p-3 bg-white/05 border border-white/08 rounded-lg">
+                      <label className="font-manrope text-[13px] font-medium text-white cursor-pointer">
                         Active
                       </label>
                       <input
@@ -664,13 +665,13 @@ export default function AddProductModal({
                         name="isActive"
                         checked={formik.values.isActive}
                         onChange={formik.handleChange}
-                        className="w-4 h-4 text-[#1E293B] bg-white border-[#E5E7EB] rounded focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+                        className="w-4 h-4 text-white bg-surface-raised border-white/10 rounded focus:ring-2 focus:ring-accent/40 cursor-pointer"
                       />
                     </div>
 
                     {/* Track Inventory Toggle */}
-                    <div className="flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg">
-                      <label className="font-manrope text-[13px] font-medium text-[#1E293B] cursor-pointer">
+                    <div className="flex items-center justify-between p-3 bg-white/05 border border-white/08 rounded-lg">
+                      <label className="font-manrope text-[13px] font-medium text-white cursor-pointer">
                         Track Inventory
                       </label>
                       <input
@@ -678,7 +679,7 @@ export default function AddProductModal({
                         name="trackInventory"
                         checked={formik.values.trackInventory}
                         onChange={formik.handleChange}
-                        className="w-4 h-4 text-[#1E293B] bg-white border-[#E5E7EB] rounded focus:ring-2 focus:ring-[#1E293B] cursor-pointer"
+                        className="w-4 h-4 text-white bg-surface-raised border-white/10 rounded focus:ring-2 focus:ring-accent/40 cursor-pointer"
                       />
                     </div>
                   </div>
@@ -693,7 +694,7 @@ export default function AddProductModal({
                       width={20}
                       height={20}
                     />
-                    <h3 className="font-manrope text-[14px] font-bold text-[#1E293B]">
+                    <h3 className="font-manrope text-[14px] font-bold text-white">
                       Product Images
                     </h3>
                   </div>
@@ -706,11 +707,11 @@ export default function AddProductModal({
                     onDrop={handleDrop}
                     className={`
                       relative border-[1.19px] border-dashed rounded-[7.15px] p-12 text-center
-                      transition-colors cursor-pointer bg-primary/10
+                      transition-colors cursor-pointer bg-white/08
                       ${
                         dragActive
-                          ? "border-[#1E293B]"
-                          : "border-[#E2E8F0] hover:border-[#94A3B8]"
+                          ? "border-white/10"
+                          : "border-white/10 hover:border-white/20"
                       }
                     `}
                   >
@@ -729,10 +730,10 @@ export default function AddProductModal({
                         height={48}
                       />
                       <div>
-                        <p className="font-manrope text-[14px] font-medium text-[#1E293B] mb-1">
+                        <p className="font-manrope text-[14px] font-medium text-white mb-1">
                           Click to upload or drag and drop
                         </p>
-                        <p className="font-manrope text-[12px] text-[#94A3B8]">
+                        <p className="font-manrope text-[12px] text-muted">
                           PNG, JPG or WEBP (Max. 800×400px)
                         </p>
                       </div>
@@ -745,7 +746,7 @@ export default function AddProductModal({
                       {formik.values.productImages.map((image, index) => (
                         <div
                           key={index}
-                          className="relative group rounded-lg overflow-hidden border border-[#E5E7EB]"
+                          className="relative group rounded-lg overflow-hidden border border-white/08"
                         >
                           <img
                             src={image.preview}
@@ -755,7 +756,7 @@ export default function AddProductModal({
                           <button
                             type="button"
                             onClick={() => handleRemoveImage(index)}
-                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-1 right-1 bg-danger-solid text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                           >
                             <X size={14} />
                           </button>
@@ -770,13 +771,13 @@ export default function AddProductModal({
               </div>
 
               {/* Footer */}
-              <div className="px-8 py-5 border-t border-[#E5E7EB] flex items-center justify-end gap-3">
+              <div className="px-8 py-5 border-t border-white/08 flex items-center justify-end gap-3">
                 <motion.button
                   type="button"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
-                  className="px-6 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-[#64748B] hover:bg-[#F8FAFC] transition-colors"
+                  className="px-6 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-muted hover:bg-white/05 transition-colors"
                 >
                   Cancel
                 </motion.button>
@@ -785,7 +786,7 @@ export default function AddProductModal({
                   whileHover={{ scale: isLoading ? 1 : 1.02 }}
                   whileTap={{ scale: isLoading ? 1 : 0.98 }}
                   disabled={isLoading || !formik.isValid}
-                  className="px-6 py-2.5 bg-[#1E293B] text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-6 py-2.5 bg-surface-raised text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isLoading && (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

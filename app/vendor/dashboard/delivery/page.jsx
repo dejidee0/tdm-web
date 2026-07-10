@@ -37,10 +37,10 @@ export default function DeliveryPage() {
       <div className="mb-8">
         <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-white mb-2">
               Delivery Assignment
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-manrope text-[14px] text-muted">
               Manage vendor assignments and tracking for pending orders.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function DeliveryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors"
             >
               <RefreshCw size={16} />
               Refresh Data
@@ -58,7 +58,7 @@ export default function DeliveryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors"
             >
               <Download size={16} />
               Export CSV
@@ -66,7 +66,7 @@ export default function DeliveryPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-2 md:px-4 py-0.5 md:py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors"
             >
               <Package size={16} />
               Bulk Assign
@@ -79,16 +79,16 @@ export default function DeliveryPage() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
+        className="mb-6 p-4 bg-surface rounded-xl border border-white/08"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative">
-            <label className="block font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-2">
+            <label className="block font-manrope text-[11px] font-bold text-muted uppercase tracking-wider mb-2">
               SEARCH
             </label>
             <Search
-              className="absolute left-3 bottom-3 text-[#94A3B8]"
+              className="absolute left-3 bottom-3 text-muted"
               size={18}
             />
             <input
@@ -96,13 +96,13 @@ export default function DeliveryPage() {
               placeholder="Order ID or Customer Name..."
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent"
             />
           </div>
 
           {/* Status Filter */}
           <div>
-            <label className="block font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-2">
+            <label className="block font-manrope text-[11px] font-bold text-muted uppercase tracking-wider mb-2">
               STATUS
             </label>
             <select
@@ -114,7 +114,7 @@ export default function DeliveryPage() {
                   page: 1,
                 }))
               }
-              className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+              className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
             >
               <option value="all">All Statuses</option>
               <option value="pending">Pending</option>
@@ -127,17 +127,17 @@ export default function DeliveryPage() {
 
           {/* Date Range */}
           <div>
-            <label className="block font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-2">
+            <label className="block font-manrope text-[11px] font-bold text-muted uppercase tracking-wider mb-2">
               DATE RANGE
             </label>
             <div className="relative">
               <Calendar
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
                 size={18}
               />
               <input
                 type="date"
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer"
                 placeholder="mm/dd/yyyy"
               />
             </div>
@@ -153,22 +153,22 @@ export default function DeliveryPage() {
 
       {/* Pagination */}
       {data?.pagination && data.assignments?.length > 0 && (
-        <div className="mt-6 bg-white rounded-xl border border-[#E5E7EB]">
+        <div className="mt-6 bg-surface rounded-xl border border-white/08">
           <div className="flex items-center justify-between px-6 py-4">
-            <p className="font-manrope text-[13px] text-[#64748B]">
+            <p className="font-manrope text-[13px] text-muted">
               Showing{" "}
-              <span className="font-bold text-primary">
+              <span className="font-bold text-white">
                 {(data.pagination.page - 1) * data.pagination.limit + 1}
               </span>{" "}
               to{" "}
-              <span className="font-bold text-primary">
+              <span className="font-bold text-white">
                 {Math.min(
                   data.pagination.page * data.pagination.limit,
                   data.pagination.total,
                 )}
               </span>{" "}
               of{" "}
-              <span className="font-bold text-primary">
+              <span className="font-bold text-white">
                 {data.pagination.total}
               </span>{" "}
               results
@@ -183,11 +183,11 @@ export default function DeliveryPage() {
                 disabled={data.pagination.page === 1}
                 className={`
                   px-4 py-2 rounded-lg font-manrope text-[13px] font-medium
-                  border border-[#E5E7EB]
+                  border border-white/08
                   ${
                     data.pagination.page === 1
-                      ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                      : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
+                      ? "bg-white/05 text-accent cursor-not-allowed"
+                      : "bg-surface-raised text-muted hover:bg-white/05"
                   }
                   transition-colors
                 `}
@@ -211,8 +211,8 @@ export default function DeliveryPage() {
                       transition-colors
                       ${
                         data.pagination.page === pageNum
-                          ? "bg-primary text-white"
-                          : "bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
+                          ? "bg-accent-solid text-white"
+                          : "bg-surface-raised text-muted border border-white/08 hover:bg-white/05"
                       }
                     `}
                     >
@@ -230,11 +230,11 @@ export default function DeliveryPage() {
                 disabled={data.pagination.page === data.pagination.totalPages}
                 className={`
                   px-4 py-2 rounded-lg font-manrope text-[13px] font-medium
-                  border border-[#E5E7EB]
+                  border border-white/08
                   ${
                     data.pagination.page === data.pagination.totalPages
-                      ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                      : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
+                      ? "bg-white/05 text-accent cursor-not-allowed"
+                      : "bg-surface-raised text-muted hover:bg-white/05"
                   }
                   transition-colors
                 `}

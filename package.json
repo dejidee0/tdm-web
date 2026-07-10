@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "lint:arch": "eslint . --quiet",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "contract:record": "node scripts/record-contract.mjs",
+    "contract:check": "node --import ./scripts/register-ts.mjs scripts/check-contract.mjs",
+    "contract:coverage": "node scripts/coverage.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.16",
@@ -23,7 +26,8 @@
     "react-dom": "19.2.1",
     "react-hot-toast": "^2.6.0",
     "react-use": "^17.6.0",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

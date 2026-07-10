@@ -1,0 +1,70 @@
+{
+  "endpoint": "/materials/list",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "materials": {
+      "type": "array",
+      "length": 15,
+      "of": [
+        {
+          "id": "string",
+          "name": "string",
+          "slug": "string",
+          "description": "string",
+          "price": "number",
+          "image": "null",
+          "category": "string",
+          "inStock": "boolean",
+          "similarProducts": {
+            "type": "array",
+            "length": 0,
+            "of": "unknown"
+          }
+        },
+        {
+          "id": "string",
+          "name": "string",
+          "slug": "string",
+          "description": "string",
+          "price": "null",
+          "image": "null",
+          "category": "string",
+          "inStock": "boolean",
+          "similarProducts": {
+            "type": "array",
+            "length": 0,
+            "of": "unknown"
+          }
+        }
+      ]
+    },
+    "pagination": {
+      "page": "number",
+      "limit": "number",
+      "total": "number",
+      "totalPages": "number",
+      "hasMore": "boolean"
+    },
+    "filters": {
+      "category": "null",
+      "materialType": "null",
+      "minPrice": "null",
+      "maxPrice": "null",
+      "isFeatured": "null",
+      "sort": "null"
+    }
+  },
+  "itemFieldTypes": {
+    "id": "string",
+    "name": "string",
+    "slug": "string",
+    "description": "string",
+    "price": "null|number",
+    "image": "null",
+    "category": "string",
+    "inStock": "boolean",
+    "similarProducts": "array"
+  },
+  "sampleSize": 15
+}

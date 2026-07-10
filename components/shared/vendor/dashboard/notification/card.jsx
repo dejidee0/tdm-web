@@ -14,8 +14,8 @@ export default function NotificationCard({ notification, index }) {
         relative rounded-xl px-6 py-3 max-w-[70%] mx-auto transition-all
         ${
           isRead
-            ? "bg-[#475569] text-white"
-            : "bg-white border-l-4 hover:shadow-md"
+            ? "bg-track-off text-white"
+            : "bg-surface border-l-4 hover:shadow-md"
         }
       `}
       style={{
@@ -47,14 +47,14 @@ export default function NotificationCard({ notification, index }) {
                     isRead
                       ? "bg-white/20 text-white"
                       : notification.badgeColor === "cyan"
-                        ? "bg-[#CFFAFE] text-[#0E7490]"
+                        ? "bg-info/10 text-info"
                         : notification.badgeColor === "amber"
-                          ? "bg-[#FEF3C7] text-[#92400E]"
+                          ? "bg-warning/10 text-warning"
                           : notification.badgeColor === "blue"
-                            ? "bg-[#DBEAFE] text-[#1E40AF]"
+                            ? "bg-info/10 text-info"
                             : notification.badgeColor === "green"
-                              ? "bg-[#D1FAE5] text-[#065F46]"
-                              : "bg-[#F1F5F9] text-[#64748B]"
+                              ? "bg-success/10 text-success"
+                              : "bg-white/08 text-muted"
                   }
                 `}
               >
@@ -63,7 +63,7 @@ export default function NotificationCard({ notification, index }) {
               <span
                 className={`
                   flex items-center gap-1.5 font-manrope text-[12px]
-                  ${isRead ? "text-white/70" : "text-[#64748B]"}
+                  ${isRead ? "text-white/70" : "text-muted"}
                 `}
               >
                 <span className="w-1 h-1 rounded-full bg-current" />
@@ -76,7 +76,7 @@ export default function NotificationCard({ notification, index }) {
           <h3
             className={`
               font-manrope text-[16px] font-bold mb-2
-              ${isRead ? "text-white" : "text-primary"}
+              ${isRead ? "text-white" : "text-white"}
             `}
           >
             {notification.title}
@@ -86,7 +86,7 @@ export default function NotificationCard({ notification, index }) {
           <p
             className={`
               font-manrope text-[14px] mb-4 leading-relaxed
-              ${isRead ? "text-white/80" : "text-[#64748B]"}
+              ${isRead ? "text-white/80" : "text-muted"}
             `}
           >
             {notification.message}
@@ -102,7 +102,7 @@ export default function NotificationCard({ notification, index }) {
                   whileTap={{ scale: 0.98 }}
                   className={`
                     font-manrope text-[13px] font-medium underline
-                    ${isRead ? "text-white hover:text-white/90" : "text-[#3B82F6] hover:text-[#2563EB]"}
+                    ${isRead ? "text-white hover:text-white/90" : "text-info hover:text-info"}
                   `}
                 >
                   {action}

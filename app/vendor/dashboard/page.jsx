@@ -70,8 +70,8 @@ export default function VendorDashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh] bg-background">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+          <div className="w-16 h-16 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted font-manrope text-[14px]">
             Loading dashboard...
           </p>
         </div>
@@ -83,10 +83,10 @@ export default function VendorDashboardPage() {
     <div className="max-w-360 mx-auto bg-background">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
+        <h1 className="font-manrope text-[32px] font-bold text-white mb-2">
           Vendor Dashboard
         </h1>
-        <p className="font-manrope text-[14px] text-[#64748B]">
+        <p className="font-manrope text-[14px] text-muted">
           Manage your orders and projects efficiently.
         </p>
       </div>

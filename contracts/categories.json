@@ -1,0 +1,49 @@
+{
+  "endpoint": "/Categories",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": {
+      "type": "array",
+      "length": 7,
+      "of": {
+        "id": "string",
+        "name": "string",
+        "description": "string",
+        "slug": "string",
+        "brandType": "number",
+        "brandName": "string",
+        "parentCategoryId": "null",
+        "parentCategoryName": "null",
+        "imageUrl": "null",
+        "displayOrder": "number",
+        "isActive": "boolean",
+        "subCategories": {
+          "type": "array",
+          "length": 0,
+          "of": "unknown"
+        },
+        "productCount": "number"
+      }
+    },
+    "errors": "null"
+  },
+  "itemFieldTypes": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "slug": "string",
+    "brandType": "number",
+    "brandName": "string",
+    "parentCategoryId": "null",
+    "parentCategoryName": "null",
+    "imageUrl": "null",
+    "displayOrder": "number",
+    "isActive": "boolean",
+    "subCategories": "array",
+    "productCount": "number"
+  },
+  "sampleSize": 7
+}

@@ -2,21 +2,7 @@
 
 import { motion } from "framer-motion";
 import { AlertTriangle, ChevronDown, CheckCircle } from "lucide-react";
-
-// Ordered severity ramp: critical > high > medium > low > info.
-// "warning" is an alias the API also sends for the medium tier.
-const severityStyles = {
-  critical: { dot: "bg-danger", text: "text-danger", badge: "bg-danger/10" },
-  high: {
-    dot: "bg-severity-high",
-    text: "text-severity-high",
-    badge: "bg-severity-high/10",
-  },
-  medium: { dot: "bg-warning", text: "text-warning", badge: "bg-warning/10" },
-  warning: { dot: "bg-warning", text: "text-warning", badge: "bg-warning/10" },
-  low: { dot: "bg-success-solid", text: "text-success", badge: "bg-success/10" },
-  info: { dot: "bg-info", text: "text-info", badge: "bg-info/10" },
-};
+import { severity } from "@/lib/theme/severity";
 
 function formatTimestamp(value) {
   if (!value) return "N/A";
@@ -114,8 +100,7 @@ export default function AdminAlertsTable({ alerts }) {
         {/* Alert Rows */}
         <div className="divide-y divide-white/08">
           {displayAlerts.map((alert, index) => {
-            const severityKey = alert?.severity?.toLowerCase() || "medium";
-            const severity = severityStyles[severityKey] || severityStyles.medium;
+            const sev = severity(alert?.severity ?? "medium");
 
             return (
               <motion.div
@@ -129,13 +114,13 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Severity Badge with background pill */}
                   <div>
                     <span
-                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity?.badge || ''}`}
+                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${sev.tint}`}
                     >
                       <span
-                        className={`w-2 h-2 rounded-full ${severity?.dot || ''}`}
+                        className={`w-2 h-2 rounded-full ${sev.dot}`}
                       />
                       <span
-                        className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
+                        className={`font-manrope text-[12px] font-bold capitalize ${sev.text}`}
                       >
                         {alert?.severity || 'N/A'}
                       </span>
@@ -179,8 +164,7 @@ export default function AdminAlertsTable({ alerts }) {
       {/* Mobile Card View */}
       <div className="md:hidden divide-y divide-white/08">
         {displayAlerts.map((alert, index) => {
-          const severityKey = alert?.severity?.toLowerCase() || "medium";
-          const severity = severityStyles[severityKey] || severityStyles.medium;
+          const sev = severity(alert?.severity ?? "medium");
 
           return (
             <motion.div
@@ -193,11 +177,11 @@ export default function AdminAlertsTable({ alerts }) {
               {/* Severity Badge */}
               <div className="flex items-center gap-2 mb-3">
                 <span
-                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${severity?.badge || ''}`}
+                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${sev.tint}`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${severity?.dot || ''}`} />
+                  <span className={`w-2 h-2 rounded-full ${sev.dot}`} />
                   <span
-                    className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
+                    className={`font-manrope text-[12px] font-bold capitalize ${sev.text}`}
                   >
                     {alert?.severity || 'N/A'}
                   </span>

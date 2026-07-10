@@ -37,15 +37,15 @@ export default function NotificationsPage() {
 
   const tabs = [
     { id: "all", label: "All Notifications", count: data?.total || 12 },
-    { id: "orders", label: "Orders (Bogat)", count: 3, dotColor: "#06B6D4" },
+    { id: "orders", label: "Orders (Bogat)", count: 3, dotColor: "var(--color-chart-2)" },
     {
       id: "enquiries",
       label: "Enquiries (TBM)",
       count: 2,
-      dotColor: "#3B82F6",
+      dotColor: "var(--color-chart-1)",
     },
-    { id: "payments", label: "Payments", count: 1, dotColor: "#10B981" },
-    { id: "system", label: "System Alerts", count: 1, dotColor: "#F59E0B" },
+    { id: "payments", label: "Payments", count: 1, dotColor: "var(--color-success)" },
+    { id: "system", label: "System Alerts", count: 1, dotColor: "var(--color-warning)" },
   ];
 
   return (
@@ -54,10 +54,10 @@ export default function NotificationsPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-white mb-2">
               Notifications Center
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B] max-w-2xl">
+            <p className="font-manrope text-[14px] text-muted max-w-2xl">
               Stay updated with real-time alerts from TBM and Bogat operations.
               Manage your order updates,
               <br />
@@ -72,7 +72,7 @@ export default function NotificationsPage() {
               whileTap={{ scale: 0.98 }}
               onClick={handleMarkAllRead}
               disabled={markAllRead.isLoading}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors disabled:opacity-50"
             >
               <Check size={16} />
               Mark all as read
@@ -80,7 +80,7 @@ export default function NotificationsPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors"
             >
               <SlidersHorizontal size={16} />
               Configure Alerts
@@ -93,7 +93,7 @@ export default function NotificationsPage() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
+        className="mb-6 p-4 bg-surface rounded-xl border border-white/08"
       >
         {/* Tabs */}
         <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
@@ -106,8 +106,8 @@ export default function NotificationsPage() {
                 whitespace-nowrap transition-colors shrink-0
                 ${
                   activeTab === tab.id
-                    ? "bg-primary text-white"
-                    : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
+                    ? "bg-accent-solid text-white"
+                    : "bg-white/05 text-muted hover:bg-white/08"
                 }
               `}
             >
@@ -124,7 +124,7 @@ export default function NotificationsPage() {
                   ${
                     activeTab === tab.id
                       ? "bg-white/20 text-white"
-                      : "bg-[#E2E8F0] text-[#64748B]"
+                      : "bg-white/10 text-muted"
                   }
                 `}
               >
@@ -137,7 +137,7 @@ export default function NotificationsPage() {
         {/* Search */}
         <div className="relative">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
             size={18}
           />
           <input
@@ -145,16 +145,16 @@ export default function NotificationsPage() {
             placeholder="Search alerts..."
             value={searchInput}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent"
           />
         </div>
       </motion.div>
 
       {/* Notifications List */}
       {isLoading ? (
-        <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+        <div className="bg-surface rounded-xl border border-white/08 p-12 text-center">
+          <div className="w-12 h-12 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted font-manrope text-[14px]">
             Loading notifications...
           </p>
         </div>
@@ -164,11 +164,11 @@ export default function NotificationsPage() {
           {data?.notifications?.TODAY?.length > 0 && (
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
-                <div className="h-px flex-1 bg-[#E5E7EB]" />
-                <span className="font-manrope text-[12px] font-bold text-[#94A3B8] uppercase tracking-wider">
+                <div className="h-px flex-1 bg-white/10" />
+                <span className="font-manrope text-[12px] font-bold text-muted uppercase tracking-wider">
                   TODAY
                 </span>
-                <div className="h-px flex-1 bg-[#E5E7EB]" />
+                <div className="h-px flex-1 bg-white/10" />
               </div>
               <div className="space-y-6">
                 {data.notifications.TODAY.map((notification, index) => (
@@ -186,11 +186,11 @@ export default function NotificationsPage() {
           {data?.notifications?.YESTERDAY?.length > 0 && (
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
-                <div className="h-px flex-1 bg-[#E5E7EB]" />
-                <span className="font-manrope text-[12px] font-bold text-[#94A3B8] uppercase tracking-wider">
+                <div className="h-px flex-1 bg-white/10" />
+                <span className="font-manrope text-[12px] font-bold text-muted uppercase tracking-wider">
                   YESTERDAY
                 </span>
-                <div className="h-px flex-1 bg-[#E5E7EB]" />
+                <div className="h-px flex-1 bg-white/10" />
               </div>
               <div className="space-y-4">
                 {data.notifications.YESTERDAY.map((notification, index) => (
@@ -210,7 +210,7 @@ export default function NotificationsPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => refetch()}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors"
             >
               <RefreshCw size={16} />
               Load older notifications

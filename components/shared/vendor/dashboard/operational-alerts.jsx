@@ -10,19 +10,19 @@ const alertIcons = {
 
 const alertStyles = {
   high: {
-    bg: "bg-[#FEF2F2]",
-    icon: "text-[#EF4444]",
-    badge: "bg-[#EF4444]",
+    bg: "bg-danger/10",
+    icon: "text-danger",
+    badge: "bg-danger-solid",
   },
   medium: {
-    bg: "bg-[#FFFBEB]",
-    icon: "text-[#F59E0B]",
-    badge: "bg-[#F59E0B]",
+    bg: "bg-warning/10",
+    icon: "text-warning",
+    badge: "bg-warning",
   },
   low: {
-    bg: "bg-[#EFF6FF]",
-    icon: "text-[#3B82F6]",
-    badge: "bg-[#3B82F6]",
+    bg: "bg-info/10",
+    icon: "text-info",
+    badge: "bg-info",
   },
 };
 
@@ -32,17 +32,17 @@ export default function OperationalAlerts({ alerts }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-background rounded-xl border border-[#E5E7EB]"
+      className="bg-surface rounded-xl border border-white/08"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 border-b border-gray-200 py-4 px-4">
+      <div className="flex items-center justify-between mb-6 border-b border-white/10 py-4 px-4">
         <div className="flex items-center gap-2 px-4">
-          <AlertTriangle size={20} className="text-[#F59E0B]" />
-          <h2 className="font-manrope text-[18px] font-bold text-primary">
+          <AlertTriangle size={20} className="text-warning" />
+          <h2 className="font-manrope text-[18px] font-bold text-white">
             Operational Alerts
           </h2>
         </div>
-        <span className="text-[#94A3B8] font-manrope text-[12px]">
+        <span className="text-muted font-manrope text-[12px]">
           Updated 2m ago
         </span>
       </div>
@@ -69,17 +69,17 @@ export default function OperationalAlerts({ alerts }) {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-4 mb-2">
-                  <h3 className="font-manrope text-[14px] font-bold text-primary">
+                  <h3 className="font-manrope text-[14px] font-bold text-white">
                     {alert.title}
                   </h3>
-                  <span className="shrink-0 text-[#64748B] font-manrope text-[11px] whitespace-nowrap">
+                  <span className="shrink-0 text-muted font-manrope text-[11px] whitespace-nowrap">
                     {alert.time}
                   </span>
                 </div>
-                <p className="text-[#64748B] font-manrope text-[13px] mb-3">
+                <p className="text-muted font-manrope text-[13px] mb-3">
                   {alert.description}
                 </p>
-                <button className="text-primary font-manrope text-[13px] font-bold hover:underline">
+                <button className="text-white font-manrope text-[13px] font-bold hover:underline">
                   {alert.action}
                 </button>
               </div>
