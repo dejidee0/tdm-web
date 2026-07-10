@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE =
-  process.env.NEXT_PUBLIC_API_URL || "https://tbmbuild-001-site1.jtempurl.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -16,7 +14,7 @@ async function getAuthHeaders() {
 export async function PATCH(request, { params }) {
   const { taskId } = await params;
   const body = await request.json();
-  const res = await fetch(`${BASE}/ai/assistant/tasks/${taskId}`, {
+  const res = await fetch(`${API_URL}/ai/assistant/tasks/${taskId}`, {
     method: "PATCH",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

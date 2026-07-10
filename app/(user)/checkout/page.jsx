@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useCheckoutData, useSubmitPayment } from "@/hooks/use-checkout";
 import { useCart } from "@/hooks/use-cart";
-import { useCurrentUser } from "@/hooks/use-auth";
+import { useSession } from "@/hooks/use-session";
 import {
   usePersistedState,
   clearPersistedState,
@@ -39,7 +39,10 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { data: cartData } = useCart();
   const { data: checkoutData } = useCheckoutData();
-  const { data: currentUser } = useCurrentUser();
+  // Guest status comes from the session, not from a profile fetch: the profile
+  // resolves a beat later, and treating that gap as "guest" would submit a
+  // signed-in shopper's order as a guest order.
+  const { isAuthenticated } = useSession();
   const submitPayment = useSubmitPayment();
 
   // Use cart data for items/totals (always available), checkout data for saved addresses
@@ -113,7 +116,7 @@ export default function CheckoutPage() {
       serverTotal = serverTotal || cartData?.total || 0;
     }
 
-    const isGuest = !currentUser;
+    const isGuest = !isAuthenticated;
 
     // A checkout originating from an AI design flow arrives as
     // /checkout?designSessionId=… — forward it when present.
@@ -225,7 +228,7 @@ export default function CheckoutPage() {
                 savedAddress={deliveryData || currentAddress}
                 savedAddresses={savedAddresses}
                 onComplete={handleDeliveryComplete}
-                isGuest={!currentUser}
+                isGuest={!isAuthenticated}
               />
             )}
 

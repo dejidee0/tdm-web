@@ -1,8 +1,7 @@
 // app/api/account/me/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -14,19 +13,18 @@ async function getAuthHeaders() {
 }
 
 export async function GET() {
-  const res = await fetch(`${BASE}/account/me`, {
+  const res = await fetch(`${API_URL}/account/me`, {
     headers: await getAuthHeaders(),
   });
   // Read body ONCE as text, then parse
   const text = await res.text();
   const data = text ? JSON.parse(text) : {};
-  console.log("GET /api/account/me →", data);
   return NextResponse.json(data, { status: res.status });
 }
 
 export async function PATCH(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/account/me`, {
+  const res = await fetch(`${API_URL}/account/me`, {
     method: "PATCH",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

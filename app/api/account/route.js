@@ -2,8 +2,7 @@
 // DELETE /account — permanently delete the authenticated user's account
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -15,7 +14,7 @@ async function getAuthHeaders() {
 }
 
 export async function DELETE() {
-  const res = await fetch(`${BASE}/account`, {
+  const res = await fetch(`${API_URL}/account`, {
     method: "DELETE",
     headers: await getAuthHeaders(),
   });

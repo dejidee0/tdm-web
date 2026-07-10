@@ -1,6 +1,7 @@
 // app/api/account/profile/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { API_URL } from "@/lib/env";
 
 async function getToken() {
   const cookieStore = await cookies();
@@ -13,7 +14,7 @@ export async function PUT(request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json();
-  const raw = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/profile`, {
+  const raw = await fetch(`${API_URL}/account/profile`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +41,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const raw = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/account/profile`,
+    `${API_URL}/account/profile`,
     {
       headers: { Authorization: `Bearer ${token}` },
     },

@@ -7,7 +7,6 @@ import {
   Heart,
   Share2,
   ShoppingCart,
-  Zap,
   CheckCircle,
   XCircle,
   FolderPlus,
@@ -676,7 +675,6 @@ export default function MaterialDetailClient({
                     textShadow: "0 1px 2px rgba(0,0,0,0.45)",
                   }}
                 >
-                  <Zap className="w-4 h-4" />
                   {buyingNow
                     ? "Processing…"
                     : product.inStock

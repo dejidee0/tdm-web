@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
 import MaterialDetailClient from "./client";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_URL } from "@/lib/env";
 
 // ─── Server-side fetchers ─────────────────────────────────────────────────────
 async function getProduct(slug) {
-  if (!BASE_URL) return null;
   try {
-    const res = await fetch(`${BASE_URL}/Products/slug/${slug}`, {
+    const res = await fetch(`${API_URL}/Products/slug/${slug}`, {
       next: { revalidate: 120 },
       headers: {
         "Content-Type": "application/json",
@@ -26,14 +24,14 @@ async function getProduct(slug) {
 }
 
 async function getSimilarProducts(categoryId, excludeId) {
-  if (!BASE_URL || !categoryId) return [];
+  if (!categoryId) return [];
   try {
     const params = new URLSearchParams({
       categoryId,
       pageSize: "8",
       ActiveOnly: "true",
     });
-    const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
+    const res = await fetch(`${API_URL}/products?${params.toString()}`, {
       next: { revalidate: 300 },
       headers: {
         "Content-Type": "application/json",

@@ -2,8 +2,11 @@
 import "../globals.css";
 import Navbar from "@/components/common/navbar";
 import Footer from "@/components/common/footer";
-import Providers from "@/components/common/providers";
 import TBMConcierge from "@/components/common/concierge/main";
+
+// No <Providers> here — the root layout (app/layout.js) already supplies them.
+// Nesting a second QueryClientProvider gives this subtree its own cache, and
+// renders LoadingScreen and TBMToaster twice.
 
 export const metadata = {
   title: "TBM Building Services — Design. Price. Build.",
@@ -13,12 +16,12 @@ export const metadata = {
 
 export default function UserLayout({ children }) {
   return (
-    <Providers>
+    <>
       <Navbar />
       {children}
       <Footer />
       {/* Floating AI Assistant — rendered outside page flow, fixed positioned */}
       <TBMConcierge />
-    </Providers>
+    </>
   );
 }

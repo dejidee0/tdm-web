@@ -1,30 +1,21 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { vendorLogin, vendorLogout, vendorRefreshToken } from "@/lib/actions/vendor-auth";
-
-export const VENDOR_ME_KEY = ["auth", "vendor", "me"];
+import { ANON_SESSION, sessionKey, useSession } from "@/hooks/use-session";
 
 // ---------------------------------------------------------------------------
-// Auth state — source of truth for all vendor data hooks
+// Auth state — derived from the single /api/auth/session query.
 // ---------------------------------------------------------------------------
 
 export function useVendorUser() {
-  return useQuery({
-    queryKey: VENDOR_ME_KEY,
-    queryFn: () =>
-      fetch("/api/auth/vendor/me")
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { user, isVendor, isLoading } = useSession();
+  return { data: isVendor ? user : null, isLoading };
 }
 
 export function useIsVendorAuthed() {
-  const { data } = useVendorUser();
-  return !!data;
+  return useSession().isVendor;
 }
 
 // ---------------------------------------------------------------------------
@@ -36,17 +27,14 @@ export function useVendorLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (credentials) => {
-      console.log("credentials", credentials);
-      return vendorLogin(credentials).then((result) => {
-        console.log("result", result);
+    mutationFn: (credentials) =>
+      vendorLogin(credentials).then((result) => {
         if (!result.success) throw new Error(result.error);
         return result.data;
-      });
-    },
+      }),
     onSuccess: (data) => {
-      // Seed the /me cache immediately so dashboard queries fire without waiting
-      queryClient.setQueryData(VENDOR_ME_KEY, data.vendor);
+      // Seed the session cache immediately so dashboard queries fire without waiting
+      queryClient.setQueryData(sessionKey, { role: "vendor", user: data.vendor });
       router.push("/vendor/dashboard");
       router.refresh();
     },
@@ -71,7 +59,7 @@ export function useVendorLogout() {
         return result;
       }),
     onSuccess: () => {
-      queryClient.setQueryData(VENDOR_ME_KEY, null);
+      queryClient.setQueryData(sessionKey, ANON_SESSION);
       queryClient.removeQueries({ queryKey: ["vendor"] });
       router.push("/vendor/login");
       router.refresh();

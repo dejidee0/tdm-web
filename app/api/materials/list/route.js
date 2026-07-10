@@ -1,15 +1,14 @@
 // app/api/materials/list/route.js
 // GET /api/v1/materials/list — materials with individual filters, public
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const forwarded = new URLSearchParams(searchParams).toString();
 
   try {
-    const res = await fetch(`${BASE_URL}/materials/list${forwarded ? `?${forwarded}` : ""}`, {
+    const res = await fetch(`${API_URL}/materials/list${forwarded ? `?${forwarded}` : ""}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok)

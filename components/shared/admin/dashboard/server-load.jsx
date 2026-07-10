@@ -16,15 +16,15 @@ function formatPercent(value) {
 }
 
 const statusStyles = {
-  online: { dot: "bg-[#22C55E]", label: "Online" },
-  offline: { dot: "bg-[#EF4444]", label: "Offline" },
-  degraded: { dot: "bg-[#EAB308]", label: "Degraded" },
+  online: { dot: "bg-success-solid", label: "Online" },
+  offline: { dot: "bg-danger", label: "Offline" },
+  degraded: { dot: "bg-warning", label: "Degraded" },
 };
 
 const capacityColor = {
-  healthy: "bg-[#22C55E]",
-  degraded: "bg-[#EAB308]",
-  critical: "bg-[#EF4444]",
+  healthy: "bg-success-solid",
+  degraded: "bg-warning",
+  critical: "bg-danger",
 };
 
 const metrics = [
@@ -40,7 +40,7 @@ export default function ServerLoad({ data }) {
   const status = statusStyles[statusKey] || statusStyles.online;
 
   const capacityKey = data.capacity?.toLowerCase() || "healthy";
-  const barColor = capacityColor[capacityKey] || "bg-[#22C55E]";
+  const barColor = capacityColor[capacityKey] || "bg-success-solid";
 
   return (
     <motion.div
@@ -55,7 +55,7 @@ export default function ServerLoad({ data }) {
           <h3 className="font-manrope text-[16px] font-bold text-white mb-1">
             Server Load
           </h3>
-          <p className="text-[12px] text-[#94A3B8] capitalize">{data.cluster}</p>
+          <p className="text-[12px] text-muted capitalize">{data.cluster}</p>
         </div>
         <Image
           src={vectorIcon}
@@ -70,10 +70,10 @@ export default function ServerLoad({ data }) {
       <div className="flex items-center gap-3 mb-4">
         <span className="flex items-center gap-1.5">
           <span className={`w-2 h-2 rounded-full ${status.dot}`} />
-          <span className="text-[12px] text-[#94A3B8]">{status.label}</span>
+          <span className="text-[12px] text-muted">{status.label}</span>
         </span>
-        <span className="text-[#94A3B8] text-[12px]">·</span>
-        <span className="text-[12px] text-[#94A3B8] capitalize">{data.capacity}</span>
+        <span className="text-muted text-[12px]">·</span>
+        <span className="text-[12px] text-muted capitalize">{data.capacity}</span>
       </div>
 
       {/* Metric Bars */}
@@ -83,7 +83,7 @@ export default function ServerLoad({ data }) {
           return (
             <div key={key}>
               <div className="flex justify-between mb-1">
-                <span className="text-[11px] text-[#94A3B8]">{label}</span>
+                <span className="text-[11px] text-muted">{label}</span>
                 <span className="text-[11px] text-white font-medium">
                   {formatPercent(data[key])}
                 </span>

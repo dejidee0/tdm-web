@@ -14,14 +14,25 @@ import {
 } from "@/lib/actions/auth";
 import { cartApi } from "@/lib/api/cart";
 import { subscriptionKeys } from "@/hooks/use-subscription";
+import { ANON_SESSION, sessionKey, useSession } from "@/hooks/use-session";
 
 export const authKeys = {
   all: ["auth"],
   user: () => [...authKeys.all, "user"],
 };
 
+/**
+ * The full user record from the backend — phoneNumber, emailVerified, and the
+ * rest of the fields the session JWT doesn't carry.
+ *
+ * Gated on the session: an anonymous visitor never reaches the backend. If all
+ * you need is identity or role, use useSession() instead — it costs nothing
+ * extra once the page has loaded.
+ */
 export function useCurrentUser() {
-  return useQuery({
+  const { isAuthenticated, isLoading: sessionLoading } = useSession();
+
+  const query = useQuery({
     queryKey: authKeys.user(),
     queryFn: async () => {
       const response = await fetch("/api/proxy/v1/auth/me");
@@ -32,10 +43,15 @@ export function useCurrentUser() {
       const json = await response.json();
       return json?.data ?? json;
     },
+    enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5,
     retry: false,
     refetchOnWindowFocus: true,
   });
+
+  // While the session is still resolving we don't yet know whether a fetch is
+  // coming, so surface that as loading rather than as "logged out".
+  return { ...query, isLoading: sessionLoading || query.isLoading };
 }
 
 export function useRegister() {
@@ -67,10 +83,10 @@ export function useLogin() {
       return result.data;
     },
     onSuccess: async (data) => {
-      console.log("[login] response data:", data);
-
-      // 1. Update auth state
+      // 1. Update auth state. The session is refetched rather than seeded —
+      //    its user shape comes from the JWT claims, not the login response.
       queryClient.setQueryData(authKeys.user(), data.user);
+      await queryClient.invalidateQueries({ queryKey: sessionKey });
 
       // 2. Seed subscription cache from login response so useSubscriptionState
       //    works immediately without waiting for a separate fetch.
@@ -134,8 +150,11 @@ export function useLogout() {
       return result;
     },
     onSuccess: () => {
-      queryClient.setQueryData(authKeys.user(), null);
+      // removeQueries on ["auth"] also drops ["auth","session"], so re-seed the
+      // session as anonymous afterwards — otherwise the navbar refetches and
+      // flashes a loading state on the way to /sign-in.
       queryClient.removeQueries({ queryKey: authKeys.all });
+      queryClient.setQueryData(sessionKey, ANON_SESSION);
       // Reset cart to empty so guest sees a fresh cart
       queryClient.setQueryData(["cart"], {
         items: [],
@@ -229,12 +248,14 @@ export function useAuthProviders() {
   });
 }
 
+// Identity + role only, straight off the session — no backend round trip.
+// Use this for gating UI (save buttons, nav state); use useCurrentUser() when
+// you need profile fields the JWT doesn't carry.
 export function useIsAuthenticated() {
-  const { data: user, isLoading } = useCurrentUser();
-  return { isAuthenticated: !!user, isLoading, user };
+  const { user, isAuthenticated, isLoading } = useSession();
+  return { isAuthenticated, isLoading, user };
 }
 
 export function useIsUserAuthed() {
-  const { data } = useCurrentUser();
-  return !!data;
+  return useSession().isAuthenticated;
 }

@@ -17,18 +17,18 @@ const statusIcons = {
 };
 
 const statusIconBg = {
-  platformUptime: "bg-[#22C55E1A]",
-  activeUsers: "bg-[#3B82F61A]",
-  avgApiLatency: "bg-[#F59E0B1A]",
+  platformUptime: "bg-success/10",
+  activeUsers: "bg-info/10",
+  avgApiLatency: "bg-warning/10",
 };
 
 export default function AdminStatCard({ data, statKey, index }) {
   const { label, value, change, changeType, subtitle } = data;
 
   const changeColors = {
-    increase: "text-[#22C55E]",
-    decrease: "text-red-500",
-    steadyIncrease: "text-green-400",
+    increase: "text-success",
+    decrease: "text-danger",
+    steadyIncrease: "text-success",
   };
 
   const TrendIcon = {
@@ -46,7 +46,7 @@ export default function AdminStatCard({ data, statKey, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-[#0d0b08] rounded-xl p-5 border border-white/08 hover:border-white/12 transition-colors"
+      className="bg-surface rounded-xl p-5 border border-white/08 hover:border-white/12 transition-colors"
     >
       {/* Header: Label + Status Icon */}
       <div className="flex items-center justify-between mb-3">

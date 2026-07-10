@@ -1,8 +1,7 @@
 // app/api/v1/cart/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_URL } from "@/lib/env";
 
 async function authHeader() {
   const store = await cookies();
@@ -13,7 +12,7 @@ async function authHeader() {
 // GET /api/v1/cart
 export async function GET() {
   try {
-    const res = await fetch(`${BASE_URL}/cart`, {
+    const res = await fetch(`${API_URL}/cart`, {
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });
     const text = await res.text();
@@ -30,7 +29,7 @@ export async function GET() {
 // DELETE /api/v1/cart  (clear cart)
 export async function DELETE() {
   try {
-    const res = await fetch(`${BASE_URL}/cart`, {
+    const res = await fetch(`${API_URL}/cart`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });

@@ -118,7 +118,7 @@ export default function AdminSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-[#D4AF37]/10 text-[#D4AF37] font-semibold"
+                          ? "bg-white/08 text-white font-semibold"
                           : "text-white/50 hover:bg-white/05 hover:text-white"
                       }
                     `}

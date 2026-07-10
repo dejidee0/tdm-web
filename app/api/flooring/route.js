@@ -1,15 +1,14 @@
 // app/api/flooring/route.js
 // GET /api/v1/flooring — public
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const forwarded = new URLSearchParams(searchParams).toString();
 
   try {
-    const res = await fetch(`${BASE_URL}/flooring${forwarded ? `?${forwarded}` : ""}`, {
+    const res = await fetch(`${API_URL}/flooring${forwarded ? `?${forwarded}` : ""}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok)

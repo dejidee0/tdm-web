@@ -15,7 +15,7 @@ export default function RevenueChart({ data }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
-      className="bg-[#0d0b08] rounded-xl border border-white/08 p-6"
+      className="bg-surface rounded-xl border border-white/08 p-6"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-6 pb-6 border-b border-white/08">

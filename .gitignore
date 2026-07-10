@@ -41,7 +41,16 @@ yarn-error.log*
 next-env.d.ts
 
 # claude
-/.claude/
+# Shared, team-wide config is committed: the guardrail hook, the architecture
+# reviewer, and the project commands only enforce anything if everyone has them.
+# Personal overrides stay local.
+/.claude/*
+!/.claude/settings.json
+!/.claude/agents/
+!/.claude/commands/
+!/.claude/hooks/
+/.claude/settings.local.json
+
 docs/api-reference.md
 tdl.md
 .playwright-mcp/

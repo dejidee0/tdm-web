@@ -22,8 +22,10 @@ function VerifyEmailContent() {
     }
     const verify = async () => {
       try {
+        // Local proxy, not the backend directly: a NEXT_PUBLIC_* URL would be
+        // inlined into the client bundle. See lib/proxy.js.
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/Auth/verify-email?token=${encodeURIComponent(token)}`,
+          `/api/v1/Auth/verify-email?token=${encodeURIComponent(token)}`,
           { method: "POST", headers: { "Content-Type": "application/json" } },
         );
         const data = await response.json();

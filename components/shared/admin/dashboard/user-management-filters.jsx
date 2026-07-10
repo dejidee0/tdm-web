@@ -28,19 +28,19 @@ export default function UserManagementFilters({
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 bg-[#0d0b08] p-4 rounded-[13.04px] border border-white/08">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 bg-surface p-4 rounded-[13.04px] border border-white/08">
       {/* Search Bar */}
       <div className="relative flex-1 max-w-md">
         <Search
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
         />
         <input
           type="text"
           placeholder="Search by name, email, or ID..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+          className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent transition-all"
         />
       </div>
 
@@ -58,7 +58,7 @@ export default function UserManagementFilters({
           <select
             value={role}
             onChange={(e) => onRoleChange(e.target.value)}
-            className="appearance-none bg-[#1a1a1a] text-white border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-white/08 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30"
+            className="appearance-none bg-surface-raised text-white border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-white/08 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40"
           >
             <option value="all">Role: All Roles</option>
             <option value="Admin">Admin</option>
@@ -85,7 +85,7 @@ export default function UserManagementFilters({
           <select
             value={status}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="appearance-none bg-[#1a1a1a] text-white border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-white/08 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30"
+            className="appearance-none bg-surface-raised text-white border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-manrope text-[13px] font-medium cursor-pointer hover:bg-white/08 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40"
           >
             <option value="any">Status: Any</option>
             <option value="active">Active</option>
@@ -103,7 +103,7 @@ export default function UserManagementFilters({
           whileTap={{ scale: 0.95 }}
           onClick={handleExport}
           disabled={isExporting}
-          className="p-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg text-white/50 hover:text-white hover:bg-white/08 transition-colors disabled:opacity-50"
+          className="p-2.5 bg-surface-raised border border-white/10 rounded-lg text-white/50 hover:text-white hover:bg-white/08 transition-colors disabled:opacity-50"
           title="Export users"
         >
           <Image src={downloadIcon} alt="Export" />

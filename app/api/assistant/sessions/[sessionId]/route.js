@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE =
-  process.env.NEXT_PUBLIC_API_URL || "https://tbmbuild-001-site1.jtempurl.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -15,7 +13,7 @@ async function getAuthHeaders() {
 
 export async function GET(request, { params }) {
   const { sessionId } = await params;
-  const res = await fetch(`${BASE}/ai/assistant/sessions/${sessionId}`, {
+  const res = await fetch(`${API_URL}/ai/assistant/sessions/${sessionId}`, {
     headers: await getAuthHeaders(),
   });
   const text = await res.text();
@@ -26,7 +24,7 @@ export async function GET(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const { sessionId } = await params;
-  const res = await fetch(`${BASE}/ai/assistant/sessions/${sessionId}`, {
+  const res = await fetch(`${API_URL}/ai/assistant/sessions/${sessionId}`, {
     method: "DELETE",
     headers: await getAuthHeaders(),
   });

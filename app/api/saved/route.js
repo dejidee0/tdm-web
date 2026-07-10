@@ -1,9 +1,7 @@
 // app/api/saved/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeader() {
   const cookieStore = await cookies();
@@ -16,11 +14,7 @@ export async function GET(req) {
     // Forward supported query params to the backend (category, search, sortBy, page, limit)
     const { search } = new URL(req.url);
     const authHeader = await getAuthHeader();
-    const targetUrl = `${BASE_URL}/saved${search}`;
-
-    console.log("[/api/saved GET] BASE_URL:", BASE_URL);
-    console.log("[/api/saved GET] target URL:", targetUrl);
-    console.log("[/api/saved GET] auth header present:", !!authHeader.Authorization);
+    const targetUrl = `${API_URL}/saved${search}`;
 
     const res = await fetch(targetUrl, {
       headers: {
@@ -29,10 +23,7 @@ export async function GET(req) {
       },
     });
 
-    console.log("[/api/saved GET] upstream status:", res.status, res.statusText);
-
     const text = await res.text();
-    console.log("[/api/saved GET] upstream body (first 300):", text.slice(0, 300));
 
     let json = null;
     try {
@@ -53,7 +44,7 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const res = await fetch(`${BASE_URL}/saved`, {
+    const res = await fetch(`${API_URL}/saved`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

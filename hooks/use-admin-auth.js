@@ -1,30 +1,21 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { adminLogin, adminLogout, adminRefreshToken } from "@/lib/actions/admin-auth";
-
-export const ADMIN_ME_KEY = ["auth", "admin", "me"];
+import { ANON_SESSION, sessionKey, useSession } from "@/hooks/use-session";
 
 // ---------------------------------------------------------------------------
-// Auth state — source of truth for all admin data hooks
+// Auth state — derived from the single /api/auth/session query.
 // ---------------------------------------------------------------------------
 
 export function useAdminUser() {
-  return useQuery({
-    queryKey: ADMIN_ME_KEY,
-    queryFn: () =>
-      fetch("/api/auth/admin/me")
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { user, isAdmin, isLoading } = useSession();
+  return { data: isAdmin ? user : null, isLoading };
 }
 
 export function useIsAdminAuthed() {
-  const { data } = useAdminUser();
-  return !!data;
+  return useSession().isAdmin;
 }
 
 // ---------------------------------------------------------------------------
@@ -42,8 +33,8 @@ export function useAdminLogin() {
         return result.data;
       }),
     onSuccess: (data) => {
-      // Seed the /me cache immediately so dashboard queries fire without waiting
-      queryClient.setQueryData(ADMIN_ME_KEY, data.admin);
+      // Seed the session cache immediately so dashboard queries fire without waiting
+      queryClient.setQueryData(sessionKey, { role: "admin", user: data.admin });
       router.push("/admin/dashboard");
       router.refresh();
     },
@@ -68,7 +59,7 @@ export function useAdminLogout() {
         return result;
       }),
     onSuccess: () => {
-      queryClient.setQueryData(ADMIN_ME_KEY, null);
+      queryClient.setQueryData(sessionKey, ANON_SESSION);
       queryClient.removeQueries({ queryKey: ["admin"] });
       router.push("/admin/login");
       router.refresh();

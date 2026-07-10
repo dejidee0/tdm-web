@@ -1,13 +1,12 @@
 // app/api/products/slug/[slug]/route.js
 // GET /api/v1/products/slug/{slug} — public
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET(_request, { params }) {
   const { slug } = await params;
   try {
-    const res = await fetch(`${BASE_URL}/products/slug/${slug}`, {
+    const res = await fetch(`${API_URL}/products/slug/${slug}`, {
       next: { revalidate: 120 },
     });
     if (res.status === 404)

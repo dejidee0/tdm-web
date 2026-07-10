@@ -1,8 +1,7 @@
 // app/api/v1/cart/items/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_URL } from "@/lib/env";
 
 async function authHeader() {
   const store = await cookies();
@@ -14,7 +13,7 @@ async function authHeader() {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const res = await fetch(`${BASE_URL}/cart/items`, {
+    const res = await fetch(`${API_URL}/cart/items`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
       body: JSON.stringify(body),

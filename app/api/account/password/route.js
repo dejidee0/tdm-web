@@ -2,8 +2,7 @@
 // PUT /account/password — direct password change (requires currentPassword, no OTP)
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -16,7 +15,7 @@ async function getAuthHeaders() {
 
 export async function PUT(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/account/password`, {
+  const res = await fetch(`${API_URL}/account/password`, {
     method: "PUT",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

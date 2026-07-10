@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -34,7 +32,7 @@ export async function GET(request) {
     params.set("MaxPrice", maxPrice);
 
   try {
-    const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
+    const res = await fetch(`${API_URL}/products?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",
         ...(process.env.API_KEY

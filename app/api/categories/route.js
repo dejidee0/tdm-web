@@ -1,12 +1,11 @@
 // app/api/categories/route.js
 // GET /api/v1/categories — public
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET() {
   try {
-    const res = await fetch(`${BASE_URL}/categories`, {
+    const res = await fetch(`${API_URL}/categories`, {
       next: { revalidate: 300 },
     });
     if (!res.ok)

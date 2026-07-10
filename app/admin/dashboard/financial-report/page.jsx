@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Download, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import RevenueChart from "@/components/shared/admin/dashboard/revenue-chart";
+import { txnStatusChip } from "@/lib/theme/status";
 import {
   useFinancialStats,
   useMonthlyRevenue,
@@ -54,7 +55,7 @@ export default function FinancialReportPage() {
       <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-16 h-16 border-4 border-white/10 border-t-accent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-white/50 font-inter text-[14px]">
               Loading financial data...
             </p>
@@ -84,48 +85,48 @@ export default function FinancialReportPage() {
           label: "Total Revenue",
           value: formatCurrency(stats.totalRevenue),
           icon: DollarSign,
-          color: "text-[#16A34A]",
-          bg: "bg-[#DCFCE7]",
+          color: "text-success",
+          bg: "bg-success/10",
         },
         {
           key: "revenueThisMonth",
           label: "Revenue This Month",
           value: formatCurrency(stats.revenueThisMonth),
           icon: TrendingUp,
-          color: "text-[#2563EB]",
-          bg: "bg-[#DBEAFE]",
+          color: "text-info",
+          bg: "bg-info/10",
         },
         {
           key: "totalTransactions",
           label: "Total Transactions",
           value: stats.totalTransactions.toLocaleString(),
           icon: CreditCard,
-          color: "text-[#7C3AED]",
-          bg: "bg-[#EDE9FE]",
+          color: "text-chart-1",
+          bg: "bg-chart-1/10",
         },
         {
           key: "successfulTransactions",
           label: "Successful",
           value: stats.successfulTransactions.toLocaleString(),
           icon: CheckCircle,
-          color: "text-[#16A34A]",
-          bg: "bg-[#DCFCE7]",
+          color: "text-success",
+          bg: "bg-success/10",
         },
         {
           key: "refundedTransactions",
           label: "Refunded Transactions",
           value: stats.refundedTransactions.toLocaleString(),
           icon: RefreshCw,
-          color: "text-[#DC2626]",
-          bg: "bg-[#FEE2E2]",
+          color: "text-danger",
+          bg: "bg-danger/10",
         },
         {
           key: "refundedAmount",
           label: "Refunded Amount",
           value: formatCurrency(stats.refundedAmount),
           icon: TrendingDown,
-          color: "text-[#DC2626]",
-          bg: "bg-[#FEE2E2]",
+          color: "text-danger",
+          bg: "bg-danger/10",
         },
       ]
     : [];
@@ -157,7 +158,7 @@ export default function FinancialReportPage() {
                 height={16}
                 className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
               />
-              <select className="appearance-none w-full bg-[#1a1a1a] border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-inter text-[14px] font-medium text-white/60 hover:bg-white/08 transition-colors cursor-pointer">
+              <select className="appearance-none w-full bg-surface-raised border border-white/10 rounded-lg pl-10 pr-10 py-2.5 font-inter text-[14px] font-medium text-white/60 hover:bg-white/08 transition-colors cursor-pointer">
                 <option>Last 7 Days</option>
                 <option defaultValue="selected">Last 30 Days</option>
                 <option>Last 90 Days</option>
@@ -167,7 +168,7 @@ export default function FinancialReportPage() {
               </select>
               <ChevronDown
                 size={16}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
               />
             </div>
             <motion.button
@@ -175,9 +176,9 @@ export default function FinancialReportPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => exportReport()}
               disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-inter text-[14px] font-bold text-black transition-opacity disabled:opacity-50 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-inter text-[14px] font-bold text-white transition-opacity disabled:opacity-50 w-full sm:w-auto"
               style={{
-                background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+                background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)",
               }}
             >
               <Download size={16} />
@@ -197,7 +198,7 @@ export default function FinancialReportPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-[#0d0b08] rounded-xl p-6 border border-white/08 flex items-start justify-between"
+              className="bg-surface rounded-xl p-6 border border-white/08 flex items-start justify-between"
             >
               <div>
                 <p className="font-inter text-[14px] font-medium text-white/50 mb-2">
@@ -231,7 +232,7 @@ export default function FinancialReportPage() {
         </div>
 
         {/* Revenue by Service */}
-        <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-6">
+        <div className="bg-surface rounded-xl border border-white/08 p-6">
           <h2 className="font-inter text-[18px] font-bold text-white mb-6">
             Revenue by Service
           </h2>
@@ -255,7 +256,7 @@ export default function FinancialReportPage() {
                       cy="50"
                       r="40"
                       fill="none"
-                      stroke={service?.color || "#ccc"}
+                      stroke={service?.color || "var(--color-muted)"}
                       strokeWidth="20"
                       strokeDasharray={dashArray}
                       strokeDashoffset={-offset}
@@ -279,7 +280,7 @@ export default function FinancialReportPage() {
                 <div key={i} className="flex items-center gap-2">
                   <div
                     className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: service?.color || "#ccc" }}
+                    style={{ backgroundColor: service?.color || "var(--color-muted)" }}
                   />
                   <div>
                     <p className="font-inter text-[12px] font-medium text-white/50">
@@ -297,7 +298,7 @@ export default function FinancialReportPage() {
       </div>
 
       {/* Transactions Section */}
-      <div className="bg-[#0d0b08] rounded-xl border border-white/08">
+      <div className="bg-surface rounded-xl border border-white/08">
         <div className="px-6 py-4 border-b border-white/08">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <h2 className="font-inter text-[18px] font-bold text-white">
@@ -317,7 +318,7 @@ export default function FinancialReportPage() {
                   placeholder="Search transactions..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30"
+                  className="w-full pl-10 pr-4 py-2 bg-surface-raised border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-accent/30"
                 />
               </div>
               <button className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-lg font-inter text-[14px] font-medium text-white/60 hover:bg-white/05">
@@ -373,7 +374,7 @@ export default function FinancialReportPage() {
                       <div
                         className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[16px] sm:text-[12px]"
                         style={{
-                          backgroundColor: txn?.user?.colorScheme?.bg || "#ccc",
+                          backgroundColor: txn?.user?.colorScheme?.bg || "var(--color-muted)",
                           color: txn?.user?.colorScheme?.text || "#000",
                         }}
                       >
@@ -396,26 +397,25 @@ export default function FinancialReportPage() {
                     ${txn?.amount?.toLocaleString() || "0"}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <span
-                      className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-[#FAFAFA] font-inter text-[16px] sm:text-[11px] md:text-[12px] font-medium ${txn?.statusColor?.bg || "bg-gray-100"} ${txn?.statusColor?.text || "text-gray-600"}`}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
-                        style={{
-                          backgroundColor:
-                            txn?.statusColor?.text?.match(
-                              /#[0-9A-Fa-f]{6}/,
-                            )?.[0] || "#ccc",
-                        }}
-                      ></span>
-                      {txn?.status || "N/A"}
-                    </span>
+                    {(() => {
+                      const chip = txnStatusChip(txn?.status);
+                      return (
+                        <span
+                          className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full border border-white/10 font-inter text-[11px] md:text-[12px] font-medium ${chip.bg} ${chip.text}`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${chip.dot}`}
+                          />
+                          {txn?.status || "N/A"}
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-[3px]">
-                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
-                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
-                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-[#9CA3AF]"></span>
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-muted"></span>
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-muted"></span>
+                      <span className="w-[3.26px] h-[3.26px] rounded-full bg-muted"></span>
                     </div>
                   </td>
                 </tr>
@@ -443,11 +443,11 @@ export default function FinancialReportPage() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-l-[6px] bg-white border border-white/10 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-l-[6px] bg-surface-raised border border-white/10 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
                 <ChevronLeft
                   size={14}
-                  className="sm:w-4 sm:h-4 text-[#9CA3AF]"
+                  className="sm:w-4 sm:h-4 text-muted"
                 />
               </button>
 
@@ -456,26 +456,26 @@ export default function FinancialReportPage() {
                 {page > 1 && (
                   <button
                     onClick={() => setPage(1)}
-                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
+                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-surface-raised border border-white/10 text-white/70 hover:bg-white/08"
                   >
                     1
                   </button>
                 )}
                 {page > 2 && (
-                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] font-semibold text-white/60">
+                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-surface-raised border border-white/10 font-inter text-[13px] font-semibold text-white/40">
                     ...
                   </span>
                 )}
                 {page !== 1 && page !== 10 && (
                   <button
                     onClick={() => setPage(page)}
-                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30"
+                    className="w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold bg-white/10 text-accent border border-accent/30"
                   >
                     {page}
                   </button>
                 )}
                 {page < 9 && (
-                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] font-semibold text-white/60">
+                  <span className="w-[36px] h-[30px] flex items-center justify-center bg-surface-raised border border-white/10 font-inter text-[13px] font-semibold text-white/40">
                     ...
                   </span>
                 )}
@@ -484,8 +484,8 @@ export default function FinancialReportPage() {
                     onClick={() => setPage(10)}
                     className={`w-[36px] h-[30px] flex items-center justify-center font-inter text-[13px] font-semibold ${
                       page === 10
-                        ? "bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30"
-                        : "bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
+                        ? "bg-white/10 text-accent border border-accent/30"
+                        : "bg-surface-raised border border-white/10 text-white/70 hover:bg-white/08"
                     }`}
                   >
                     10
@@ -499,7 +499,7 @@ export default function FinancialReportPage() {
                   p === "..." ? (
                     <span
                       key={i}
-                      className="w-[40px] md:w-[44px] h-[30px] sm:h-[35px] flex items-center justify-center bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] font-inter text-[13px] sm:text-[14px] font-semibold text-white/60"
+                      className="w-[40px] md:w-[44px] h-[30px] sm:h-[35px] flex items-center justify-center bg-surface-raised border border-white/10 font-inter text-[13px] sm:text-[14px] font-semibold text-white/40"
                     >
                       ...
                     </span>
@@ -509,8 +509,8 @@ export default function FinancialReportPage() {
                       onClick={() => setPage(p)}
                       className={`${p >= 10 ? "w-[40px] md:w-[44px]" : "w-[36px] md:w-[40px]"} h-[30px] sm:h-[35px] flex items-center justify-center font-inter text-[13px] sm:text-[14px] font-semibold ${
                         page === p
-                          ? "bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30"
-                          : "bg-white shadow-[inset_0_0_0_0.98px_#D1D5DB] text-[#111827] hover:bg-[#F8FAFC]"
+                          ? "bg-white/10 text-accent border border-accent/30"
+                          : "bg-surface-raised border border-white/10 text-white/70 hover:bg-white/08"
                       }`}
                     >
                       {p}
@@ -522,11 +522,11 @@ export default function FinancialReportPage() {
               <button
                 onClick={() => setPage(Math.min(10, page + 1))}
                 disabled={page === 10}
-                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-r-[6px] bg-white border border-white/10 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                className="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] flex items-center justify-center rounded-r-[6px] bg-surface-raised border border-white/10 hover:bg-white/05 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
                 <ChevronRight
                   size={14}
-                  className="sm:w-4 sm:h-4 text-[#9CA3AF]"
+                  className="sm:w-4 sm:h-4 text-muted"
                 />
               </button>
             </div>

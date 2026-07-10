@@ -59,7 +59,7 @@ export default function SystemLogPage() {
       <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-16 h-16 border-4 border-white/10 border-t-accent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-white/50 font-inter text-[14px]">
               Loading system logs...
             </p>
@@ -134,8 +134,8 @@ export default function SystemLogPage() {
               <h1 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-black text-white tracking-[-1.34px] leading-[1.1]">
                 System Logs & Monitoring
               </h1>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20 rounded-full font-inter text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.67px] whitespace-nowrap">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-success/14 text-success border border-success/20 rounded-full font-inter text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.67px] whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-success-solid"></span>
                 LIVE
               </span>
             </div>
@@ -151,9 +151,9 @@ export default function SystemLogPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => exportLogs()}
             disabled={isExporting}
-            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold text-black transition-opacity disabled:opacity-50 whitespace-nowrap"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] md:text-[16px] font-bold text-white transition-opacity disabled:opacity-50 whitespace-nowrap"
             style={{
-              background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+              background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)",
             }}
           >
             <Download size={14} className="sm:w-4 sm:h-4" />
@@ -171,7 +171,7 @@ export default function SystemLogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-[#0d0b08] rounded-xl p-6 border border-white/08 relative overflow-hidden"
+            className="bg-surface rounded-xl p-6 border border-white/08 relative overflow-hidden"
           >
             {/* Icon in top right */}
             <div className="absolute top-6 right-6">
@@ -191,8 +191,8 @@ export default function SystemLogPage() {
                     (stat.changeType === "increase" &&
                       stat.label === "Avg Response Time") ||
                     stat.label === "Logs Ingested"
-                      ? "text-[#4ADE80] bg-[#4ADE801A]"
-                      : "text-[#F87171] bg-[#F871711A]"
+                      ? "text-success bg-success/14"
+                      : "text-danger bg-danger/10"
                   }`}
                 >
                   {stat.changeType === "increase" ? "↑" : "↓"}
@@ -209,7 +209,7 @@ export default function SystemLogPage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6 mb-6">
+      <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6 mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
           {/* Search Logs */}
           <div>
@@ -232,7 +232,7 @@ export default function SystemLogPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-[9px] font-inter text-[14px] sm:text-[16px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-[9px] font-inter text-[14px] sm:text-[16px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function SystemLogPage() {
                   type="text"
                   value="Oct 26, 2023 - Oct 27, 2023"
                   readOnly
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-[9px] font-inter text-[14px] text-white/50 cursor-pointer"
+                  className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-[9px] font-inter text-[14px] text-white/50 cursor-pointer"
                 />
               </div>
               <button className="flex items-center gap-2 px-4 py-2.5 border border-white/10 text-white/60 rounded-[9px] font-inter text-[14px] sm:text-[16px] font-medium hover:bg-white/05 transition-colors">
@@ -283,14 +283,14 @@ export default function SystemLogPage() {
             let bulletColor = "";
             let activeTextColor = "text-white";
             if (filter.value === "critical") {
-              bulletColor = "bg-[#F87171]";
-              activeTextColor = "text-[#F87171]";
+              bulletColor = "bg-danger";
+              activeTextColor = "text-danger";
             } else if (filter.value === "error") {
-              bulletColor = "bg-[#FB923C]";
-              activeTextColor = "text-[#FB923C]";
+              bulletColor = "bg-severity-high";
+              activeTextColor = "text-severity-high";
             } else if (filter.value === "warning") {
-              bulletColor = "bg-[#FACC15]";
-              activeTextColor = "text-[#FACC15]";
+              bulletColor = "bg-warning";
+              activeTextColor = "text-warning";
             } else if (filter.value === "info") {
               bulletColor = "bg-white/60";
               activeTextColor = "text-white/80";
@@ -320,7 +320,7 @@ export default function SystemLogPage() {
       </div>
 
       {/* Logs Table */}
-      <div className="bg-[#0d0b08] rounded-xl border border-white/08">
+      <div className="bg-surface rounded-xl border border-white/08">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -404,7 +404,7 @@ export default function SystemLogPage() {
                       </div>
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
-                      <button className="text-[#D4AF37] hover:text-[#b8962e] transition-colors">
+                      <button className="text-accent hover:text-white transition-colors">
                         <Eye size={16} className="sm:w-[18px] sm:h-[18px]" />
                       </button>
                     </td>

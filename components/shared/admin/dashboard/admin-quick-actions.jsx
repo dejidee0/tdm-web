@@ -16,7 +16,7 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
       id: "reset-password",
       label: "Reset User Password",
       icon: resetPasswordIcon,
-      iconBg: "bg-[#1E3A8A4D]",
+      iconBg: "bg-info/10",
       onClick: () => router.push("/admin/dashboard/user-management"),
       isPending: false,
     },
@@ -24,7 +24,7 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
       id: "clear-cache",
       label: isClearingCache ? "Refreshing..." : "Clear Cache",
       icon: clearCacheIcon,
-      iconBg: "bg-[#78350F4D]",
+      iconBg: "bg-warning/10",
       onClick: onClearCache,
       isPending: isClearingCache,
     },
@@ -32,7 +32,7 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
       id: "generate-audit",
       label: isGeneratingAudit ? "Generating..." : "Generate Audit Report",
       icon: generateAuditIcon,
-      iconBg: "bg-[#581C874D]",
+      iconBg: "bg-chart-1/10",
       onClick: onGenerateAudit,
       isPending: isGeneratingAudit,
     },
@@ -43,7 +43,7 @@ export default function AdminQuickActions({ onClearCache, onGenerateAudit, isCle
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-[#0d0b08] rounded-xl border border-white/08 p-6"
+      className="bg-surface rounded-xl border border-white/08 p-6"
     >
       <h3 className="font-manrope text-[18px] font-bold text-white mb-4">
         Quick Actions

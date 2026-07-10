@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useSession } from "@/hooks/use-session";
 import {
   X,
   Send,
@@ -18,17 +19,6 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-
-// ── Auth check ────────────────────────────────────────────────────────────────
-function useIsAuthenticated() {
-  const [isAuth, setIsAuth] = useState(null);
-  useEffect(() => {
-    fetch("/api/account/me")
-      .then((r) => setIsAuth(r.ok))
-      .catch(() => setIsAuth(false));
-  }, []);
-  return isAuth;
-}
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const QUICK_ACTIONS = [
@@ -319,7 +309,7 @@ function MessageContent({ text }) {
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function TBMConcierge() {
   const router = useRouter();
-  const isAuth = useIsAuthenticated();
+  const { isAuthenticated: isAuth } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");

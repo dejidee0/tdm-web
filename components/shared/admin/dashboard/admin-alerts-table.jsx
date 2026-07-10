@@ -3,37 +3,19 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, ChevronDown, CheckCircle } from "lucide-react";
 
+// Ordered severity ramp: critical > high > medium > low > info.
+// "warning" is an alias the API also sends for the medium tier.
 const severityStyles = {
-  critical: {
-    dot: "bg-[#EF4444]",
-    text: "text-[#EF4444]",
-    badge: "bg-[#EF44441A]",
-  },
+  critical: { dot: "bg-danger", text: "text-danger", badge: "bg-danger/10" },
   high: {
-    dot: "bg-[#F97316]",
-    text: "text-[#F97316]",
-    badge: "bg-[#F973161A]",
+    dot: "bg-severity-high",
+    text: "text-severity-high",
+    badge: "bg-severity-high/10",
   },
-  medium: {
-    dot: "bg-[#EAB308]",
-    text: "text-[#EAB308]",
-    badge: "bg-[#EAB3081A]",
-  },
-  warning: {
-    dot: "bg-[#EAB308]",
-    text: "text-[#EAB308]",
-    badge: "bg-[#EAB3081A]",
-  },
-  low: {
-    dot: "bg-[#22C55E]",
-    text: "text-[#22C55E]",
-    badge: "bg-[#22C55E1A]",
-  },
-  info: {
-    dot: "bg-[#3B82F6]",
-    text: "text-[#3B82F6]",
-    badge: "bg-[#3B82F61A]",
-  },
+  medium: { dot: "bg-warning", text: "text-warning", badge: "bg-warning/10" },
+  warning: { dot: "bg-warning", text: "text-warning", badge: "bg-warning/10" },
+  low: { dot: "bg-success-solid", text: "text-success", badge: "bg-success/10" },
+  info: { dot: "bg-info", text: "text-info", badge: "bg-info/10" },
 };
 
 function formatTimestamp(value) {
@@ -46,7 +28,7 @@ const getActionButtonStyle = (action) => {
   if (action === "Resolve") {
     return "bg-white/08 text-white/60 hover:bg-white/12";
   }
-  return "bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20";
+  return "bg-white/05 text-accent hover:bg-white/10";
 };
 
 export default function AdminAlertsTable({ alerts }) {
@@ -65,10 +47,10 @@ export default function AdminAlertsTable({ alerts }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-[#0d0b08] rounded-xl border border-white/08 px-6 py-8 flex flex-col items-center gap-3 text-center"
+        className="bg-surface rounded-xl border border-white/08 px-6 py-8 flex flex-col items-center gap-3 text-center"
       >
-        <div className="w-10 h-10 bg-[#22C55E1A] rounded-full flex items-center justify-center">
-          <CheckCircle size={20} className="text-[#22C55E]" />
+        <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center">
+          <CheckCircle size={20} className="text-success" />
         </div>
         <h3 className="font-manrope text-[16px] font-bold text-white">
           All Systems Operational
@@ -85,14 +67,14 @@ export default function AdminAlertsTable({ alerts }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="bg-[#0d0b08] rounded-xl border border-white/08"
+      className="bg-surface rounded-xl border border-white/08"
     >
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/08">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-red-950/40 rounded-lg flex items-center justify-center mt-0.5">
-              <AlertTriangle size={16} className="text-red-400" />
+            <div className="w-8 h-8 bg-danger/10 rounded-lg flex items-center justify-center mt-0.5">
+              <AlertTriangle size={16} className="text-danger" />
             </div>
             <div>
               <h2 className="font-manrope text-[18px] font-bold text-white">
@@ -103,7 +85,7 @@ export default function AdminAlertsTable({ alerts }) {
               </p>
             </div>
           </div>
-          <button className="font-manrope text-[13px] text-[#D4AF37] hover:underline">
+          <button className="font-manrope text-[13px] text-accent hover:underline">
             View All Logs
           </button>
         </div>
@@ -249,7 +231,7 @@ export default function AdminAlertsTable({ alerts }) {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-white/08 flex justify-center">
-        <button className="flex items-center gap-1 text-[#D4AF37] font-manrope text-[13px] font-medium hover:underline">
+        <button className="flex items-center gap-1 text-accent font-manrope text-[13px] font-medium hover:underline">
           Show 5 more alerts
           <ChevronDown size={14} />
         </button>

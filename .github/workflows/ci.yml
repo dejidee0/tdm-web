@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The gate. Guardrails are the only error-level rules, so --quiet fails
+      # on architecture violations and stays silent about legacy warnings.
+      # See eslint.guardrails.mjs.
+      - name: Architecture guardrails
+        run: npm run lint:arch
+
+      # Only files converted to .ts are checked (checkJs is off), and they are
+      # checked strictly. See tsconfig.json.
+      - name: Typecheck
+        run: npm run typecheck
+
+      # lib/env.js throws when API_URL / ADMIN_API_URL are missing, so this
+      # step also proves the deploy is configured. Set these as repo secrets.
+      - name: Build
+        run: npm run build
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          ADMIN_API_URL: ${{ secrets.ADMIN_API_URL }}
+          NEXT_PUBLIC_SITE_LIVE: "true"
+
+      # The invariant that motivates most of the guardrails: the backend host
+      # must never reach the browser. Fails the build if a NEXT_PUBLIC_* var or
+      # a hard-coded URL puts it back into a client chunk.
+      - name: Backend URL must not be in the client bundle
+        env:
+          API_URL: ${{ secrets.API_URL }}
+        run: |
+          host=$(printf '%s' "$API_URL" | sed -E 's#.*//([^/]+).*#\1#')
+          if [ -z "$host" ]; then echo "API_URL secret is not set"; exit 1; fi
+          hits=$(grep -rl "$host" .next/static 2>/dev/null | wc -l)
+          if [ "$hits" -ne 0 ]; then
+            echo "::error::Backend host '$host' found in $hits client chunk(s)."
+            grep -rl "$host" .next/static | head
+            exit 1
+          fi
+          echo "Backend host absent from client bundle."
+
+      # Non-blocking: surfaces the ~40 legacy React warnings without failing PRs.
+      - name: Full lint (informational)
+        run: npm run lint
+        continue-on-error: true

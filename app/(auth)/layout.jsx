@@ -1,7 +1,9 @@
 import "../globals.css";
 import Navbar from "@/components/common/navbar";
 
-import Providers from "@/components/common/providers";
+// No <Providers> here — the root layout (app/layout.js) already supplies them.
+// A second QueryClientProvider would give this subtree its own cache, so a user
+// signing in would land on a dashboard that cannot see the session just written.
 
 export const metadata = {
   title: "Sign In | TBM Building Services",
@@ -10,9 +12,9 @@ export const metadata = {
 
 export default function AuthLayout({ children }) {
   return (
-    <Providers>
+    <>
       <Navbar />
       {children}
-    </Providers>
+    </>
   );
 }

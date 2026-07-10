@@ -26,7 +26,7 @@ export default function AdminLayout({ children }) {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-[#0d0b08] text-white border border-white/10 rounded-lg shadow-md"
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-surface text-white border border-white/10 rounded-lg shadow-md"
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -45,7 +45,7 @@ export default function AdminLayout({ children }) {
       </AnimatePresence>
 
       {/* Desktop Sidebar - always visible */}
-      <aside className="hidden lg:block fixed top-0 left-0 h-full w-60 bg-[#0d0b08] border-r border-white/08 z-40">
+      <aside className="hidden lg:block fixed top-0 left-0 h-full w-60 bg-surface border-r border-white/08 z-40">
         <AdminSidebar />
       </aside>
 
@@ -57,7 +57,7 @@ export default function AdminLayout({ children }) {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden fixed top-0 left-0 h-full w-60 bg-[#0d0b08] border-r border-white/08 z-40"
+            className="lg:hidden fixed top-0 left-0 h-full w-60 bg-surface border-r border-white/08 z-40"
           >
             <AdminSidebar />
           </motion.aside>
