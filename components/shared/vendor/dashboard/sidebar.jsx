@@ -4,45 +4,57 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Settings, ExternalLink } from "lucide-react";
-import dashboardIcon from "@/public/assets/svgs/vendor/sidebar/dashboard.svg";
-import ordersIcon from "@/public/assets/svgs/vendor/sidebar/orders.svg";
-import inventoryIcon from "@/public/assets/svgs/vendor/sidebar/inventory.svg";
-import deliveryIcon from "@/public/assets/svgs/vendor/sidebar/delivery.svg";
-import messagesIcon from "@/public/assets/svgs/vendor/sidebar/messages.svg";
-import notificationIcon from "@/public/assets/svgs/vendor/sidebar/notification.svg";
+import {
+  Settings,
+  ExternalLink,
+  LayoutGrid,
+  ClipboardList,
+  Boxes,
+  Truck,
+  MessageSquare,
+  Bell,
+} from "lucide-react";
 
+// lucide icons paint with `currentColor`, so they follow the row's active and
+// inactive text color. The SVGs these replaced had their fill baked in, and had
+// even encoded the active state in the asset itself: dashboard.svg was #273054
+// while the rest were #475569. On the dark sidebar all six measured under 3:1.
 const navItems = [
   {
     label: "Dashboard",
-    icon: dashboardIcon,
+    icon: LayoutGrid,
     href: "/vendor/dashboard",
   },
   {
     label: "Orders",
-    icon: ordersIcon,
+    icon: ClipboardList,
     href: "/vendor/dashboard/orders",
   },
   {
     label: "Inventory",
-    icon: inventoryIcon,
+    icon: Boxes,
     href: "/vendor/dashboard/inventory",
   },
   {
     label: "Delivery",
-    icon: deliveryIcon,
+    icon: Truck,
     href: "/vendor/dashboard/delivery",
   },
   {
     label: "Messages",
-    icon: messagesIcon,
+    icon: MessageSquare,
     href: "/vendor/dashboard/messages",
     badge: 3,
   },
 ];
 
 const isActivePath = (pathname, href) => {
-  return pathname === href || pathname.startsWith(href + "/dashboard");
+  // Exact match for the dashboard root, so it does not light up on every child.
+  if (href === "/vendor/dashboard") return pathname === href;
+  // Prefix match on a path segment: `/orders` must also match `/orders/<id>`.
+  // This used to append "/dashboard", so opening an order detail page silently
+  // un-highlighted Orders in the nav.
+  return pathname === href || pathname.startsWith(href + "/");
 };
 
 export default function VendorSidebar() {
@@ -75,15 +87,13 @@ export default function VendorSidebar() {
           </div>
 
           {/* Notification Icon */}
-          <button className="relative p-2 hover:bg-white/05 rounded-lg transition-colors">
-            <Image
-              src={notificationIcon}
-              alt="Notifications"
-              width={16}
-              height={16}
-            />
+          <button
+            aria-label="Notifications"
+            className="relative p-2 text-white/50 hover:text-white hover:bg-white/05 rounded-lg transition-colors"
+          >
+            <Bell size={16} />
             {/* Notification Badge */}
-            <span className="absolute top-1 right-1 w-2 h-2 bg-danger-solid rounded-full"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-danger-solid rounded-full" />
           </button>
         </div>
       </div>
@@ -106,16 +116,11 @@ export default function VendorSidebar() {
                       ${
                         isActive
                           ? "bg-white/08 text-white font-medium"
-                          : "text-muted hover:bg-white/05"
+                          : "text-white/50 hover:bg-white/05 hover:text-white"
                       }
                     `}
                   >
-                    <Image
-                      src={item.icon}
-                      alt={item.label}
-                      width={20}
-                      height={20}
-                    />
+                    <item.icon size={20} className="shrink-0" />
                     <span>{item.label}</span>
                     {item.badge && (
                       <motion.span

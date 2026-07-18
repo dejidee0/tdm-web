@@ -79,6 +79,60 @@
       "$why": "A bare array — no envelope, and items are neither Product nor MaterialSummary."
     },
     {
+      "op": "POST /api/v1/admin/AdminProducts",
+      "label": "admin-products-create",
+      "sample": "",
+      "schema": "adminProductCreateResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded by scripts/record-mutations.mjs. Returns ApiEnvelope<Product> — the same 41 fields as GET /Products."
+    },
+    {
+      "op": "PUT /api/v1/admin/AdminProducts/{id}",
+      "label": "admin-products-update",
+      "sample": "",
+      "schema": "adminProductUpdateResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. ApiEnvelope<Product>. NOTE: UpdateProductDto omits brandType/productType and adds isActive."
+    },
+    {
+      "op": "DELETE /api/v1/admin/AdminProducts/{id}",
+      "label": "admin-products-delete",
+      "sample": "",
+      "schema": "adminProductDeleteResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. data is a bare boolean, not a Product."
+    },
+    {
+      "op": "POST /api/v1/admin/AdminProducts/bulk",
+      "label": "admin-products-bulk",
+      "sample": "",
+      "schema": "adminProductBulkResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. Created rows arrive under data.createdProducts, NOT data[] like every other create on this surface."
+    },
+    {
+      "op": "POST /api/v1/admin/AdminProducts/{productId}/images/upload",
+      "label": "admin-product-image",
+      "sample": "",
+      "schema": "adminProductImageUploadResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Multipart, field `file`. Returns ApiEnvelope<ProductImageDto>. Recorded by scripts/explore-image-upload.mjs; now in the refreshed snapshot."
+    },
+    {
+      "op": "GET /api/v1/ai/styles",
+      "label": "ai-styles",
+      "sample": "",
+      "schema": "aiStylesResponse",
+      "itemsAt": null,
+      "auth": false,
+      "$why": "A bare array of { id, name } — no envelope. Public. The `style` field on GenerateImageDto/GenerateVideoDto takes the id."
+    },
+    {
       "op": "GET /api/v1/account/me",
       "label": "account-me",
       "sample": "",

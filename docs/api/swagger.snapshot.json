@@ -1911,6 +1911,71 @@
         }
       }
     },
+    "/api/v1/admin/AdminProducts/{productId}/images/upload": {
+      "post": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "isPrimary",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "displayOrder",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "altText",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/admin/AdminProducts/images/{imageId}": {
       "delete": {
         "tags": [
@@ -2890,6 +2955,18 @@
         }
       }
     },
+    "/api/v1/ai/styles": {
+      "get": {
+        "tags": [
+          "AI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/ai/usage/summary": {
       "get": {
         "tags": [
@@ -3211,6 +3288,47 @@
         }
       }
     },
+    "/api/v1/ai/renovation-estimates": {
+      "post": {
+        "tags": [
+          "AIRenovationEstimator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.AI.CreateRenovationEstimateRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.AI.CreateRenovationEstimateRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.AI.CreateRenovationEstimateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AIRenovationEstimator"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/ai/renovation/estimates": {
       "get": {
         "tags": [
@@ -3224,6 +3342,29 @@
       }
     },
     "/api/v1/ai/renovation/estimates/{estimateId}": {
+      "get": {
+        "tags": [
+          "AIRenovationEstimator"
+        ],
+        "parameters": [
+          {
+            "name": "estimateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/ai/renovation-estimates/{estimateId}": {
       "get": {
         "tags": [
           "AIRenovationEstimator"
@@ -4594,6 +4735,96 @@
         }
       }
     },
+    "/api/v1/inspections/verify-payment": {
+      "post": {
+        "tags": [
+          "Inspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.VerifyInspectionPaymentRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.VerifyInspectionPaymentRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.VerifyInspectionPaymentRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/inspections/book": {
+      "post": {
+        "tags": [
+          "Inspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.BookInspectionRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.BookInspectionRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.Inspections.BookInspectionRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/inspiration": {
+      "get": {
+        "tags": [
+          "Inspiration"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "style",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/lookups": {
       "get": {
         "tags": [
@@ -5673,6 +5904,99 @@
         }
       }
     },
+    "/api/v1/project-requests/3d-model": {
+      "post": {
+        "tags": [
+          "ProjectRequests"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/project-requests/boq": {
+      "post": {
+        "tags": [
+          "ProjectRequests"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/project-requests/contact-designer": {
+      "post": {
+        "tags": [
+          "ProjectRequests"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/projects": {
       "get": {
         "tags": [
@@ -6312,6 +6636,36 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/uploads/document": {
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -7797,6 +8151,10 @@
               "type": "string"
             },
             "nullable": true
+          },
+          "style": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7825,6 +8183,10 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          },
+          "style": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -8245,6 +8607,70 @@
           "height": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TBM.Application.DTOs.Inspections.BookInspectionRequestDto": {
+        "type": "object",
+        "properties": {
+          "contactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteState": {
+            "type": "string",
+            "nullable": true
+          },
+          "preferredDate1": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preferredDate2": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "uploadedFileUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "paymentReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TBM.Application.DTOs.Inspections.VerifyInspectionPaymentRequestDto": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8954,6 +9380,37 @@
         },
         "additionalProperties": false
       },
+      "TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto": {
+        "type": "object",
+        "properties": {
+          "estimateId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "projectDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "TBM.Application.DTOs.Settings.AIModelDto": {
         "type": "object",
         "properties": {
@@ -9520,7 +9977,7 @@
   },
   "security": [
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }

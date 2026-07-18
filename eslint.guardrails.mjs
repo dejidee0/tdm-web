@@ -38,6 +38,16 @@ export const guardrails = [
       "document.cookie must never touch an auth token. If you are reading a non-sensitive flag, disable this rule inline and say why.",
   },
   {
+    // app/admin/login/page.jsx shipped `password: "…"` as a Formik initialValue
+    // for months. A default here is not a convenience: it is compiled into the
+    // client bundle, so every visitor to /admin/login had working admin
+    // credentials. Seed forms with "", never with a value.
+    selector:
+      'Property[key.name=/^(password|newPassword|currentPassword|confirmPassword|otp|token|apiKey|secret)$/][value.type="Literal"][value.value!=""]',
+    message:
+      "Never seed a credential field with a literal. It is compiled into the client bundle. Initialise form fields with an empty string.",
+  },
+  {
     // `|| "https://api.yourbackend.com"` meant a missing env var silently sent
     // Authorization headers to a domain nobody here owns.
     selector: "Literal[value=/yourbackend\\.com|jtempurl\\.com/]",

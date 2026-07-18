@@ -10,7 +10,7 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
-  Sparkles,
+  Wand2,
   RotateCcw,
   Crown,
   ChevronDown,
@@ -205,7 +205,7 @@ export default function ZioraStudio() {
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-widest mb-3"
               style={{ borderColor: "rgba(212,175,55,0.25)", background: "rgba(212,175,55,0.08)", color: "#D4AF37" }}
             >
-              <Sparkles className="w-3 h-3" /> Ziora Studio
+              <Wand2 className="w-3 h-3" /> Ziora Studio
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-white">
               Hey, {firstName}. What shall we build?
@@ -272,7 +272,7 @@ export default function ZioraStudio() {
                     className="w-16 h-16 rounded-full flex items-center justify-center"
                     style={{ background: "rgba(212,175,55,0.08)" }}
                   >
-                    <Sparkles className="w-7 h-7 text-[#D4AF37]" />
+                    <Wand2 className="w-7 h-7 text-[#D4AF37]" />
                   </div>
                   <Loader2 className="w-16 h-16 animate-spin text-white/10 absolute inset-0" />
                 </div>
@@ -558,7 +558,7 @@ export default function ZioraStudio() {
                       className="flex items-center gap-2 px-7 py-3 text-black text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
                       style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
                     >
-                      <Sparkles className="w-4 h-4" />
+                      <Wand2 className="w-4 h-4" />
                       Generate {outputType === "video" ? "Video" : "Design"}
                     </motion.button>
                   </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, MessageCircle } from "lucide-react";
+import { Wand2, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
 export default function AIVisualizer() {
@@ -42,7 +42,7 @@ export default function AIVisualizer() {
         whileTap={{ scale: 0.98 }}
         className="w-full py-3.5 border border-white/10 text-white font-semibold rounded-lg hover:bg-white/05 transition-colors flex items-center justify-center gap-2 mb-6 bg-transparent"
       >
-        <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+        <Wand2 className="w-5 h-5 text-[#D4AF37]" />
         Design with Ziora
       </motion.button>
 

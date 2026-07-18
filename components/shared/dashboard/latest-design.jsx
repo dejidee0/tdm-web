@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Download } from "lucide-react";
+import { Wand2, Download } from "lucide-react";
 import Image from "next/image";
 import { useLatestDesign } from "@/hooks/use-user-dashboard";
 
@@ -16,7 +16,7 @@ export default function LatestDesign() {
     return (
       <div className={cardClass} style={cardStyle}>
         <div className="flex items-center gap-2 mb-6">
-          <Sparkles className="w-5 h-5 text-white/30" />
+          <Wand2 className="w-5 h-5 text-white/30" />
           <h2 className="text-[16px] font-semibold text-white">Latest Design</h2>
         </div>
         <div className="animate-pulse">
@@ -32,7 +32,7 @@ export default function LatestDesign() {
     return (
       <div className={cardClass} style={cardStyle}>
         <div className="flex items-center gap-2 mb-6">
-          <Sparkles className="w-5 h-5 text-white/30" />
+          <Wand2 className="w-5 h-5 text-white/30" />
           <h2 className="text-[16px] font-semibold text-white">Latest Design</h2>
         </div>
         <p className="text-[14px] text-white/30 text-center py-8">
@@ -53,7 +53,7 @@ export default function LatestDesign() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-white/30" />
+          <Wand2 className="w-5 h-5 text-white/30" />
           <h2 className="text-[16px] font-semibold text-white">Latest Design</h2>
         </div>
         <button className="text-[13px] text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors">

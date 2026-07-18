@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Sparkles,
+  Star,
   Crown,
   Zap,
   ArrowUpRight,
@@ -51,7 +51,7 @@ function StatusBadge({ status, quotaExhausted }) {
 
 function TierIcon({ tier }) {
   if (tier === "luxury") return <Crown className="w-5 h-5 text-purple-400" />;
-  if (tier === "premium") return <Sparkles className="w-5 h-5 text-blue-400" />;
+  if (tier === "premium") return <Star className="w-5 h-5 text-blue-400" />;
   return <Zap className="w-5 h-5 text-white/40" />;
 }
 

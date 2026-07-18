@@ -2,10 +2,11 @@
 
 - **Source:** [`https://tbmdev-001-site1.dtempurl.com/swagger/v1/swagger.json`](https://tbmdev-001-site1.dtempurl.com/swagger/v1/swagger.json) (Swagger UI: `/index.html`)
 - **Spec:** OpenAPI 3.0.1 · `TBM BUILDING AI VISUALIZER API` · version `v1`
-- **Snapshot taken:** 2026-07-10
-- **Size:** 229 paths · 266 operations · 84 object schemas · 9 enums
+- **Snapshot taken:** 2026-07-18
+- **Size:** 240 paths · 278 operations · 87 object schemas · 9 enums
 
-Regenerate by re-downloading the spec above; this file is a snapshot, not a live view.
+Regenerate with `node scripts/gen-api-doc.mjs` after re-downloading the spec
+above; this file is a snapshot, not a live view.
 
 ## Read this first — what the spec does *not* tell you
 
@@ -13,7 +14,7 @@ This document is only as good as the spec, and the spec has real gaps. Every one
 of them is a place where you must read the backend or observe a live response
 rather than trust this file.
 
-- **There are no response schemas.** All 266 operations declare exactly one
+- **There are no response schemas.** All 278 operations declare exactly one
   response, a bare `200: OK`, with no body type. The spec describes *requests
   only*. This is the documented reason response shapes are guessed at call sites
   in this repo (`json.data ?? json`) — Swagger cannot resolve it for you.
@@ -23,7 +24,7 @@ rather than trust this file.
   intent has to be inferred from its path, tag, and request payload.
 - **Enums are bare integers.** The spec gives the numeric values but not their
   names, so `OrderStatus: 3` is undecodable from here. See [Enums](#enums).
-- **Almost nothing is marked required.** Exactly 1 of the 93 schemas declares a
+- **Almost nothing is marked required.** Exactly 1 of the 96 schemas declares a
   `required` list, and nearly every property is `nullable: true`. Treat
   "optional" in this doc as "unknown", not as "safe to omit".
 - **This is the dev instance, fetched unauthenticated.** Endpoints hidden from
@@ -78,7 +79,7 @@ set it yourself, and the client's own `Authorization` header is not forwarded.
 
 ### Path casing
 
-The spec mixes conventions: 68 of 229 paths carry a PascalCase segment
+The spec mixes conventions: 69 of 240 paths carry a PascalCase segment
 (`/api/v1/Cart`, `/api/v1/Products`, `/api/v1/admin/AdminUsers`) while the rest are
 lowercase (`/api/v1/account/profile`, `/api/v1/orders`).
 
@@ -107,30 +108,76 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 ## Endpoints
 
-266 operations across 40 tags. `Body` links to the payload schema.
+278 operations across 44 tags. `Body` links to the payload schema.
 
 | Tag | Ops |  | Tag | Ops |
 | --- | --- | --- | --- | --- |
-| [Account](#tag-account) | 22 |  | [Auth](#tag-auth) | 15 |
-| [AdminAI](#tag-adminai) | 4 |  | [Cart](#tag-cart) | 8 |
-| [AdminAnalytics](#tag-adminanalytics) | 3 |  | [Categories](#tag-categories) | 7 |
-| [AdminAuth](#tag-adminauth) | 3 |  | [Checkout](#tag-checkout) | 4 |
-| [AdminDashboard](#tag-admindashboard) | 7 |  | [Contact](#tag-contact) | 1 |
-| [AdminDiscounts](#tag-admindiscounts) | 5 |  | [Dashboard](#tag-dashboard) | 5 |
-| [AdminFinancial](#tag-adminfinancial) | 5 |  | [Designs](#tag-designs) | 7 |
-| [AdminObservability](#tag-adminobservability) | 2 |  | [DesignSessions](#tag-designsessions) | 7 |
-| [AdminOrders](#tag-adminorders) | 5 |  | [Lookups](#tag-lookups) | 10 |
-| [AdminPortfolio](#tag-adminportfolio) | 6 |  | [Orders](#tag-orders) | 7 |
-| [AdminPricing](#tag-adminpricing) | 4 |  | [PaystackWebhook](#tag-paystackwebhook) | 1 |
-| [AdminProducts](#tag-adminproducts) | 7 |  | [Portfolio](#tag-portfolio) | 2 |
-| [AdminSettings](#tag-adminsettings) | 11 |  | [Pricing](#tag-pricing) | 1 |
-| [AdminSystemLogs](#tag-adminsystemlogs) | 3 |  | [Products](#tag-products) | 16 |
-| [AdminUsers](#tag-adminusers) | 9 |  | [Projects](#tag-projects) | 7 |
-| [AdminVendors](#tag-adminvendors) | 4 |  | [PublicProjects](#tag-publicprojects) | 1 |
-| [AI](#tag-ai) | 7 |  | [Saved](#tag-saved) | 7 |
-| [AIAssistant](#tag-aiassistant) | 9 |  | [Subscription](#tag-subscription) | 6 |
-| [AIRenovationEstimator](#tag-airenovationestimator) | 3 |  | [Vendor](#tag-vendor) | 25 |
-| [AIUpload](#tag-aiupload) | 1 |  | [VendorPortfolio](#tag-vendorportfolio) | 9 |
+| [AI](#tag-ai) | 8 |  | [Categories](#tag-categories) | 7 |
+| [AIAssistant](#tag-aiassistant) | 9 |  | [Checkout](#tag-checkout) | 4 |
+| [AIRenovationEstimator](#tag-airenovationestimator) | 6 |  | [Contact](#tag-contact) | 1 |
+| [AIUpload](#tag-aiupload) | 1 |  | [Dashboard](#tag-dashboard) | 5 |
+| [Account](#tag-account) | 22 |  | [DesignSessions](#tag-designsessions) | 7 |
+| [AdminAI](#tag-adminai) | 4 |  | [Designs](#tag-designs) | 7 |
+| [AdminAnalytics](#tag-adminanalytics) | 3 |  | [Inspection](#tag-inspection) | 2 |
+| [AdminAuth](#tag-adminauth) | 3 |  | [Inspiration](#tag-inspiration) | 1 |
+| [AdminDashboard](#tag-admindashboard) | 7 |  | [Lookups](#tag-lookups) | 10 |
+| [AdminDiscounts](#tag-admindiscounts) | 5 |  | [Orders](#tag-orders) | 7 |
+| [AdminFinancial](#tag-adminfinancial) | 5 |  | [PaystackWebhook](#tag-paystackwebhook) | 1 |
+| [AdminObservability](#tag-adminobservability) | 2 |  | [Portfolio](#tag-portfolio) | 2 |
+| [AdminOrders](#tag-adminorders) | 5 |  | [Pricing](#tag-pricing) | 1 |
+| [AdminPortfolio](#tag-adminportfolio) | 6 |  | [Products](#tag-products) | 16 |
+| [AdminPricing](#tag-adminpricing) | 4 |  | [ProjectRequests](#tag-projectrequests) | 3 |
+| [AdminProducts](#tag-adminproducts) | 8 |  | [Projects](#tag-projects) | 7 |
+| [AdminSettings](#tag-adminsettings) | 11 |  | [PublicProjects](#tag-publicprojects) | 1 |
+| [AdminSystemLogs](#tag-adminsystemlogs) | 3 |  | [Saved](#tag-saved) | 7 |
+| [AdminUsers](#tag-adminusers) | 9 |  | [Subscription](#tag-subscription) | 6 |
+| [AdminVendors](#tag-adminvendors) | 4 |  | [Upload](#tag-upload) | 1 |
+| [Auth](#tag-auth) | 15 |  | [Vendor](#tag-vendor) | 25 |
+| [Cart](#tag-cart) | 8 |  | [VendorPortfolio](#tag-vendorportfolio) | 9 |
+
+### <a id="tag-ai"></a>AI
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/ai/credits/balance` | — | — |
+| `POST` | `/api/v1/ai/generate/image` | — | [`AI.GenerateImageDto`](#s-ai-generateimagedto) |
+| `POST` | `/api/v1/ai/generate/video` | — | [`AI.GenerateVideoDto`](#s-ai-generatevideodto) |
+| `GET` | `/api/v1/ai/projects` | — | — |
+| `POST` | `/api/v1/ai/projects` | — | [`AI.CreateAIProjectDto`](#s-ai-createaiprojectdto) |
+| `GET` | `/api/v1/ai/styles` | — | — |
+| `POST` | `/api/v1/ai/transform/image` | — | [`AI.GenerateImageDto`](#s-ai-generateimagedto) |
+| `GET` | `/api/v1/ai/usage/summary` | `year?` integer *(query)*<br>`month?` integer *(query)* | — |
+
+### <a id="tag-aiassistant"></a>AIAssistant
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/ai/assistant/health` | — | — |
+| `POST` | `/api/v1/ai/assistant/message` | — | [`AI.AssistantMessageRequestDto`](#s-ai-assistantmessagerequestdto) |
+| `GET` | `/api/v1/ai/assistant/sessions` | — | — |
+| `DELETE` | `/api/v1/ai/assistant/sessions/{sessionId}` | `sessionId` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/ai/assistant/sessions/{sessionId}` | `sessionId` string(uuid) *(path)* | — |
+| `PATCH` | `/api/v1/ai/assistant/tasks/{taskId}` | `taskId` string(uuid) *(path)* | [`AI.UpdateAssistantTaskStatusRequestDto`](#s-ai-updateassistanttaskstatusrequestdto) |
+| `GET` | `/api/v1/ai/assistant/tool-actions/{actionId}` | `actionId` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/ai/assistant/tool-actions/{actionId}/approval` | `actionId` string(uuid) *(path)* | [`AI.ApproveAssistantToolActionRequestDto`](#s-ai-approveassistanttoolactionrequestdto) |
+| `POST` | `/api/v1/ai/assistant/tool-actions/{actionId}/execute` | `actionId` string(uuid) *(path)* | [`AI.ExecuteAssistantToolActionRequestDto`](#s-ai-executeassistanttoolactionrequestdto) |
+
+### <a id="tag-airenovationestimator"></a>AIRenovationEstimator
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/ai/renovation-estimates` | — | — |
+| `POST` | `/api/v1/ai/renovation-estimates` | — | [`AI.CreateRenovationEstimateRequestDto`](#s-ai-createrenovationestimaterequestdto) |
+| `GET` | `/api/v1/ai/renovation-estimates/{estimateId}` | `estimateId` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/ai/renovation/estimate` | — | [`AI.CreateRenovationEstimateRequestDto`](#s-ai-createrenovationestimaterequestdto) |
+| `GET` | `/api/v1/ai/renovation/estimates` | — | — |
+| `GET` | `/api/v1/ai/renovation/estimates/{estimateId}` | `estimateId` string(uuid) *(path)* | — |
+
+### <a id="tag-aiupload"></a>AIUpload
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/ai/upload-room` | — | **multipart/form-data**<br>`file` |
 
 ### <a id="tag-account"></a>Account
 
@@ -138,8 +185,8 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `DELETE` | `/api/v1/account` | — | [`AccountController.OptionalPasswordRequest`](#s-accountcontroller-optionalpasswordrequest) |
 | `POST` | `/api/v1/account/addresses` | — | [`AccountController.AddressRequest`](#s-accountcontroller-addressrequest) |
-| `PUT` | `/api/v1/account/addresses/{addressId}` | `addressId` string(uuid) *(path)* | [`AccountController.AddressRequest`](#s-accountcontroller-addressrequest) |
 | `DELETE` | `/api/v1/account/addresses/{addressId}` | `addressId` string(uuid) *(path)* | — |
+| `PUT` | `/api/v1/account/addresses/{addressId}` | `addressId` string(uuid) *(path)* | [`AccountController.AddressRequest`](#s-accountcontroller-addressrequest) |
 | `PUT` | `/api/v1/account/addresses/{addressId}/default` | `addressId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/account/avatar` | — | **multipart/form-data**<br>`File` |
 | `GET` | `/api/v1/account/brand-access` | — | — |
@@ -163,8 +210,8 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
-| `POST` | `/api/v1/admin/ai/credits/adjust` | — | [`AI.AICreditAdjustmentRequestDto`](#s-ai-aicreditadjustmentrequestdto) |
 | `GET` | `/api/v1/admin/ai/credits/{userId}` | `userId` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/admin/ai/credits/adjust` | — | [`AI.AICreditAdjustmentRequestDto`](#s-ai-aicreditadjustmentrequestdto) |
 | `GET` | `/api/v1/admin/ai/usage/monthly-spend` | `months?` integer *(query)* | — |
 | `GET` | `/api/v1/admin/ai/usage/user/{userId}` | `userId` string(uuid) *(path)*<br>`year?` integer *(query)*<br>`month?` integer *(query)* | — |
 
@@ -202,9 +249,9 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/admin/AdminDiscounts` | — | — |
 | `POST` | `/api/v1/admin/AdminDiscounts` | — | [`Subscriptions.CreateDiscountDto`](#s-subscriptions-creatediscountdto) |
+| `DELETE` | `/api/v1/admin/AdminDiscounts/{id}` | `id` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/admin/AdminDiscounts/{id}` | `id` string(uuid) *(path)* | — |
 | `PUT` | `/api/v1/admin/AdminDiscounts/{id}` | `id` string(uuid) *(path)* | [`Subscriptions.UpdateDiscountDto`](#s-subscriptions-updatediscountdto) |
-| `DELETE` | `/api/v1/admin/AdminDiscounts/{id}` | `id` string(uuid) *(path)* | — |
 
 ### <a id="tag-adminfinancial"></a>AdminFinancial
 
@@ -220,8 +267,8 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
-| `GET` | `/api/v1/admin/observability/slo/overview` | — | — |
 | `GET` | `/api/v1/admin/observability/slo/{domain}` | `domain` string *(path)* | — |
+| `GET` | `/api/v1/admin/observability/slo/overview` | — | — |
 
 ### <a id="tag-adminorders"></a>AdminOrders
 
@@ -249,21 +296,22 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/admin/AdminPricing` | — | — |
-| `POST` | `/api/v1/admin/AdminPricing/seed` | — | — |
 | `GET` | `/api/v1/admin/AdminPricing/{tier}/{cycle}` | `tier` string *(path)*<br>`cycle` string *(path)* | — |
 | `PUT` | `/api/v1/admin/AdminPricing/{tier}/{cycle}` | `tier` string *(path)*<br>`cycle` string *(path)* | [`Subscriptions.UpdatePricingConfigDto`](#s-subscriptions-updatepricingconfigdto) |
+| `POST` | `/api/v1/admin/AdminPricing/seed` | — | — |
 
 ### <a id="tag-adminproducts"></a>AdminProducts
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
 | `POST` | `/api/v1/admin/AdminProducts` | — | [`Products.CreateProductDto`](#s-products-createproductdto) |
-| `POST` | `/api/v1/admin/AdminProducts/bulk` | — | inline [`Products.CreateProductDto`](#s-products-createproductdto)[] |
-| `DELETE` | `/api/v1/admin/AdminProducts/images/{imageId}` | `imageId` string(uuid) *(path)* | — |
-| `PUT` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateProductDto`](#s-products-updateproductdto) |
 | `DELETE` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | — |
+| `PUT` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateProductDto`](#s-products-updateproductdto) |
 | `POST` | `/api/v1/admin/AdminProducts/{id}/images` | `id` string(uuid) *(path)* | [`Products.AddProductImageDto`](#s-products-addproductimagedto) |
 | `PUT` | `/api/v1/admin/AdminProducts/{productId}/images/{imageId}/primary` | `productId` string(uuid) *(path)*<br>`imageId` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/admin/AdminProducts/{productId}/images/upload` | `productId` string(uuid) *(path)*<br>`isPrimary?` boolean *(query)*<br>`displayOrder?` integer *(query)*<br>`altText?` string *(query)* | **multipart/form-data**<br>`file` |
+| `POST` | `/api/v1/admin/AdminProducts/bulk` | — | inline [`Products.CreateProductDto`](#s-products-createproductdto)[] |
+| `DELETE` | `/api/v1/admin/AdminProducts/images/{imageId}` | `imageId` string(uuid) *(path)* | — |
 
 ### <a id="tag-adminsettings"></a>AdminSettings
 
@@ -295,62 +343,22 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/admin/users` | `page?` integer *(query)*<br>`limit?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`search?` string *(query)*<br>`role?` string *(query)*<br>`status?` UserStatus *(query)* | — |
 | `POST` | `/api/v1/admin/users` | — | [`Admin.AdminCreateUserRequestDto`](#s-admin-admincreateuserrequestdto) |
-| `GET` | `/api/v1/admin/users/export` | — | — |
-| `GET` | `/api/v1/admin/users/{id}` | `id` string(uuid) *(path)* | — |
 | `DELETE` | `/api/v1/admin/users/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/admin/users/{id}` | `id` string(uuid) *(path)* | — |
 | `PATCH` | `/api/v1/admin/users/{id}/reactivate` | `id` string(uuid) *(path)* | — |
 | `PATCH` | `/api/v1/admin/users/{id}/role` | `id` string(uuid) *(path)* | [`Admin.AdminUpdateUserRoleRequestDto`](#s-admin-adminupdateuserrolerequestdto) |
 | `PATCH` | `/api/v1/admin/users/{id}/status` | `id` string(uuid) *(path)* | [`Admin.AdminUpdateUserStatusRequestDto`](#s-admin-adminupdateuserstatusrequestdto) |
 | `PATCH` | `/api/v1/admin/users/{id}/suspend` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/admin/users/export` | — | — |
 
 ### <a id="tag-adminvendors"></a>AdminVendors
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
-| `POST` | `/api/v1/admin/vendors/products/{productId}/assign` | `productId` string(uuid) *(path)* | [`Vendor.AssignProductOwnerRequest`](#s-vendor-assignproductownerrequest) |
-| `DELETE` | `/api/v1/admin/vendors/products/{productId}/assign` | `productId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/admin/vendors/{userId}/activate` | `userId` string(uuid) *(path)* | [`Vendor.ActivateVendorRequest`](#s-vendor-activatevendorrequest) |
 | `GET` | `/api/v1/admin/vendors/{vendorUserId}/ownership` | `vendorUserId` string(uuid) *(path)* | — |
-
-### <a id="tag-ai"></a>AI
-
-| Method | Path | Parameters | Body |
-| --- | --- | --- | --- |
-| `GET` | `/api/v1/ai/credits/balance` | — | — |
-| `POST` | `/api/v1/ai/generate/image` | — | [`AI.GenerateImageDto`](#s-ai-generateimagedto) |
-| `POST` | `/api/v1/ai/generate/video` | — | [`AI.GenerateVideoDto`](#s-ai-generatevideodto) |
-| `GET` | `/api/v1/ai/projects` | — | — |
-| `POST` | `/api/v1/ai/projects` | — | [`AI.CreateAIProjectDto`](#s-ai-createaiprojectdto) |
-| `POST` | `/api/v1/ai/transform/image` | — | [`AI.GenerateImageDto`](#s-ai-generateimagedto) |
-| `GET` | `/api/v1/ai/usage/summary` | `year?` integer *(query)*<br>`month?` integer *(query)* | — |
-
-### <a id="tag-aiassistant"></a>AIAssistant
-
-| Method | Path | Parameters | Body |
-| --- | --- | --- | --- |
-| `GET` | `/api/v1/ai/assistant/health` | — | — |
-| `POST` | `/api/v1/ai/assistant/message` | — | [`AI.AssistantMessageRequestDto`](#s-ai-assistantmessagerequestdto) |
-| `GET` | `/api/v1/ai/assistant/sessions` | — | — |
-| `GET` | `/api/v1/ai/assistant/sessions/{sessionId}` | `sessionId` string(uuid) *(path)* | — |
-| `DELETE` | `/api/v1/ai/assistant/sessions/{sessionId}` | `sessionId` string(uuid) *(path)* | — |
-| `PATCH` | `/api/v1/ai/assistant/tasks/{taskId}` | `taskId` string(uuid) *(path)* | [`AI.UpdateAssistantTaskStatusRequestDto`](#s-ai-updateassistanttaskstatusrequestdto) |
-| `GET` | `/api/v1/ai/assistant/tool-actions/{actionId}` | `actionId` string(uuid) *(path)* | — |
-| `POST` | `/api/v1/ai/assistant/tool-actions/{actionId}/approval` | `actionId` string(uuid) *(path)* | [`AI.ApproveAssistantToolActionRequestDto`](#s-ai-approveassistanttoolactionrequestdto) |
-| `POST` | `/api/v1/ai/assistant/tool-actions/{actionId}/execute` | `actionId` string(uuid) *(path)* | [`AI.ExecuteAssistantToolActionRequestDto`](#s-ai-executeassistanttoolactionrequestdto) |
-
-### <a id="tag-airenovationestimator"></a>AIRenovationEstimator
-
-| Method | Path | Parameters | Body |
-| --- | --- | --- | --- |
-| `POST` | `/api/v1/ai/renovation/estimate` | — | [`AI.CreateRenovationEstimateRequestDto`](#s-ai-createrenovationestimaterequestdto) |
-| `GET` | `/api/v1/ai/renovation/estimates` | — | — |
-| `GET` | `/api/v1/ai/renovation/estimates/{estimateId}` | `estimateId` string(uuid) *(path)* | — |
-
-### <a id="tag-aiupload"></a>AIUpload
-
-| Method | Path | Parameters | Body |
-| --- | --- | --- | --- |
-| `POST` | `/api/v1/ai/upload-room` | — | **multipart/form-data**<br>`file` |
+| `DELETE` | `/api/v1/admin/vendors/products/{productId}/assign` | `productId` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/admin/vendors/products/{productId}/assign` | `productId` string(uuid) *(path)* | [`Vendor.AssignProductOwnerRequest`](#s-vendor-assignproductownerrequest) |
 
 ### <a id="tag-auth"></a>Auth
 
@@ -376,12 +384,12 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
-| `GET` | `/api/v1/Cart` | — | — |
 | `DELETE` | `/api/v1/Cart` | — | — |
+| `GET` | `/api/v1/Cart` | — | — |
 | `POST` | `/api/v1/Cart/apply-promo` | — | [`Checkout.PromoValidationRequestDto`](#s-checkout-promovalidationrequestdto) |
 | `POST` | `/api/v1/Cart/items` | — | [`Orders.AddToCartDto`](#s-orders-addtocartdto) |
-| `PUT` | `/api/v1/Cart/items/{itemId}` | `itemId` string(uuid) *(path)* | [`Orders.UpdateCartItemDto`](#s-orders-updatecartitemdto) |
 | `DELETE` | `/api/v1/Cart/items/{itemId}` | `itemId` string(uuid) *(path)* | — |
+| `PUT` | `/api/v1/Cart/items/{itemId}` | `itemId` string(uuid) *(path)* | [`Orders.UpdateCartItemDto`](#s-orders-updatecartitemdto) |
 | `POST` | `/api/v1/Cart/merge` | — | [`Orders.MergeCartRequestDto`](#s-orders-mergecartrequestdto) |
 | `GET` | `/api/v1/Cart/related` | `limit?` integer *(query)* | — |
 
@@ -391,11 +399,11 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/Categories` | — | — |
 | `POST` | `/api/v1/Categories` | — | [`Products.CreateCategoryDto`](#s-products-createcategorydto) |
-| `GET` | `/api/v1/Categories/brand/{brandType}` | `brandType` integer *(path)* | — |
-| `GET` | `/api/v1/Categories/slug/{slug}` | `slug` string *(path)* | — |
+| `DELETE` | `/api/v1/Categories/{id}` | `id` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/Categories/{id}` | `id` string(uuid) *(path)* | — |
 | `PUT` | `/api/v1/Categories/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateCategoryDto`](#s-products-updatecategorydto) |
-| `DELETE` | `/api/v1/Categories/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/Categories/brand/{brandType}` | `brandType` integer *(path)* | — |
+| `GET` | `/api/v1/Categories/slug/{slug}` | `slug` string *(path)* | — |
 
 ### <a id="tag-checkout"></a>Checkout
 
@@ -422,18 +430,6 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `GET` | `/api/v1/Dashboard/recent-order` | — | — |
 | `GET` | `/api/v1/Dashboard/saved-items` | — | — |
 
-### <a id="tag-designs"></a>Designs
-
-| Method | Path | Parameters | Body |
-| --- | --- | --- | --- |
-| `GET` | `/api/v1/Designs` | `roomType?` string *(query)*<br>`search?` string *(query)*<br>`sortBy?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
-| `GET` | `/api/v1/Designs/{id}` | `id` string(uuid) *(path)* | — |
-| `DELETE` | `/api/v1/Designs/{id}` | `id` string(uuid) *(path)* | — |
-| `GET` | `/api/v1/Designs/{id}/download` | `id` string(uuid) *(path)*<br>`quality?` string *(query)* | — |
-| `POST` | `/api/v1/Designs/{id}/favorite` | `id` string(uuid) *(path)* | — |
-| `POST` | `/api/v1/Designs/{id}/share` | `id` string(uuid) *(path)* | — |
-| `PATCH` | `/api/v1/Designs/{id}/visibility` | `id` string(uuid) *(path)* | [`AI.UpdateDesignVisibilityDto`](#s-ai-updatedesignvisibilitydto) |
-
 ### <a id="tag-designsessions"></a>DesignSessions
 
 | Method | Path | Parameters | Body |
@@ -445,6 +441,31 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `POST` | `/api/v1/designs/sessions/{sessionId}/generate` | `sessionId` string(uuid) *(path)* | [`DesignFlow.GenerateDesignSessionRequestDto`](#s-designflow-generatedesignsessionrequestdto) |
 | `GET` | `/api/v1/designs/sessions/{sessionId}/status` | `sessionId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/designs/sessions/{sessionId}/upload` | `sessionId` string(uuid) *(path)* | **multipart/form-data**<br>`Image` |
+
+### <a id="tag-designs"></a>Designs
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/Designs` | `roomType?` string *(query)*<br>`search?` string *(query)*<br>`sortBy?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
+| `DELETE` | `/api/v1/Designs/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/Designs/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/Designs/{id}/download` | `id` string(uuid) *(path)*<br>`quality?` string *(query)* | — |
+| `POST` | `/api/v1/Designs/{id}/favorite` | `id` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/Designs/{id}/share` | `id` string(uuid) *(path)* | — |
+| `PATCH` | `/api/v1/Designs/{id}/visibility` | `id` string(uuid) *(path)* | [`AI.UpdateDesignVisibilityDto`](#s-ai-updatedesignvisibilitydto) |
+
+### <a id="tag-inspection"></a>Inspection
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/inspections/book` | — | [`Inspections.BookInspectionRequestDto`](#s-inspections-bookinspectionrequestdto) |
+| `POST` | `/api/v1/inspections/verify-payment` | — | [`Inspections.VerifyInspectionPaymentRequestDto`](#s-inspections-verifyinspectionpaymentrequestdto) |
+
+### <a id="tag-inspiration"></a>Inspiration
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/inspiration` | `category?` string *(query)*<br>`style?` string *(query)* | — |
 
 ### <a id="tag-lookups"></a>Lookups
 
@@ -466,12 +487,12 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
 | `POST` | `/api/v1/orders` | — | [`Orders.CreateOrderDto`](#s-orders-createorderdto) |
-| `GET` | `/api/v1/orders/my-orders` | — | — |
-| `GET` | `/api/v1/orders/number/{orderNumber}` | `orderNumber` string *(path)* | — |
 | `GET` | `/api/v1/orders/{orderId}` | `orderId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/orders/{orderId}/cancel` | `orderId` string(uuid) *(path)* | [`Orders.CancelOrderDto`](#s-orders-cancelorderdto) |
 | `GET` | `/api/v1/orders/{orderId}/invoice` | `orderId` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/orders/{orderId}/invoice/document` | `orderId` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/orders/my-orders` | — | — |
+| `GET` | `/api/v1/orders/number/{orderNumber}` | `orderNumber` string *(path)* | — |
 
 ### <a id="tag-paystackwebhook"></a>PaystackWebhook
 
@@ -496,22 +517,30 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
+| `GET` | `/api/v1/flooring` | `category?` string *(query)*<br>`materialType?` string *(query)*<br>`minPrice?` number *(query)*<br>`maxPrice?` number *(query)*<br>`isFeatured?` boolean *(query)*<br>`sort?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
+| `GET` | `/api/v1/materials` | `PageNumber?` integer *(query)*<br>`PageSize?` integer *(query)*<br>`BrandType?` integer *(query)*<br>`ProductType?` integer *(query)*<br>`CategoryId?` string(uuid) *(query)*<br>`SearchTerm?` string *(query)*<br>`MinPrice?` number *(query)*<br>`MaxPrice?` number *(query)*<br>`IsFeatured?` boolean *(query)*<br>`ActiveOnly?` boolean *(query)* | — |
+| `GET` | `/api/v1/materials/{idOrSlug}` | `idOrSlug` string *(path)* | — |
+| `GET` | `/api/v1/materials/list` | `category?` string *(query)*<br>`materialType?` string *(query)*<br>`minPrice?` number *(query)*<br>`maxPrice?` number *(query)*<br>`isFeatured?` boolean *(query)*<br>`sort?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
 | `GET` | `/api/v1/Products` | `PageNumber?` integer *(query)*<br>`PageSize?` integer *(query)*<br>`BrandType?` integer *(query)*<br>`ProductType?` integer *(query)*<br>`CategoryId?` string(uuid) *(query)*<br>`SearchTerm?` string *(query)*<br>`MinPrice?` number *(query)*<br>`MaxPrice?` number *(query)*<br>`IsFeatured?` boolean *(query)*<br>`ActiveOnly?` boolean *(query)* | — |
 | `POST` | `/api/v1/Products` | — | [`Products.CreateProductDto`](#s-products-createproductdto) |
+| `DELETE` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | — |
+| `PUT` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateProductDto`](#s-products-updateproductdto) |
+| `POST` | `/api/v1/Products/{id}/images` | `id` string(uuid) *(path)* | [`Products.AddProductImageDto`](#s-products-addproductimagedto) |
+| `GET` | `/api/v1/Products/{id}/related` | `id` string(uuid) *(path)*<br>`limit?` integer *(query)* | — |
+| `PUT` | `/api/v1/Products/{productId}/images/{imageId}/primary` | `productId` string(uuid) *(path)*<br>`imageId` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/Products/featured` | `brandType?` integer *(query)*<br>`limit?` integer *(query)* | — |
 | `DELETE` | `/api/v1/Products/images/{imageId}` | `imageId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/Products/import` | — | **multipart/form-data**<br>`file` |
 | `GET` | `/api/v1/Products/slug/{slug}` | `slug` string *(path)* | — |
-| `GET` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | — |
-| `PUT` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateProductDto`](#s-products-updateproductdto) |
-| `DELETE` | `/api/v1/Products/{id}` | `id` string(uuid) *(path)* | — |
-| `POST` | `/api/v1/Products/{id}/images` | `id` string(uuid) *(path)* | [`Products.AddProductImageDto`](#s-products-addproductimagedto) |
-| `GET` | `/api/v1/Products/{id}/related` | `id` string(uuid) *(path)*<br>`limit?` integer *(query)* | — |
-| `PUT` | `/api/v1/Products/{productId}/images/{imageId}/primary` | `productId` string(uuid) *(path)*<br>`imageId` string(uuid) *(path)* | — |
-| `GET` | `/api/v1/flooring` | `category?` string *(query)*<br>`materialType?` string *(query)*<br>`minPrice?` number *(query)*<br>`maxPrice?` number *(query)*<br>`isFeatured?` boolean *(query)*<br>`sort?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
-| `GET` | `/api/v1/materials` | `PageNumber?` integer *(query)*<br>`PageSize?` integer *(query)*<br>`BrandType?` integer *(query)*<br>`ProductType?` integer *(query)*<br>`CategoryId?` string(uuid) *(query)*<br>`SearchTerm?` string *(query)*<br>`MinPrice?` number *(query)*<br>`MaxPrice?` number *(query)*<br>`IsFeatured?` boolean *(query)*<br>`ActiveOnly?` boolean *(query)* | — |
-| `GET` | `/api/v1/materials/list` | `category?` string *(query)*<br>`materialType?` string *(query)*<br>`minPrice?` number *(query)*<br>`maxPrice?` number *(query)*<br>`isFeatured?` boolean *(query)*<br>`sort?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
-| `GET` | `/api/v1/materials/{idOrSlug}` | `idOrSlug` string *(path)* | — |
+
+### <a id="tag-projectrequests"></a>ProjectRequests
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/project-requests/3d-model` | — | [`ProjectRequests.CreateProjectRequestDto`](#s-projectrequests-createprojectrequestdto) |
+| `POST` | `/api/v1/project-requests/boq` | — | [`ProjectRequests.CreateProjectRequestDto`](#s-projectrequests-createprojectrequestdto) |
+| `POST` | `/api/v1/project-requests/contact-designer` | — | [`ProjectRequests.CreateProjectRequestDto`](#s-projectrequests-createprojectrequestdto) |
 
 ### <a id="tag-projects"></a>Projects
 
@@ -537,11 +566,11 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/Saved` | `category?` string *(query)*<br>`search?` string *(query)*<br>`sortBy?` string *(query)*<br>`page?` integer *(query)*<br>`limit?` integer *(query)* | — |
 | `POST` | `/api/v1/Saved` | — | [`SavedController.SaveItemRequest`](#s-savedcontroller-saveitemrequest) |
-| `POST` | `/api/v1/Saved/buy-all` | — | [`SavedController.BuyAllRequest`](#s-savedcontroller-buyallrequest) |
-| `POST` | `/api/v1/Saved/create-board` | — | [`SavedController.CreateBoardRequest`](#s-savedcontroller-createboardrequest) |
 | `DELETE` | `/api/v1/Saved/{id}` | `id` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/Saved/{id}/add-to-cart` | `id` string(uuid) *(path)* | [`SavedController.AddSavedToCartRequest`](#s-savedcontroller-addsavedtocartrequest) |
 | `POST` | `/api/v1/Saved/{id}/add-to-moodboard` | `id` string(uuid) *(path)* | [`SavedController.AddToMoodboardRequest`](#s-savedcontroller-addtomoodboardrequest) |
+| `POST` | `/api/v1/Saved/buy-all` | — | [`SavedController.BuyAllRequest`](#s-savedcontroller-buyallrequest) |
+| `POST` | `/api/v1/Saved/create-board` | — | [`SavedController.CreateBoardRequest`](#s-savedcontroller-createboardrequest) |
 
 ### <a id="tag-subscription"></a>Subscription
 
@@ -553,6 +582,12 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `POST` | `/api/v1/subscription/renew` | `callbackUrl?` string *(query)* | — |
 | `POST` | `/api/v1/subscription/subscribe` | — | [`Subscriptions.SubscribeToPlanDto`](#s-subscriptions-subscribetoplandto) |
 | `POST` | `/api/v1/subscription/upgrade` | — | [`Subscriptions.SubscribeToPlanDto`](#s-subscriptions-subscribetoplandto) |
+
+### <a id="tag-upload"></a>Upload
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/uploads/document` | — | **multipart/form-data**<br>`file` |
 
 ### <a id="tag-vendor"></a>Vendor
 
@@ -567,22 +602,22 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `GET` | `/api/v1/vendor/dashboard` | — | — |
 | `GET` | `/api/v1/vendor/deliveries` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`status?` OrderStatus *(query)* | — |
 | `GET` | `/api/v1/vendor/inventory` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`search?` string *(query)*<br>`lowStockOnly?` boolean *(query)* | — |
+| `PUT` | `/api/v1/vendor/inventory/{productId}` | `productId` string(uuid) *(path)* | [`Vendor.VendorInventoryUpdateRequest`](#s-vendor-vendorinventoryupdaterequest) |
 | `POST` | `/api/v1/vendor/inventory/products` | — | [`Vendor.VendorInventoryCreateRequest`](#s-vendor-vendorinventorycreaterequest) |
 | `DELETE` | `/api/v1/vendor/inventory/products/{productId}` | `productId` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/vendor/inventory/stats` | — | — |
-| `PUT` | `/api/v1/vendor/inventory/{productId}` | `productId` string(uuid) *(path)* | [`Vendor.VendorInventoryUpdateRequest`](#s-vendor-vendorinventoryupdaterequest) |
 | `GET` | `/api/v1/vendor/messages` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`unreadOnly?` boolean *(query)* | — |
 | `POST` | `/api/v1/vendor/messages` | — | [`Vendor.VendorMessageCreateRequest`](#s-vendor-vendormessagecreaterequest) |
 | `GET` | `/api/v1/vendor/notifications` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`unreadOnly?` boolean *(query)* | — |
-| `PUT` | `/api/v1/vendor/notifications/mark-all-read` | — | — |
 | `PATCH` | `/api/v1/vendor/notifications/{notificationId}/read` | `notificationId` string *(path)* | — |
+| `PUT` | `/api/v1/vendor/notifications/mark-all-read` | — | — |
 | `GET` | `/api/v1/vendor/orders` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`status?` OrderStatus *(query)*<br>`search?` string *(query)*<br>`fromDate?` string(date-time) *(query)*<br>`toDate?` string(date-time) *(query)*<br>`assignedOnly?` boolean *(query)*<br>`type?` string *(query)* | — |
-| `GET` | `/api/v1/vendor/orders/export` | `status?` OrderStatus *(query)*<br>`search?` string *(query)*<br>`fromDate?` string(date-time) *(query)*<br>`toDate?` string(date-time) *(query)*<br>`assignedOnly?` boolean *(query)*<br>`type?` string *(query)* | — |
-| `POST` | `/api/v1/vendor/orders/import` | — | **multipart/form-data**<br>`file` |
 | `GET` | `/api/v1/vendor/orders/{orderId}` | `orderId` string(uuid) *(path)* | — |
 | `PATCH` | `/api/v1/vendor/orders/{orderId}/assignment` | `orderId` string(uuid) *(path)* | [`Vendor.VendorOrderAssignmentRequest`](#s-vendor-vendororderassignmentrequest) |
 | `POST` | `/api/v1/vendor/orders/{orderId}/notes` | `orderId` string(uuid) *(path)* | [`Vendor.VendorOrderNoteRequest`](#s-vendor-vendorordernoterequest) |
 | `PATCH` | `/api/v1/vendor/orders/{orderId}/status` | `orderId` string(uuid) *(path)* | [`Vendor.VendorOrderStatusUpdateRequest`](#s-vendor-vendororderstatusupdaterequest) |
+| `GET` | `/api/v1/vendor/orders/export` | `status?` OrderStatus *(query)*<br>`search?` string *(query)*<br>`fromDate?` string(date-time) *(query)*<br>`toDate?` string(date-time) *(query)*<br>`assignedOnly?` boolean *(query)*<br>`type?` string *(query)* | — |
+| `POST` | `/api/v1/vendor/orders/import` | — | **multipart/form-data**<br>`file` |
 
 ### <a id="tag-vendorportfolio"></a>VendorPortfolio
 
@@ -590,9 +625,9 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/vendor/portfolio` | — | — |
 | `POST` | `/api/v1/vendor/portfolio` | — | [`Portfolio.CreatePortfolioProjectDto`](#s-portfolio-createportfolioprojectdto) |
+| `DELETE` | `/api/v1/vendor/portfolio/{id}` | `id` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/vendor/portfolio/{id}` | `id` string(uuid) *(path)* | — |
 | `PUT` | `/api/v1/vendor/portfolio/{id}` | `id` string(uuid) *(path)* | [`Portfolio.UpdatePortfolioProjectDto`](#s-portfolio-updateportfolioprojectdto) |
-| `DELETE` | `/api/v1/vendor/portfolio/{id}` | `id` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/vendor/portfolio/{id}/images` | `id` string(uuid) *(path)*<br>`imageType?` PortfolioImageType *(query)*<br>`caption?` string *(query)* | **multipart/form-data**<br>`file` |
 | `DELETE` | `/api/v1/vendor/portfolio/{id}/images/{imageId}` | `id` string(uuid) *(path)*<br>`imageId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/vendor/portfolio/{id}/publish` | `id` string(uuid) *(path)* | — |
@@ -880,7 +915,7 @@ Body of: `POST /api/v1/ai/projects`
 
 <sub>`TBM.Application.DTOs.AI.CreateRenovationEstimateRequestDto`</sub>
 
-Body of: `POST /api/v1/ai/renovation/estimate`
+Body of: `POST /api/v1/ai/renovation/estimate`, `POST /api/v1/ai/renovation-estimates`
 
 | Property | Type | |
 | --- | --- | --- |
@@ -923,6 +958,7 @@ Body of: `POST /api/v1/ai/generate/image`, `POST /api/v1/ai/transform/image`
 | `prompt?` | string | nullable |
 | `sourceImageUrl?` | string | nullable |
 | `contextTags?` | string[] | nullable |
+| `style?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -939,6 +975,7 @@ Body of: `POST /api/v1/ai/generate/video`
 | `sourceImageUrl?` | string | nullable |
 | `durationSeconds` | integer |  |
 | `contextTags?` | string[] | nullable |
+| `style?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1131,11 +1168,11 @@ Body of: `POST /api/v1/contact`
 
 | Property | Type | |
 | --- | --- | --- |
-| `fullName` | string | **required** |
-| `email` | string(email) | **required** |
+| `fullName` | string |  |
+| `email` | string(email) |  |
 | `phoneNumber?` | string | nullable |
 | `subject?` | string | nullable |
-| `message` | string | **required** |
+| `message` | string |  |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1148,7 +1185,7 @@ Body of: `POST /api/v1/designs/sessions/{sessionId}/add-to-cart`
 | Property | Type | |
 | --- | --- | --- |
 | `addAll` | boolean |  |
-| `itemIds?` | string(uuid)[] | nullable |
+| `itemIds?` | string[] | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1189,6 +1226,40 @@ Body of: `POST /api/v1/designs/sessions/{sessionId}/generate`
 | `length` | number |  |
 | `width` | number |  |
 | `height` | number |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-inspections-bookinspectionrequestdto"></a>Inspections.BookInspectionRequestDto
+
+<sub>`TBM.Application.DTOs.Inspections.BookInspectionRequestDto`</sub>
+
+Body of: `POST /api/v1/inspections/book`
+
+| Property | Type | |
+| --- | --- | --- |
+| `contactName?` | string | nullable |
+| `contactPhone?` | string | nullable |
+| `contactEmail?` | string | nullable |
+| `siteAddress?` | string | nullable |
+| `siteCity?` | string | nullable |
+| `siteState?` | string | nullable |
+| `preferredDate1` | string(date-time) |  |
+| `preferredDate2?` | string(date-time) | nullable |
+| `uploadedFileUrls?` | string[] | nullable |
+| `paymentReference?` | string | nullable |
+| `additionalNotes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-inspections-verifyinspectionpaymentrequestdto"></a>Inspections.VerifyInspectionPaymentRequestDto
+
+<sub>`TBM.Application.DTOs.Inspections.VerifyInspectionPaymentRequestDto`</sub>
+
+Body of: `POST /api/v1/inspections/verify-payment`
+
+| Property | Type | |
+| --- | --- | --- |
+| `reference?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1407,7 +1478,7 @@ Body of: `POST /api/v1/Categories`
 
 <sub>`TBM.Application.DTOs.Products.CreateProductDto`</sub>
 
-Body of: `POST /api/v1/admin/AdminProducts`, `POST /api/v1/Products`
+Body of: `POST /api/v1/admin/AdminProducts/bulk`, `POST /api/v1/admin/AdminProducts`, `POST /api/v1/Products`
 
 | Property | Type | |
 | --- | --- | --- |
@@ -1516,6 +1587,23 @@ Body of: `PUT /api/v1/admin/AdminProducts/{id}`, `PUT /api/v1/Products/{id}`
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
+### <a id="s-projectrequests-createprojectrequestdto"></a>ProjectRequests.CreateProjectRequestDto
+
+<sub>`TBM.Application.DTOs.ProjectRequests.CreateProjectRequestDto`</sub>
+
+Body of: `POST /api/v1/project-requests/3d-model`, `POST /api/v1/project-requests/boq`, `POST /api/v1/project-requests/contact-designer`
+
+| Property | Type | |
+| --- | --- | --- |
+| `estimateId?` | string(uuid) | nullable |
+| `projectDescription?` | string | nullable |
+| `contactName?` | string | nullable |
+| `contactPhone?` | string | nullable |
+| `contactEmail?` | string | nullable |
+| `additionalNotes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
 ### <a id="s-savedcontroller-addsavedtocartrequest"></a>SavedController.AddSavedToCartRequest
 
 <sub>`TBM.API.Controllers.V1.SavedController.AddSavedToCartRequest`</sub>
@@ -1548,7 +1636,7 @@ Body of: `POST /api/v1/Saved/buy-all`
 
 | Property | Type | |
 | --- | --- | --- |
-| `itemIds?` | string(uuid)[] | nullable |
+| `itemIds?` | string[] | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1560,7 +1648,7 @@ Body of: `POST /api/v1/Saved/create-board`
 
 | Property | Type | |
 | --- | --- | --- |
-| `itemIds?` | string(uuid)[] | nullable |
+| `itemIds?` | string[] | nullable |
 | `boardName?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
@@ -1881,4 +1969,3 @@ Body of: `PATCH /api/v1/vendor/orders/{orderId}/status`
 | `note?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
-

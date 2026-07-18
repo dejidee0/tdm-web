@@ -33,6 +33,12 @@ export async function GET(request) {
   if (maxPrice !== null && maxPrice !== undefined)
     params.set("MaxPrice", maxPrice);
 
+  // Only an admin asks to see inactive products, and an admin who has just
+  // created one must see it immediately. A 60s cache is right for the
+  // storefront and wrong here: it would show a stale list straight after a
+  // write, which reads as "the save didn't work".
+  const isAdminView = activeOnly === "false";
+
   let res;
   try {
     res = await fetch(`${API_URL}/products?${params.toString()}`, {
@@ -42,7 +48,7 @@ export async function GET(request) {
           ? { Authorization: `Bearer ${process.env.API_KEY}` }
           : {}),
       },
-      next: { revalidate: 60 },
+      ...(isAdminView ? { cache: "no-store" } : { next: { revalidate: 60 } }),
     });
   } catch (err) {
     console.error("[products] fetch failed:", err.message);
@@ -63,7 +69,11 @@ export async function GET(request) {
 
   return NextResponse.json(data, {
     headers: {
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      // The admin view includes inactive products — never let a CDN or the
+      // browser hold on to it, for freshness and because it is not public data.
+      "Cache-Control": isAdminView
+        ? "private, no-store"
+        : "public, s-maxage=60, stale-while-revalidate=300",
     },
   });
 }

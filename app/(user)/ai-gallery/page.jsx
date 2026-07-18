@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowRight, X, ZoomIn } from "lucide-react";
+import { Wand2, ArrowRight, X, ZoomIn } from "lucide-react";
 import Link from "next/link";
 import { usePublicProjects } from "@/hooks/use-project";
 
@@ -177,7 +177,7 @@ export default function AIGalleryPage() {
               href="/ziora"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-black text-sm font-manrope font-semibold rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
             >
-              <Sparkles className="w-4 h-4" />
+              <Wand2 className="w-4 h-4" />
               Try AI Visualizer
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -204,7 +204,7 @@ export default function AIGalleryPage() {
           {!isLoading && !isError && designs.length === 0 && (
             <div className="text-center py-24 space-y-6">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-[#D4AF37]/10 flex items-center justify-center">
-                <Sparkles className="w-7 h-7 text-[#D4AF37]/60" />
+                <Wand2 className="w-7 h-7 text-[#D4AF37]/60" />
               </div>
               <div>
                 <p className="text-white/60 font-semibold mb-2">
@@ -234,7 +234,7 @@ export default function AIGalleryPage() {
                   href="/ziora"
                   className="inline-flex items-center gap-1.5 text-[#D4AF37] text-sm font-manrope hover:text-[#D4AF37]/80 transition-colors"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Wand2 className="w-3.5 h-3.5" />
                   Create yours
                 </Link>
               </div>
@@ -273,7 +273,7 @@ export default function AIGalleryPage() {
               href="/ziora"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#D4AF37] text-black font-manrope font-semibold rounded-xl hover:bg-[#D4AF37]/90 transition-colors text-sm"
             >
-              <Sparkles className="w-4 h-4" />
+              <Wand2 className="w-4 h-4" />
               Start Visualizing for Free
               <ArrowRight className="w-4 h-4" />
             </Link>

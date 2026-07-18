@@ -74,7 +74,6 @@ export default function RecentActivityStream({ activities }) {
           return true;
         });
 
-  console.log("filteredActivities", filteredActivities);
 
   function formatDate(dateString) {
     const date = new Date(dateString);

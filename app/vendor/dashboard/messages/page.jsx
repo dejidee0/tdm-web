@@ -353,7 +353,7 @@ export default function MessagesPage() {
                       <p className="font-manrope text-[13px] md:text-[14px] leading-relaxed wrap-break-word">
                         {message.message}
                       </p>
-                      <p className="font-manrope text-[16px] md:text-[11px] text-muted mt-1">
+                      <p className="font-manrope text-[11px] text-muted mt-1">
                         {message.timestamp}
                       </p>
                     </div>

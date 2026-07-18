@@ -3,13 +3,21 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, AlertTriangle } from "lucide-react";
 
+/**
+ * @param {object}  props
+ * @param {string} [props.itemName] Name of the thing being deleted. `userName`
+ *   is the original, user-management-specific alias, kept so existing callers
+ *   keep working.
+ */
 export default function ConfirmDeleteModal({
   isOpen,
   onClose,
   onConfirm,
   userName,
+  itemName,
   isDeleting = false,
 }) {
+  const name = itemName ?? userName;
   const handleConfirm = () => {
     onConfirm();
   };
@@ -63,7 +71,7 @@ export default function ConfirmDeleteModal({
                 <p className="font-manrope text-[15px] text-white/50 leading-relaxed">
                   Are you sure you want to delete{" "}
                   <span className="font-semibold text-white">
-                    {userName || "this user"}
+                    {name || "this item"}
                   </span>
                   ? This action cannot be undone and all associated data will be
                   permanently removed.

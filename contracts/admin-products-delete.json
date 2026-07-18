@@ -1,0 +1,11 @@
+{
+  "endpoint": "DELETE /admin/AdminProducts/{id}",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": "boolean",
+    "errors": "null"
+  }
+}

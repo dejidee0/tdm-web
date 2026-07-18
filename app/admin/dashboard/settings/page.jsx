@@ -42,9 +42,6 @@ export default function PlatformSettingsPage() {
     useGeneralSettings();
 
   // Debug logging
-  console.log('Payment Settings:', paymentSettings);
-  console.log('Payment Error:', paymentError);
-  console.log('Payment Loading:', paymentLoading);
   const { mutate: saveSettings, isPending: isSaving } = useSaveSettings();
   const { mutate: toggleGateway } = useTogglePaymentGateway();
   const { mutate: toggleModel } = useToggleAIModel();

@@ -1,0 +1,20 @@
+{
+  "endpoint": "POST /admin/adminproducts/{productId}/images/upload",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "note": "Not in swagger.snapshot.json — shipped after the snapshot. Multipart; field `file`; isPrimary/displayOrder/altText are query params. Recorded by scripts/explore-image-upload.mjs.",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": {
+      "id": "string",
+      "productId": "string",
+      "imageUrl": "string",
+      "altText": "string",
+      "viewType": "null",
+      "displayOrder": "number",
+      "isPrimary": "boolean"
+    },
+    "errors": "null"
+  }
+}

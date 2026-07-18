@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Sparkles, Crown, AlertCircle, Loader2, X } from "lucide-react";
+import { Check, Star, Crown, AlertCircle, Loader2, X } from "lucide-react";
 import { usePricing } from "@/hooks/use-pricing";
 import { useSubscribePaid } from "@/hooks/use-subscription";
 
@@ -76,7 +76,7 @@ const PAID_TIERS = [
   {
     id: "premium",
     label: "Premium",
-    icon: Sparkles,
+    icon: Star,
     tagline: "50 designs per period",
     features: ["50 generations", "Style variations", "Cost estimates"],
     cta: "Choose Premium",

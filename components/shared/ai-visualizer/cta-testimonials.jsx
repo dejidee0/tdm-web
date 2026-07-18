@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, CalendarDays } from "lucide-react";
+import { Wand2, CalendarDays } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-auth";
 
 const CTAAndTestimonials = () => {
@@ -77,7 +77,7 @@ const CTAAndTestimonials = () => {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 shrink-0">
             <Link href={designHref} className="btn-gold px-6 py-3">
-              <Sparkles className="w-4 h-4" />
+              <Wand2 className="w-4 h-4" />
               {user ? "Open Ziora Studio" : "Start Designing Free"}
             </Link>
 

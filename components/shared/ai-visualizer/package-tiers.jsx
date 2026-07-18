@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
-  Sparkles,
+  Star,
+  Wand2,
   Zap,
   Crown,
   AlertCircle,
@@ -244,7 +245,7 @@ const TIERS = [
     id: "premium",
     label: "Premium",
     tagline: "More designs, more control",
-    icon: Sparkles,
+    icon: Star,
     dark: true,
     badge: "Most Popular",
     features: [
@@ -565,7 +566,7 @@ export default function PackageTiers({ id, onSubscribed }) {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4">
-              <Sparkles className="w-3 h-3" /> Ziora Intelligence Plans
+              <Wand2 className="w-3 h-3" /> Ziora Intelligence Plans
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight font-primary">
               {currentTier && isActive ? "Your Plan" : "Choose Your Plan"}

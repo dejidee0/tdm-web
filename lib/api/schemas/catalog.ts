@@ -17,6 +17,25 @@ import {
 /** Integer on the wire: TBM = 1, Bogat = 2. A third value should raise drift. */
 export const brandTypeSchema = z.union([z.literal(1), z.literal(2)]);
 
+/**
+ * A product image. Returned by the upload endpoint and embedded in
+ * `Product.images[]`. Recorded from the live backend (the /upload endpoint
+ * post-dates the OpenAPI snapshot) — see contracts/admin-product-image.json.
+ *
+ * `viewType` was null in every observed image; `z.unknown()` rather than a
+ * guess. The backend example shows it as a string field, so widen when a
+ * non-null value appears.
+ */
+export const productImageSchema = z.looseObject({
+  id: z.string(),
+  productId: z.string(),
+  imageUrl: z.string(),
+  altText: z.string().nullable(),
+  viewType: z.unknown(),
+  displayOrder: z.number(),
+  isPrimary: z.boolean(),
+});
+
 /** Fields common to both pricing branches. Spread into each, so the union discriminates cleanly. */
 const productFields = {
   id: z.string(),
@@ -43,7 +62,10 @@ const productFields = {
   isFeatured: z.boolean(),
 
   /** Rendered straight into <Image src>. */
-  images: z.array(z.string()),
+  // Was z.array(z.string()) — a guess that never fired because every observed
+  // product had images: []. The upload endpoint proved the element is a
+  // ProductImageDto object, not a URL string. Corrected against real data.
+  images: z.array(productImageSchema),
   primaryImageUrl: z.string().nullable(),
   /** Always empty in every sampled response, and never read. Don't recurse into Product. */
   similarProducts: z.array(z.unknown()),

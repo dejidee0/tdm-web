@@ -7,16 +7,35 @@ import {
   aiGenerationApi,
   aiUsageApi,
   aiAssistantApi,
+  aiStylesApi,
 } from "@/lib/api/ai-services";
 
 // ─── Query key factory ────────────────────────────────────────────────────────
 export const aiKeys = {
   projects: () => ["ai", "projects"],
   project: (id) => ["ai", "project", id],
+  styles: () => ["ai", "styles"],
   usageSummary: () => ["ai", "usage", "summary"],
   creditBalance: () => ["ai", "credits", "balance"],
   toolAction: (id) => ["ai", "tool-action", id],
 };
+
+/**
+ * GET /ai/styles — the selectable design styles.
+ *
+ * Public and effectively static, so it is cached for the session and needs no
+ * `enabled` gate. `select` guarantees an array even if the backend ever wraps
+ * it, so callers can always `.map` without a guard.
+ */
+export function useAIStyles() {
+  return useQuery({
+    queryKey: aiKeys.styles(),
+    queryFn: aiStylesApi.getStyles,
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    select: (res) => (Array.isArray(res) ? res : (res?.data ?? [])),
+  });
+}
 
 // ─── AI Projects ──────────────────────────────────────────────────────────────
 

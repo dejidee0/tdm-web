@@ -61,9 +61,15 @@ const specKeys = new Set(operations.map((o) => o.key));
 const modelled = new Map();
 const recorded = new Set();
 const unresolved = [];
+const aheadOfSpec = []; // modelled, but the snapshot doesn't know the endpoint yet
 for (const e of manifest.endpoints) {
   if (!specKeys.has(e.op)) {
-    unresolved.push(e.op);
+    // An endpoint the backend has shipped but our snapshot predates. Allowed
+    // only when explicitly flagged, so a casing typo is still a hard error — it
+    // must not be able to hide behind this escape hatch. Refresh the snapshot to
+    // fold these into the real denominator.
+    if (e.notInSpec) aheadOfSpec.push(e);
+    else unresolved.push(e.op);
     continue;
   }
   recorded.add(e.op);
@@ -74,7 +80,8 @@ if (unresolved.length) {
     `contracts/manifest.json names ${unresolved.length} operation(s) that do not ` +
       `exist in docs/api/swagger.snapshot.json:\n` +
       unresolved.map((u) => `  ${u}`).join("\n") +
-      `\n\nCheck the casing against the spec, or re-download it if the backend changed.`,
+      `\n\nCheck the casing against the spec. If the backend genuinely added it, ` +
+      `set "notInSpec": true on the entry and re-download the snapshot when you can.`,
   );
   process.exit(1);
 }
@@ -160,6 +167,13 @@ for (const [tag, v] of withAny.sort()) {
   console.log(`  ${tag.padEnd(22)} ${v.covered}/${v.total}`);
 }
 console.log(`\n  ${byTag.size - withAny.length} of ${byTag.size} tags have no coverage at all.`);
+if (aheadOfSpec.length) {
+  console.log(
+    `\n  + ${aheadOfSpec.length} endpoint(s) modelled but not in the snapshot ` +
+      `(refresh docs/api/swagger.snapshot.json to count them):`,
+  );
+  for (const e of aheadOfSpec) console.log(`      ${e.op}`);
+}
 console.log(`  Ask about one:  npm run contract:coverage -- Cart\n`);
 
 const lines = [

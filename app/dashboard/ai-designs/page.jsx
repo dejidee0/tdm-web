@@ -3,14 +3,17 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Wand2 } from "lucide-react";
 
 import DashboardLayout from "@/components/shared/dashboard/layout";
 import DesignsFilters from "@/components/shared/dashboard/designs/filters";
 import DesignsGrid from "@/components/shared/dashboard/designs/grid";
 import { useDesigns } from "@/hooks/use-designs";
-import CreateNewDesignModal from "@/components/shared/dashboard/designs/create-new-design";
 import SubscriptionPanel from "@/components/shared/dashboard/designs/subscription-panel";
+
+const CREATE_HREF = "/dashboard/ai-designs/new";
 
 export default function DesignsPage() {
   const [filters, setFilters] = useState({
@@ -19,7 +22,7 @@ export default function DesignsPage() {
     sortBy: "newest",
     view: "grid",
   });
-  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
 
   const { data: designs, isLoading, isError } = useDesigns(filters);
 
@@ -43,15 +46,15 @@ export default function DesignsPage() {
             </p>
           </div>
 
-          {/* Create New Design — always visible; modal handles quota/upgrade wall */}
-          <button
-            onClick={() => setModalOpen(true)}
+          {/* Create New Design — navigates to the full creation page. */}
+          <Link
+            href={CREATE_HREF}
             className="relative inline-flex items-center gap-2 px-5 py-3 rounded-xl text-[14px] font-semibold text-black hover:opacity-90 active:scale-[0.98] transition-all self-start sm:self-auto whitespace-nowrap"
             style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
           >
-            <Sparkles className="w-4 h-4" />
+            <Wand2 className="w-4 h-4" />
             Create New Design
-          </button>
+          </Link>
         </motion.div>
 
         {/* Subscription status panel */}
@@ -66,15 +69,9 @@ export default function DesignsPage() {
           isLoading={isLoading}
           isError={isError}
           view={filters.view}
-          onOpenModal={() => setModalOpen(true)}
+          onOpenModal={() => router.push(CREATE_HREF)}
         />
       </div>
-
-      {/* Generation modal */}
-      <CreateNewDesignModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
     </DashboardLayout>
   );
 }

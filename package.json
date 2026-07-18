@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "lint:arch": "eslint . --quiet",
+    "lint:tables": "node scripts/check-tables.mjs",
     "typecheck": "tsc --noEmit",
     "contract:record": "node scripts/record-contract.mjs",
     "contract:check": "node --import ./scripts/register-ts.mjs scripts/check-contract.mjs",
-    "contract:coverage": "node scripts/coverage.mjs"
+    "contract:coverage": "node scripts/coverage.mjs",
+    "doc:api": "node scripts/gen-api-doc.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.16",

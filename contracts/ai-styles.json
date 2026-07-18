@@ -1,0 +1,14 @@
+{
+  "endpoint": "GET /ai/styles",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "note": "Not in swagger.snapshot.json — shipped after the snapshot. A bare array, no envelope. Public (200 unauthenticated). Style ids are slugs.",
+  "shape": {
+    "type": "array",
+    "length": 10,
+    "of": {
+      "id": "string",
+      "name": "string"
+    }
+  }
+}

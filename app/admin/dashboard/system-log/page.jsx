@@ -10,6 +10,7 @@ import {
   useExportLogs,
 } from "@/hooks/use-system-logs";
 import { severityBadge } from "@/lib/theme/severity";
+import { avatarStyle } from "@/lib/theme/avatar";
 import aiJobEngineIcon from "@/public/assets/svgs/systemLogs/ajJobEngine.svg";
 import paymentGwIcon from "@/public/assets/svgs/systemLogs/paymentGw.svg";
 import userAuthIcon from "@/public/assets/svgs/systemLogs/userAuth.svg";
@@ -321,7 +322,16 @@ export default function SystemLogPage() {
 
       {/* Logs Table */}
       <div className="bg-surface rounded-xl border border-white/08">
-        <div className="overflow-x-auto">
+        {logs?.logs?.length === 0 && (
+          <div className="px-6 py-12 text-center">
+            <p className="font-inter text-[14px] text-white/50">
+              No log entries match these filters.
+            </p>
+          </div>
+        )}
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-white/05 border-b border-white/08">
@@ -356,7 +366,7 @@ export default function SystemLogPage() {
                     </td>
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <span
-                        className={`inline-flex px-2 sm:px-3 py-1 rounded-[4.5px] font-inter text-[16px] sm:text-[11px] md:text-[13px] font-bold uppercase ${badgeCls}`}
+                        className={`inline-flex px-3 py-1 rounded-[4.5px] font-inter text-[11px] md:text-[13px] font-bold uppercase ${badgeCls}`}
                       >
                         {log?.severity || "N/A"}
                       </span>
@@ -386,15 +396,13 @@ export default function SystemLogPage() {
                     <td className="px-2 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-1 sm:gap-2">
                         <div
-                          className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] text-white shrink-0"
-                          style={{
-                            backgroundColor:
-                              log?.actor?.colorScheme?.bg ||
-                              "rgba(255,255,255,0.12)",
-                          }}
+                          className="w-[27px] h-[27px] rounded-full flex items-center justify-center font-inter font-bold text-[11.24px] shrink-0"
+                          style={avatarStyle(
+                            log?.userId ?? log?.actor?.name ?? "U",
+                          )}
                         >
                           {log?.actor?.initials ||
-                            log?.userId?.charAt(0) ||
+                            log?.userId?.charAt(0)?.toUpperCase() ||
                             "U"}
                         </div>
                         <span className="font-inter text-[11px] sm:text-[13px] md:text-[16px] text-white/60 hidden sm:inline">
@@ -412,6 +420,55 @@ export default function SystemLogPage() {
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card View — severity and message are what a log is scanned
+            for; service source and the actor's full name are desktop-only. */}
+        <div className="md:hidden divide-y divide-white/08">
+          {logs?.logs?.map((log, index) => {
+            const badgeCls = severityBadge(log?.severity);
+            const actor = log?.actor?.name || log?.userId || "Unknown";
+
+            return (
+              <article key={log?.id || index} className="p-4">
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <span
+                    className={`inline-flex shrink-0 px-2.5 py-1 rounded-[4.5px] font-inter text-[11px] font-bold uppercase ${badgeCls}`}
+                  >
+                    {log?.severity || "N/A"}
+                  </span>
+                  <time className="font-inter text-[11px] text-white/40 text-right">
+                    {log?.timestamp || log?.createdAt || "N/A"}
+                  </time>
+                </div>
+
+                <p className="font-inter text-[14px] text-white leading-snug mb-3">
+                  {log?.message || log?.action || "No message"}
+                </p>
+
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className="w-6 h-6 shrink-0 rounded-full flex items-center justify-center font-inter font-bold text-[10px]"
+                      style={avatarStyle(log?.userId ?? actor)}
+                    >
+                      {actor.charAt(0).toUpperCase()}
+                    </span>
+                    <span className="font-inter text-[12px] text-white/50 truncate">
+                      {actor}
+                    </span>
+                  </div>
+
+                  <button
+                    aria-label={`View details for ${log?.severity || "log"} entry`}
+                    className="shrink-0 w-11 h-11 -mr-2 flex items-center justify-center rounded-lg text-accent hover:text-white hover:bg-white/05 transition-colors"
+                  >
+                    <Eye size={18} />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         {/* Pagination */}

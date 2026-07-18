@@ -4,48 +4,63 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { LogOut, ExternalLink, Zap, CreditCard } from "lucide-react";
+import {
+  LogOut,
+  ExternalLink,
+  Zap,
+  CreditCard,
+  Package,
+  LayoutGrid,
+  Users,
+  Wallet,
+  ScrollText,
+  Settings,
+} from "lucide-react";
 import { useAdminUser, useAdminLogout } from "@/hooks/use-admin-auth";
-import overviewIcon from "@/public/assets/svgs/sidebars/overview.svg";
-import userManagementIcon from "@/public/assets/svgs/sidebars/userManagement.svg";
-import financialReportIcon from "@/public/assets/svgs/sidebars/financialReport.svg";
-import systemLogIcon from "@/public/assets/svgs/sidebars/systemLog.svg";
-import settingsIcon from "@/public/assets/svgs/sidebars/settings.svg";
 
+// Every icon is a lucide component so it paints with `currentColor` and follows
+// the row's active/inactive text color. The five that used to be <Image> SVGs
+// had their fill baked in (#273054, and `black` for System Log) — 1.53:1 and
+// 1.07:1 against the sidebar, and inert when a row became active.
 const navItems = [
   {
     label: "Overview",
-    icon: overviewIcon,
+    icon: LayoutGrid,
     href: "/admin/dashboard",
   },
   {
     label: "User Management",
-    icon: userManagementIcon,
+    icon: Users,
     href: "/admin/dashboard/user-management",
   },
   {
+    label: "Products",
+    icon: Package,
+    href: "/admin/dashboard/products",
+  },
+  {
     label: "Financial Report",
-    icon: financialReportIcon,
+    icon: Wallet,
     href: "/admin/dashboard/financial-report",
   },
   {
     label: "AI Usage",
-    lucideIcon: Zap,
+    icon: Zap,
     href: "/admin/dashboard/ai-usage",
   },
   {
     label: "Subscriptions",
-    lucideIcon: CreditCard,
+    icon: CreditCard,
     href: "/admin/dashboard/subscriptions",
   },
   {
     label: "System Log",
-    icon: systemLogIcon,
+    icon: ScrollText,
     href: "/admin/dashboard/system-log",
   },
   {
     label: "Settings",
-    icon: settingsIcon,
+    icon: Settings,
     href: "/admin/dashboard/settings",
   },
 ];
@@ -123,16 +138,7 @@ export default function AdminSidebar() {
                       }
                     `}
                   >
-                    {item.lucideIcon ? (
-                      <item.lucideIcon size={20} />
-                    ) : (
-                      <Image
-                        src={item.icon}
-                        alt={item.label}
-                        width={20}
-                        height={20}
-                      />
-                    )}
+                    <item.icon size={20} className="shrink-0" />
                     <span>{item.label}</span>
                   </motion.div>
                 </Link>

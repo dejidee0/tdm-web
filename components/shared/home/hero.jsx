@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Layers, Sparkles, Cpu, Diamond, ArrowRight } from "lucide-react";
+import { Layers, Hammer, Cpu, Diamond, ArrowRight } from "lucide-react";
 
 const TRUST_CHIPS = [
   { Icon: Layers, label: "Design Excellence" },
-  { Icon: Sparkles, label: "Luxury Renovation" },
+  { Icon: Hammer, label: "Luxury Renovation" },
   { Icon: Cpu, label: "Smart Construction" },
   { Icon: Diamond, label: "Premium Finishes" },
 ];
@@ -53,38 +53,39 @@ export default function HeroSection() {
       <div className="relative z-10 w-full lg:w-[55%] xl:w-[52%]">
         <div className="w-full mx-auto lg:mx-0 px-6 sm:px-10 lg:pl-16 xl:pl-20 2xl:pl-28 pt-32 pb-24 sm:pt-36 sm:pb-28 ">
           {/* Eyebrow */}
-          <p className="text-[#D4AF37] text-18 font-manrope font-bold tracking-[0.38em] uppercase mb-5 hero-badge">
+          <p className="text-[#D4AF37] text-[11px] sm:text-[14px] font-manrope font-bold tracking-[0.22em] sm:tracking-[0.38em] uppercase mb-4 sm:mb-5 hero-badge">
             Contractor Abuja &amp; Lagos
           </p>
 
-          {/* Headline */}
-          <h1 className="font-poppins font-bold leading-[1.2] tracking-tight mb-6 hero-heading">
-            <span className="block text-white text-[28px] sm:text-[52px] lg:text-[52px] xl:text-[58px]">
-              Luxury Renovation &amp;
+          {/* Headline — fluid type scales smoothly across every width;
+              "Renovation &" is glued so the ampersand never orphans onto
+              its own line. */}
+          <h1 className="font-poppins font-bold leading-[1.15] tracking-tight mb-6 hero-heading text-[clamp(1.9rem,6.2vw,3.9rem)]">
+            <span className="block text-white text-balance">
+              Luxury{" "}
+              <span className="whitespace-nowrap">Renovation&nbsp;&amp;</span>
             </span>
-            <span className="block text-[28px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
+            <span className="block">
               <span className="text-[#D4AF37]">Smart</span>
               <span className="text-white"> Construction</span>
             </span>
-            <span className="block text-white text-[28px] sm:text-[52px] lg:text-[54px] xl:text-[62px]">
-              Experts
-            </span>
+            <span className="block text-white">Experts</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-white/50 text-[14px] sm:text-[18px] font-manrope leading-normal mb-8 max-w-[85%] hero-sub">
+          <p className="text-white/50 text-[14px] sm:text-[18px] font-manrope leading-normal mb-8 max-w-[38ch] hero-sub">
             We design, visualize, and build premium homes using Ziora — our 3D
             design and project estimation system.
           </p>
 
           {/* Trust chips */}
-          <div className="flex flex-wrap gap-x-4 gap-y-3 mb-10 hero-sub ">
+          <div className="flex flex-wrap gap-x-5 gap-y-3 mb-10 hero-sub ">
             {TRUST_CHIPS.map(({ Icon, label }) => (
               <div key={label} className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-7 h-7 rounded-full shrink-0">
-                  <Icon className="w-6 h-6 text-[#D4AF37]" strokeWidth={1.6} />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#D4AF37]" strokeWidth={1.6} />
                 </span>
-                <span className="text-white/55 text-[16px] font-manrope font-medium max-w-28">
+                <span className="text-white/55 text-[14px] sm:text-[16px] font-manrope font-medium whitespace-nowrap">
                   {label}
                 </span>
               </div>

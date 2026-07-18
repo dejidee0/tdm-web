@@ -1,0 +1,11 @@
+[
+  "app/admin/dashboard/products/bulk/page.jsx",
+  "app/admin/dashboard/products/page.jsx",
+  "app/admin/dashboard/subscriptions/page.jsx",
+  "app/dashboard/projects/[id]/financial-overview/page.jsx",
+  "app/dashboard/projects/[id]/project-documents/page.jsx",
+  "app/vendor/dashboard/account-settings/page.jsx",
+  "app/vendor/dashboard/orders/[id]/page.jsx",
+  "components/shared/vendor/dashboard/delivery/table.jsx",
+  "components/shared/vendor/dashboard/table.jsx"
+]

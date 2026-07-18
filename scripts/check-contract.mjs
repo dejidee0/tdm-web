@@ -42,7 +42,14 @@ const API_URL = process.env.API_URL ?? readEnv();
  * file that drives record-contract.mjs and coverage.mjs. Entries with
  * `schema: null` are recorded but not yet modelled, and are skipped here.
  */
-const schemas = await import("../lib/api/schemas/catalog.ts");
+// Merge every schema module, so a manifest entry can name an export from any of
+// them. Only GET entries are replayed — a mutation cannot be re-run nightly, so
+// its schema is modelled (and counts toward coverage) but not drift-checked.
+const schemas = {
+  ...(await import("../lib/api/schemas/catalog.ts")),
+  ...(await import("../lib/api/schemas/admin-products.ts")),
+  ...(await import("../lib/api/schemas/ai.ts")),
+};
 const manifest = JSON.parse(
   readFileSync(join(ROOT, "contracts/manifest.json"), "utf8"),
 );

@@ -39,8 +39,6 @@ function InventoryContent() {
   const addProduct = useAddProduct();
 
   // DATA CHECKS
-  console.log("stats: ",stats)
-  console.log("inventoryProducts: ",data)
 
   // Auto-open modal based on URL query parameter
   useEffect(() => {
@@ -114,7 +112,6 @@ function InventoryContent() {
       };
       // console.log("payload form formik: ", productData)
       await addProduct.mutateAsync(apiPayload);
-      console.log("✅ Product added successfully");
       handleCloseModal();
     } catch (error) {
       console.error("❌ Error adding product:", error);

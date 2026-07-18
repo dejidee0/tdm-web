@@ -1,0 +1,61 @@
+{
+  "endpoint": "PUT /admin/AdminProducts/{id}",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": {
+      "id": "string",
+      "name": "string",
+      "description": "string",
+      "shortDescription": "string",
+      "slug": "string",
+      "sku": "string",
+      "brandType": "number",
+      "brandName": "string",
+      "productType": "number",
+      "productTypeName": "string",
+      "categoryId": "string",
+      "categoryName": "string",
+      "price": "number",
+      "compareAtPrice": "null",
+      "showPrice": "boolean",
+      "priceDisplay": "string",
+      "stockQuantity": "number",
+      "inStock": "boolean",
+      "trackInventory": "boolean",
+      "isActive": "boolean",
+      "isFeatured": "boolean",
+      "tags": "null",
+      "aiKeywords": "null",
+      "materialType": "null",
+      "qualityTier": "null",
+      "recommendedFor": "null",
+      "specifications": "null",
+      "keyFeatures": "null",
+      "whatsIncluded": "null",
+      "whatsNotIncluded": "null",
+      "dimensions": "null",
+      "warranty": "null",
+      "finishType": "null",
+      "installationType": "null",
+      "material": "null",
+      "color": "null",
+      "images": {
+        "type": "array",
+        "length": 0,
+        "of": "unknown"
+      },
+      "primaryImageUrl": "null",
+      "similarProducts": {
+        "type": "array",
+        "length": 0,
+        "of": "unknown"
+      },
+      "createdAt": "string",
+      "updatedAt": "string"
+    },
+    "errors": "null"
+  }
+}

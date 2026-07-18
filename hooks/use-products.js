@@ -17,7 +17,12 @@ async function fetchProducts(filters) {
 
   params.set("pageNumber", String(filters.pageNumber || 1));
   params.set("pageSize", String(filters.pageSize || 12));
-  params.set("ActiveOnly", "true");
+  // Lowercase `activeOnly` — that is what app/api/products/route.js reads before
+  // forwarding it upstream as `ActiveOnly`. Sending the PascalCase name here
+  // meant the route never saw it and always defaulted to "true"; the storefront
+  // wants exactly that, so the mismatch stayed invisible until the admin list
+  // needed to show inactive products.
+  params.set("activeOnly", String(filters.activeOnly ?? true));
 
   if (filters.brandType != null)
     params.set("brandType", String(filters.brandType));

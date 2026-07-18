@@ -14,10 +14,14 @@ export default function AdminLoginPage() {
   const { mutate: login, isPending } = useAdminLogin();
 
   const formik = useFormik({
+    // Never seed these. A default value here is not a convenience: it is
+    // compiled into the client bundle, so anyone who loads /admin/login — or
+    // greps .next/static — has the credentials. This form previously shipped a
+    // working admin+SuperAdmin login to every visitor.
     initialValues: {
-      email: "Ifemicheal2@gmail.com",
-      password: "Nisotgreg0",
-      rememberMe: true,
+      email: "",
+      password: "",
+      rememberMe: false,
     },
     validationSchema: signInSchema,
     onSubmit: async (values, { setSubmitting }) => {

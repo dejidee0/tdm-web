@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MoreVertical, ChevronLeft, ChevronRight, Edit2, Trash2, Zap } from "lucide-react";
 import { roleBadge } from "@/lib/theme/roles";
+import { avatarStyle, initialsOf } from "@/lib/theme/avatar";
 import { useUpdateUserStatus, useDeleteUser } from "@/hooks/use-admin-users";
 import ConfirmDeleteModal from "./confirm-delete-modal";
 import Image from "next/image";
@@ -264,12 +265,9 @@ export default function UserManagementTable({
                         ) : (
                           <div
                             className="w-10 h-10 rounded-full flex items-center justify-center font-manrope font-bold text-[14px]"
-                            style={{
-                              backgroundColor: user?.colorScheme?.bg || "var(--color-muted)",
-                              color: user?.colorScheme?.text || "#000",
-                            }}
+                            style={avatarStyle(user?.id ?? user?.email)}
                           >
-                            {user?.initials || "?"}
+                            {initialsOf(user)}
                           </div>
                         )}
                         <span className="font-manrope text-[14px] font-medium text-white">
@@ -362,12 +360,9 @@ export default function UserManagementTable({
                   ) : (
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center font-manrope font-bold text-[14px]"
-                      style={{
-                        backgroundColor: user?.colorScheme?.bg || "var(--color-muted)",
-                        color: user?.colorScheme?.text || "#000",
-                      }}
+                      style={avatarStyle(user?.id ?? user?.email)}
                     >
-                      {user?.initials || "?"}
+                      {initialsOf(user)}
                     </div>
                   )}
                   <div className="flex-1">

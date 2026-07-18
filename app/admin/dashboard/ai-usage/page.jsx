@@ -20,6 +20,7 @@ import {
   useAdminAIUserUsage,
 } from "@/hooks/use-admin";
 import { useAdminUsers } from "@/hooks/use-admin-users";
+import { avatarStyle, initialsOf } from "@/lib/theme/avatar";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -58,19 +59,6 @@ function SectionUnavailable({ message }) {
       </div>
       <p className="font-manrope text-[13px] text-white/40">{message}</p>
     </div>
-  );
-}
-
-function initials(user) {
-  const name = user?.name || user?.fullName || user?.firstName || "";
-  return (
-    name
-      .split(" ")
-      .filter(Boolean)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2) || (user?.email?.[0] || "U").toUpperCase()
   );
 }
 
@@ -210,13 +198,10 @@ function UserPicker({ selectedUser, onSelect }) {
       {selectedUser ? (
         <div className="flex items-center gap-3 p-2.5 border border-white/08 rounded-lg bg-white/05">
           <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-manrope text-[12px] font-bold shrink-0"
-            style={{
-              backgroundColor: selectedUser.colorScheme?.bg || "var(--color-chart-1)",
-              color: selectedUser.colorScheme?.text || "#fff",
-            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center font-manrope text-[12px] font-bold shrink-0"
+            style={avatarStyle(selectedUser.id ?? selectedUser.email)}
           >
-            {selectedUser.initials || initials(selectedUser)}
+            {initialsOf(selectedUser)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-manrope text-[13px] font-semibold text-white truncate">
@@ -303,16 +288,9 @@ function UserPicker({ selectedUser, onSelect }) {
                         ) : (
                           <div
                             className="w-9 h-9 rounded-full flex items-center justify-center font-manrope text-[13px] font-bold shrink-0"
-                            style={{
-                              backgroundColor:
-                                user.colorScheme?.bg ||
-                                "rgba(255,255,255,0.08)",
-                              color:
-                                user.colorScheme?.text ||
-                                "rgba(255,255,255,0.6)",
-                            }}
+                            style={avatarStyle(user.id ?? user.email)}
                           >
-                            {user.initials || initials(user)}
+                            {initialsOf(user)}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -355,7 +333,6 @@ function CreditPanel({ userId }) {
   const [form, setForm] = useState({ amount: "", reason: "", type: "add" });
   const [msg, setMsg] = useState(null);
 
-  console.log("[AI Usage] user-credits →", credits, "| error:", error?.message);
 
   const handleAdjust = () => {
     setMsg(null);
@@ -512,7 +489,6 @@ function UserUsagePanel({ userId }) {
     error,
   } = useAdminAIUserUsage(userId, { year, month });
 
-  console.log("[AI Usage] user-usage →", usage, "| error:", error?.message);
 
   return (
     <div className="space-y-4">

@@ -6,6 +6,7 @@ import { Download, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import RevenueChart from "@/components/shared/admin/dashboard/revenue-chart";
 import { txnStatusChip } from "@/lib/theme/status";
+import { avatarStyle } from "@/lib/theme/avatar";
 import {
   useFinancialStats,
   useMonthlyRevenue,
@@ -131,8 +132,6 @@ export default function FinancialReportPage() {
       ]
     : [];
 
-  console.log("stats", stats);
-  console.log("revenueByService", revenueByService);
 
   return (
     <div className="max-w-360 mx-auto">
@@ -334,22 +333,22 @@ export default function FinancialReportPage() {
           <table className="w-full">
             <thead className="bg-white/05 border-b border-white/08">
               <tr>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Transaction ID
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Date
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden sm:table-cell">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden sm:table-cell">
                   User
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden md:table-cell">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px] hidden md:table-cell">
                   Service Type
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Amount
                 </th>
-                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[16px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left font-inter text-[9px] sm:text-[10px] md:text-[12px] font-semibold text-white/40 uppercase tracking-[0.59px]">
                   Status
                 </th>
                 <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 hidden sm:table-cell"></th>
@@ -365,18 +364,15 @@ export default function FinancialReportPage() {
                     <p className="font-inter text-[11px] sm:text-[13px] md:text-[14px] text-white/50">
                       {txn?.date || "N/A"}
                     </p>
-                    <p className="font-inter text-[16px] sm:text-[11px] md:text-[12px] text-white/30">
+                    <p className="font-inter text-[10px] sm:text-[11px] md:text-[12px] text-white/30">
                       {txn?.time || ""}
                     </p>
                   </td>
                   <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[16px] sm:text-[12px]"
-                        style={{
-                          backgroundColor: txn?.user?.colorScheme?.bg || "var(--color-muted)",
-                          color: txn?.user?.colorScheme?.text || "#000",
-                        }}
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-inter font-bold text-[10px] sm:text-[12px]"
+                        style={avatarStyle(txn?.user?.id ?? txn?.user?.email)}
                       >
                         {txn?.user?.initials || "?"}
                       </div>
@@ -384,7 +380,7 @@ export default function FinancialReportPage() {
                         <p className="font-inter text-[12px] sm:text-[14px] font-medium text-white">
                           {txn?.user?.name || "N/A"}
                         </p>
-                        <p className="font-inter text-[16px] sm:text-[12px] text-white/40">
+                        <p className="font-inter text-[10px] sm:text-[12px] text-white/40">
                           {txn?.user?.type || ""}
                         </p>
                       </div>

@@ -14,7 +14,7 @@ import {
   Tag,
   Building2,
   Shield,
-  Sparkles,
+  Star,
   Layers,
   Droplets,
   Gem,
@@ -38,7 +38,7 @@ const PLACEHOLDER =
 const FEATURE_ICONS = {
   diamond: Gem,
   waterproof: Droplets,
-  sparkles: Sparkles,
+  star: Star,
   storage: Layers,
   shield: Shield,
 };
