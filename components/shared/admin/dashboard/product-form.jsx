@@ -2,7 +2,7 @@
 
 import { useFormik } from "formik";
 import Link from "next/link";
-import { AlertTriangle, Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2, Plus, X } from "lucide-react";
 import { useCategories } from "@/hooks/use-products";
 import {
   BRAND_TYPES,
@@ -26,6 +26,112 @@ function Field({ formik, name, children, hint }) {
         <p className="mt-1 text-[12px] text-white/30">{hint}</p>
       )}
       {touched && error && <p className={errorText}>{error}</p>}
+    </div>
+  );
+}
+
+/** A plain text field bound to `name`, to keep the many attribute inputs terse. */
+function TextField({ formik, name, label: labelText, placeholder, hint }) {
+  return (
+    <Field formik={formik} name={name} hint={hint}>
+      <label className={label} htmlFor={name}>
+        {labelText}
+      </label>
+      <input
+        id={name}
+        className={input}
+        placeholder={placeholder}
+        {...formik.getFieldProps(name)}
+      />
+    </Field>
+  );
+}
+
+/** Editor for a `string[]` value (keyFeatures, whatsIncluded, …): one row per
+ *  bullet, add/remove, stored straight onto the Formik array. */
+function StringListField({ formik, name, label: labelText, placeholder }) {
+  const items = formik.values[name] ?? [];
+  const set = (next) => formik.setFieldValue(name, next);
+  return (
+    <div>
+      <label className={label}>{labelText}</label>
+      <div className="space-y-2">
+        {items.map((item, i) => (
+          <div key={i} className="flex gap-2">
+            <input
+              className={input}
+              value={item}
+              placeholder={placeholder}
+              onChange={(e) =>
+                set(items.map((v, j) => (j === i ? e.target.value : v)))
+              }
+            />
+            <button
+              type="button"
+              aria-label={`Remove ${labelText} item`}
+              onClick={() => set(items.filter((_, j) => j !== i))}
+              className="shrink-0 rounded-lg border border-white/10 px-3 text-white/40 transition-colors hover:border-red-400/40 hover:text-red-400"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => set([...items, ""])}
+        className="mt-2 inline-flex items-center gap-1.5 text-[13px] text-[#D4AF37] transition-opacity hover:opacity-80"
+      >
+        <Plus className="h-3.5 w-3.5" /> Add item
+      </button>
+    </div>
+  );
+}
+
+/** Editor for `specifications`: an array of { key, value } rows. */
+function SpecificationsField({ formik }) {
+  const items = formik.values.specifications ?? [];
+  const set = (next) => formik.setFieldValue("specifications", next);
+  return (
+    <div>
+      <label className={label}>Specifications</label>
+      <div className="space-y-2">
+        {items.map((row, i) => (
+          <div key={i} className="flex gap-2">
+            <input
+              className={`${input} sm:max-w-[40%]`}
+              placeholder="Label (e.g. Origin)"
+              value={row?.key ?? ""}
+              onChange={(e) =>
+                set(items.map((r, j) => (j === i ? { ...r, key: e.target.value } : r)))
+              }
+            />
+            <input
+              className={input}
+              placeholder="Value (e.g. Italy)"
+              value={row?.value ?? ""}
+              onChange={(e) =>
+                set(items.map((r, j) => (j === i ? { ...r, value: e.target.value } : r)))
+              }
+            />
+            <button
+              type="button"
+              aria-label="Remove specification"
+              onClick={() => set(items.filter((_, j) => j !== i))}
+              className="shrink-0 rounded-lg border border-white/10 px-3 text-white/40 transition-colors hover:border-red-400/40 hover:text-red-400"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => set([...items, { key: "", value: "" }])}
+        className="mt-2 inline-flex items-center gap-1.5 text-[13px] text-[#D4AF37] transition-opacity hover:opacity-80"
+      >
+        <Plus className="h-3.5 w-3.5" /> Add specification
+      </button>
     </div>
   );
 }
@@ -301,6 +407,63 @@ export default function ProductForm({
         </div>
       </section>
 
+      {/* ── Content ────────────────────────────────────────────────────────── */}
+      <section className="space-y-5">
+        <div>
+          <h2 className="text-[13px] uppercase tracking-[0.12em] text-white/40">
+            Content
+          </h2>
+          <p className="mt-1 text-[12px] text-white/30">
+            The marketing copy shown on the product page — features, what the
+            buyer gets, and the spec table.
+          </p>
+        </div>
+
+        <StringListField
+          formik={formik}
+          name="keyFeatures"
+          label="Key features"
+          placeholder="Integrated stone basin"
+        />
+        <StringListField
+          formik={formik}
+          name="whatsIncluded"
+          label="What's included"
+          placeholder="Stone basin and vanity top"
+        />
+        <StringListField
+          formik={formik}
+          name="whatsNotIncluded"
+          label="What's not included"
+          placeholder="Tapware, installation"
+        />
+        <SpecificationsField formik={formik} />
+      </section>
+
+      {/* ── Attributes ─────────────────────────────────────────────────────── */}
+      <section className="space-y-4">
+        <h2 className="text-[13px] uppercase tracking-[0.12em] text-white/40">
+          Attributes
+        </h2>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TextField formik={formik} name="material" label="Material" placeholder="Natural marble" />
+          <TextField formik={formik} name="color" label="Colour" placeholder="Emperador brown" />
+          <TextField formik={formik} name="finishType" label="Finish" placeholder="Polished" />
+          <TextField formik={formik} name="installationType" label="Installation" placeholder="Wall-mounted" />
+          <TextField formik={formik} name="dimensions" label="Dimensions" placeholder="1200 × 500 × 200 mm" />
+          <TextField formik={formik} name="warranty" label="Warranty" placeholder="2 years" />
+          <TextField formik={formik} name="materialType" label="Material type" placeholder="Stone" />
+          <TextField formik={formik} name="qualityTier" label="Quality tier" placeholder="Premium" />
+        </div>
+        <TextField
+          formik={formik}
+          name="recommendedFor"
+          label="Recommended for"
+          placeholder="Powder rooms, guest suites"
+        />
+      </section>
+
       {/* ── Write-only fields ──────────────────────────────────────────────── */}
       <section className="space-y-4">
         <h2 className="text-[13px] uppercase tracking-[0.12em] text-white/40">
@@ -360,6 +523,21 @@ export default function ProductForm({
             {...formik.getFieldProps("metaDescription")}
           />
         </Field>
+
+        <TextField
+          formik={formik}
+          name="tags"
+          label="Tags"
+          placeholder="bathroom, vanity, luxury"
+          hint="Comma-separated."
+        />
+        <TextField
+          formik={formik}
+          name="aiKeywords"
+          label="AI keywords"
+          placeholder="Comma-separated keywords for AI search"
+          hint="Comma-separated."
+        />
       </section>
 
       {/* ── Actions ────────────────────────────────────────────────────────── */}

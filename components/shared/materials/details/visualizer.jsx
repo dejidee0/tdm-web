@@ -32,7 +32,7 @@ export default function AIVisualizer() {
       {/* Title */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-white mb-2">
-          Visualize this tile in your own room with Ziora.
+          Visualize this piece in your own room with Ziora.
         </h3>
       </div>
 

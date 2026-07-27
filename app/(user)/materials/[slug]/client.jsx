@@ -18,6 +18,10 @@ import {
   Layers,
   Droplets,
   Gem,
+  Clock,
+  Ruler,
+  Sparkles,
+  Truck,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/use-cart";
@@ -34,6 +38,16 @@ import ProductTabs from "@/components/shared/materials/details/tabs";
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&h=600&fit=crop";
 
+// Variants carry a raw price number, not a formatted string. Match the shape of
+// the backend's product-level `priceDisplay` ("₦850,000.00").
+function formatNaira(amount) {
+  if (amount == null) return null;
+  return Number(amount).toLocaleString("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  });
+}
+
 // ─── Feature icon map ─────────────────────────────────────────────────────────
 const FEATURE_ICONS = {
   diamond: Gem,
@@ -43,87 +57,29 @@ const FEATURE_ICONS = {
   shield: Shield,
 };
 
-// ─── Trust badge icon ─────────────────────────────────────────────────────────
-function TrustIcon({ index }) {
-  const icons = [
-    // 100% Authentic
-    <svg
-      key="auth"
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-      />
-    </svg>,
-    // Quality
-    <svg
-      key="quality"
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-      />
-    </svg>,
-    // Fast Delivery
-    <svg
-      key="delivery"
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-      />
-    </svg>,
-    // Expert Support
-    <svg
-      key="support"
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
-      />
-    </svg>,
-    // Bogat Promise
-    <svg
-      key="promise"
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
-      />
-    </svg>,
-  ];
-  return icons[index] ?? icons[0];
-}
+// ─── Made-to-order reassurance, from the catalogue's ordering notes ────────────
+const ORDERING_NOTES = [
+  {
+    Icon: Clock,
+    label: "Made to order",
+    description: "Handcrafted in 8–12 weeks after your drawings are approved.",
+  },
+  {
+    Icon: Sparkles,
+    label: "One-of-a-kind stone",
+    description: "Veining and colour vary — every slab is natural and unique.",
+  },
+  {
+    Icon: Ruler,
+    label: "Site survey included",
+    description: "We measure and assess the wall before production begins.",
+  },
+  {
+    Icon: Truck,
+    label: "Bespoke widths",
+    description: "Custom dimensions quoted individually on request.",
+  },
+];
 
 // ─── Fallback image with gold border ─────────────────────────────────────────
 function ProductImage({ src, alt, fill = false, className = "", sizes }) {
@@ -167,17 +123,36 @@ export default function MaterialDetailClient({
     null;
 
   const activePrice = selectedVariant?.price ?? product.price ?? null;
+  // Variants carry a raw `price` number and no `priceDisplay`, so format it
+  // here to match the backend's product-level string ("₦850,000.00"). Fall
+  // back to the product's own display when no variant is selected.
   const activePriceDisplay =
-    selectedVariant?.priceDisplay ?? product.priceDisplay ?? null;
+    selectedVariant != null
+      ? formatNaira(selectedVariant.price)
+      : (product.priceDisplay ?? null);
 
-  const images = product.images?.length
-    ? product.images
-    : product.primaryImageUrl
-      ? [product.primaryImageUrl]
-      : [PLACEHOLDER];
+  // Real product images are ProductImageDto objects ({ imageUrl }); normalise to
+  // URL strings. `hasRealImages` drives an honest branded placeholder instead of
+  // a stock photo when the catalogue has no photography yet (currently 0/120).
+  const galleryUrls = (product.images ?? [])
+    .map((img) => (typeof img === "string" ? img : img?.imageUrl))
+    .filter(Boolean);
+  const primaryUrl = product.primaryImageUrl || galleryUrls[0] || null;
+  const hasRealImages = galleryUrls.length > 0 || Boolean(product.primaryImageUrl);
+  const images = galleryUrls.length ? galleryUrls : primaryUrl ? [primaryUrl] : [];
 
+  // Bogat (brandType 2) is a made-to-order bespoke collection: 8–12 week lead
+  // time, natural-stone variation, site survey before production. The page must
+  // say so rather than borrow fast-moving-stock language ("ready to ship").
+  const isMadeToOrder = product.brandType === 2;
+
+  // The catalogue seeds compareAtPrice as the largest size's price, so every
+  // product would otherwise flash a bogus "-56% OFF". Never show a discount on a
+  // made-to-order piece — the price is a starting point, not a markdown.
   const hasDiscount =
-    product.compareAtPrice && product.compareAtPrice > (activePrice ?? 0);
+    !isMadeToOrder &&
+    product.compareAtPrice &&
+    product.compareAtPrice > (activePrice ?? 0);
   const discountPct = hasDiscount
     ? Math.round(
         ((product.compareAtPrice - activePrice) / product.compareAtPrice) * 100,
@@ -188,7 +163,23 @@ export default function MaterialDetailClient({
 
   // Extended fields (graceful if absent)
   const hasVariants = (product.variants?.length ?? 0) > 0;
-  const hasFeatures = (product.features?.length ?? 0) > 0;
+
+  // Lowest size price, for the "From ₦X" headline. These are starting prices;
+  // the final quote moves with stone, finish and bespoke dimensions.
+  const fromPrice = hasVariants
+    ? Math.min(...product.variants.map((v) => v.price))
+    : (product.price ?? null);
+  const fromPriceDisplay = fromPrice != null ? formatNaira(fromPrice) : null;
+
+  // The backend returns `keyFeatures` as a string[]; the mock used `features`
+  // as objects. Normalise to the { label } shape the strip renders, preferring
+  // real data. Icon/description are absent on real data — the strip degrades to
+  // a default icon and no subtext.
+  const featureList =
+    (product.keyFeatures?.length
+      ? product.keyFeatures.map((label) => ({ label }))
+      : product.features) ?? [];
+  const hasFeatures = featureList.length > 0;
   const hasMaterialDetails = (product.materialDetails?.length ?? 0) > 0;
   const hasComponents = (product.components?.length ?? 0) > 0;
   const hasTrustBadges = (product.trustBadges?.length ?? 0) > 0;
@@ -275,8 +266,9 @@ export default function MaterialDetailClient({
 
   const handleToggleSave = () => {
     if (!isAuthenticated) {
-      window.location.href =
-        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
+      window.location.assign(
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname),
+      );
       return;
     }
     toggleSave.mutate({ productId: product.id, savedId, isSaved });
@@ -329,21 +321,21 @@ export default function MaterialDetailClient({
             <span className="text-[#D4AF37] font-poppins font-bold text-sm tracking-wider">
               BOGAT BY TBM.
             </span>
-            {product.collection && (
+            {product.categoryName && (
               <>
                 <span className="w-px h-4 bg-white/20" />
                 <span className="text-white/50 text-xs tracking-widest uppercase">
-                  {product.collection}
-                  {product.collectionSubtitle && (
-                    <> &mdash; {product.collectionSubtitle}</>
+                  {product.categoryName}
+                  {product.shortDescription && (
+                    <> &mdash; {product.shortDescription}</>
                   )}
                 </span>
               </>
             )}
           </div>
-          {product.tagline && (
+          {isMadeToOrder && (
             <span className="text-white/35 text-xs tracking-wider italic">
-              {product.tagline}
+              Made to order &middot; Bespoke natural stone
             </span>
           )}
         </div>
@@ -356,8 +348,10 @@ export default function MaterialDetailClient({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-5 lg:gap-10">
-            {/* Left — hero image + thumbnail strip */}
-            <div className="flex flex-col gap-3">
+            {/* Left — hero image + thumbnail strip. Sticky on desktop so the
+                image tracks the scroll instead of leaving dead space beside the
+                taller purchase panel. */}
+            <div className="flex flex-col gap-3 lg:sticky lg:top-24 lg:self-start">
               {/* Main image */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -370,34 +364,60 @@ export default function MaterialDetailClient({
                   background: "#0d0b09",
                 }}
               >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeGalleryIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute inset-0"
+                {hasRealImages ? (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeGalleryIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="absolute inset-0"
+                    >
+                      <ProductImage
+                        src={images[activeGalleryIndex]}
+                        alt={product?.name || "Product"}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 1024px) 100vw, 60vw"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                ) : (
+                  // Honest placeholder: the catalogue has no photography yet.
+                  // A stock photo here would misrepresent a bespoke stone piece.
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6"
+                    style={{ background: "radial-gradient(circle at 50% 35%, #14110b 0%, #0a0a08 70%)" }}
                   >
-                    <ProductImage
-                      src={images[activeGalleryIndex]}
-                      alt={product?.name || "Product"}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                    <span className="font-poppins font-bold text-[#D4AF37] tracking-[0.3em] text-sm uppercase">
+                      BOGAT
+                    </span>
+                    <span className="text-white/80 font-poppins text-lg tracking-wide">
+                      {product?.name}
+                    </span>
+                    <span className="text-white/30 text-[11px] tracking-[0.25em] uppercase">
+                      {product?.categoryName}
+                    </span>
+                    <span className="mt-2 text-white/25 text-[11px] tracking-wider">
+                      Studio photography in production
+                    </span>
+                  </div>
+                )}
 
                 {/* Badges overlay */}
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+                  {isMadeToOrder && (
+                    <span className="text-[11px] font-bold px-2.5 py-1 tracking-widest uppercase bg-[#D4AF37] text-black">
+                      Made to Order
+                    </span>
+                  )}
                   {product.isFeatured && (
-                    <span className="text-[16px] font-bold px-2.5 py-1 tracking-widest uppercase bg-[#D4AF37] text-black">
+                    <span className="text-[11px] font-bold px-2.5 py-1 tracking-widest uppercase bg-white/10 text-white border border-white/20">
                       Featured
                     </span>
                   )}
                   {hasDiscount && (
-                    <span className="text-[16px] font-bold px-2.5 py-1 tracking-widest uppercase bg-emerald-500 text-white">
+                    <span className="text-[11px] font-bold px-2.5 py-1 tracking-widest uppercase bg-emerald-500 text-white">
                       -{discountPct}% OFF
                     </span>
                   )}
@@ -446,9 +466,9 @@ export default function MaterialDetailClient({
                   <h1 className="font-poppins font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight tracking-tight uppercase">
                     {product?.name || "Product Name"}
                   </h1>
-                  {product.tagline && (
+                  {product.shortDescription && (
                     <p className="mt-1 text-sm text-[#D4AF37]/70 tracking-widest">
-                      {product.tagline}
+                      {product.shortDescription}
                     </p>
                   )}
                 </div>
@@ -494,9 +514,17 @@ export default function MaterialDetailClient({
                 )}
               </div>
 
-              {/* Stock status */}
+              {/* Availability — made-to-order pieces lead with the lead time,
+                  not stock counts, so a bespoke item never reads as off-the-shelf. */}
               <div className="inline-flex items-center gap-2">
-                {product.inStock ? (
+                {isMadeToOrder ? (
+                  <>
+                    <Clock className="text-[#D4AF37] w-4 h-4 shrink-0" />
+                    <span className="text-sm text-[#D4AF37] font-medium">
+                      Made to order &middot; Ships in 8–12 weeks
+                    </span>
+                  </>
+                ) : product.inStock ? (
                   <>
                     <CheckCircle className="text-emerald-400 w-4 h-4 shrink-0" />
                     <span className="text-sm text-emerald-400 font-medium">
@@ -524,9 +552,19 @@ export default function MaterialDetailClient({
                     border: "1px solid rgba(212,175,55,0.15)",
                   }}
                 >
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-[#D4AF37] tracking-widest uppercase">
-                      Available Sizes & Prices
+                  {/* From-price headline: the starting point of the range, so a
+                      buyer sees the entry price before scanning every size. */}
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-[11px] font-semibold text-white/40 tracking-widest uppercase">
+                        Starting from
+                      </p>
+                      <p className="text-2xl font-bold text-white leading-tight">
+                        {fromPriceDisplay}
+                      </p>
+                    </div>
+                    <p className="text-xs font-semibold text-[#D4AF37] tracking-widest uppercase pb-1">
+                      Select size
                     </p>
                   </div>
                   <div className="space-y-2">
@@ -547,29 +585,10 @@ export default function MaterialDetailClient({
                         }}
                       >
                         <div className="flex items-center gap-3 text-left">
-                          {variant.image && (
-                            <div
-                              className="relative w-10 h-10 shrink-0 overflow-hidden"
-                              style={{ background: "#1a1a1a" }}
-                            >
-                              <ProductImage
-                                src={variant.image}
-                                alt={variant.label}
-                                fill
-                                className="object-cover"
-                                sizes="40px"
-                              />
-                            </div>
-                          )}
                           <div>
                             <p className="text-sm font-semibold text-white">
-                              {variant.label}
+                              {variant.size}
                             </p>
-                            {variant.dimensions && (
-                              <p className="text-xs text-white/35 mt-0.5">
-                                {variant.dimensions}
-                              </p>
-                            )}
                           </div>
                         </div>
                         <span
@@ -581,11 +600,18 @@ export default function MaterialDetailClient({
                                 : "rgba(255,255,255,0.7)",
                           }}
                         >
-                          {variant.priceDisplay}
+                          {formatNaira(variant.price)}
                         </span>
                       </button>
                     ))}
                   </div>
+                  {isMadeToOrder && (
+                    <p className="text-[11px] text-white/35 leading-relaxed pt-1">
+                      Recommended starting prices. Final quote varies with stone
+                      selection, finish and bespoke dimensions. Excludes VAT,
+                      delivery and installation.
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -677,9 +703,11 @@ export default function MaterialDetailClient({
                 >
                   {buyingNow
                     ? "Processing…"
-                    : product.inStock
-                      ? "Buy Now"
-                      : "Out of Stock"}
+                    : !product.inStock
+                      ? "Out of Stock"
+                      : isMadeToOrder
+                        ? "Reserve This Piece"
+                        : "Buy Now"}
                 </motion.button>
 
                 <motion.button
@@ -706,6 +734,14 @@ export default function MaterialDetailClient({
                   <Share2 className="w-4 h-4" />
                   Share Product
                 </motion.button>
+
+                {isMadeToOrder && (
+                  <p className="text-[11px] text-white/35 leading-relaxed text-center">
+                    Reserve your size and finish now — our design team confirms
+                    the final quote, stone selection and 8–12 week timeline
+                    before any payment is taken.
+                  </p>
+                )}
               </div>
 
               {/* ── AI Visualizer & Project Card ──────────────────────── */}
@@ -730,7 +766,7 @@ export default function MaterialDetailClient({
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="grid gap-px grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-              {product.features.map((feat, i) => {
+              {featureList.map((feat, i) => {
                 const Icon = FEATURE_ICONS[feat.icon] ?? Shield;
                 return (
                   <motion.div
@@ -880,31 +916,37 @@ export default function MaterialDetailClient({
         </section>
       )}
 
-      {/* ── Trust badges bar ──────────────────────────────────────────────── */}
-      {hasTrustBadges && (
+      {/* ── Made-to-order reassurance ─────────────────────────────────────────
+          The trust content that a high-ticket bespoke buyer needs, from the
+          catalogue's ordering notes. Static brand/policy copy — not per-product
+          data — shown for the made-to-order collection. */}
+      {isMadeToOrder && (
         <section
           className="border-b border-white/[0.07]"
           style={{ background: "#0d0b08" }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div className="grid gap-px grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-              {product.trustBadges.map((badge, i) => (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="grid gap-px grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+              {ORDERING_NOTES.map(({ Icon, label, description }) => (
                 <div
-                  key={i}
-                  className="flex flex-col sm:flex-row items-center sm:items-start gap-2 px-4 py-4 text-center sm:text-left"
+                  key={label}
+                  className="flex items-start gap-3 px-4 py-4"
                 >
-                  <div className="shrink-0 w-8 h-8 flex items-center justify-center text-[#D4AF37]">
-                    <TrustIcon index={i} />
+                  <div className="shrink-0 w-9 h-9 flex items-center justify-center text-[#D4AF37]"
+                    style={{
+                      background: "rgba(212,175,55,0.08)",
+                      border: "1px solid rgba(212,175,55,0.2)",
+                    }}
+                  >
+                    <Icon className="w-4 h-4" strokeWidth={1.75} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[16px] font-bold text-white tracking-wider uppercase">
-                      {badge.label}
+                    <p className="text-[13px] font-bold text-white tracking-wide">
+                      {label}
                     </p>
-                    {badge.description && (
-                      <p className="text-[16px] text-white/35 mt-0.5 leading-snug">
-                        {badge.description}
-                      </p>
-                    )}
+                    <p className="text-[12px] text-white/40 mt-0.5 leading-snug">
+                      {description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -920,12 +962,12 @@ export default function MaterialDetailClient({
 
       {/* ── Ratings & reviews ─────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+        {/* Real values only — no invented rating. A 4.5 with 0 reviews is a
+            fabricated trust signal; the component shows an honest empty state. */}
         <RatingsReviews
-          averageRating={product?.rating || 4.5}
-          totalReviews={product?.reviewCount || 0}
-          ratingDistribution={
-            product?.ratingDistribution || { 5: 60, 4: 25, 3: 10, 2: 3, 1: 2 }
-          }
+          averageRating={product?.rating ?? 0}
+          totalReviews={product?.reviewCount ?? 0}
+          ratingDistribution={product?.ratingDistribution ?? null}
         />
       </div>
 

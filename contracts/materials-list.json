@@ -5,8 +5,23 @@
   "shape": {
     "materials": {
       "type": "array",
-      "length": 15,
+      "length": 50,
       "of": [
+        {
+          "id": "string",
+          "name": "string",
+          "slug": "string",
+          "description": "string",
+          "price": "number",
+          "image": "string",
+          "category": "string",
+          "inStock": "boolean",
+          "similarProducts": {
+            "type": "array",
+            "length": 0,
+            "of": "unknown"
+          }
+        },
         {
           "id": "string",
           "name": "string",
@@ -61,10 +76,10 @@
     "slug": "string",
     "description": "string",
     "price": "null|number",
-    "image": "null",
+    "image": "null|string",
     "category": "string",
     "inStock": "boolean",
     "similarProducts": "array"
   },
-  "sampleSize": 15
+  "sampleSize": 50
 }

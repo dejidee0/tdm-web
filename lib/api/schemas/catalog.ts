@@ -36,6 +36,25 @@ export const productImageSchema = z.looseObject({
   isPrimary: z.boolean(),
 });
 
+/**
+ * A size configuration of a product (600/800/1000/1200 mm for the Bogat
+ * vanities), each with its own price and stock. Verified across 120 seeded
+ * products: every field is non-null. `size` is a bare string like "600mm"
+ * (no space) — the label the UI renders, not an enum.
+ *
+ * Note the fields the mock invented and the backend does *not* send:
+ * no `name`, `label`, `sku`, `image`, `dimensions`, or `priceDisplay`.
+ * Render `size` for the label and format `price` for the amount.
+ */
+export const productVariantSchema = z.looseObject({
+  id: z.string(),
+  size: z.string(),
+  price: z.number(),
+  stockQuantity: z.number(),
+  isActive: z.boolean(),
+  displayOrder: z.number(),
+});
+
 /** Fields common to both pricing branches. Spread into each, so the union discriminates cleanly. */
 const productFields = {
   id: z.string(),
@@ -73,18 +92,29 @@ const productFields = {
   createdAt: z.string(),
   updatedAt: z.string(),
 
+  /** The product's own size label (e.g. "600mm"); null on products without one. */
+  size: z.string().nullable(),
+  /** Non-null across all 136 live products. Controls gallery/listing order. */
+  displayOrder: z.number(),
+  lowStockThreshold: z.number(),
+  /** Size configurations. Empty array on products that have none, never null. */
+  variants: z.array(productVariantSchema),
+
   /** A comma-separated string, not an array. Null on most products. */
   tags: z.string().nullable(),
 
-  // Never observed non-null across 15 live products + 12 from /flooring.
-  // Typed `unknown` on purpose: guessing `string[]` would invent a contract and
-  // then alarm on the truth. Widen when real data appears.
+  // Widened from z.unknown() once the seeded Bogat catalogue populated it:
+  // 120/120 products carry a string[] of feature bullets; null on the rest.
+  keyFeatures: z.array(z.string()).nullable(),
+
+  // Never observed non-null across live products. Typed `unknown` on purpose:
+  // guessing `string[]` would invent a contract and then alarm on the truth.
+  // Widen each when real data appears (whatsIncluded is next — see notes below).
   aiKeywords: z.unknown(),
   materialType: z.unknown(),
   qualityTier: z.unknown(),
   recommendedFor: z.unknown(),
   specifications: z.unknown(),
-  keyFeatures: z.unknown(),
   whatsIncluded: z.unknown(),
   whatsNotIncluded: z.unknown(),
   dimensions: z.unknown(),

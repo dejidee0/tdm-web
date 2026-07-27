@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -132,21 +132,25 @@ export default function SimilarStyles({ materials = [] }) {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-baseline gap-1">
+                      <span className="text-[11px] text-white/40 mr-1">From</span>
                       <span className="text-lg font-bold text-white">
-                        ₦{product.price?.toFixed(2)}
+                        {product.priceDisplay ||
+                          (typeof product.price === "number"
+                            ? product.price.toLocaleString("en-NG", {
+                                style: "currency",
+                                currency: "NGN",
+                              })
+                            : "Request price")}
                       </span>
-                      <span className="text-sm text-white/40">/ sq ft</span>
                     </div>
 
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                      className="w-8 h-8 flex items-center justify-center rounded-full text-black transition-colors"
+                    <span
+                      className="w-8 h-8 flex items-center justify-center rounded-full text-black transition-transform group-hover:scale-110"
                       style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                      aria-hidden="true"
                     >
-                      <Plus className="w-4 h-4" />
-                    </motion.button>
+                      <ChevronRight className="w-4 h-4" />
+                    </span>
                   </div>
                 </div>
               </div>

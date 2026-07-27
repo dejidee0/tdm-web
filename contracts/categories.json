@@ -7,26 +7,84 @@
     "message": "string",
     "data": {
       "type": "array",
-      "length": 7,
-      "of": {
-        "id": "string",
-        "name": "string",
-        "description": "string",
-        "slug": "string",
-        "brandType": "number",
-        "brandName": "string",
-        "parentCategoryId": "null",
-        "parentCategoryName": "null",
-        "imageUrl": "null",
-        "displayOrder": "number",
-        "isActive": "boolean",
-        "subCategories": {
-          "type": "array",
-          "length": 0,
-          "of": "unknown"
+      "length": 15,
+      "of": [
+        {
+          "id": "string",
+          "name": "string",
+          "description": "string",
+          "slug": "string",
+          "brandType": "number",
+          "brandName": "string",
+          "parentCategoryId": "null",
+          "parentCategoryName": "null",
+          "imageUrl": "null",
+          "displayOrder": "number",
+          "isActive": "boolean",
+          "subCategories": {
+            "type": "array",
+            "length": 7,
+            "of": {
+              "id": "string",
+              "name": "string",
+              "description": "string",
+              "slug": "string",
+              "brandType": "number",
+              "brandName": "string",
+              "parentCategoryId": "string",
+              "parentCategoryName": "string",
+              "imageUrl": "null",
+              "displayOrder": "number",
+              "isActive": "boolean",
+              "subCategories": {
+                "type": "array",
+                "length": 0,
+                "of": "unknown"
+              },
+              "productCount": "number"
+            }
+          },
+          "productCount": "number"
         },
-        "productCount": "number"
-      }
+        {
+          "id": "string",
+          "name": "string",
+          "description": "string",
+          "slug": "string",
+          "brandType": "number",
+          "brandName": "string",
+          "parentCategoryId": "null",
+          "parentCategoryName": "null",
+          "imageUrl": "null",
+          "displayOrder": "number",
+          "isActive": "boolean",
+          "subCategories": {
+            "type": "array",
+            "length": 0,
+            "of": "unknown"
+          },
+          "productCount": "number"
+        },
+        {
+          "id": "string",
+          "name": "string",
+          "description": "string",
+          "slug": "string",
+          "brandType": "number",
+          "brandName": "string",
+          "parentCategoryId": "string",
+          "parentCategoryName": "string",
+          "imageUrl": "null",
+          "displayOrder": "number",
+          "isActive": "boolean",
+          "subCategories": {
+            "type": "array",
+            "length": 0,
+            "of": "unknown"
+          },
+          "productCount": "number"
+        }
+      ]
     },
     "errors": "null"
   },
@@ -37,13 +95,13 @@
     "slug": "string",
     "brandType": "number",
     "brandName": "string",
-    "parentCategoryId": "null",
-    "parentCategoryName": "null",
+    "parentCategoryId": "null|string",
+    "parentCategoryName": "null|string",
     "imageUrl": "null",
     "displayOrder": "number",
     "isActive": "boolean",
     "subCategories": "array",
     "productCount": "number"
   },
-  "sampleSize": 7
+  "sampleSize": 15
 }

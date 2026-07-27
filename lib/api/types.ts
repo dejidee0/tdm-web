@@ -28,6 +28,7 @@ import type {
   productListResponse,
   productResponse,
   productSchema,
+  productVariantSchema,
 } from "./schemas/catalog";
 import type {
   listFiltersSchema,
@@ -87,6 +88,7 @@ export type Category = z.infer<typeof categorySchema>;
 
 /** A product image. `Product.images[]` is an array of these. */
 export type ProductImage = z.infer<typeof productImageSchema>;
+export type ProductVariant = z.infer<typeof productVariantSchema>;
 
 /** /materials/list returns this, not a Product. `price` is nullable with no discriminant. */
 export type MaterialSummary = z.infer<typeof materialSummarySchema>;

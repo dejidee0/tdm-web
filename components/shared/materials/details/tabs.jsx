@@ -6,11 +6,44 @@ import { motion } from "framer-motion";
 const tabs = [
   { id: "description", label: "Description" },
   { id: "specifications", label: "Specifications" },
-  { id: "shipping", label: "Shipping & Returns" },
+  { id: "ordering", label: "Ordering & Delivery" },
 ];
+
+// A spec row only appears when the product actually carries the value — no
+// invented defaults. (The old version hardcoded Carrara-marble facts, so every
+// product read "Origin: Italy, Size: 12x24 inches" regardless of what it was.)
+function buildSpecs(material) {
+  const rows = [
+    { label: "Collection", value: material.categoryName },
+    { label: "Brand", value: material.brandName },
+    { label: "SKU", value: material.sku },
+    { label: "Material", value: material.material },
+    { label: "Colour", value: material.color },
+    { label: "Finish", value: material.finishType },
+    { label: "Installation", value: material.installationType },
+    { label: "Dimensions", value: material.dimensions },
+    { label: "Warranty", value: material.warranty },
+  ].filter((r) => r.value && r.value !== "null");
+
+  // Backend `specifications` is a list of { key, value } when present.
+  if (Array.isArray(material.specifications)) {
+    for (const spec of material.specifications) {
+      if (spec?.key && spec?.value) {
+        rows.push({ label: spec.key, value: spec.value });
+      }
+    }
+  }
+  return rows;
+}
 
 export default function ProductTabs({ material }) {
   const [activeTab, setActiveTab] = useState("description");
+
+  const isMadeToOrder = material.brandType === 2;
+  const keyFeatures = Array.isArray(material.keyFeatures)
+    ? material.keyFeatures
+    : [];
+  const specs = buildSpecs(material);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -22,16 +55,18 @@ export default function ProductTabs({ material }) {
             transition={{ duration: 0.3 }}
             className="prose prose-sm max-w-none"
           >
-            <p className="text-white/60 leading-relaxed mb-4">
-              {material.description ||
-                "Elevate your space with the timeless elegance of Carrara White Marble. Sourced directly from Italy, each 12x24 tile features a pristine white background with subtle grey veining. Perfect for bathroom floors, kitchen backsplashes, or statement walls."}
-            </p>
-            <ul className="space-y-2 text-white/60">
-              <li>Genuine Italian Carrara Marble</li>
-              <li>Polished finish for a high-gloss reflection</li>
-              <li>Rectified edges for minimal grout lines</li>
-              <li>Suitable for residential and commercial traffic</li>
-            </ul>
+            {material.description && (
+              <p className="text-white/60 leading-relaxed mb-4">
+                {material.description}
+              </p>
+            )}
+            {keyFeatures.length > 0 && (
+              <ul className="space-y-2 text-white/60 list-disc pl-5">
+                {keyFeatures.map((feature, i) => (
+                  <li key={i}>{feature}</li>
+                ))}
+              </ul>
+            )}
           </motion.div>
         );
 
@@ -43,24 +78,29 @@ export default function ProductTabs({ material }) {
             transition={{ duration: 0.3 }}
             className="space-y-3"
           >
-            {[
-              { label: "Material", value: material.material || "Natural Marble" },
-              { label: "Size", value: material.size || "12x24 inches" },
-              { label: "Finish", value: material.finish || "Polished" },
-              { label: "Thickness", value: material.thickness || "10mm" },
-              { label: "Edge Type", value: material.edgeType || "Rectified" },
-              { label: "Application", value: material.application || "Floor & Wall" },
-              { label: "Origin", value: material.origin || "Italy" },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex justify-between py-3 border-b border-white/06">
-                <span className="text-sm font-medium text-white/70">{label}</span>
-                <span className="text-sm text-white/50">{value}</span>
-              </div>
-            ))}
+            {specs.length > 0 ? (
+              specs.map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="flex justify-between gap-4 py-3 border-b border-white/06"
+                >
+                  <span className="text-sm font-medium text-white/70">
+                    {label}
+                  </span>
+                  <span className="text-sm text-white/50 text-right">
+                    {value}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-white/40">
+                Detailed specifications are confirmed on your quotation.
+              </p>
+            )}
           </motion.div>
         );
 
-      case "shipping":
+      case "ordering":
         return (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -68,20 +108,36 @@ export default function ProductTabs({ material }) {
             transition={{ duration: 0.3 }}
             className="space-y-4"
           >
-            {[
-              {
-                title: "Shipping",
-                body: "Free shipping on orders over ₦500,000. Standard delivery takes 5–7 business days. Express shipping available at checkout. Due to the weight and fragility of natural stone, signature upon delivery is required.",
-              },
-              {
-                title: "Returns",
-                body: "We accept returns within 30 days of delivery for unopened boxes in original condition. Return shipping costs are the responsibility of the customer unless the item is defective or damaged upon arrival.",
-              },
-              {
-                title: "Damaged Items",
-                body: "If your order arrives damaged, please take photos and contact us within 48 hours. We'll arrange for a replacement or refund at no additional cost to you.",
-              },
-            ].map(({ title, body }) => (
+            {(isMadeToOrder
+              ? [
+                  {
+                    title: "Made to order",
+                    body: "Each piece is handcrafted to your specification. Lead time is 8–12 weeks after approved drawings and material selection. A site measurement and structural wall assessment are carried out before production begins.",
+                  },
+                  {
+                    title: "Natural stone",
+                    body: "Final veining and colour vary because every slab is natural — no two pieces are identical. Bespoke widths are quoted individually.",
+                  },
+                  {
+                    title: "Pricing & delivery",
+                    body: "Listed prices are recommended starting prices and exclude VAT, delivery and installation unless expressly stated. Your final quotation reflects stone selection, finish and dimensions.",
+                  },
+                ]
+              : [
+                  {
+                    title: "Shipping",
+                    body: "Standard delivery takes 5–7 business days. Due to the weight and fragility of natural stone, a signature is required on delivery.",
+                  },
+                  {
+                    title: "Returns",
+                    body: "We accept returns within 30 days of delivery for unopened items in original condition. Return shipping is the customer's responsibility unless the item is defective or damaged on arrival.",
+                  },
+                  {
+                    title: "Damaged items",
+                    body: "If your order arrives damaged, take photos and contact us within 48 hours. We'll arrange a replacement or refund at no additional cost.",
+                  },
+                ]
+            ).map(({ title, body }) => (
               <div key={title}>
                 <h4 className="text-sm font-semibold text-white mb-2">{title}</h4>
                 <p className="text-sm text-white/50 leading-relaxed">{body}</p>
