@@ -8,6 +8,9 @@ import { X, AlertTriangle } from "lucide-react";
  * @param {string} [props.itemName] Name of the thing being deleted. `userName`
  *   is the original, user-management-specific alias, kept so existing callers
  *   keep working.
+ * @param {string} [props.itemLabel="Item"] The noun shown in the title and
+ *   confirm button ("Delete Product", "Delete User"). Defaults to "Item" so a
+ *   caller that forgets it never mislabels the record's type.
  */
 export default function ConfirmDeleteModal({
   isOpen,
@@ -15,6 +18,7 @@ export default function ConfirmDeleteModal({
   onConfirm,
   userName,
   itemName,
+  itemLabel = "Item",
   isDeleting = false,
 }) {
   const name = itemName ?? userName;
@@ -52,7 +56,7 @@ export default function ConfirmDeleteModal({
                     </div>
                     <div>
                       <h2 className="font-manrope text-[20px] font-bold text-white">
-                        Delete User
+                        Delete {itemLabel}
                       </h2>
                     </div>
                   </div>
@@ -104,7 +108,7 @@ export default function ConfirmDeleteModal({
                       Deleting...
                     </>
                   ) : (
-                    "Delete User"
+                    `Delete ${itemLabel}`
                   )}
                 </motion.button>
               </div>

@@ -2,14 +2,15 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { ThumbsUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import FilterSidebar from "@/components/shared/materials/filter-sidebar";
 import ProductGrid from "@/components/shared/materials/product-grid";
 import Pagination from "@/components/shared/materials/pagination";
-import { productKeys } from "@/hooks/use-products";
+import { productKeys, useCategoriesByBrand } from "@/hooks/use-products";
+
+const BOGAT_BRAND_TYPE = 2;
 
 function sortItems(items = [], sortBy) {
   const arr = [...items];
@@ -63,19 +64,11 @@ async function fetchProducts(filters, page, pageSize = 12) {
   };
 }
 
-function extractCategories(items = []) {
-  const map = new Map();
-  items.forEach((item) => {
-    if (item.categoryId && item.categoryName && !map.has(item.categoryId)) {
-      map.set(item.categoryId, { id: item.categoryId, name: item.categoryName });
-    }
-  });
-  return Array.from(map.values());
-}
-
 export default function BogatMaterialsClient({ initialData }) {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const PAGE_SIZE = 12;
 
   const [activeFilters, setActiveFilters] = useState({
@@ -118,13 +111,12 @@ export default function BogatMaterialsClient({ initialData }) {
     refetchOnWindowFocus: false,
   });
 
-  const { data: allItemsData } = useQuery({
-    queryKey: ["products", "all-for-categories"],
-    queryFn: () => fetchProducts({}, 1, 100),
-    staleTime: 15 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  });
+  // Collections come from the categories endpoint, not from a page of products.
+  // Deriving them from a capped product fetch silently dropped any collection
+  // whose products fell outside that window — so adding a new signature stone,
+  // or simply growing past the page size, could make a whole collection vanish.
+  // Sourcing by brand scales to any number of collections.
+  const { data: bogatCategories } = useCategoriesByBrand(BOGAT_BRAND_TYPE);
 
   useEffect(() => {
     if (data?.hasNextPage) {
@@ -141,7 +133,26 @@ export default function BogatMaterialsClient({ initialData }) {
     [data?.items, sortBy],
   );
 
-  const categories = extractCategories(allItemsData?.items);
+  // The signature collections are the child categories under the "Bogat
+  // Signature Collections" parent — they all carry a parentCategoryId, while the
+  // general/scaffolding categories (Bathroom, Tiles & Flooring, …) are
+  // top-level (parentCategoryId null). Filtering to children shows exactly the
+  // seven, and scales automatically if a new collection is added under the same
+  // parent. Sorted by displayOrder (1→7 = the catalogue's chronological order)
+  // and carrying the live productCount.
+  const categories = useMemo(
+    () =>
+      (bogatCategories ?? [])
+        .filter((c) => c.parentCategoryId != null)
+        .map((c) => ({
+          id: c.id,
+          name: c.name,
+          count: c.productCount ?? 0,
+          displayOrder: c.displayOrder ?? 0,
+        }))
+        .sort((a, b) => a.displayOrder - b.displayOrder),
+    [bogatCategories],
+  );
 
   const handleFilterChange = useCallback((newFilters) => {
     setActiveFilters(newFilters);
@@ -187,6 +198,22 @@ export default function BogatMaterialsClient({ initialData }) {
     setCurrentPage(1);
   }, []);
 
+  // Search: update the filter, reset to page 1, and mirror the term in the URL
+  // (?search=) so a search is shareable, survives refresh, and round-trips with
+  // the global navbar handoff. Already debounced in the search box.
+  const handleSearchChange = useCallback(
+    (value) => {
+      setActiveFilters((prev) => ({ ...prev, searchTerm: value }));
+      setCurrentPage(1);
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) params.set("search", value);
+      else params.delete("search");
+      const qs = params.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    },
+    [router, pathname, searchParams],
+  );
+
   return (
     <div className="min-h-screen bg-black pt-20 font-manrope">
       {/* Breadcrumb */}
@@ -218,18 +245,90 @@ export default function BogatMaterialsClient({ initialData }) {
         </div>
       </nav>
 
+      {/* Immersive collection hero — sets the tone and offers a one-tap way into
+          each collection, the natural way to browse a bespoke catalogue. */}
+      <section
+        className="border-b border-white/[0.07]"
+        style={{ background: "linear-gradient(180deg, #100d09 0%, #0a0908 100%)" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+          <p className="text-[11px] font-semibold text-[#D4AF37] tracking-[0.28em] uppercase mb-4">
+            Bogat by TBM
+          </p>
+          <h1 className="font-poppins text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-[1.05] tracking-[-0.02em] max-w-2xl">
+            Signature collections of bespoke stone
+          </h1>
+          <p className="mt-5 max-w-xl text-[15px] text-white/50 leading-relaxed">
+            Made-to-order vanities, basins and stone furniture — each piece
+            handcrafted to the proportions of your space, in 8–12 weeks.
+          </p>
+
+          {categories.length > 0 && (
+            // A single-line rail rather than a wrapping wall: it stays contained
+            // no matter how many collections exist. The right-edge fade hints
+            // there is more to scroll to.
+            <div className="relative mt-9">
+              <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 pr-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <button
+                  onClick={() =>
+                    handleFilterChange({ ...activeFilters, categoryIds: [] })
+                  }
+                  className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
+                    (activeFilters.categoryIds?.length ?? 0) === 0
+                      ? "bg-[#D4AF37] text-black"
+                      : "border border-white/12 text-white/60 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  All collections
+                </button>
+                {categories.map((cat) => {
+                  const active = activeFilters.categoryIds?.includes(cat.id);
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() =>
+                        handleFilterChange({
+                          ...activeFilters,
+                          categoryIds: [cat.id],
+                        })
+                      }
+                      className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
+                        active
+                          ? "bg-[#D4AF37] text-black"
+                          : "border border-white/12 text-white/60 hover:border-white/30 hover:text-white"
+                      }`}
+                    >
+                      {cat.name}
+                    </button>
+                  );
+                })}
+              </div>
+              <div
+                className="pointer-events-none absolute right-0 top-0 bottom-1 w-12"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, #0a0908 85%)",
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <aside className="w-full lg:w-64 shrink-0">
             <FilterSidebar
+              variant="collections"
               categories={categories}
               activeFilters={activeFilters}
               onFilterChange={handleFilterChange}
               handleClearAllFilters={handleClearAllFilters}
               handleRemoveFilter={handleRemoveFilter}
               onApplyFilters={() => setCurrentPage(1)}
+              onSearchChange={handleSearchChange}
               sortBy={sortBy}
               setSortBy={handleSortChange}
               viewMode={viewMode}
@@ -259,7 +358,19 @@ export default function BogatMaterialsClient({ initialData }) {
                     </motion.span>
                   )}
                 </AnimatePresence>
-                <p className="text-white/40">{data?.totalCount ?? 0} Results</p>
+                <p className="text-white/40">
+                  {data?.totalCount ?? 0} result
+                  {(data?.totalCount ?? 0) === 1 ? "" : "s"}
+                  {activeFilters.searchTerm ? (
+                    <>
+                      {" "}
+                      for{" "}
+                      <span className="text-white/70">
+                        &ldquo;{activeFilters.searchTerm}&rdquo;
+                      </span>
+                    </>
+                  ) : null}
+                </p>
                 <label className="text-sm text-white/50">Sort:</label>
                 <select
                   value={sortBy}
@@ -292,32 +403,6 @@ export default function BogatMaterialsClient({ initialData }) {
               </div>
             </div>
 
-            {/* Recommendation Banner */}
-            {!isLoading && (sortedItems?.length ?? 0) > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-lg p-4 mb-6 flex items-center justify-between"
-                style={{ background: "rgba(212,175,55,0.06)", boxShadow: "0 0 0 1px rgba(212,175,55,0.15)" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(212,175,55,0.12)" }}>
-                    <ThumbsUp className="text-[#D4AF37]" size={14} strokeWidth={2} />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <h3 className="font-semibold text-white text-sm">Recommended for You</h3>
-                    <p className="text-xs text-white/40">Based on your recent renovation style quiz</p>
-                    <button className="text-xs text-start font-semibold text-[#D4AF37] hover:text-[#D4AF37]/80 whitespace-nowrap block md:hidden">
-                      View All Recommendations
-                    </button>
-                  </div>
-                </div>
-                <button className="text-sm font-medium text-[#D4AF37]/70 hover:text-[#D4AF37] whitespace-nowrap hidden md:block transition-colors">
-                  View All Recommendations
-                </button>
-              </motion.div>
-            )}
-
             {/* Error */}
             {error && (
               <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6">
@@ -330,6 +415,21 @@ export default function BogatMaterialsClient({ initialData }) {
               products={sortedItems}
               isLoading={isLoading}
               viewMode={viewMode}
+              emptyTitle={
+                activeFilters.searchTerm
+                  ? `No pieces match “${activeFilters.searchTerm}”`
+                  : undefined
+              }
+              emptyMessage={
+                activeFilters.searchTerm
+                  ? "Try a different name or collection — or clear the search to see everything."
+                  : undefined
+              }
+              onReset={
+                activeFilters.searchTerm
+                  ? () => handleSearchChange("")
+                  : undefined
+              }
             />
 
             {/* Pagination */}

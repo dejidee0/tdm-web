@@ -1,10 +1,199 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Search } from "lucide-react";
 import ActiveFilterTags from "./active-filter-tabs";
 
-export default function FilterSidebar({
+// Thin dispatcher (no hooks of its own) so the two variants can each own their
+// hook order cleanly.
+export default function FilterSidebar(props) {
+  if (props.variant === "collections") {
+    return (
+      <CollectionsFilter
+        categories={props.categories ?? []}
+        activeFilters={props.activeFilters}
+        onFilterChange={props.onFilterChange}
+        onApplyFilters={props.onApplyFilters}
+        onSearchChange={props.onSearchChange}
+        sortBy={props.sortBy}
+        setSortBy={props.setSortBy}
+      />
+    );
+  }
+  return <FullFilterSidebar {...props} />;
+}
+
+/**
+ * A purpose-built, single-select collections filter for the Bogat catalogue.
+ * No Brand/Type/Apply — the page is already one brand of physical vanities, so
+ * those controls were noise. Selection applies immediately and stays in sync
+ * with the hero's collection rail (both drive activeFilters.categoryIds).
+ */
+function CollectionsFilter({
+  categories = [],
+  activeFilters,
+  onFilterChange,
+  onApplyFilters,
+  onSearchChange,
+  sortBy,
+  setSortBy,
+}) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const selectedId = activeFilters?.categoryIds?.[0] ?? null;
+  const totalPieces = categories.reduce((sum, c) => sum + (c.count ?? 0), 0);
+
+  // Local, controlled search text — debounced before it hits the query so we
+  // don't fire a request per keystroke. Stays in sync if the term is cleared
+  // elsewhere (e.g. the results chip or a fresh URL).
+  const committed = activeFilters?.searchTerm ?? "";
+  const [term, setTerm] = useState(committed);
+  useEffect(() => {
+    setTerm(committed);
+  }, [committed]);
+  useEffect(() => {
+    const id = setTimeout(() => {
+      if (term !== committed) onSearchChange?.(term.trim());
+    }, 300);
+    return () => clearTimeout(id);
+  }, [term, committed, onSearchChange]);
+
+  const select = (id) => {
+    onFilterChange({ ...activeFilters, categoryIds: id ? [id] : [] });
+    onApplyFilters?.();
+    setMobileOpen(false);
+  };
+
+  // Plain render helpers (not nested components) — declaring components inside a
+  // component gives them a new identity every render, which remounts the search
+  // input and drops its focus on each keystroke. Inline elements reconcile in
+  // place instead.
+  const renderRow = ({ id, name, count, active }) => (
+    <button
+      key={id ?? "all"}
+      onClick={() => select(id)}
+      className={`flex w-full items-center justify-between gap-3 rounded-sm px-3 py-2.5 text-left transition-colors ${
+        active
+          ? "bg-[#D4AF37]/8 text-white"
+          : "text-white/55 hover:bg-white/3 hover:text-white/85"
+      }`}
+      style={active ? { boxShadow: "inset 0 0 0 1px rgba(212,175,55,0.4)" } : undefined}
+    >
+      <span className="flex items-center gap-2.5 text-[13.5px] font-medium">
+        <span
+          className={`h-1.5 w-1.5 rounded-full transition-colors ${active ? "bg-[#D4AF37]" : "bg-white/20"}`}
+        />
+        {name}
+      </span>
+      {count != null && (
+        <span
+          className={`text-[11px] tabular-nums ${active ? "text-[#D4AF37]" : "text-white/30"}`}
+        >
+          {count}
+        </span>
+      )}
+    </button>
+  );
+
+  const list = (
+    <div className="space-y-0.5">
+      {renderRow({ id: null, name: "All collections", count: totalPieces, active: !selectedId })}
+      {categories.map((c) =>
+        renderRow({ id: c.id, name: c.name, count: c.count, active: selectedId === c.id }),
+      )}
+    </div>
+  );
+
+  const searchBox = (
+    <div className="relative mb-5">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
+      <input
+        type="search"
+        value={term}
+        onChange={(e) => setTerm(e.target.value)}
+        placeholder="Search pieces or collections"
+        aria-label="Search materials"
+        className="w-full rounded-sm border border-white/12 bg-white/3 py-2.5 pl-9 pr-9 text-[13.5px] text-white placeholder:text-white/30 transition-colors focus:border-[#D4AF37]/50 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+      />
+      {term && (
+        <button
+          onClick={() => {
+            setTerm("");
+            onSearchChange?.("");
+          }}
+          aria-label="Clear search"
+          className="absolute right-2.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="w-full font-manrope">
+      {/* Search — visible on all breakpoints, above the collection controls. */}
+      {searchBox}
+
+      {/* Mobile: a compact Filters button + sort, with a collapsible list. */}
+      <div className="md:hidden">
+        <div className="mb-4 flex items-center gap-2">
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            className="flex flex-1 items-center justify-center gap-2 rounded-sm border border-white/12 px-4 py-2.5 text-sm font-medium text-white/80"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {selectedId
+              ? categories.find((c) => c.id === selectedId)?.name
+              : "All collections"}
+          </button>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="rounded-sm border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm text-white focus:border-[#D4AF37]/50 focus:outline-none"
+          >
+            <option value="popular">Most Popular</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="featured">Featured</option>
+          </select>
+        </div>
+        {mobileOpen && <div className="mb-4">{list}</div>}
+      </div>
+
+      {/* Desktop: persistent collections list. */}
+      <div className="hidden md:block">
+        <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+          Collections
+        </p>
+        {list}
+        <div
+          className="mt-6 p-6"
+          style={{
+            background: "rgba(212,175,55,0.06)",
+            boxShadow: "0 0 0 1px rgba(212,175,55,0.15)",
+          }}
+        >
+          <div className="w-px h-3 bg-[#D4AF37] mb-4" />
+          <h4 className="font-semibold mb-2 font-poppins text-white text-sm">
+            Not sure where to start?
+          </h4>
+          <p className="text-sm text-white/40 mb-4 font-manrope">
+            Tell us about your space and our design team will recommend the right
+            collection.
+          </p>
+          <a
+            href="/contact?type=consultation"
+            className="text-sm font-medium text-[#D4AF37]/80 hover:text-[#D4AF37] transition-colors inline-flex items-center gap-1 font-manrope"
+          >
+            Book a consultation →
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FullFilterSidebar({
   categories = [],
   activeFilters,
   onFilterChange,
@@ -17,6 +206,7 @@ export default function FilterSidebar({
   setViewMode,
   totalCount = 0,
 }) {
+
   const [filterTab, setFilterTab] = useState(true);
   const [filterDrop, setFilterDrop] = useState(false);
   const [expandedSections, setExpandedSections] = useState({ category: true, brandType: false, productType: false });
@@ -226,14 +416,29 @@ export default function FilterSidebar({
 
       {(filterTab || filterDrop) && <FilterContent />}
 
-      {/* Sustainable Card */}
-      <div className="mt-6 p-6 hidden md:block" style={{ background: "rgba(212,175,55,0.06)", boxShadow: "0 0 0 1px rgba(212,175,55,0.15)" }}>
+      {/* Design-help card — a real, low-commitment path to conversion for a
+          bespoke catalogue: talk to a consultant instead of a dead-end promo. */}
+      <div
+        className="mt-6 p-6 hidden md:block"
+        style={{
+          background: "rgba(212,175,55,0.06)",
+          boxShadow: "0 0 0 1px rgba(212,175,55,0.15)",
+        }}
+      >
         <div className="w-px h-3 bg-[#D4AF37] mb-4" />
-        <h4 className="font-semibold mb-2 font-poppins text-white text-sm">Sustainable Choice</h4>
-        <p className="text-sm text-white/40 mb-4 font-manrope">Browse our collection of eco-friendly materials</p>
-        <button className="text-sm font-medium text-[#D4AF37]/70 hover:text-[#D4AF37] transition-colors flex items-center gap-1 font-manrope">
-          View Collection →
-        </button>
+        <h4 className="font-semibold mb-2 font-poppins text-white text-sm">
+          Not sure where to start?
+        </h4>
+        <p className="text-sm text-white/40 mb-4 font-manrope">
+          Tell us about your space and our design team will recommend the right
+          collection.
+        </p>
+        <a
+          href="/contact?type=consultation"
+          className="text-sm font-medium text-[#D4AF37]/80 hover:text-[#D4AF37] transition-colors inline-flex items-center gap-1 font-manrope"
+        >
+          Book a consultation →
+        </a>
       </div>
     </div>
   );

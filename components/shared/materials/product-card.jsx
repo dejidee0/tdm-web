@@ -3,24 +3,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { useIsAuthenticated } from "@/hooks/use-auth";
 import { useIsSaved, useToggleSave } from "@/hooks/use-saved";
-import { useAddToCart } from "@/hooks/use-cart";
-import { showToast } from "@/components/shared/toast";
-
-const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop";
 
 function HeartIcon({ filled, loading, className = "w-4 h-4" }) {
   return (
     <svg
       className={`${className} transition-colors duration-200 ${
-        loading ? "fill-none text-white/20" : filled ? "fill-red-500 text-red-500" : "fill-none text-white/40"
+        loading
+          ? "fill-none text-white/20"
+          : filled
+            ? "fill-[#D4AF37] text-[#D4AF37]"
+            : "fill-none text-white/60"
       }`}
-      stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
     >
-      <path strokeLinecap="round" strokeLinejoin="round"
-        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+      />
     </svg>
   );
 }
@@ -32,8 +37,11 @@ function SaveButton({ productId, className = "", iconClass = "w-4 h-4" }) {
 
   const handleClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (!isAuthenticated) {
-      window.location.href = "/sign-in?redirect=" + encodeURIComponent(window.location.pathname);
+      window.location.assign(
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname),
+      );
       return;
     }
     toggleSave.mutate({ productId, savedId, isSaved });
@@ -43,7 +51,7 @@ function SaveButton({ productId, className = "", iconClass = "w-4 h-4" }) {
     <button
       onClick={handleClick}
       disabled={isLoading || toggleSave.isPending}
-      className={`flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-60 ${className}`}
+      className={`flex items-center justify-center transition-transform hover:scale-110 disabled:opacity-60 ${className}`}
       aria-label={isSaved ? "Remove from saved" : "Save item"}
     >
       <HeartIcon filled={isSaved} loading={isLoading} className={iconClass} />
@@ -51,162 +59,185 @@ function SaveButton({ productId, className = "", iconClass = "w-4 h-4" }) {
   );
 }
 
+// An honest branded panel when a piece has no photography yet — a stock photo
+// would misrepresent a bespoke stone product.
+function ImagePlaceholder({ name, categoryName }) {
+  return (
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center px-4"
+      style={{
+        background: "radial-gradient(circle at 50% 35%, #14110b 0%, #0a0a08 72%)",
+      }}
+    >
+      <span className="font-poppins font-bold text-[#D4AF37] tracking-[0.3em] text-[11px] uppercase">
+        BOGAT
+      </span>
+      <span className="text-white/70 font-poppins text-sm leading-snug line-clamp-2">
+        {name}
+      </span>
+      {categoryName && (
+        <span className="text-white/25 text-[10px] tracking-[0.22em] uppercase">
+          {categoryName}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function ProductCard({ product, viewMode = "grid" }) {
-  const imageUrl = product.primaryImageUrl || product.images?.[0] || PLACEHOLDER;
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const discountPct = hasDiscount
-    ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
-    : 0;
+  const imageUrl = product.primaryImageUrl || product.images?.[0] || null;
+  const hasImage = Boolean(imageUrl);
   const detailHref = `/materials/${product.slug || product.id}`;
-  const addToCart = useAddToCart();
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    addToCart.mutate(
-      { product, quantity: 1 },
-      {
-        onSuccess: () => showToast.success({ title: "Added to Cart", message: `${product.name} added.` }),
-        onError: (err) => showToast.error({ title: "Couldn't Add", message: err.message || "Try again." }),
-      }
-    );
-  };
+  // Bogat (brandType 2) is made to order — never show fast-stock language, and
+  // frame the price as a starting point ("From"), never a fixed sticker.
+  const isMadeToOrder = product.brandType === 2;
+  const priceLabel = product.showPrice
+    ? product.priceDisplay
+    : "Request price";
 
+  // ── List view ──────────────────────────────────────────────────────────────
   if (viewMode === "list") {
     return (
-      <Link href={detailHref}>
-        <motion.div
-          whileHover={{ y: -2 }}
-          className="overflow-hidden cursor-pointer flex gap-0 transition-colors"
-          style={{ background: "#0d0b08", boxShadow: "0 0 0 1px rgba(255,255,255,0.06)" }}
+      <Link href={detailHref} className="group block">
+        <div
+          className="flex overflow-hidden bg-[#0d0b08] transition-colors"
+          style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.06)" }}
         >
-          <div className="relative w-48 shrink-0" style={{ background: "#1a1a1a" }}>
-            <Image src={imageUrl} alt={product.name} fill className="object-cover" />
-            {product.isFeatured && (
-              <span className="absolute top-2 left-2 text-xs font-medium px-2 py-1 bg-[#D4AF37] text-black font-manrope">
-                Featured
-              </span>
-            )}
+          <div className="relative w-40 sm:w-56 shrink-0 overflow-hidden">
+            <div className="relative aspect-[4/5] sm:aspect-auto sm:h-full">
+              {hasImage ? (
+                <Image
+                  src={imageUrl}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="224px"
+                />
+              ) : (
+                <ImagePlaceholder
+                  name={product.name}
+                  categoryName={product.categoryName}
+                />
+              )}
+            </div>
           </div>
-          <div className="p-4 flex flex-col justify-between flex-1">
+          <div className="flex flex-1 flex-col justify-between p-5">
             <div>
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <p className="text-xs text-white/40 font-semibold uppercase tracking-wide font-manrope">
-                  {product.categoryName} · {product.brandName}
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37]/70 font-manrope">
+                  {product.categoryName}
                 </p>
-                <SaveButton productId={product.id} className="w-8 h-8 bg-white/05 shrink-0" iconClass="w-4 h-4" />
+                <SaveButton productId={product.id} iconClass="w-4 h-4" />
               </div>
-              <h3 className="font-semibold text-white mb-1 line-clamp-1 font-poppins">{product.name}</h3>
-              <p className="text-sm text-white/45 line-clamp-2 mb-3 font-manrope">{product.shortDescription || product.description}</p>
+              <h3 className="font-poppins text-lg font-semibold text-white leading-snug">
+                {product.name}
+              </h3>
+              {product.shortDescription && (
+                <p className="mt-1.5 text-sm text-white/45 line-clamp-2 font-manrope">
+                  {product.shortDescription}
+                </p>
+              )}
             </div>
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-baseline gap-2">
-                {product.showPrice ? (
-                  <>
-                    <span className="text-xl font-bold text-white">{product.priceDisplay}</span>
-                    {hasDiscount && <span className="text-sm text-white/35 line-through">₦{product.compareAtPrice?.toLocaleString()}.00</span>}
-                  </>
-                ) : (
-                  <span className="text-base font-bold text-white font-manrope">Request Price</span>
+            <div className="mt-4 flex items-end justify-between gap-3">
+              <div>
+                {product.showPrice && isMadeToOrder && (
+                  <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-white/35">
+                    From
+                  </span>
                 )}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className={`text-xs font-medium px-2 py-1 font-manrope ${
-                  product.inStock ? "bg-green-900/30 text-green-400" : "bg-red-900/20 text-red-400"
-                }`}>
-                  {product.inStock ? `${product.stockQuantity ?? "✓"} in stock` : "Out of stock"}
+                <span className="font-poppins text-lg font-semibold text-white">
+                  {priceLabel}
                 </span>
-                <button
-                  onClick={handleAddToCart}
-                  disabled={addToCart.isPending || !product.inStock}
-                  className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-sm font-semibold text-white/70 hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-colors font-manrope disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  {addToCart.isPending ? "Adding…" : "Add to Cart"}
-                </button>
               </div>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/50 transition-colors group-hover:text-[#D4AF37]">
+                View
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </Link>
     );
   }
 
+  // ── Grid view ────────────────────────────────────────────────────────────────
   return (
-    <Link href={detailHref}>
+    <Link href={detailHref} className="group block h-full">
       <motion.div
         whileHover={{ y: -4 }}
-        className="overflow-hidden cursor-pointer h-full flex flex-col transition-all"
-        style={{ background: "#0d0b08", boxShadow: "0 0 0 1px rgba(255,255,255,0.06)" }}
+        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+        className="flex h-full flex-col overflow-hidden bg-[#0d0b08]"
+        style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.06)" }}
       >
-        <div className="relative h-48 sm:h-56 lg:h-64 shrink-0" style={{ background: "#1a1a1a" }}>
-          <Image src={imageUrl} alt={product.name} fill className="object-cover" />
+        <div className="relative aspect-[4/5] overflow-hidden">
+          {hasImage ? (
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+          ) : (
+            <ImagePlaceholder
+              name={product.name}
+              categoryName={product.categoryName}
+            />
+          )}
 
-          <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+            {isMadeToOrder && (
+              <span className="bg-[#D4AF37] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-black font-manrope">
+                Made to Order
+              </span>
+            )}
             {product.isFeatured && (
-              <span className="text-xs font-medium px-2 py-1 bg-[#D4AF37] text-black font-manrope">Featured</span>
-            )}
-            {hasDiscount && (
-              <span className="text-xs font-medium px-2 py-1 bg-[#D4AF37] text-black font-manrope">-{discountPct}%</span>
-            )}
-            {product.productTypeName === "Service" && (
-              <span className="text-xs font-medium px-2 py-1 bg-black/60 text-white font-manrope">Service</span>
+              <span className="border border-white/25 bg-black/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm font-manrope">
+                Featured
+              </span>
             )}
           </div>
 
           <SaveButton
             productId={product.id}
-            className="absolute top-3 right-3 w-8 h-8 bg-black/40 backdrop-blur-sm border border-white/10"
+            className="absolute right-3 top-3 h-9 w-9 border border-white/10 bg-black/40 backdrop-blur-sm"
             iconClass="w-4 h-4"
           />
+
+          {/* Hover affordance — the card funnels to the detail page. */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
+              View piece
+              <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
         </div>
 
-        <div className="p-4 flex flex-col flex-1">
-          <p className="text-xs text-white/35 font-semibold uppercase tracking-wide mb-1 font-manrope">
-            {product.categoryName} · {product.brandName}
+        <div className="flex flex-1 flex-col p-4">
+          <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37]/70 font-manrope">
+            {product.categoryName}
           </p>
-          <h3 className="font-semibold text-white mb-1 line-clamp-2 flex-1 font-poppins">{product.name}</h3>
-          <p className="text-sm text-white/45 mb-3 line-clamp-2 font-manrope">{product.shortDescription || product.description}</p>
+          <h3 className="font-poppins text-[15px] font-semibold leading-snug text-white line-clamp-2">
+            {product.name}
+          </h3>
 
-          <div className="flex items-center gap-1.5 mb-3">
-            {product.inStock ? (
-              <>
-                <svg className="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <p className="text-sm text-green-400 font-manrope">
-                  {product.trackInventory ? `${product.stockQuantity} units in stock` : "In Stock"}
-                </p>
-              </>
-            ) : (
-              <p className="text-sm text-red-400 font-medium font-manrope">Out of Stock</p>
-            )}
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto">
-            <div>
-              {product.showPrice ? (
-                <>
-                  <span className="text-xl font-bold text-white">{product.priceDisplay}</span>
-                  {hasDiscount && (
-                    <div className="text-xs text-white/35 line-through mt-0.5">₦{product.compareAtPrice?.toLocaleString()}.00</div>
-                  )}
-                </>
-              ) : (
-                <span className="text-base font-bold text-white font-manrope">Request Price</span>
+          <div className="mt-auto pt-4">
+            <div className="flex items-baseline gap-2">
+              {product.showPrice && isMadeToOrder && (
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/35">
+                  From
+                </span>
               )}
+              <span className="font-poppins text-lg font-semibold text-white">
+                {priceLabel}
+              </span>
             </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={addToCart.isPending || !product.inStock}
-              className="flex items-center gap-2 px-4 py-2 border border-white/12 text-sm font-semibold text-white/60 hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-colors w-full sm:w-auto justify-center font-manrope disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              {addToCart.isPending ? "Adding…" : "Add to Cart"}
-            </button>
+            {isMadeToOrder && (
+              <p className="mt-1 text-[11px] text-white/35 font-manrope">
+                Made to order · 8–12 weeks
+              </p>
+            )}
           </div>
         </div>
       </motion.div>

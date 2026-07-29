@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Plus, Upload, Pencil, Trash2, Search } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
@@ -12,9 +13,12 @@ import ConfirmDeleteModal from "@/components/shared/admin/dashboard/confirm-dele
 const PAGE_SIZE = 20;
 
 export default function AdminProductsPage() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null);
+
+  const editHref = (id) => `/admin/dashboard/products/${id}/edit`;
 
   // The admin surface has no GET — this is the same list the storefront reads.
   // `activeOnly: false` so inactive products remain manageable.
@@ -138,7 +142,16 @@ export default function AdminProductsPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: Math.min(i * 0.02, 0.3) }}
-                  className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]"
+                  // Row-click to edit — the familiar table gesture. Keyboard and
+                  // screen-reader users still get the focusable Edit link in the
+                  // actions cell, so this is a mouse enhancement, not the only path.
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
+                  onClick={() => {
+                    // Don't hijack a click that was actually a text selection.
+                    if (window.getSelection()?.toString()) return;
+                    router.push(editHref(p.id));
+                  }}
+                  className="cursor-pointer border-b border-white/5 last:border-0 transition-colors hover:bg-white/[0.04]"
                 >
                   <td className="px-4 py-3">
                     <p className="text-[14px] text-white">{p.name}</p>
@@ -167,14 +180,18 @@ export default function AdminProductsPage() {
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-1">
                       <Link
-                        href={`/admin/dashboard/products/${p.id}/edit`}
+                        href={editHref(p.id)}
                         aria-label={`Edit ${p.name}`}
+                        onClick={(e) => e.stopPropagation()}
                         className="rounded-md p-2 text-white/40 transition-colors hover:bg-white/5 hover:text-white"
                       >
                         <Pencil className="h-4 w-4" strokeWidth={1.75} />
                       </Link>
                       <button
-                        onClick={() => setPendingDelete(p)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPendingDelete(p);
+                        }}
                         aria-label={`Delete ${p.name}`}
                         className="rounded-md p-2 text-white/40 transition-colors hover:bg-red-500/10 hover:text-red-400"
                       >
@@ -218,6 +235,7 @@ export default function AdminProductsPage() {
           onConfirm={handleDelete}
           isDeleting={isDeleting}
           itemName={pendingDelete.name}
+          itemLabel="Product"
         />
       )}
     </div>

@@ -497,6 +497,7 @@ export default function UserManagementTable({
           }}
           onConfirm={confirmDelete}
           userName={userToDelete?.name}
+          itemLabel="User"
           isDeleting={deleteUser.isPending}
         />
       </div>
