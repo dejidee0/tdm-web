@@ -1,9 +1,7 @@
 // app/api/saved/[id]/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeader() {
   const cookieStore = await cookies();
@@ -14,7 +12,7 @@ async function getAuthHeader() {
 export async function DELETE(_req, { params }) {
   try {
     const { id } = await params;
-    const res = await fetch(`${BASE_URL}/saved/${id}`, {
+    const res = await fetch(`${API_URL}/saved/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

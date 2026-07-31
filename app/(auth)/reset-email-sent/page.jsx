@@ -12,7 +12,9 @@ function ResetEmailSentContent() {
 
   const handleResendEmail = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, {
+      // Local proxy, not the backend directly: a NEXT_PUBLIC_* URL would be
+      // inlined into the client bundle. See lib/proxy.js.
+      await fetch("/api/v1/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

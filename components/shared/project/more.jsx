@@ -3,7 +3,7 @@
 import AuthModal from "@/components/common/auth-modal";
 import { useCurrentUser } from "@/hooks/use-auth";
 import { AnimatePresence, motion } from "framer-motion";
-import { RefreshCw, Sparkles } from "lucide-react";
+import { RefreshCw, Star } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -61,7 +61,7 @@ export default function LoadMoreAndRecommended() {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2 mb-6 sm:mb-8"
           >
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] shrink-0" />
+            <Star className="w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] shrink-0" />
             <h2 className="text-xl sm:text-2xl font-medium text-white">Recommended for You</h2>
           </motion.div>
 

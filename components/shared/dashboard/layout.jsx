@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Sidebar from "./sidebar";
+import Footer from "@/components/common/footer";
 import { Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -33,8 +34,11 @@ export default function DashboardLayout({ children }) {
         )}
       </AnimatePresence>
 
-      {/* Layout Wrapper — pt-28 on mobile accounts for navbar (4rem) + hamburger bar (3rem) */}
-      <div className="flex max-w-7xl mx-auto pt-0 lg:pt-0">
+      {/* Layout Wrapper.
+          `min-h-[calc(100vh-4rem)]` (viewport minus the fixed h-16 navbar) so the
+          sidebar column still runs the full height on pages whose content is
+          shorter than the screen — the row is what the sidebar stretches to. */}
+      <div className="flex min-h-[calc(100vh-4rem)] max-w-7xl mx-auto pt-0 lg:pt-0">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -45,6 +49,8 @@ export default function DashboardLayout({ children }) {
           </main>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

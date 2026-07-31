@@ -1,0 +1,24 @@
+{
+  "endpoint": "/Cart",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": {
+      "id": "string",
+      "userId": "null",
+      "guestSessionId": "string",
+      "items": {
+        "type": "array",
+        "length": 0,
+        "of": "unknown"
+      },
+      "totalItems": "number",
+      "subTotal": "number",
+      "createdAt": "string",
+      "updatedAt": "string"
+    },
+    "errors": "null"
+  }
+}

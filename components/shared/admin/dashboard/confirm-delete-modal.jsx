@@ -3,13 +3,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, AlertTriangle } from "lucide-react";
 
+/**
+ * @param {object}  props
+ * @param {string} [props.itemName] Name of the thing being deleted. `userName`
+ *   is the original, user-management-specific alias, kept so existing callers
+ *   keep working.
+ * @param {string} [props.itemLabel="Item"] The noun shown in the title and
+ *   confirm button ("Delete Product", "Delete User"). Defaults to "Item" so a
+ *   caller that forgets it never mislabels the record's type.
+ */
 export default function ConfirmDeleteModal({
   isOpen,
   onClose,
   onConfirm,
   userName,
+  itemName,
+  itemLabel = "Item",
   isDeleting = false,
 }) {
+  const name = itemName ?? userName;
   const handleConfirm = () => {
     onConfirm();
   };
@@ -33,18 +45,18 @@ export default function ConfirmDeleteModal({
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0d0b08] border border-white/08 rounded-2xl shadow-2xl max-w-md w-full"
+              className="bg-surface border border-white/08 rounded-2xl shadow-2xl max-w-md w-full"
             >
               {/* Header */}
               <div className="px-6 py-5 border-b border-white/08">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-red-950/40 flex items-center justify-center">
-                      <AlertTriangle className="text-red-400" size={20} />
+                    <div className="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center">
+                      <AlertTriangle className="text-danger" size={20} />
                     </div>
                     <div>
                       <h2 className="font-manrope text-[20px] font-bold text-white">
-                        Delete User
+                        Delete {itemLabel}
                       </h2>
                     </div>
                   </div>
@@ -63,7 +75,7 @@ export default function ConfirmDeleteModal({
                 <p className="font-manrope text-[15px] text-white/50 leading-relaxed">
                   Are you sure you want to delete{" "}
                   <span className="font-semibold text-white">
-                    {userName || "this user"}
+                    {name || "this item"}
                   </span>
                   ? This action cannot be undone and all associated data will be
                   permanently removed.
@@ -88,7 +100,7 @@ export default function ConfirmDeleteModal({
                   disabled={isDeleting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-5 py-2.5 bg-[#EF4444] text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-[#DC2626] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-5 py-2.5 bg-danger text-white rounded-lg font-manrope text-[14px] font-medium hover:bg-danger-solid transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isDeleting ? (
                     <>
@@ -96,7 +108,7 @@ export default function ConfirmDeleteModal({
                       Deleting...
                     </>
                   ) : (
-                    "Delete User"
+                    `Delete ${itemLabel}`
                   )}
                 </motion.button>
               </div>

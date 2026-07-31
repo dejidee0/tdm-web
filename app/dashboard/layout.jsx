@@ -1,7 +1,7 @@
 import Navbar from "@/components/common/navbar";
 import "../globals.css";
-import Providers from "@/components/common/providers";
-import Footer from "@/components/common/footer";
+
+// No <Providers> here — the root layout (app/layout.js) already supplies them.
 
 export const metadata = {
   title: "My Dashboard | TBM Building Services",
@@ -10,10 +10,13 @@ export const metadata = {
 
 export default function UserDashboardLayout({ children }) {
   return (
-    <Providers>
+    <>
+      {/* The footer lives in the DashboardLayout *component*, not here, so a
+          focused full-page task (e.g. /dashboard/ai-designs/new) can opt out of
+          the whole dashboard shell — sidebar and footer together — while every
+          page that renders DashboardLayout still gets both. */}
       <Navbar />
       <div className="mt-16">{children}</div>
-      <Footer />
-    </Providers>
+    </>
   );
 }

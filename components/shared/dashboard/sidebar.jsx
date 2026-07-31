@@ -9,7 +9,7 @@ import {
   Layers,
   Heart,
   User,
-  Sparkles,
+  Wand2,
   FolderOpen,
 } from "lucide-react";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const sidebarContent = (
     <div className="h-full flex flex-col font-manrope" style={{ background: "#0d0b08" }}>
       {/* Header */}
-      <div className="p-6 border-b border-white/08">
+      <div className="p-5 border-b border-white/08">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div
@@ -91,7 +91,7 @@ export default function Sidebar({ isOpen, onClose }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.href === "/dashboard"
@@ -126,9 +126,9 @@ export default function Sidebar({ isOpen, onClose }) {
       </nav>
 
       {/* Go Pro Card */}
-      <div className="p-2.5">
+      <div className="p-3">
         <div
-          className="rounded-2xl p-6 text-white"
+          className="rounded-2xl p-5 text-white"
           style={{
             background: "rgba(212,175,55,0.06)",
             boxShadow: "0 0 0 1px rgba(212,175,55,0.15)",
@@ -138,7 +138,7 @@ export default function Sidebar({ isOpen, onClose }) {
             className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
             style={{ background: "rgba(212,175,55,0.12)" }}
           >
-            <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+            <Wand2 className="w-5 h-5 text-[#D4AF37]" />
           </div>
           <h3 className="text-[16px] font-semibold mb-2 text-white">Go Pro?</h3>
           <p className="text-[13px] text-white/50 mb-4 leading-relaxed">
@@ -158,9 +158,20 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Tablet + Desktop Sidebar */}
-      <aside className="hidden md:block w-64 lg:w-80 shrink-0 h-screen sticky top-0 border-r border-white/08">
-        {sidebarContent}
+      {/* Tablet + Desktop Sidebar — two elements, two jobs.
+          The <aside> is the *column*: it carries the background and the right
+          border, and has no height of its own, so the flex row's default
+          `align-items: stretch` runs it the full height of the page. Making the
+          aside itself sticky (or 100vh tall) left the rest of the column empty
+          black on any page taller than the viewport.
+          The inner div is the *content*: `top-16` clears the fixed `h-16`
+          navbar, and `h-[calc(100vh-4rem)]` fills exactly the space beneath it,
+          so the nav follows the viewport while the column stays full height. */}
+      <aside
+        className="hidden md:block w-56 lg:w-64 shrink-0 border-r border-white/08"
+        style={{ background: "#0d0b08" }}
+      >
+        <div className="sticky top-16 h-[calc(100vh-4rem)]">{sidebarContent}</div>
       </aside>
 
       {/* Mobile Sidebar */}

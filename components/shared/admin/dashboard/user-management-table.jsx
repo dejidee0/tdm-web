@@ -5,7 +5,8 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MoreVertical, ChevronLeft, ChevronRight, Edit2, Trash2, Zap } from "lucide-react";
-import { roleBadgeColors } from "@/lib/mock/users";
+import { roleBadge } from "@/lib/theme/roles";
+import { avatarStyle, initialsOf } from "@/lib/theme/avatar";
 import { useUpdateUserStatus, useDeleteUser } from "@/hooks/use-admin-users";
 import ConfirmDeleteModal from "./confirm-delete-modal";
 import Image from "next/image";
@@ -53,7 +54,7 @@ export default function UserManagementTable({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-12 text-center">
+      <div className="bg-surface rounded-xl border border-white/08 p-12 text-center">
         <p className="text-white/50 font-manrope text-[14px]">
           No users found. Try adjusting your filters.
         </p>
@@ -152,11 +153,11 @@ export default function UserManagementTable({
                 right: menuPos.right,
                 zIndex: 9999,
               }}
-              className="w-48 bg-[#0d0b08] rounded-lg shadow-xl border border-white/12 overflow-hidden"
+              className="w-48 bg-surface rounded-lg shadow-xl border border-white/12 overflow-hidden"
             >
               <button
                 onClick={() => handleViewAIUsage(activeUser)}
-                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-purple-400 hover:bg-white/05 transition-colors flex items-center gap-3"
+                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-white/80 hover:bg-white/05 transition-colors flex items-center gap-3"
               >
                 <Zap size={16} />
                 View AI Usage
@@ -170,7 +171,7 @@ export default function UserManagementTable({
               </button>
               <button
                 onClick={() => handleDeleteUser(activeUser?.id, activeUser?.name)}
-                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
+                className="w-full px-4 py-3 text-left font-manrope text-[14px] text-danger hover:bg-danger/10 transition-colors flex items-center gap-3"
               >
                 <Trash2 size={16} />
                 Delete User
@@ -186,7 +187,7 @@ export default function UserManagementTable({
     <>
       {portalDropdown}
 
-      <div className="bg-[#0d0b08] rounded-xl border border-white/08">
+      <div className="bg-surface rounded-xl border border-white/08">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
@@ -228,7 +229,10 @@ export default function UserManagementTable({
             <tbody className="divide-y divide-white/08">
               {data?.map((user, index) => {
                 const userRole = Array.isArray(user?.roles) ? user.roles[0] : user?.role;
-                const roleColor = roleBadgeColors[userRole] || roleBadgeColors.Customer;
+                const roleColor = roleBadge(userRole);
+                const isActive = user?.status
+                  ? user.status.toLowerCase() === "active"
+                  : Boolean(user?.isActive);
 
                 return (
                   <motion.tr
@@ -261,12 +265,9 @@ export default function UserManagementTable({
                         ) : (
                           <div
                             className="w-10 h-10 rounded-full flex items-center justify-center font-manrope font-bold text-[14px]"
-                            style={{
-                              backgroundColor: user?.colorScheme?.bg || "#ccc",
-                              color: user?.colorScheme?.text || "#000",
-                            }}
+                            style={avatarStyle(user?.id ?? user?.email)}
                           >
-                            {user?.initials || "?"}
+                            {initialsOf(user)}
                           </div>
                         )}
                         <span className="font-manrope text-[14px] font-medium text-white">
@@ -285,7 +286,7 @@ export default function UserManagementTable({
                     {/* Role Badge */}
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex px-3 py-1 rounded-full font-manrope text-[13px] font-medium ${roleColor?.bg || "bg-gray-100"} ${roleColor?.text || "text-gray-600"}`}
+                        className={`inline-flex px-3 py-1 rounded-full font-manrope text-[13px] font-medium  `}
                       >
                         {userRole || "N/A"}
                       </span>
@@ -294,28 +295,17 @@ export default function UserManagementTable({
                     {/* Status Toggle */}
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => {
-                          const isActive = user?.status
-                            ? user.status.toLowerCase() === "active"
-                            : user?.isActive;
-                          handleToggleStatus(user?.id, isActive);
-                        }}
-                        className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B82F6]"
-                        style={{
-                          backgroundColor: (user?.status
-                            ? user.status.toLowerCase() === "active"
-                            : user?.isActive)
-                            ? "#22C55E"
-                            : "#475569",
-                        }}
+                        role="switch"
+                        aria-checked={isActive}
+                        aria-label={`${isActive ? "Deactivate" : "Activate"} ${user?.fullName || user?.name || "user"}`}
+                        onClick={() => handleToggleStatus(user?.id, isActive)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent/60 focus:ring-offset-surface ${
+                          isActive ? "bg-success-solid" : "bg-track-off"
+                        }`}
                       >
                         <span
                           className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            (user?.status
-                              ? user.status.toLowerCase() === "active"
-                              : user?.isActive)
-                              ? "translate-x-6"
-                              : "translate-x-1"
+                            isActive ? "translate-x-6" : "translate-x-1"
                           }`}
                         />
                       </button>
@@ -342,7 +332,10 @@ export default function UserManagementTable({
         <div className="md:hidden divide-y divide-white/08">
           {data?.map((user, index) => {
             const userRole = Array.isArray(user?.roles) ? user.roles[0] : user?.role;
-            const roleColor = roleBadgeColors[userRole] || roleBadgeColors.Customer;
+            const roleColor = roleBadge(userRole);
+            const isActive = user?.status
+              ? user.status.toLowerCase() === "active"
+              : Boolean(user?.isActive);
 
             return (
               <motion.div
@@ -367,12 +360,9 @@ export default function UserManagementTable({
                   ) : (
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center font-manrope font-bold text-[14px]"
-                      style={{
-                        backgroundColor: user?.colorScheme?.bg || "#ccc",
-                        color: user?.colorScheme?.text || "#000",
-                      }}
+                      style={avatarStyle(user?.id ?? user?.email)}
                     >
-                      {user?.initials || "?"}
+                      {initialsOf(user)}
                     </div>
                   )}
                   <div className="flex-1">
@@ -384,28 +374,17 @@ export default function UserManagementTable({
                     </p>
                   </div>
                   <button
-                    onClick={() => {
-                      const isActive = user?.status
-                        ? user.status.toLowerCase() === "active"
-                        : user?.isActive;
-                      handleToggleStatus(user?.id, isActive);
-                    }}
-                    className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
-                    style={{
-                      backgroundColor: (user?.status
-                        ? user.status.toLowerCase() === "active"
-                        : user?.isActive)
-                        ? "#22C55E"
-                        : "#475569",
-                    }}
+                    role="switch"
+                    aria-checked={isActive}
+                    aria-label={`${isActive ? "Deactivate" : "Activate"} ${user?.fullName || user?.name || "user"}`}
+                    onClick={() => handleToggleStatus(user?.id, isActive)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent/60 focus:ring-offset-surface ${
+                      isActive ? "bg-success-solid" : "bg-track-off"
+                    }`}
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        (user?.status
-                          ? user.status.toLowerCase() === "active"
-                          : user?.isActive)
-                          ? "translate-x-6"
-                          : "translate-x-1"
+                        isActive ? "translate-x-6" : "translate-x-1"
                       }`}
                     />
                   </button>
@@ -418,7 +397,7 @@ export default function UserManagementTable({
                       {user?.email || "N/A"}
                     </p>
                     <span
-                      className={`inline-flex px-3 py-1 rounded-full font-manrope text-[13px] font-medium ${roleColor?.bg || "bg-gray-100"} ${roleColor?.text || "text-gray-600"}`}
+                      className={`inline-flex px-3 py-1 rounded-full font-manrope text-[13px] font-medium  `}
                     >
                       {userRole || "N/A"}
                     </span>
@@ -472,7 +451,7 @@ export default function UserManagementTable({
                   return (
                     <span
                       key={`ellipsis-${index}`}
-                      className="px-3 py-2 font-manrope text-[13px] text-[#64748B]"
+                      className="px-3 py-2 font-manrope text-[13px] text-muted"
                     >
                       ...
                     </span>
@@ -518,6 +497,7 @@ export default function UserManagementTable({
           }}
           onConfirm={confirmDelete}
           userName={userToDelete?.name}
+          itemLabel="User"
           isDeleting={deleteUser.isPending}
         />
       </div>

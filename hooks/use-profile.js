@@ -1,6 +1,7 @@
 // hooks/use-profile.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { profileApi } from "@/lib/api/profile";
+import { useSession } from "@/hooks/use-session";
 
 // ─── Keys ─────────────────────────────────────────────────────────────────────
 export const profileKeys = {
@@ -11,10 +12,14 @@ export const profileKeys = {
 };
 
 // ─── /account/me (full response) ─────────────────────────────────────────────
+// Gated on the session: the navbar renders on every public page, and an
+// anonymous visitor must not spend a request here only to be told 401.
 function useMe() {
+  const { isAuthenticated } = useSession();
   return useQuery({
     queryKey: profileKeys.me,
     queryFn: profileApi.getMe,
+    enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000,
     retry: (count, err) => err?.status !== 401 && count < 2,
   });

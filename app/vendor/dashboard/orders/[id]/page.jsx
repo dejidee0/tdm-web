@@ -48,8 +48,8 @@ export default function OrderDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh] bg-background">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+          <div className="w-16 h-16 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted font-manrope text-[14px]">
             Loading order details...
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <div className="text-center py-12">
-        <p className="text-[#64748B] font-manrope text-[14px]">
+        <p className="text-muted font-manrope text-[14px]">
           Order not found
         </p>
       </div>
@@ -68,11 +68,11 @@ export default function OrderDetailPage() {
   }
 
   const statusColors = {
-    Processing: "bg-[#DBEAFE] text-[#1E40AF]",
-    Shipped: "bg-[#DBEAFE] text-[#1E40AF]",
-    Delivered: "bg-[#D1FAE5] text-[#065F46]",
-    "Pending Approval": "bg-[#FEF3C7] text-[#92400E]",
-    Cancelled: "bg-[#F1F5F9] text-[#475569]",
+    Processing: "bg-info/10 text-info",
+    Shipped: "bg-info/10 text-info",
+    Delivered: "bg-success/10 text-success",
+    "Pending Approval": "bg-warning/10 text-warning",
+    Cancelled: "bg-white/08 text-muted",
   };
 
   return (
@@ -82,7 +82,7 @@ export default function OrderDetailPage() {
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-[#64748B] hover:text-primary font-manrope text-[14px] font-medium mb-6 transition-colors"
+        className="flex items-center gap-2 text-muted hover:text-white font-manrope text-[14px] font-medium mb-6 transition-colors"
       >
         <ArrowLeft size={18} />
         Back to Orders
@@ -95,7 +95,7 @@ export default function OrderDetailPage() {
         className="flex items-center justify-between mb-8"
       >
         <div className="flex items-center gap-4">
-          <h1 className="font-manrope text-[28px] font-bold text-primary">
+          <h1 className="font-manrope text-[28px] font-bold text-white">
             Order #{order.orderNumber}
           </h1>
           <span
@@ -111,7 +111,7 @@ export default function OrderDetailPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors"
           >
             <Printer size={16} />
             Print Invoice
@@ -119,7 +119,7 @@ export default function OrderDetailPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors"
           >
             Update Status
             <ChevronDown size={16} />
@@ -128,9 +128,9 @@ export default function OrderDetailPage() {
       </motion.div>
 
       {/* Placed Date */}
-      <p className="flex items-center gap-2 text-primary font-semibold font-manrope text-[13px] mb-8">
-        <span className="w-6 h-6 bg-[#F1F5F9] rounded flex items-center justify-center">
-          <Calendar className="text-primary " strokeWidth={2} size={30} />
+      <p className="flex items-center gap-2 text-white font-semibold font-manrope text-[13px] mb-8">
+        <span className="w-6 h-6 bg-white/08 rounded flex items-center justify-center">
+          <Calendar className="text-white " strokeWidth={2} size={30} />
         </span>
         Placed on {order.placedAt}
       </p>
@@ -143,37 +143,37 @@ export default function OrderDetailPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden"
+            className="bg-surface rounded-xl border border-white/08 overflow-hidden"
           >
-            <div className="px-6 py-3 border-b border-[#E5E7EB] flex items-center justify-between">
-              <h2 className="font-manrope text-[16px] font-bold text-primary">
+            <div className="px-6 py-3 border-b border-white/08 flex items-center justify-between">
+              <h2 className="font-manrope text-[16px] font-bold text-white">
                 Items Ordered ({order.items.length})
               </h2>
-              <button className="text-[#3B82F6] font-manrope text-[13px] font-medium hover:underline cursor-pointer">
+              <button className="text-info font-manrope text-[13px] font-medium hover:underline cursor-pointer">
                 Edit Order
               </button>
             </div>
 
             {/* Table Header */}
-            <div className="px-6 py-3 bg-[#F8FAFC] border-b border-[#E5E7EB]">
+            <div className="px-6 py-3 bg-white/05 border-b border-white/08">
               <div className="grid grid-cols-[1fr_100px_80px_100px] gap-4">
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                   PRODUCT
                 </span>
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider text-right">
+                <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider text-right">
                   PRICE
                 </span>
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider text-center">
+                <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider text-center">
                   QTY
                 </span>
-                <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider text-right">
+                <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider text-right">
                   TOTAL
                 </span>
               </div>
             </div>
 
             {/* Items */}
-            <div className="divide-y divide-[#E5E7EB]">
+            <div className="divide-y divide-white/08">
               {order.items.map((item, index) => (
                 <motion.div
                   key={item.id}
@@ -184,25 +184,25 @@ export default function OrderDetailPage() {
                 >
                   <div className="grid grid-cols-[1fr_100px_80px_100px] gap-4 items-center">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-[#F1F5F9] rounded-lg flex items-center justify-center shrink-0">
+                      <div className="w-14 h-14 bg-white/08 rounded-lg flex items-center justify-center shrink-0">
                         <span className="text-[24px]">📦</span>
                       </div>
                       <div>
-                        <h3 className="font-manrope text-[14px] font-medium text-primary mb-1">
+                        <h3 className="font-manrope text-[14px] font-medium text-white mb-1">
                           {item.name}
                         </h3>
-                        <p className="font-manrope text-[12px] text-primary">
+                        <p className="font-manrope text-[12px] text-white">
                           {item.sku}
                         </p>
                       </div>
                     </div>
-                    <span className="font-manrope text-[14px] text-primary text-right">
+                    <span className="font-manrope text-[14px] text-white text-right">
                       ${item.price.toFixed(2)}
                     </span>
-                    <span className="font-manrope text-[14px] text-primary text-center">
+                    <span className="font-manrope text-[14px] text-white text-center">
                       {item.quantity}
                     </span>
-                    <span className="font-manrope text-[14px] font-bold text-primary text-right">
+                    <span className="font-manrope text-[14px] font-bold text-white text-right">
                       ${item.total.toFixed(2)}
                     </span>
                   </div>
@@ -211,37 +211,37 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Totals */}
-            <div className="p-6 bg-[#F8FAFC] border-t border-[#E5E7EB]">
+            <div className="p-6 bg-white/05 border-t border-white/08">
               <div className="space-y-3 max-w-md ml-auto">
                 <div className="flex items-center justify-between">
-                  <span className="font-manrope text-[13px] text-[#64748B]">
+                  <span className="font-manrope text-[13px] text-muted">
                     Subtotal
                   </span>
-                  <span className="font-manrope text-[14px] text-primary">
+                  <span className="font-manrope text-[14px] text-white">
                     ${order.subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-manrope text-[13px] text-[#64748B]">
+                  <span className="font-manrope text-[13px] text-muted">
                     Shipping ({order.shippingType})
                   </span>
-                  <span className="font-manrope text-[14px] text-primary">
+                  <span className="font-manrope text-[14px] text-white">
                     ${order.shipping.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-manrope text-[13px] text-[#64748B]">
+                  <span className="font-manrope text-[13px] text-muted">
                     Tax ({order.taxRate}%)
                   </span>
-                  <span className="font-manrope text-[14px] text-primary">
+                  <span className="font-manrope text-[14px] text-white">
                     ${order.tax.toFixed(2)}
                   </span>
                 </div>
-                <div className="pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
-                  <span className="font-manrope text-[16px] font-bold text-primary">
+                <div className="pt-3 border-t border-white/08 flex items-center justify-between">
+                  <span className="font-manrope text-[16px] font-bold text-white">
                     Total
                   </span>
-                  <span className="font-manrope text-[18px] font-bold text-primary">
+                  <span className="font-manrope text-[18px] font-bold text-white">
                     ${order.total.toFixed(2)}
                   </span>
                 </div>
@@ -254,9 +254,9 @@ export default function OrderDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+            className="bg-surface rounded-xl border border-white/08 p-6"
           >
-            <h2 className="font-manrope text-[16px] font-bold text-primary mb-6">
+            <h2 className="font-manrope text-[16px] font-bold text-white mb-6">
               Order Activity
             </h2>
 
@@ -267,32 +267,32 @@ export default function OrderDetailPage() {
                     {activity.completed ? (
                       <CheckCircle2
                         size={20}
-                        className="text-[#10B981] flex-shrink-0"
+                        className="text-success flex-shrink-0"
                       />
                     ) : (
                       <Circle
                         size={20}
-                        className="text-[#E5E7EB] flex-shrink-0"
+                        className="text-muted flex-shrink-0"
                       />
                     )}
                     {index < order.activity.length - 1 && (
                       <div
                         className={`w-0.5 flex-1 mt-2 ${
-                          activity.completed ? "bg-[#10B981]" : "bg-[#E5E7EB]"
+                          activity.completed ? "bg-success-solid" : "bg-white/10"
                         }`}
                         style={{ minHeight: "32px" }}
                       />
                     )}
                   </div>
                   <div className="flex-1 pb-2">
-                    <h3 className="font-manrope text-[14px] font-bold text-primary mb-1">
+                    <h3 className="font-manrope text-[14px] font-bold text-white mb-1">
                       {activity.status}
                     </h3>
-                    <p className="font-manrope text-[12px] text-[#64748B] mb-1">
+                    <p className="font-manrope text-[12px] text-muted mb-1">
                       {activity.timestamp}
                     </p>
                     {activity.description && (
-                      <p className="font-manrope text-[13px] text-[#64748B]">
+                      <p className="font-manrope text-[13px] text-muted">
                         {activity.description}
                       </p>
                     )}
@@ -310,29 +310,29 @@ export default function OrderDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+            className="bg-surface rounded-xl border border-white/08 p-6"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-manrope text-[16px] font-bold text-primary">
+              <h2 className="font-manrope text-[16px] font-bold text-white">
                 Customer Details
               </h2>
-              <button className="text-[#64748B] hover:text-primary">
+              <button className="text-muted hover:text-white">
                 <Edit2 size={16} />
               </button>
             </div>
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-[#EEF2FF] rounded-full flex items-center justify-center text-[#4F46E5] font-manrope text-[14px] font-bold">
+              <div className="w-12 h-12 bg-chart-1/10 rounded-full flex items-center justify-center text-chart-1 font-manrope text-[14px] font-bold">
                 {order.customer.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
               </div>
               <div>
-                <h3 className="font-manrope text-[14px] font-bold text-primary">
+                <h3 className="font-manrope text-[14px] font-bold text-white">
                   {order.customer.name}
                 </h3>
-                <p className="font-manrope text-[12px] text-[#64748B]">
+                <p className="font-manrope text-[12px] text-muted">
                   {order.customer.memberType}
                 </p>
               </div>
@@ -342,10 +342,10 @@ export default function OrderDetailPage() {
               <div className="flex items-start gap-3">
                 <span className="text-[16px] mt-0.5">📧</span>
                 <div>
-                  <p className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-1">
+                  <p className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider mb-1">
                     EMAIL
                   </p>
-                  <p className="font-manrope text-[13px] text-primary">
+                  <p className="font-manrope text-[13px] text-white">
                     {order.customer.email}
                   </p>
                 </div>
@@ -354,10 +354,10 @@ export default function OrderDetailPage() {
               <div className="flex items-start gap-3">
                 <span className="text-[16px] mt-0.5">📱</span>
                 <div>
-                  <p className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-1">
+                  <p className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider mb-1">
                     PHONE
                   </p>
-                  <p className="font-manrope text-[13px] text-primary">
+                  <p className="font-manrope text-[13px] text-white">
                     {order.customer.phone}
                   </p>
                 </div>
@@ -367,7 +367,7 @@ export default function OrderDetailPage() {
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F1F5F9] transition-colors"
+              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/08 transition-colors"
             >
               <MessageSquare size={16} />
               Message Customer
@@ -379,60 +379,60 @@ export default function OrderDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden"
+            className="bg-surface rounded-xl border border-white/08 overflow-hidden"
           >
             {/* Map Placeholder */}
-            <div className="h-[180px] bg-[#E5E7EB] relative">
-              <div className="absolute inset-0 flex items-center justify-center text-[#94A3B8]">
+            <div className="h-[180px] bg-white/10 relative">
+              <div className="absolute inset-0 flex items-center justify-center text-muted">
                 <MapPin size={48} />
               </div>
-              <div className="absolute bottom-3 right-3 px-2 py-1 bg-white rounded text-[16px] font-manrope font-medium text-[#64748B]">
+              <div className="absolute bottom-3 right-3 px-2 py-1 bg-surface rounded text-[16px] font-manrope font-medium text-muted">
                 Google Maps
               </div>
             </div>
 
             <div className="p-6">
-              <h2 className="font-manrope text-[16px] font-bold text-primary mb-4">
+              <h2 className="font-manrope text-[16px] font-bold text-white mb-4">
                 Delivery Address
               </h2>
 
               <div className="space-y-1 mb-4">
-                <p className="font-manrope text-[14px] text-primary">
+                <p className="font-manrope text-[14px] text-white">
                   {order.delivery.address}
                 </p>
-                <p className="font-manrope text-[14px] text-primary">
+                <p className="font-manrope text-[14px] text-white">
                   {order.delivery.suite}
                 </p>
-                <p className="font-manrope text-[14px] text-primary">
+                <p className="font-manrope text-[14px] text-white">
                   {order.delivery.city}
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-[#E5E7EB] space-y-3">
+              <div className="pt-4 border-t border-white/08 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     CARRIER
                   </span>
-                  <span className="font-manrope text-[13px] text-primary">
+                  <span className="font-manrope text-[13px] text-white">
                     {order.delivery.carrier}
                   </span>
-                  <span className="px-2 py-1 bg-[#D1FAE5] text-[#065F46] rounded text-[11px] font-manrope font-bold">
+                  <span className="px-2 py-1 bg-success/10 text-success rounded text-[11px] font-manrope font-bold">
                     {order.delivery.carrierStatus}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     TRACKING NUMBER
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="font-manrope text-[13px] text-[#64748B]">
+                    <span className="font-manrope text-[13px] text-muted">
                       {order.delivery.trackingNumber}
                     </span>
                     <button
                       onClick={handleCopyTracking}
                       disabled={order.delivery.trackingNumber === "Pending"}
-                      className="text-[#64748B] hover:text-primary disabled:opacity-30"
+                      className="text-muted hover:text-white disabled:opacity-30"
                     >
                       <Copy size={14} />
                     </button>
@@ -443,7 +443,7 @@ export default function OrderDetailPage() {
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                className="w-full mt-4 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+                className="w-full mt-4 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors"
               >
                 Assign Delivery
               </motion.button>
@@ -455,13 +455,13 @@ export default function OrderDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+            className="bg-surface rounded-xl border border-white/08 p-6"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-manrope text-[16px] font-bold text-primary">
+              <h2 className="font-manrope text-[16px] font-bold text-white">
                 Payment Status
               </h2>
-              <span className="px-3 py-1 bg-[#D1FAE5] text-[#065F46] rounded-full text-[11px] font-manrope font-bold flex items-center gap-1.5">
+              <span className="px-3 py-1 bg-success/10 text-success rounded-full text-[11px] font-manrope font-bold flex items-center gap-1.5">
                 <CheckCircle2 size={12} />
                 {order.payment.status}
               </span>
@@ -472,10 +472,10 @@ export default function OrderDetailPage() {
                 VISA
               </div>
               <div>
-                <p className="font-manrope text-[14px] font-medium text-primary">
+                <p className="font-manrope text-[14px] font-medium text-white">
                   {order.payment.method}
                 </p>
-                <p className="font-manrope text-[12px] text-[#64748B]">
+                <p className="font-manrope text-[12px] text-muted">
                   {order.payment.expiry}
                 </p>
               </div>
@@ -483,18 +483,18 @@ export default function OrderDetailPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-manrope text-[13px] text-[#64748B]">
+                <span className="font-manrope text-[13px] text-muted">
                   Transaction ID
                 </span>
-                <span className="font-manrope text-[13px] font-medium text-primary">
+                <span className="font-manrope text-[13px] font-medium text-white">
                   {order.payment.transactionId}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="font-manrope text-[13px] text-[#64748B]">
+                <span className="font-manrope text-[13px] text-muted">
                   Payment Date
                 </span>
-                <span className="font-manrope text-[13px] font-medium text-primary">
+                <span className="font-manrope text-[13px] font-medium text-white">
                   {order.payment.paymentDate}
                 </span>
               </div>
@@ -506,9 +506,9 @@ export default function OrderDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] px-6 py-3"
+            className="bg-surface rounded-xl border border-white/08 px-6 py-3"
           >
-            <h2 className="font-manrope text-[16px] font-bold text-primary mb-4">
+            <h2 className="font-manrope text-[16px] font-bold text-white mb-4">
               Internal Notes
             </h2>
 
@@ -516,7 +516,7 @@ export default function OrderDetailPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add a note for the operations team..."
-              className="w-full h-24 px-4 py-3 bg-primary/20 border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+              className="w-full h-24 px-4 py-3 bg-white/10 border border-white/08 rounded-lg font-manrope text-[13px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent resize-none"
             />
 
             <motion.button
@@ -524,7 +524,7 @@ export default function OrderDetailPage() {
               whileTap={{ scale: 0.99 }}
               onClick={handleSaveNotes}
               disabled={isSavingNotes}
-              className="w-full mt-3 px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-primary/30 transition-colors disabled:opacity-50"
+              className="w-full mt-3 px-4 py-2.5 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               {isSavingNotes ? "Saving..." : "SAVE NOTE"}
             </motion.button>

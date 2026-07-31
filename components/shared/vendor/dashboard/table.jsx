@@ -11,24 +11,24 @@ const typeIcons = {
 
 const statusStyles = {
   success: {
-    bg: "bg-[#D1FAE5]",
-    text: "text-[#065F46]",
-    dot: "bg-[#10B981]",
+    bg: "bg-success/10",
+    text: "text-success",
+    dot: "bg-success-solid",
   },
   info: {
-    bg: "bg-[#DBEAFE]",
-    text: "text-[#1E40AF]",
-    dot: "bg-[#3B82F6]",
+    bg: "bg-info/10",
+    text: "text-info",
+    dot: "bg-info",
   },
   warning: {
-    bg: "bg-[#FEF3C7]",
-    text: "text-[#92400E]",
-    dot: "bg-[#F59E0B]",
+    bg: "bg-warning/10",
+    text: "text-warning",
+    dot: "bg-warning",
   },
   neutral: {
-    bg: "bg-[#F1F5F9]",
-    text: "text-[#475569]",
-    dot: "bg-[#94A3B8]",
+    bg: "bg-white/08",
+    text: "text-muted",
+    dot: "bg-muted",
   },
 };
 
@@ -37,10 +37,10 @@ export default function OrdersTable({ orders, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-background rounded-xl border border-[#E5E7EB]">
+      <div className="bg-surface rounded-xl border border-white/08">
         <div className="p-8 text-center">
-          <div className="w-12 h-12 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] font-manrope text-[14px]">
+          <div className="w-12 h-12 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted font-manrope text-[14px]">
             Loading orders...
           </p>
         </div>
@@ -50,8 +50,8 @@ export default function OrdersTable({ orders, isLoading }) {
 
   if (!orders || orders.length === 0) {
     return (
-      <div className="bg-background rounded-xl border border-[#E5E7EB] p-12 text-center">
-        <p className="text-[#64748B] font-manrope text-[14px]">
+      <div className="bg-surface rounded-xl border border-white/08 p-12 text-center">
+        <p className="text-muted font-manrope text-[14px]">
           No orders found
         </p>
       </div>
@@ -59,37 +59,37 @@ export default function OrdersTable({ orders, isLoading }) {
   }
 
   return (
-    <div className="bg-background rounded-xl border border-[#E5E7EB] overflow-hidden">
+    <div className="bg-surface rounded-xl border border-white/08 overflow-hidden">
       {/* Table Header */}
       <div className="overflow-x-auto table-scroll">
-        <div className="px-6 py-4 bg-[#F8FAFC] border-b border-[#E5E7EB] min-w-255">
+        <div className="px-6 py-4 bg-white/05 border-b border-white/08 min-w-255">
           <div className="grid grid-cols-[140px_240px_120px_140px_120px_140px_120px] justify-between gap-4">
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               ORDER ID
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               CUSTOMER
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               DATE
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               TYPE
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               TOTAL
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               STATUS
             </span>
-            <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+            <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
               ACTIONS
             </span>
           </div>
         </div>
 
         {/* Table Body */}
-        <div className="divide-y divide-[#E5E7EB] overflow-x-auto">
+        <div className="divide-y divide-white/08 overflow-x-auto">
           {orders.map((order, index) => {
             const TypeIcon = typeIcons[order.typeIcon];
             const statusStyle = statusStyles[order.statusColor];
@@ -100,11 +100,11 @@ export default function OrdersTable({ orders, isLoading }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="px-6 py-4 hover:bg-[#F8FAFC] transition-colors min-w-255"
+                className="px-6 py-4 hover:bg-white/05 transition-colors min-w-255"
               >
                 <div className="grid grid-cols-[140px_240px_120px_140px_120px_140px_120px] gap-4 justify-between items-center">
                   {/* Order ID */}
-                  <span className="font-manrope text-[14px] font-bold text-primary">
+                  <span className="font-manrope text-[14px] font-bold text-white">
                     #{order.id}
                   </span>
 
@@ -119,26 +119,26 @@ export default function OrdersTable({ orders, isLoading }) {
                     >
                       {order.customer.initials}
                     </div>
-                    <span className="font-manrope text-[14px] text-primary truncate">
+                    <span className="font-manrope text-[14px] text-white truncate">
                       {order.customer.name}
                     </span>
                   </div>
 
                   {/* Date */}
-                  <span className="font-manrope text-[13px] text-[#64748B]">
+                  <span className="font-manrope text-[13px] text-muted">
                     {order.date}
                   </span>
 
                   {/* Type */}
                   <div className="flex items-center gap-2">
-                    <TypeIcon size={16} className="text-[#F59E0B]" />
-                    <span className="font-manrope text-[13px] text-primary">
+                    <TypeIcon size={16} className="text-warning" />
+                    <span className="font-manrope text-[13px] text-white">
                       {order.type}
                     </span>
                   </div>
 
                   {/* Total */}
-                  <span className="font-manrope text-[14px] font-bold text-primary">
+                  <span className="font-manrope text-[14px] font-bold text-white">
                     ${order.total.toFixed(2)}
                   </span>
 
@@ -164,7 +164,7 @@ export default function OrdersTable({ orders, isLoading }) {
                     onClick={() =>
                       router.push(`/vendor/dashboard/orders/${order.id}`)
                     }
-                    className="px-4 py-2 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors"
+                    className="px-4 py-2 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors"
                   >
                     View Order
                   </motion.button>

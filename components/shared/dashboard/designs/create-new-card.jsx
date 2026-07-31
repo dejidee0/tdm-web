@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Wand2 } from "lucide-react";
 
 export default function CreateNewCard({ index = 0, isList = false, onOpenModal }) {
   const sharedMotion = {
@@ -19,7 +19,7 @@ export default function CreateNewCard({ index = 0, isList = false, onOpenModal }
       className="w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:opacity-80 transition-opacity"
       style={{ background: "rgba(212,175,55,0.12)" }}
     >
-      <Sparkles className="w-6 h-6 text-[#D4AF37]" />
+      <Wand2 className="w-6 h-6 text-[#D4AF37]" />
     </div>
   );
 

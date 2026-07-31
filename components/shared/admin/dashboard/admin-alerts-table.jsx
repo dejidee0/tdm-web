@@ -2,39 +2,7 @@
 
 import { motion } from "framer-motion";
 import { AlertTriangle, ChevronDown, CheckCircle } from "lucide-react";
-
-const severityStyles = {
-  critical: {
-    dot: "bg-[#EF4444]",
-    text: "text-[#EF4444]",
-    badge: "bg-[#EF44441A]",
-  },
-  high: {
-    dot: "bg-[#F97316]",
-    text: "text-[#F97316]",
-    badge: "bg-[#F973161A]",
-  },
-  medium: {
-    dot: "bg-[#EAB308]",
-    text: "text-[#EAB308]",
-    badge: "bg-[#EAB3081A]",
-  },
-  warning: {
-    dot: "bg-[#EAB308]",
-    text: "text-[#EAB308]",
-    badge: "bg-[#EAB3081A]",
-  },
-  low: {
-    dot: "bg-[#22C55E]",
-    text: "text-[#22C55E]",
-    badge: "bg-[#22C55E1A]",
-  },
-  info: {
-    dot: "bg-[#3B82F6]",
-    text: "text-[#3B82F6]",
-    badge: "bg-[#3B82F61A]",
-  },
-};
+import { severity } from "@/lib/theme/severity";
 
 function formatTimestamp(value) {
   if (!value) return "N/A";
@@ -46,7 +14,7 @@ const getActionButtonStyle = (action) => {
   if (action === "Resolve") {
     return "bg-white/08 text-white/60 hover:bg-white/12";
   }
-  return "bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20";
+  return "bg-white/05 text-accent hover:bg-white/10";
 };
 
 export default function AdminAlertsTable({ alerts }) {
@@ -65,10 +33,10 @@ export default function AdminAlertsTable({ alerts }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-[#0d0b08] rounded-xl border border-white/08 px-6 py-8 flex flex-col items-center gap-3 text-center"
+        className="bg-surface rounded-xl border border-white/08 px-6 py-8 flex flex-col items-center gap-3 text-center"
       >
-        <div className="w-10 h-10 bg-[#22C55E1A] rounded-full flex items-center justify-center">
-          <CheckCircle size={20} className="text-[#22C55E]" />
+        <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center">
+          <CheckCircle size={20} className="text-success" />
         </div>
         <h3 className="font-manrope text-[16px] font-bold text-white">
           All Systems Operational
@@ -85,14 +53,14 @@ export default function AdminAlertsTable({ alerts }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="bg-[#0d0b08] rounded-xl border border-white/08"
+      className="bg-surface rounded-xl border border-white/08"
     >
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/08">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-red-950/40 rounded-lg flex items-center justify-center mt-0.5">
-              <AlertTriangle size={16} className="text-red-400" />
+            <div className="w-8 h-8 bg-danger/10 rounded-lg flex items-center justify-center mt-0.5">
+              <AlertTriangle size={16} className="text-danger" />
             </div>
             <div>
               <h2 className="font-manrope text-[18px] font-bold text-white">
@@ -103,7 +71,7 @@ export default function AdminAlertsTable({ alerts }) {
               </p>
             </div>
           </div>
-          <button className="font-manrope text-[13px] text-[#D4AF37] hover:underline">
+          <button className="font-manrope text-[13px] text-accent hover:underline">
             View All Logs
           </button>
         </div>
@@ -132,8 +100,7 @@ export default function AdminAlertsTable({ alerts }) {
         {/* Alert Rows */}
         <div className="divide-y divide-white/08">
           {displayAlerts.map((alert, index) => {
-            const severityKey = alert?.severity?.toLowerCase() || "medium";
-            const severity = severityStyles[severityKey] || severityStyles.medium;
+            const sev = severity(alert?.severity ?? "medium");
 
             return (
               <motion.div
@@ -147,13 +114,13 @@ export default function AdminAlertsTable({ alerts }) {
                   {/* Severity Badge with background pill */}
                   <div>
                     <span
-                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${severity?.badge || ''}`}
+                      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-[10553.63px] ${sev.tint}`}
                     >
                       <span
-                        className={`w-2 h-2 rounded-full ${severity?.dot || ''}`}
+                        className={`w-2 h-2 rounded-full ${sev.dot}`}
                       />
                       <span
-                        className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
+                        className={`font-manrope text-[12px] font-bold capitalize ${sev.text}`}
                       >
                         {alert?.severity || 'N/A'}
                       </span>
@@ -197,8 +164,7 @@ export default function AdminAlertsTable({ alerts }) {
       {/* Mobile Card View */}
       <div className="md:hidden divide-y divide-white/08">
         {displayAlerts.map((alert, index) => {
-          const severityKey = alert?.severity?.toLowerCase() || "medium";
-          const severity = severityStyles[severityKey] || severityStyles.medium;
+          const sev = severity(alert?.severity ?? "medium");
 
           return (
             <motion.div
@@ -211,11 +177,11 @@ export default function AdminAlertsTable({ alerts }) {
               {/* Severity Badge */}
               <div className="flex items-center gap-2 mb-3">
                 <span
-                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${severity?.badge || ''}`}
+                  className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-md ${sev.tint}`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${severity?.dot || ''}`} />
+                  <span className={`w-2 h-2 rounded-full ${sev.dot}`} />
                   <span
-                    className={`font-manrope text-[12px] font-bold capitalize ${severity?.text || ''}`}
+                    className={`font-manrope text-[12px] font-bold capitalize ${sev.text}`}
                   >
                     {alert?.severity || 'N/A'}
                   </span>
@@ -249,7 +215,7 @@ export default function AdminAlertsTable({ alerts }) {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-white/08 flex justify-center">
-        <button className="flex items-center gap-1 text-[#D4AF37] font-manrope text-[13px] font-medium hover:underline">
+        <button className="flex items-center gap-1 text-accent font-manrope text-[13px] font-medium hover:underline">
           Show 5 more alerts
           <ChevronDown size={14} />
         </button>

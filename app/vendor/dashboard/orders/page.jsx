@@ -98,10 +98,10 @@ export default function OrdersPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-white mb-2">
               Order Management
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-manrope text-[14px] text-muted">
               Track e-commerce shipments and renovation service requests in
               real-time.
             </p>
@@ -114,7 +114,7 @@ export default function OrdersPage() {
               whileTap={{ scale: 0.98 }}
               onClick={() => document.getElementById('import-orders-file')?.click()}
               disabled={importOrders.isPending}
-              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {importOrders.isPending ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -138,13 +138,13 @@ export default function OrdersPage() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6 p-4 bg-white rounded-xl border border-[#E5E7EB]"
+        className="mb-6 p-4 bg-surface rounded-xl border border-white/08"
       >
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
           {/* Search */}
           <div className="flex-1 relative">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               size={18}
             />
             <input
@@ -152,20 +152,20 @@ export default function OrdersPage() {
               placeholder="Search by Order ID, Customer..."
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent"
             />
           </div>
 
           {/* Status Filter */}
           <div className="relative">
             <SlidersHorizontal
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               size={16}
             />
             <select
               value={filters.status}
               onChange={(e) => handleFilterChange("status", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
             >
               <option value="all">Status: All</option>
               <option value="processing">Processing</option>
@@ -179,13 +179,13 @@ export default function OrdersPage() {
           {/* Date Range Filter */}
           <div className="relative">
             <Calendar
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               size={16}
             />
             <select
               value={filters.dateRange}
               onChange={(e) => handleFilterChange("dateRange", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
             >
               <option value="last30days">Last 30 Days</option>
               <option value="last7days">Last 7 Days</option>
@@ -197,13 +197,13 @@ export default function OrdersPage() {
           {/* Type Filter */}
           <div className="relative">
             <Package
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               size={16}
             />
             <select
               value={filters.type}
               onChange={(e) => handleFilterChange("type", e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+              className="pl-9 pr-8 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
             >
               <option value="all">Type: All</option>
               <option value="renovation">Renovation</option>
@@ -220,7 +220,7 @@ export default function OrdersPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-6 flex items-center gap-3"
         >
-          <span className="font-manrope text-[12px] text-[#64748B] uppercase tracking-wider">
+          <span className="font-manrope text-[12px] text-muted uppercase tracking-wider">
             ACTIVE FILTERS:
           </span>
           <div className="flex items-center gap-2 flex-wrap">
@@ -233,7 +233,7 @@ export default function OrdersPage() {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   onClick={() => removeFilter(filter)}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-[#EEF2FF] text-[#4F46E5] rounded-lg font-manrope text-[12px] font-medium hover:bg-[#E0E7FF] transition-colors group"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-chart-1/10 text-chart-1 rounded-lg font-manrope text-[12px] font-medium hover:bg-chart-1/10 transition-colors group"
                 >
                   {label}
                   <X
@@ -245,7 +245,7 @@ export default function OrdersPage() {
             })}
             <button
               onClick={clearAllFilters}
-              className="font-manrope text-[12px] text-[#64748B] hover:text-primary underline"
+              className="font-manrope text-[12px] text-muted hover:text-white underline"
             >
               Clear all
             </button>

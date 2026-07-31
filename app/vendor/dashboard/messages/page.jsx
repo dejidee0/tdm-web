@@ -17,6 +17,7 @@ import {
   useSendConversationMessage,
 } from "@/hooks/use-messages";
 import { mockQuickReplies } from "@/lib/mock/messages";
+import { avatarStyle } from "@/lib/theme/avatar";
 
 export default function MessagesPage() {
   const [filters, setFilters] = useState({
@@ -84,23 +85,23 @@ export default function MessagesPage() {
   return (
     <div className="h-[calc(100vh-65px)] flex flex-col bg-background overflow-hidden">
       {/* Page Header - Above everything */}
-      <div className="px-4 md:px-6 py-4 md:py-6 bg-white border-b border-[#E5E7EB]">
+      <div className="px-4 md:px-6 py-4 md:py-6 bg-surface border-b border-white/08">
         <div className="flex items-center gap-3">
           {/* Mobile back button */}
           {showChat && (
             <button
               onClick={handleBackToList}
-              className="md:hidden p-2 -ml-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors"
+              className="md:hidden p-2 -ml-2 text-muted hover:bg-white/05 rounded-lg transition-colors"
             >
               <ArrowLeft size={20} />
             </button>
           )}
 
           <div className="flex-1 min-w-0">
-            <h1 className="font-manrope text-[20px] md:text-[24px] font-bold text-primary mb-1 truncate">
+            <h1 className="font-manrope text-[20px] md:text-[24px] font-bold text-white mb-1 truncate">
               Message Center
             </h1>
-            <p className="font-manrope text-[12px] md:text-[13px] text-[#64748B] hidden sm:block">
+            <p className="font-manrope text-[12px] md:text-[13px] text-muted hidden sm:block">
               View all your conversations and updates in one place, with
               everything you need to stay informed and connected.
             </p>
@@ -113,15 +114,15 @@ export default function MessagesPage() {
         {/* Left Sidebar - Conversations List */}
         <div
           className={`
-          w-full md:w-85 bg-white border-r border-[#E5E7EB] flex flex-col
+          w-full md:w-85 bg-surface border-r border-white/08 flex flex-col
           ${showChat ? "hidden md:flex" : "flex"}
         `}
         >
           {/* Search */}
-          <div className="p-4 border-b border-[#E5E7EB]">
+          <div className="p-4 border-b border-white/08">
             <div className="relative">
               <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
                 size={18}
               />
               <input
@@ -129,21 +130,21 @@ export default function MessagesPage() {
                 placeholder="Search name, ID or phone..."
                 value={searchInput}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent"
               />
             </div>
           </div>
 
           {/* Filters */}
-          <div className="flex gap-2 px-4 py-3 border-b border-[#E5E7EB] overflow-x-auto">
+          <div className="flex gap-2 px-4 py-3 border-b border-white/08 overflow-x-auto">
             <button
               onClick={() => handleFilterChange("active")}
               className={`
                 px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "active"
-                    ? "bg-primary text-white"
-                    : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
+                    ? "bg-accent-solid text-white"
+                    : "bg-white/05 text-muted hover:bg-white/08"
                 }
               `}
             >
@@ -155,8 +156,8 @@ export default function MessagesPage() {
                 px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "pending"
-                    ? "bg-primary text-white"
-                    : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
+                    ? "bg-accent-solid text-white"
+                    : "bg-white/05 text-muted hover:bg-white/08"
                 }
               `}
             >
@@ -168,8 +169,8 @@ export default function MessagesPage() {
                 px-2 md:px-4 py-1.5 rounded-lg font-manrope text-[13px] font-medium transition-colors whitespace-nowrap shrink-0
                 ${
                   filters.filter === "closed"
-                    ? "bg-primary text-white"
-                    : "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9]"
+                    ? "bg-accent-solid text-white"
+                    : "bg-white/05 text-muted hover:bg-white/08"
                 }
               `}
             >
@@ -181,14 +182,14 @@ export default function MessagesPage() {
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
             {loadingConversations ? (
               <div className="p-8 text-center">
-                <div className="w-8 h-8 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-3" />
-                <p className="text-[#64748B] font-manrope text-[13px]">
+                <div className="w-8 h-8 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-muted font-manrope text-[13px]">
                   Loading conversations...
                 </p>
               </div>
             ) : conversationsData?.conversations?.length === 0 ? (
               <div className="p-8 text-center">
-                <p className="text-[#64748B] font-manrope text-[13px]">
+                <p className="text-muted font-manrope text-[13px]">
                   No conversations found
                 </p>
               </div>
@@ -201,11 +202,11 @@ export default function MessagesPage() {
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleSelectConversation(conversation.id)}
                   className={`
-                  w-full p-4 flex items-start gap-3 border-b border-[#E5E7EB] transition-colors text-left
+                  w-full p-4 flex items-start gap-3 border-b border-white/08 transition-colors text-left
                   ${
                     activeConversation === conversation.id
-                      ? "bg-[#F8FAFC]"
-                      : "hover:bg-[#F8FAFC]"
+                      ? "bg-white/05"
+                      : "hover:bg-white/05"
                   }
                 `}
                 >
@@ -213,33 +214,30 @@ export default function MessagesPage() {
                   <div className="relative shrink-0">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center font-manrope text-[14px] font-bold"
-                      style={{
-                        backgroundColor: conversation.contactColor + "20",
-                        color: conversation.contactColor,
-                      }}
+                      style={avatarStyle(conversation.id)}
                     >
                       {conversation.contactInitials}
                     </div>
                     {conversation.unread && (
-                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#10B981] rounded-full border-2 border-white" />
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-success-solid rounded-full border-2 border-white" />
                     )}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-1">
-                      <h3 className="font-manrope text-[14px] font-bold text-primary truncate">
+                      <h3 className="font-manrope text-[14px] font-bold text-white truncate">
                         {conversation.contactName}
                       </h3>
-                      <span className="font-manrope text-[12px] text-[#64748B] shrink-0 ml-2">
+                      <span className="font-manrope text-[12px] text-muted shrink-0 ml-2">
                         {conversation.timestamp}
                       </span>
                     </div>
                     <p
                       className={`
                       font-manrope text-[13px] truncate
-                      ${conversation.unread ? "text-primary font-medium" : "text-[#64748B]"}
-                      ${conversation.status === "Missed Call" ? "text-[#EF4444]" : ""}
+                      ${conversation.unread ? "text-white font-medium" : "text-muted"}
+                      ${conversation.status === "Missed Call" ? "text-danger" : ""}
                     `}
                     >
                       {conversation.lastMessage}
@@ -254,45 +252,42 @@ export default function MessagesPage() {
         {/* Right Panel - Chat Interface */}
         <div
           className={`
-          flex-1 flex flex-col bg-white
+          flex-1 flex flex-col bg-surface
           ${showChat ? "flex" : "hidden md:flex"}
         `}
         >
           {/* Chat Header */}
           {activeConv && (
-            <div className="p-4 md:p-6 border-b border-[#E5E7EB] flex items-center justify-between">
+            <div className="p-4 md:p-6 border-b border-white/08 flex items-center justify-between">
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div
                   className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-manrope text-[14px] md:text-[16px] font-bold relative shrink-0"
-                  style={{
-                    backgroundColor: activeConv.contactColor + "20",
-                    color: activeConv.contactColor,
-                  }}
+                    style={avatarStyle(activeConv.id)}
                 >
                   {activeConv.contactInitials}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <h2 className="font-manrope text-[15px] md:text-[16px] font-bold text-primary truncate">
+                    <h2 className="font-manrope text-[15px] md:text-[16px] font-bold text-white truncate">
                       {activeConv.contactName}
                     </h2>
                     {activeConv.contactRole && (
-                      <span className="px-2 py-0.5 bg-[#10B981] text-white rounded font-manrope text-[16px] font-bold shrink-0">
+                      <span className="px-2 py-0.5 bg-success-solid text-white rounded font-manrope text-[16px] font-bold shrink-0">
                         {activeConv.contactRole}
                       </span>
                     )}
                     {activeConv.orderId && (
-                      <span className="px-2 py-0.5 bg-primary text-white rounded font-manrope text-[16px] font-bold shrink-0">
+                      <span className="px-2 py-0.5 bg-accent-solid text-white rounded font-manrope text-[16px] font-bold shrink-0">
                         {activeConv.orderId}
                       </span>
                     )}
                   </div>
-                  <p className="font-manrope text-[11px] md:text-[12px] text-[#64748B] truncate">
+                  <p className="font-manrope text-[11px] md:text-[12px] text-muted truncate">
                     We messaged • Last active 25m ago
                   </p>
                 </div>
               </div>
-              <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors shrink-0">
+              <button className="p-2 text-muted hover:bg-white/05 rounded-lg transition-colors shrink-0">
                 <MoreVertical size={20} />
               </button>
             </div>
@@ -303,15 +298,15 @@ export default function MessagesPage() {
             {loadingMessages ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-10 h-10 border-4 border-[#E5E7EB] border-t-primary rounded-full animate-spin mx-auto mb-3" />
-                  <p className="font-manrope text-[14px] text-[#64748B]">
+                  <div className="w-10 h-10 border-4 border-white/08 border-t-accent rounded-full animate-spin mx-auto mb-3" />
+                  <p className="font-manrope text-[14px] text-muted">
                     Loading messages...
                   </p>
                 </div>
               </div>
             ) : !messages || messages.length === 0 ? (
               <div className="flex items-center justify-center h-full">
-                <p className="font-manrope text-[14px] text-[#64748B]">
+                <p className="font-manrope text-[14px] text-muted">
                   No messages yet. Start the conversation!
                 </p>
               </div>
@@ -319,7 +314,7 @@ export default function MessagesPage() {
               <>
                 {/* Today Label */}
                 <div className="flex items-center justify-center mb-6">
-                  <div className="px-4 py-1 bg-primary text-white rounded-full font-manrope text-[11px] font-bold">
+                  <div className="px-4 py-1 bg-accent-solid text-white rounded-full font-manrope text-[11px] font-bold">
                     Today
                   </div>
                 </div>
@@ -337,7 +332,7 @@ export default function MessagesPage() {
                       <div
                         className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold shrink-0"
                         style={{
-                          backgroundColor: message.color + "20",
+                          backgroundColor: `color-mix(in oklab,  14%, transparent)`,
                           color: message.color,
                         }}
                       >
@@ -350,15 +345,15 @@ export default function MessagesPage() {
                         max-w-[85%] md:max-w-125 px-3 md:px-4 py-2 md:py-3 rounded-2xl
                         ${
                           message.sender === "vendor"
-                            ? "bg-[#F8FAFC] text-primary"
-                            : "bg-[#FEF3C7] text-primary"
+                            ? "bg-white/05 text-white"
+                            : "bg-warning/10 text-white"
                         }
                       `}
                     >
                       <p className="font-manrope text-[13px] md:text-[14px] leading-relaxed wrap-break-word">
                         {message.message}
                       </p>
-                      <p className="font-manrope text-[16px] md:text-[11px] text-[#64748B] mt-1">
+                      <p className="font-manrope text-[11px] text-muted mt-1">
                         {message.timestamp}
                       </p>
                     </div>
@@ -367,7 +362,7 @@ export default function MessagesPage() {
                       <div
                         className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-manrope text-[11px] md:text-[12px] font-bold shrink-0"
                         style={{
-                          backgroundColor: message.color + "20",
+                          backgroundColor: `color-mix(in oklab,  14%, transparent)`,
                           color: message.color,
                         }}
                       >
@@ -381,7 +376,7 @@ export default function MessagesPage() {
           </div>
 
           {/* Quick Replies */}
-          <div className="px-4 md:px-6 py-3 border-t border-[#E5E7EB]">
+          <div className="px-4 md:px-6 py-3 border-t border-white/08">
             <div className="flex flex-wrap md:flex-nowrap gap-1 md:gap-2 overflow-x-auto pb-2 -mb-2">
               {mockQuickReplies.map((reply, index) => (
                 <motion.button
@@ -389,7 +384,7 @@ export default function MessagesPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleQuickReply(reply)}
-                  className="px-2 md:px-4 py-1 md:py-2 bg-white border border-[#E5E7EB] rounded-full font-manrope text-xs md:text-[13px] text-[#64748B] hover:bg-[#F8FAFC] hover:border-primary hover:text-primary transition-colors whitespace-nowrap shrink-0"
+                  className="px-2 md:px-4 py-1 md:py-2 bg-surface-raised border border-white/10 rounded-full font-manrope text-xs md:text-[13px] text-muted hover:bg-white/05 hover:border-accent hover:text-white transition-colors whitespace-nowrap shrink-0"
                 >
                   {reply}
                 </motion.button>
@@ -398,17 +393,17 @@ export default function MessagesPage() {
           </div>
 
           {/* Message Input */}
-          <div className="p-4 md:p-6 border-t border-[#E5E7EB]">
+          <div className="p-4 md:p-6 border-t border-white/08">
             <div className="flex items-center gap-2 md:gap-3">
               {/* Attachment buttons - Hidden on mobile */}
               <div className="hidden sm:flex gap-2">
-                <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors">
+                <button className="p-2 text-muted hover:bg-white/05 rounded-lg transition-colors">
                   <Paperclip size={20} />
                 </button>
-                <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors">
+                <button className="p-2 text-muted hover:bg-white/05 rounded-lg transition-colors">
                   <Smile size={20} />
                 </button>
-                <button className="p-2 text-[#64748B] hover:bg-[#F8FAFC] rounded-lg transition-colors">
+                <button className="p-2 text-muted hover:bg-white/05 rounded-lg transition-colors">
                   <ImageIcon size={20} />
                 </button>
               </div>
@@ -426,7 +421,7 @@ export default function MessagesPage() {
                     }
                   }}
                   rows={1}
-                  className="md:w-full px-3 md:px-4 py-2 md:py-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] md:text-[14px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                  className="md:w-full px-3 md:px-4 py-2 md:py-3 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] md:text-[14px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent resize-none"
                 />
               </div>
 
@@ -436,7 +431,7 @@ export default function MessagesPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || sendMessage.isLoading}
-                className="px-4 md:px-6 py-2 md:py-3 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-4 md:px-6 py-2 md:py-3 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <span className="hidden sm:inline">Send</span>
                 <Send size={16} />

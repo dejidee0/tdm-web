@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Box,
   Calculator,
-  Sparkles,
+  Wand2,
   Clock,
   Play,
   ArrowRight,
@@ -31,7 +31,7 @@ const FEATURES = [
     desc: "Get precise project costs instantly",
   },
   {
-    Icon: Sparkles,
+    Icon: Wand2,
     label: "Smart Recommendations",
     desc: "AI-powered design suggestions",
   },

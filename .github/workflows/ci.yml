@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+  schedule:
+    # 06:00 UTC daily — the contract job below only runs on this trigger.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 24, not 22: scripts/ use module.registerHooks() and native type
+      # stripping to import the .ts schema modules without a bundler.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # The gate. Guardrails are the only error-level rules, so --quiet fails
+      # on architecture violations and stays silent about legacy warnings.
+      # See eslint.guardrails.mjs.
+      - name: Architecture guardrails
+        run: npm run lint:arch
+
+      # Only files converted to .ts are checked (checkJs is off), and they are
+      # checked strictly. See tsconfig.json.
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Offline: diffs contracts/manifest.json against the OpenAPI snapshot. Fails
+      # if a response schema was deleted, renamed, or unlinked — coverage is easy
+      # to lose by accident, and a silent drop looks identical to never having had
+      # it. Also catches a manifest key that no longer exists upstream.
+      - name: Contract coverage must not regress
+        run: npm run contract:coverage -- --check
+
+      # lib/env.js throws when API_URL / ADMIN_API_URL are missing, so this
+      # step also proves the deploy is configured. Set these as repo secrets.
+      - name: Build
+        run: npm run build
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          ADMIN_API_URL: ${{ secrets.ADMIN_API_URL }}
+          NEXT_PUBLIC_SITE_LIVE: "true"
+
+      # The invariant that motivates most of the guardrails: the backend host
+      # must never reach the browser. Fails the build if a NEXT_PUBLIC_* var or
+      # a hard-coded URL puts it back into a client chunk.
+      - name: Backend URL must not be in the client bundle
+        env:
+          API_URL: ${{ secrets.API_URL }}
+        run: |
+          host=$(printf '%s' "$API_URL" | sed -E 's#.*//([^/]+).*#\1#')
+          if [ -z "$host" ]; then echo "API_URL secret is not set"; exit 1; fi
+          hits=$(grep -rl "$host" .next/static 2>/dev/null | wc -l)
+          if [ "$hits" -ne 0 ]; then
+            echo "::error::Backend host '$host' found in $hits client chunk(s)."
+            grep -rl "$host" .next/static | head
+            exit 1
+          fi
+          echo "Backend host absent from client bundle."
+
+      # Response validation runs server-side, so Zod must never reach a client
+      # chunk. This is what buys full types at zero bundle cost — if it fails,
+      # something value-imported lib/api/schemas from a client component.
+      - name: Zod must not be in the client bundle
+        run: |
+          hits=$(grep -rl "looseObject\|ZodError" .next/static 2>/dev/null | wc -l)
+          if [ "$hits" -ne 0 ]; then
+            echo "::error::Zod found in $hits client chunk(s) — a schema was value-imported from client code."
+            grep -rl "looseObject\|ZodError" .next/static | head
+            exit 1
+          fi
+          echo "Zod absent from client bundle."
+
+      # Non-blocking: surfaces the ~40 legacy React warnings without failing PRs.
+      - name: Full lint (informational)
+        run: npm run lint
+        continue-on-error: true
+
+  # Deliberately NOT part of `verify`: this hits the live dev backend, so an
+  # upstream outage would otherwise block every merge. Failure means "the
+  # backend changed shape — go look", not "revert this PR".
+  contract:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Response contracts still hold
+        run: npm run contract:check
+        env:
+          API_URL: ${{ secrets.API_URL }}

@@ -16,8 +16,10 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { showToast } from "@/components/shared/toast";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+// Client components must not know the backend URL — a NEXT_PUBLIC_* var would be
+// inlined into the bundle. Go through the local proxy, which rewrites
+// /api/v1/* → /api/proxy/v1/* and attaches auth server-side. See lib/proxy.js.
+const API_BASE = "/api/v1";
 
 const FORM_TYPES = [
   { key: "consultation", label: "Book a Consultation", pipeline: "Renovation Lead" },
@@ -122,7 +124,7 @@ function ContactPageInner() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${BASE_URL}/contact`, {
+      const res = await fetch(`${API_BASE}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

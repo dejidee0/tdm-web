@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
+import { parseResponse } from "@/lib/api/contract";
+import { productListResponse } from "@/lib/api/schemas/catalog";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -33,36 +33,47 @@ export async function GET(request) {
   if (maxPrice !== null && maxPrice !== undefined)
     params.set("MaxPrice", maxPrice);
 
+  // Only an admin asks to see inactive products, and an admin who has just
+  // created one must see it immediately. A 60s cache is right for the
+  // storefront and wrong here: it would show a stale list straight after a
+  // write, which reads as "the save didn't work".
+  const isAdminView = activeOnly === "false";
+
+  let res;
   try {
-    const res = await fetch(`${BASE_URL}/products?${params.toString()}`, {
+    res = await fetch(`${API_URL}/products?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",
         ...(process.env.API_KEY
           ? { Authorization: `Bearer ${process.env.API_KEY}` }
           : {}),
       },
-      next: { revalidate: 60 },
-    });
-
-    if (!res.ok) {
-      console.error("❌ Products API error:", res.status, res.statusText);
-      return NextResponse.json(
-        { error: "Failed to fetch products" },
-        { status: res.status },
-      );
-    }
-
-    const data = await res.json();
-    return NextResponse.json(data, {
-      headers: {
-        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
-      },
+      ...(isAdminView ? { cache: "no-store" } : { next: { revalidate: 60 } }),
     });
   } catch (err) {
-    console.error("❌ Products fetch failed:", err);
+    console.error("[products] fetch failed:", err.message);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+
+  if (!res.ok) {
+    console.error("[products] upstream:", res.status, res.statusText);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
+      { error: "Failed to fetch products" },
+      { status: res.status },
     );
   }
+
+  // Parsed outside the try so a contract mismatch surfaces rather than being
+  // swallowed into a generic 500.
+  const data = parseResponse(productListResponse, await res.json(), "GET /products");
+
+  return NextResponse.json(data, {
+    headers: {
+      // The admin view includes inactive products — never let a CDN or the
+      // browser hold on to it, for freshness and because it is not public data.
+      "Cache-Control": isAdminView
+        ? "private, no-store"
+        : "public, s-maxage=60, stale-while-revalidate=300",
+    },
+  });
 }

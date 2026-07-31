@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import BogatMaterialsClient from "./client";
+import { API_URL } from "@/lib/env";
 
 export const metadata = {
   title: "Shop Bogat Materials | TBM — Premium Building Materials Nigeria",
@@ -33,10 +34,8 @@ export const metadata = {
 
 async function getInitialProducts() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (!baseUrl) return null;
     const res = await fetch(
-      `${baseUrl}/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
+      `${API_URL}/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
       { next: { revalidate: 60 } },
     );
     if (!res.ok) return null;

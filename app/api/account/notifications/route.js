@@ -1,8 +1,7 @@
 // app/api/account/notifications/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -14,7 +13,7 @@ async function getAuthHeaders() {
 }
 
 export async function GET() {
-  const res = await fetch(`${BASE}/account/notifications`, {
+  const res = await fetch(`${API_URL}/account/notifications`, {
     headers: await getAuthHeaders(),
   });
   const text = await res.text();
@@ -25,7 +24,7 @@ export async function GET() {
 
 export async function PUT(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/account/notifications`, {
+  const res = await fetch(`${API_URL}/account/notifications`, {
     method: "PUT",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

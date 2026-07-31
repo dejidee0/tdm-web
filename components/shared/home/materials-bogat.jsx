@@ -55,40 +55,42 @@ function ProductCard({ product, index }) {
             {/* Dark gradient overlay */}
             <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-            {/* Featured badge */}
-            {product.isFeatured && (
-              <span className="absolute top-3 left-3 text-[16px] font-bold px-2 py-1 tracking-widest uppercase bg-[#D4AF37] text-black">
-                Featured
-              </span>
-            )}
-
-            {/* Category badge */}
-            <span className="absolute top-3 right-3 text-[16px] font-semibold px-2 py-1 tracking-wide uppercase text-white/80 bg-black/50 backdrop-blur-sm border border-white/10">
-              {product.categoryName}
-            </span>
+            {/* Badges */}
+            <div className="absolute inset-x-2 top-2 flex items-start gap-1.5">
+              {product.isFeatured && (
+                <span className="shrink-0 text-[9px] leading-none font-bold px-1.5 py-1 tracking-[0.12em] uppercase bg-[#D4AF37] text-black">
+                  Featured
+                </span>
+              )}
+              {product.categoryName && (
+                <span className="ml-auto min-w-0 truncate text-[9px] leading-none font-semibold px-1.5 py-1 tracking-[0.08em] uppercase text-white/80 bg-black/60 backdrop-blur-sm border border-white/10">
+                  {product.categoryName}
+                </span>
+              )}
+            </div>
 
             {/* Hover CTA */}
-            <div className="absolute inset-x-0 bottom-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-white tracking-widest uppercase">
+            <div className="absolute inset-x-0 bottom-0 p-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-white tracking-[0.15em] uppercase">
                 View Product
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3 h-3" />
               </span>
             </div>
           </div>
 
           {/* Info */}
-          <div className="p-4">
-            <p className="text-[16px] text-white/35 font-semibold uppercase tracking-widest mb-1.5">
+          <div className="p-3.5">
+            <p className="text-[10px] text-white/35 font-semibold uppercase tracking-[0.15em] mb-1.5 truncate">
               {product.brandName}
             </p>
-            <h3 className="font-poppins font-semibold text-white text-sm leading-snug mb-2 line-clamp-1 group-hover:text-[#D4AF37] transition-colors duration-200">
+            <h3 className="font-poppins font-semibold text-white text-[13px] leading-snug mb-2.5 line-clamp-2 min-h-[2.5em] group-hover:text-[#D4AF37] transition-colors duration-200">
               {product.name}
             </h3>
 
-            <div className="flex items-center justify-between gap-2">
-              <div>
+            <div className="flex items-baseline justify-between gap-2">
+              <div className="min-w-0">
                 {product.showPrice ? (
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-sm font-bold text-white truncate block">
                     {product.variants?.length > 0
                       ? `From ${product.priceDisplay}`
                       : product.priceDisplay}
@@ -100,7 +102,7 @@ function ProductCard({ product, index }) {
                 )}
               </div>
               {product.rating && (
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 shrink-0">
                   <Star className="w-3 h-3 fill-[#D4AF37] text-[#D4AF37]" />
                   <span className="text-[11px] text-white/50">
                     {product.rating}
@@ -122,10 +124,11 @@ function SkeletonCard() {
       style={{ background: "#0d0b08", border: "1px solid rgba(255,255,255,0.06)" }}
     >
       <div className="w-full bg-white/4" style={{ aspectRatio: "4/3" }} />
-      <div className="p-4 space-y-2">
-        <div className="h-2.5 w-16 bg-white/5 rounded" />
-        <div className="h-3.5 w-3/4 bg-white/[0.07] rounded" />
-        <div className="h-3 w-1/3 bg-white/5 rounded" />
+      <div className="p-3.5 space-y-2">
+        <div className="h-2 w-14 bg-white/5 rounded" />
+        <div className="h-3 w-3/4 bg-white/[0.07] rounded" />
+        <div className="h-3 w-1/2 bg-white/[0.07] rounded" />
+        <div className="h-3.5 w-1/3 bg-white/5 rounded" />
       </div>
     </div>
   );
@@ -165,7 +168,7 @@ export default function MaterialsBogatSection() {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-[#D4AF37] font-manrope text-[16px] font-bold uppercase tracking-[0.3em] mb-3 flex items-center gap-2"
+              className="text-[#D4AF37] font-manrope text-[11px] font-bold uppercase tracking-[0.3em] mb-3 flex items-center gap-2"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               Bogat&apos;s Marketplace

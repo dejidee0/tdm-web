@@ -20,6 +20,7 @@ import {
   useAdminAIUserUsage,
 } from "@/hooks/use-admin";
 import { useAdminUsers } from "@/hooks/use-admin-users";
+import { avatarStyle, initialsOf } from "@/lib/theme/avatar";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -38,11 +39,14 @@ const MONTH_NAMES = [
   "Dec",
 ];
 
+// Chart series. The previous values were chosen against a light background — on
+// --color-surface, #7B2FBE measured 2.80:1 and #1A4A8A 2.24:1, both under the
+// 3:1 graphical minimum, so those two series were effectively invisible.
 const METRICS = [
-  { key: "totalGenerations", label: "Generations", color: "#7B2FBE" },
-  { key: "totalCreditsUsed", label: "Credits Used", color: "#1A4A8A" },
-  { key: "totalEstimatedCost", label: "Est. Cost (₦)", color: "#1A7A4A" },
-  { key: "distinctUsers", label: "Active Users", color: "#F59E0B" },
+  { key: "totalGenerations", label: "Generations", color: "var(--color-chart-1)" },
+  { key: "totalCreditsUsed", label: "Credits Used", color: "var(--color-chart-2)" },
+  { key: "totalEstimatedCost", label: "Est. Cost (₦)", color: "var(--color-chart-3)" },
+  { key: "distinctUsers", label: "Active Users", color: "var(--color-chart-4)" },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -58,25 +62,12 @@ function SectionUnavailable({ message }) {
   );
 }
 
-function initials(user) {
-  const name = user?.name || user?.fullName || user?.firstName || "";
-  return (
-    name
-      .split(" ")
-      .filter(Boolean)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2) || (user?.email?.[0] || "U").toUpperCase()
-  );
-}
-
 // ─── Monthly Spend Chart ──────────────────────────────────────────────────────
 
 function MonthlySpendChart({ data, metric }) {
   const values = data.map((d) => d[metric] ?? 0);
   const max = Math.max(...values, 1);
-  const color = METRICS.find((m) => m.key === metric)?.color ?? "#7B2FBE";
+  const color = METRICS.find((m) => m.key === metric)?.color ?? "var(--color-chart-1)";
 
   return (
     <div className="flex items-end gap-1.5 sm:gap-2 h-48 overflow-x-auto pb-1">
@@ -137,11 +128,13 @@ function SummaryCards({ data }) {
       {METRICS.map((m) => (
         <div
           key={m.key}
-          className="p-3 rounded-xl border border-white/08 bg-[#0d0b08]"
+          className="p-3 rounded-xl border border-white/08 bg-surface"
         >
           <div
             className="w-6 h-6 rounded-md mb-2 flex items-center justify-center"
-            style={{ backgroundColor: `${m.color}1A` }}
+            style={{
+              backgroundColor: `color-mix(in oklab, ${m.color} 10%, transparent)`,
+            }}
           >
             <span
               className="w-2 h-2 rounded-full inline-block"
@@ -205,13 +198,10 @@ function UserPicker({ selectedUser, onSelect }) {
       {selectedUser ? (
         <div className="flex items-center gap-3 p-2.5 border border-white/08 rounded-lg bg-white/05">
           <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-manrope text-[12px] font-bold shrink-0"
-            style={{
-              backgroundColor: selectedUser.colorScheme?.bg || "#7B2FBE",
-              color: selectedUser.colorScheme?.text || "#fff",
-            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center font-manrope text-[12px] font-bold shrink-0"
+            style={avatarStyle(selectedUser.id ?? selectedUser.email)}
           >
-            {selectedUser.initials || initials(selectedUser)}
+            {initialsOf(selectedUser)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-manrope text-[13px] font-semibold text-white truncate">
@@ -243,7 +233,7 @@ function UserPicker({ selectedUser, onSelect }) {
             }}
             onFocus={() => setOpen(true)}
             placeholder="Search by name, email, or ID…"
-            className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
           />
         </div>
       )}
@@ -256,7 +246,7 @@ function UserPicker({ selectedUser, onSelect }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 right-0 mt-1 bg-[#0d0b08] border border-white/12 rounded-xl shadow-2xl z-20 max-h-64 overflow-y-auto"
+            className="absolute top-full left-0 right-0 mt-1 bg-surface border border-white/12 rounded-xl shadow-2xl z-20 max-h-64 overflow-y-auto"
           >
             {isLoading ? (
               <div className="p-4 space-y-3">
@@ -298,16 +288,9 @@ function UserPicker({ selectedUser, onSelect }) {
                         ) : (
                           <div
                             className="w-9 h-9 rounded-full flex items-center justify-center font-manrope text-[13px] font-bold shrink-0"
-                            style={{
-                              backgroundColor:
-                                user.colorScheme?.bg ||
-                                "rgba(255,255,255,0.08)",
-                              color:
-                                user.colorScheme?.text ||
-                                "rgba(255,255,255,0.6)",
-                            }}
+                            style={avatarStyle(user.id ?? user.email)}
                           >
-                            {user.initials || initials(user)}
+                            {initialsOf(user)}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -350,7 +333,6 @@ function CreditPanel({ userId }) {
   const [form, setForm] = useState({ amount: "", reason: "", type: "add" });
   const [msg, setMsg] = useState(null);
 
-  console.log("[AI Usage] user-credits →", credits, "| error:", error?.message);
 
   const handleAdjust = () => {
     setMsg(null);
@@ -410,20 +392,20 @@ function CreditPanel({ userId }) {
   return (
     <div className="space-y-4">
       {/* Balance */}
-      <div className="flex items-center justify-between p-4 bg-[#D4AF37]/10 rounded-xl border border-[#D4AF37]/20">
+      <div className="flex items-center justify-between p-4 bg-white/05 rounded-xl border border-white/10">
         <div>
-          <p className="font-manrope text-[11px] font-semibold text-[#D4AF37] uppercase tracking-wide mb-0.5">
+          <p className="font-manrope text-[11px] font-semibold text-muted uppercase tracking-wide mb-0.5">
             Credit Balance
           </p>
-          <p className="font-manrope text-[30px] font-bold text-[#D4AF37] leading-none">
+          <p className="font-manrope text-[30px] font-bold text-white leading-none">
             {balance != null ? Number(balance).toLocaleString() : "—"}
           </p>
         </div>
         <button
           onClick={() => refetch()}
-          className="p-2 rounded-lg hover:bg-[#D4AF37]/20 transition-colors"
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors"
         >
-          <RefreshCw size={15} className="text-[#D4AF37]" />
+          <RefreshCw size={15} className="text-accent" />
         </button>
       </div>
 
@@ -442,8 +424,8 @@ function CreditPanel({ userId }) {
               className={`flex-1 flex items-center justify-center gap-1.5 py-2 font-manrope text-[13px] font-semibold transition-colors capitalize ${
                 form.type === t
                   ? t === "add"
-                    ? "bg-[#1A7A4A] text-white"
-                    : "bg-red-500 text-white"
+                    ? "bg-success-solid text-white"
+                    : "bg-danger-solid text-white"
                   : "bg-white/05 text-white/50 hover:bg-white/08"
               }`}
             >
@@ -460,20 +442,20 @@ function CreditPanel({ userId }) {
             value={form.amount}
             onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
             placeholder="Amount"
-            className="w-full px-3 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+            className="w-full px-3 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
           />
           <input
             type="text"
             value={form.reason}
             onChange={(e) => setForm((f) => ({ ...f, reason: e.target.value }))}
             placeholder="Reason (required)"
-            className="w-full px-3 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+            className="w-full px-3 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
           />
         </div>
 
         {msg && (
           <p
-            className={`font-manrope text-[12px] mt-2 ${msg.type === "error" ? "text-red-400" : "text-[#10B981]"}`}
+            className={`font-manrope text-[12px] mt-2 ${msg.type === "error" ? "text-danger" : "text-success"}`}
           >
             {msg.text}
           </p>
@@ -482,9 +464,9 @@ function CreditPanel({ userId }) {
         <button
           onClick={handleAdjust}
           disabled={isPending || !form.amount || !form.reason.trim()}
-          className="mt-3 w-full py-2.5 rounded-lg font-manrope text-[13px] font-semibold text-black transition-opacity disabled:opacity-50"
+          className="mt-3 w-full py-2.5 rounded-lg font-manrope text-[13px] font-semibold text-white transition-opacity disabled:opacity-50"
           style={{
-            background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+            background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)",
           }}
         >
           {isPending ? "Applying…" : "Apply Adjustment"}
@@ -507,7 +489,6 @@ function UserUsagePanel({ userId }) {
     error,
   } = useAdminAIUserUsage(userId, { year, month });
 
-  console.log("[AI Usage] user-usage →", usage, "| error:", error?.message);
 
   return (
     <div className="space-y-4">
@@ -517,7 +498,7 @@ function UserUsagePanel({ userId }) {
           <select
             value={month}
             onChange={(e) => setMonth(Number(e.target.value))}
-            className="appearance-none w-full px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+            className="appearance-none w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
           >
             {MONTH_NAMES.map((m, i) => (
               <option key={i} value={i + 1}>
@@ -536,7 +517,7 @@ function UserUsagePanel({ userId }) {
           onChange={(e) => setYear(Number(e.target.value))}
           min="2020"
           max={now.getFullYear() + 1}
-          className="w-24 px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+          className="w-24 px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
         />
       </div>
 
@@ -626,7 +607,7 @@ function AIUsageContent() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── Left: Monthly Spend Chart ── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-5 sm:p-6">
+          <div className="bg-surface rounded-xl border border-white/08 p-5 sm:p-6">
             {/* Chart header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
               <div>
@@ -664,7 +645,7 @@ function AIUsageContent() {
                   <select
                     value={spendMonths}
                     onChange={(e) => setSpendMonths(Number(e.target.value))}
-                    className="appearance-none pl-3 pr-7 py-1.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[12px] text-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                    className="appearance-none pl-3 pr-7 py-1.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[12px] text-white/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                   >
                     <option value={3}>3 mo</option>
                     <option value={6}>6 mo</option>
@@ -718,7 +699,7 @@ function AIUsageContent() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
-                className="bg-[#0d0b08] rounded-xl border border-white/08 p-5 sm:p-6"
+                className="bg-surface rounded-xl border border-white/08 p-5 sm:p-6"
               >
                 <div className="flex items-center justify-between mb-5">
                   <div>
@@ -748,7 +729,7 @@ function AIUsageContent() {
         {/* ── Right: User picker + Credits ── */}
         <div className="space-y-4">
           {/* User picker */}
-          <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-5">
+          <div className="bg-surface rounded-xl border border-white/08 p-5">
             <h2 className="font-manrope text-[15px] font-bold text-white mb-3">
               Select User
             </h2>
@@ -771,7 +752,7 @@ function AIUsageContent() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
-                className="bg-[#0d0b08] rounded-xl border border-white/08 p-5"
+                className="bg-surface rounded-xl border border-white/08 p-5"
               >
                 <h2 className="font-manrope text-[15px] font-bold text-white mb-4">
                   Credits
@@ -790,7 +771,7 @@ export default function AIUsagePage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-360 mx-auto animate-pulse h-96 bg-[#0d0b08] rounded-xl border border-white/08" />
+        <div className="max-w-360 mx-auto animate-pulse h-96 bg-surface rounded-xl border border-white/08" />
       }
     >
       <AIUsageContent />

@@ -8,7 +8,7 @@ import {
   Layers,
   Droplets,
   DoorOpen,
-  Sparkles,
+  Bath,
   Diamond,
   Gem,
   Shield,
@@ -49,7 +49,7 @@ const CATEGORIES = [
     description: "Premium taps, showers, mixers & accessories.",
   },
   {
-    Icon: Sparkles,
+    Icon: Bath,
     label: "Sanitary Ware",
     href: "/bogat/materials?category=sanitary",
     image: "/pendant.png",

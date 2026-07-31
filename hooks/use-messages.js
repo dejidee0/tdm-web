@@ -77,7 +77,6 @@ function transformMessagesToConversations(messages) {
         contactName: contactName.charAt(0).toUpperCase() + contactName.slice(1),
         contactEmail: contactEmail,
         contactInitials: initials,
-        contactColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`, // Random color
         messages: [],
         lastMessage: "",
         timestamp: "",
@@ -256,7 +255,7 @@ export function useVendorConversationMessages(contactEmail) {
             msg.direction === "inbound"
               ? contactEmail.split("@")[0].slice(0, 2).toUpperCase()
               : "Y",
-          color: msg.direction === "inbound" ? "#10B981" : "#3B82F6",
+          color: msg.direction === "inbound" ? "var(--color-success)" : "var(--color-info)",
         };
       });
     },

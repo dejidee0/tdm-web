@@ -9,36 +9,36 @@ const quickActions = [
     id: 1,
     label: "Add Product",
     icon: Plus,
-    color: "text-[#06B6D4]",
-    bgColor: "bg-[#ECFEFF]",
-    hoverBg: "hover:bg-[#CFFAFE]",
+    color: "text-info",
+    bgColor: "bg-info/10",
+    hoverBg: "hover:bg-info/10",
     action: "/vendor/dashboard/inventory?open=add-product",
   },
   {
     id: 2,
     label: "Update Project",
     icon: FileEdit,
-    color: "text-[#3B82F6]",
-    bgColor: "bg-[#EFF6FF]",
-    hoverBg: "hover:bg-[#DBEAFE]",
+    color: "text-info",
+    bgColor: "bg-info/10",
+    hoverBg: "hover:bg-info/10",
     action: "/vendor/projects",
   },
   {
     id: 3,
     label: "View Orders",
     icon: ClipboardList,
-    color: "text-[#64748B]",
-    bgColor: "bg-[#F1F5F9]",
-    hoverBg: "hover:bg-[#E2E8F0]",
+    color: "text-muted",
+    bgColor: "bg-white/08",
+    hoverBg: "hover:bg-white/10",
     action: "/vendor/dashboard/orders",
   },
   {
     id: 4,
     label: "Respond",
     icon: MessageSquare,
-    color: "text-[#64748B]",
-    bgColor: "bg-[#F1F5F9]",
-    hoverBg: "hover:bg-[#E2E8F0]",
+    color: "text-muted",
+    bgColor: "bg-white/08",
+    hoverBg: "hover:bg-white/10",
     action: "/vendor/dashboard/messages",
   },
 ];
@@ -50,10 +50,10 @@ export default function QuickActions() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      className="bg-background rounded-xl p-4 h-full border border-[#E5E7EB]"
+      className="bg-surface rounded-xl p-4 h-full border border-white/08"
     >
       {/* Header */}
-      <h2 className="font-manrope text-[18px] font-bold text-primary mb-6">
+      <h2 className="font-manrope text-[18px] font-bold text-white mb-6">
         Quick Actions
       </h2>
 
@@ -82,7 +82,7 @@ export default function QuickActions() {
               >
                 <Icon size={20} strokeWidth={2} />
               </div>
-              <span className="font-manrope text-[13px] font-medium text-primary">
+              <span className="font-manrope text-[13px] font-medium text-white">
                 {action.label}
               </span>
             </motion.button>

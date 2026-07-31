@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { API_URL } from "@/lib/env";
 
 async function getToken() {
   const cookieStore = await cookies();
@@ -12,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const raw = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/orders/my-orders`,
+    `${API_URL}/orders/my-orders`,
     {
       headers: { Authorization: `Bearer ${token}` },
     },

@@ -41,7 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 # claude
+# Assistant config and instructions are local, not version-controlled.
 /.claude/
+/CLAUDE.md
+
 docs/api-reference.md
 tdl.md
 .playwright-mcp/
@@ -50,3 +53,17 @@ tdl.md
 .playwright-mcp/page-2026-04-30T08-11-22-728Z.yml
 .playwright-mcp/page-2026-04-30T08-10-16-744Z.yml
 BookHushly-Confirmation-ea01d529-e3b1-481b-ad7d-6b99db7a1fa1.pdf
+BACKLOG.md
+contracts/COVERAGE.md
+.gitignore
+contracts/COVERAGE.md
+docs/api/tbm-backend-api.md
+docs/BOGAT_Luxury_Collections_Corrected_Grouping.pdf
+.gitignore
+
+# Local image staging for scripts/upload-bogat-images.mjs (large binaries, do not commit)
+product-images/
+product-images-test/
+public/product-images/
+public/saved-products/
+saved-products/

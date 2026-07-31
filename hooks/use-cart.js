@@ -1,17 +1,34 @@
 // hooks/use-cart.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartApi } from "@/lib/api/cart";
+import { useSession } from "@/hooks/use-session";
+
+const cartQueryOptions = {
+  queryKey: ["cart"],
+  queryFn: cartApi.getCart,
+  staleTime: 30 * 1000, // 30s — re-fetch if stale (backend may change)
+  gcTime: Infinity,
+  refetchOnWindowFocus: true,
+  refetchOnMount: true,
+};
+
+// The backend mints a guest cart (and a tbm_guest_id cookie) on the first
+// GET /cart. Once that cookie exists the visitor has a cart worth reading.
+const GUEST_CART_COOKIE = "tbm_guest_id";
+
+function hasExistingCart() {
+  if (typeof document === "undefined") return false;
+  // tbm_guest_id is an opaque guest-cart id, not an auth token, and we only
+  // test for its presence — never read a value out of it.
+  // eslint-disable-next-line no-restricted-syntax
+  return document.cookie.includes(`${GUEST_CART_COOKIE}=`);
+}
 
 // ─── Read cart ────────────────────────────────────────────────────────────────
+// Unconditional: the caller is a page that exists to show the cart, so creating
+// a guest cart on demand is exactly what we want.
 export function useCart() {
-  return useQuery({
-    queryKey: ["cart"],
-    queryFn: cartApi.getCart,
-    staleTime: 30 * 1000, // 30s — re-fetch if stale (backend may change)
-    gcTime: Infinity,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-  });
+  return useQuery(cartQueryOptions);
 }
 
 // ─── Merge guest cart after login ─────────────────────────────────────────────
@@ -234,7 +251,22 @@ export function useCartRelated() {
 }
 
 // ─── Cart item count (for navbar badge) ──────────────────────────────────────
+/**
+ * Cart badge count for the navbar, which renders on every public page.
+ *
+ * Deliberately does NOT fetch for a passive anonymous visitor: doing so made
+ * the backend mint a guest cart row (and a tracking cookie) for every bot and
+ * every bounce. We only read the cart once the visitor actually has one —
+ * they're logged in, or they've already touched the cart.
+ *
+ * Shares the ["cart"] key with useCart(), so the cart page still populates
+ * this badge the moment it loads.
+ */
 export function useCartCount() {
-  const { data } = useCart();
+  const { isAuthenticated } = useSession();
+  const { data } = useQuery({
+    ...cartQueryOptions,
+    enabled: isAuthenticated || hasExistingCart(),
+  });
   return data?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 }

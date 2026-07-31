@@ -1,0 +1,152 @@
+{
+  "$comment": [
+    "The single source of truth for which backend responses we have actually observed.",
+    "",
+    "Both scripts/record-contract.mjs and scripts/check-contract.mjs read this file,",
+    "and scripts/coverage.mjs diffs it against docs/api/swagger.snapshot.json to answer",
+    "'what do we not know yet?'. Adding an endpoint is an edit here, not to a script.",
+    "",
+    "  op       METHOD + path, exactly as keyed in the OpenAPI document.",
+    "  label    Snapshot filename in contracts/.",
+    "  sample   Query string used when recording. Prefer a large pageSize: nullable",
+    "           fields only reveal themselves across a wide enough sample.",
+    "  schema   Named export from lib/api/schemas/catalog.ts. Omit (null) when the",
+    "           shape has been recorded but not yet modelled — coverage counts only",
+    "           entries that have one.",
+    "  itemsAt  Dotted path to the array whose per-field nullability we summarise.",
+    "  auth     true → recorded only when CONTRACT_TOKEN is set.",
+    "",
+    "An invented schema is worse than none: it alarms on the truth. Leave schema null",
+    "until a real response has been observed."
+  ],
+  "endpoints": [
+    {
+      "op": "GET /api/v1/Products",
+      "label": "products",
+      "sample": "?pageSize=50&ActiveOnly=true",
+      "schema": "productListResponse",
+      "itemsAt": "data.items",
+      "auth": false
+    },
+    {
+      "op": "GET /api/v1/Products/featured",
+      "label": "products-featured",
+      "sample": "",
+      "schema": "productArrayResponse",
+      "itemsAt": "data",
+      "auth": false
+    },
+    {
+      "op": "GET /api/v1/Categories",
+      "label": "categories",
+      "sample": "",
+      "schema": "categoryListResponse",
+      "itemsAt": "data",
+      "auth": false
+    },
+    {
+      "op": "GET /api/v1/flooring",
+      "label": "flooring",
+      "sample": "",
+      "schema": "flooringResponse",
+      "itemsAt": "products",
+      "auth": false
+    },
+    {
+      "op": "GET /api/v1/materials/list",
+      "label": "materials-list",
+      "sample": "?limit=50",
+      "schema": "materialListResponse",
+      "itemsAt": "materials",
+      "auth": false
+    },
+    {
+      "op": "GET /api/v1/Cart",
+      "label": "cart",
+      "sample": "",
+      "schema": null,
+      "itemsAt": "data.items",
+      "auth": false,
+      "$why": "Only ever observed empty, so the item shape is genuinely unknown. Modelling it now would be a guess."
+    },
+    {
+      "op": "GET /api/v1/Cart/related",
+      "label": "cart-related",
+      "sample": "",
+      "schema": "cartRelatedResponse",
+      "itemsAt": null,
+      "auth": false,
+      "$why": "A bare array — no envelope, and items are neither Product nor MaterialSummary."
+    },
+    {
+      "op": "POST /api/v1/admin/AdminProducts",
+      "label": "admin-products-create",
+      "sample": "",
+      "schema": "adminProductCreateResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded by scripts/record-mutations.mjs. Returns ApiEnvelope<Product> — the same 41 fields as GET /Products."
+    },
+    {
+      "op": "PUT /api/v1/admin/AdminProducts/{id}",
+      "label": "admin-products-update",
+      "sample": "",
+      "schema": "adminProductUpdateResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. ApiEnvelope<Product>. NOTE: UpdateProductDto omits brandType/productType and adds isActive."
+    },
+    {
+      "op": "DELETE /api/v1/admin/AdminProducts/{id}",
+      "label": "admin-products-delete",
+      "sample": "",
+      "schema": "adminProductDeleteResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. data is a bare boolean, not a Product."
+    },
+    {
+      "op": "POST /api/v1/admin/AdminProducts/bulk",
+      "label": "admin-products-bulk",
+      "sample": "",
+      "schema": "adminProductBulkResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Recorded. Created rows arrive under data.createdProducts, NOT data[] like every other create on this surface."
+    },
+    {
+      "op": "POST /api/v1/admin/AdminProducts/{productId}/images/upload",
+      "label": "admin-product-image",
+      "sample": "",
+      "schema": "adminProductImageUploadResponse",
+      "itemsAt": null,
+      "auth": true,
+      "$why": "Multipart, field `file`. Returns ApiEnvelope<ProductImageDto>. Recorded by scripts/explore-image-upload.mjs; now in the refreshed snapshot."
+    },
+    {
+      "op": "GET /api/v1/ai/styles",
+      "label": "ai-styles",
+      "sample": "",
+      "schema": "aiStylesResponse",
+      "itemsAt": null,
+      "auth": false,
+      "$why": "A bare array of { id, name } — no envelope. Public. The `style` field on GenerateImageDto/GenerateVideoDto takes the id."
+    },
+    {
+      "op": "GET /api/v1/account/me",
+      "label": "account-me",
+      "sample": "",
+      "schema": null,
+      "itemsAt": null,
+      "auth": true
+    },
+    {
+      "op": "GET /api/v1/orders/my-orders",
+      "label": "orders-my-orders",
+      "sample": "",
+      "schema": null,
+      "itemsAt": "data.items",
+      "auth": true
+    }
+  ]
+}

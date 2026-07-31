@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Wand2 } from "lucide-react";
 import Link from "next/link";
 
 export default function AIVisualizerPromo({ items }) {
@@ -33,7 +33,7 @@ export default function AIVisualizerPromo({ items }) {
 
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+          <Wand2 className="w-5 h-5 text-[#D4AF37]" />
           <span className="text-[12px] font-semibold uppercase tracking-wide text-[#D4AF37]">Ziora</span>
         </div>
 

@@ -4,9 +4,9 @@ import { Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function RatingsReviews({
-  averageRating = 4.8,
-  totalReviews = 42,
-  ratingDistribution = { 5: 78, 4: 15, 3: 5, 2: 2, 1: 0 },
+  averageRating = 0,
+  totalReviews = 0,
+  ratingDistribution = null,
 }) {
   const maxPercentage = ratingDistribution
     ? Math.max(...Object.values(ratingDistribution))
@@ -24,6 +24,20 @@ export default function RatingsReviews({
         Ratings &amp; Reviews
       </h2>
 
+      {/* No reviews yet — an honest empty state rather than an invented score. */}
+      {totalReviews === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-white/10 text-white/10" />
+            ))}
+          </div>
+          <p className="text-sm text-white/50">No reviews yet</p>
+          <p className="text-xs text-white/30 max-w-xs">
+            Be the first to share your experience with this piece.
+          </p>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Average Rating */}
         <div className="flex flex-col items-center justify-center text-center">
@@ -80,6 +94,7 @@ export default function RatingsReviews({
           })}
         </div>
       </div>
+      )}
     </motion.div>
   );
 }

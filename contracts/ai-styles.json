@@ -1,0 +1,21 @@
+{
+  "endpoint": "/ai/styles",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "type": "array",
+    "length": 10,
+    "of": [
+      {
+        "id": "string",
+        "name": "string",
+        "imageUrl": "string"
+      },
+      {
+        "id": "string",
+        "name": "string",
+        "imageUrl": "null"
+      }
+    ]
+  }
+}

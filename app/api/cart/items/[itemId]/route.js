@@ -1,8 +1,7 @@
 // app/api/v1/cart/items/[itemId]/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_URL } from "@/lib/env";
 
 async function authHeader() {
   const store = await cookies();
@@ -15,7 +14,7 @@ export async function PUT(req, { params }) {
   try {
     const { itemId } = await params;
     const body = await req.json();
-    const res = await fetch(`${BASE_URL}/cart/items/${itemId}`, {
+    const res = await fetch(`${API_URL}/cart/items/${itemId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
       body: JSON.stringify(body),
@@ -35,7 +34,7 @@ export async function PUT(req, { params }) {
 export async function DELETE(_req, { params }) {
   try {
     const { itemId } = await params;
-    const res = await fetch(`${BASE_URL}/cart/items/${itemId}`, {
+    const res = await fetch(`${API_URL}/cart/items/${itemId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", ...(await authHeader()) },
     });

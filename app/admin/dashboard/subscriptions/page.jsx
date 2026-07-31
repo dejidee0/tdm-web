@@ -23,15 +23,21 @@ import {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// Chips are a 14% tint of the token with the token itself as text — the same
+// construction as the role chips. The previous values were light-theme pairs
+// (green-100 fill / green-800 text) that rendered as white blocks on the dark
+// table and put their text 1.3:1 against the page behind them.
+const tint = (token) => `color-mix(in oklab, var(${token}) 14%, transparent)`;
+
 const TIER_COLORS = {
-  economy: { bg: "#DCFCE7", text: "#1A7A4A", label: "Economy" },
-  premium: { bg: "#DBEAFE", text: "#1A4A8A", label: "Premium" },
-  luxury: { bg: "#F3E8FF", text: "#7B2FBE", label: "Luxury" },
+  economy: { bg: tint("--color-success"), text: "var(--color-success)", label: "Economy" },
+  premium: { bg: tint("--color-info"), text: "var(--color-info)", label: "Premium" },
+  luxury: { bg: tint("--color-role-superadmin"), text: "var(--color-role-superadmin)", label: "Luxury" },
 };
 
 const STATUS_CHIP = {
-  active: { bg: "#DCFCE7", text: "#1A7A4A", label: "Active" },
-  scheduled: { bg: "#DBEAFE", text: "#1A4A8A", label: "Scheduled" },
+  active: { bg: tint("--color-success"), text: "var(--color-success)", label: "Active" },
+  scheduled: { bg: tint("--color-info"), text: "var(--color-info)", label: "Scheduled" },
   expired: { bg: "rgba(255,255,255,0.08)", text: "rgba(255,255,255,0.4)", label: "Expired" },
 };
 
@@ -69,7 +75,7 @@ function PricingRow({ config, onSave }) {
   const isUnlimited = form.unlimitedGenerations;
 
   const inputCls =
-    "px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all disabled:opacity-40 disabled:cursor-not-allowed";
+    "px-2 py-1 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all disabled:opacity-40 disabled:cursor-not-allowed";
 
   const handleSave = async () => {
     setSaving(true);
@@ -142,7 +148,7 @@ function PricingRow({ config, onSave }) {
                 type="checkbox"
                 checked={form.unlimitedGenerations}
                 onChange={(e) => setForm({ ...form, unlimitedGenerations: e.target.checked, generationsPerMonth: "" })}
-                className="accent-[#D4AF37]"
+                className="accent-accent-solid"
               />
               Unlimited
             </label>
@@ -158,12 +164,12 @@ function PricingRow({ config, onSave }) {
           <button
             onClick={() => setForm({ ...form, prioritySupport: !form.prioritySupport })}
             className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-            style={{ backgroundColor: form.prioritySupport ? "#10B981" : "rgba(255,255,255,0.15)" }}
+            style={{ backgroundColor: form.prioritySupport ? "var(--color-success-solid)" : "rgba(255,255,255,0.15)" }}
           >
             <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${form.prioritySupport ? "translate-x-4" : "translate-x-0.5"}`} />
           </button>
         ) : (
-          <span className={`font-manrope text-[12px] font-semibold px-2 py-0.5 rounded-full ${config.prioritySupport ? "bg-[#DCFCE7] text-[#1A7A4A]" : "bg-white/08 text-white/40"}`}>
+          <span className={`font-manrope text-[12px] font-semibold px-2 py-0.5 rounded-full ${config.prioritySupport ? "bg-success/10 text-success" : "bg-white/08 text-white/40"}`}>
             {config.prioritySupport ? "Yes" : "No"}
           </span>
         )}
@@ -190,8 +196,8 @@ function PricingRow({ config, onSave }) {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg font-manrope text-[12px] font-semibold text-black transition-opacity disabled:opacity-50"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg font-manrope text-[12px] font-semibold text-white transition-opacity disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
             >
               <Check size={12} />
               {saving ? "Saving…" : "Save"}
@@ -230,7 +236,7 @@ function DiscountRow({ discount, onDeactivate, isDeactivating }) {
           {discount.name}
         </p>
         {discount.displayLabel && (
-          <span className="px-2 py-0.5 mt-1 inline-block bg-[#D4AF37]/15 text-[#D4AF37] rounded font-manrope text-[11px] font-semibold">
+          <span className="px-2 py-0.5 mt-1 inline-block bg-white/08 text-accent rounded font-manrope text-[11px] font-semibold">
             {discount.displayLabel}
           </span>
         )}
@@ -289,7 +295,7 @@ function DiscountRow({ discount, onDeactivate, isDeactivating }) {
           <button
             onClick={() => onDeactivate(discount.id)}
             disabled={isDeactivating}
-            className="flex items-center gap-1 px-3 py-1.5 border border-red-800/40 text-red-400 rounded-lg font-manrope text-[12px] hover:bg-red-950/30 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-1.5 border border-danger/25 text-danger rounded-lg font-manrope text-[12px] hover:bg-danger/10 transition-colors disabled:opacity-50"
           >
             <Trash2 size={12} />
             Deactivate
@@ -316,10 +322,10 @@ const EMPTY_FORM = {
 };
 
 const inputCls =
-  "w-full px-3 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all";
+  "w-full px-3 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all";
 
 const selectCls =
-  "appearance-none w-full px-3 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all";
+  "appearance-none w-full px-3 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all";
 
 function CreateDiscountModal({ onClose, onCreate }) {
   const [form, setForm] = useState(EMPTY_FORM);
@@ -369,13 +375,13 @@ function CreateDiscountModal({ onClose, onCreate }) {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="bg-[#0d0b08] border border-white/08 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl"
+        className="bg-surface border border-white/08 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl"
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/08">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center">
-              <Tag size={18} className="text-[#D4AF37]" />
+            <div className="w-9 h-9 bg-white/05 rounded-lg flex items-center justify-center">
+              <Tag size={18} className="text-accent" />
             </div>
             <h2 className="font-manrope text-[18px] font-bold text-white">
               New Discount Campaign
@@ -391,16 +397,16 @@ function CreateDiscountModal({ onClose, onCreate }) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {formError && (
-            <div className="flex items-center gap-2 p-3 bg-red-950/30 border border-red-800/30 rounded-lg">
-              <AlertCircle size={16} className="text-red-400 shrink-0" />
-              <p className="font-manrope text-[13px] text-red-400">{formError}</p>
+            <div className="flex items-center gap-2 p-3 bg-danger/10 border border-danger/25 rounded-lg">
+              <AlertCircle size={16} className="text-danger shrink-0" />
+              <p className="font-manrope text-[13px] text-danger">{formError}</p>
             </div>
           )}
 
           {/* Campaign Name */}
           <div>
             <label className="block font-manrope text-[13px] font-semibold text-white/70 mb-1.5">
-              Campaign Name <span className="text-red-400">*</span>
+              Campaign Name <span className="text-danger">*</span>
             </label>
             <input
               type="text"
@@ -453,7 +459,7 @@ function CreateDiscountModal({ onClose, onCreate }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block font-manrope text-[13px] font-semibold text-white/70 mb-1.5">
-                Discount Type <span className="text-red-400">*</span>
+                Discount Type <span className="text-danger">*</span>
               </label>
               <div className="relative">
                 <select
@@ -469,7 +475,7 @@ function CreateDiscountModal({ onClose, onCreate }) {
             </div>
             <div>
               <label className="block font-manrope text-[13px] font-semibold text-white/70 mb-1.5">
-                Value <span className="text-red-400">*</span>
+                Value <span className="text-danger">*</span>
               </label>
               <input
                 type="number"
@@ -487,7 +493,7 @@ function CreateDiscountModal({ onClose, onCreate }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block font-manrope text-[13px] font-semibold text-white/70 mb-1.5">
-                Start Date <span className="text-red-400">*</span>
+                Start Date <span className="text-danger">*</span>
               </label>
               <input
                 type="datetime-local"
@@ -498,7 +504,7 @@ function CreateDiscountModal({ onClose, onCreate }) {
             </div>
             <div>
               <label className="block font-manrope text-[13px] font-semibold text-white/70 mb-1.5">
-                End Date <span className="text-red-400">*</span>
+                End Date <span className="text-danger">*</span>
               </label>
               <input
                 type="datetime-local"
@@ -564,8 +570,8 @@ function CreateDiscountModal({ onClose, onCreate }) {
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 px-4 py-2.5 rounded-lg font-manrope text-[14px] font-semibold text-black transition-opacity disabled:opacity-50"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              className="flex-1 px-4 py-2.5 rounded-lg font-manrope text-[14px] font-semibold text-white transition-opacity disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
             >
               {submitting ? "Creating…" : "Create Campaign"}
             </button>
@@ -611,7 +617,7 @@ export default function SubscriptionsPage() {
       <div className="max-w-360 mx-auto animate-pulse space-y-6">
         <div className="h-10 w-64 bg-white/08 rounded-lg" />
         <div className="h-8 w-72 bg-white/08 rounded" />
-        <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-6 h-64" />
+        <div className="bg-surface rounded-xl border border-white/08 p-6 h-64" />
       </div>
     );
   }
@@ -633,12 +639,12 @@ export default function SubscriptionsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 bg-red-950/30 border border-red-800/30 rounded-lg p-4 flex items-start gap-3"
+          className="mb-6 bg-danger/10 border border-danger/25 rounded-lg p-4 flex items-start gap-3"
         >
-          <AlertCircle className="text-red-400 shrink-0 mt-0.5" size={20} />
+          <AlertCircle className="text-danger shrink-0 mt-0.5" size={20} />
           <div className="flex-1">
-            <p className="font-manrope text-[14px] font-semibold text-red-400 mb-1">Error</p>
-            <p className="font-manrope text-[13px] text-red-400/80">
+            <p className="font-manrope text-[14px] font-semibold text-danger mb-1">Error</p>
+            <p className="font-manrope text-[13px] text-danger/80">
               {pageError ||
                 pricingError?.message ||
                 discountsError?.message ||
@@ -646,7 +652,7 @@ export default function SubscriptionsPage() {
             </p>
           </div>
           <button onClick={() => setPageError(null)}>
-            <X size={18} className="text-red-400" />
+            <X size={18} className="text-danger" />
           </button>
         </motion.div>
       )}
@@ -663,7 +669,7 @@ export default function SubscriptionsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`py-3 font-manrope text-[15px] font-bold border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "border-[#D4AF37] text-[#D4AF37]"
+                  ? "border-accent text-accent"
                   : "border-transparent text-white/40 hover:text-white"
               }`}
             >
@@ -675,7 +681,7 @@ export default function SubscriptionsPage() {
 
       {/* ── Pricing Tab ── */}
       {activeTab === "pricing" && (
-        <div className="bg-[#0d0b08] rounded-xl border border-white/08 overflow-hidden">
+        <div className="bg-surface rounded-xl border border-white/08 overflow-hidden">
           <div className="p-5 sm:p-6 border-b border-white/08">
             <h2 className="font-manrope text-[16px] font-bold text-white">
               Tier Pricing Configuration
@@ -736,12 +742,12 @@ export default function SubscriptionsPage() {
                   onClick={() => setDiscountFilter(f)}
                   className={`px-3 py-1.5 rounded-lg font-manrope text-[13px] font-semibold capitalize transition-colors ${
                     discountFilter === f
-                      ? "text-black"
+                      ? "text-white"
                       : "border border-white/10 text-white/50 hover:bg-white/05"
                   }`}
                   style={
                     discountFilter === f
-                      ? { background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }
+                      ? { background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }
                       : undefined
                   }
                 >
@@ -755,15 +761,15 @@ export default function SubscriptionsPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowCreateModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-manrope text-[13px] font-semibold text-black transition-opacity"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-manrope text-[13px] font-semibold text-white transition-opacity"
+              style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
             >
               <Plus size={16} />
               New Discount
             </motion.button>
           </div>
 
-          <div className="bg-[#0d0b08] rounded-xl border border-white/08 overflow-hidden">
+          <div className="bg-surface rounded-xl border border-white/08 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>

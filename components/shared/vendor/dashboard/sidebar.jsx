@@ -4,45 +4,57 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Settings, ExternalLink } from "lucide-react";
-import dashboardIcon from "@/public/assets/svgs/vendor/sidebar/dashboard.svg";
-import ordersIcon from "@/public/assets/svgs/vendor/sidebar/orders.svg";
-import inventoryIcon from "@/public/assets/svgs/vendor/sidebar/inventory.svg";
-import deliveryIcon from "@/public/assets/svgs/vendor/sidebar/delivery.svg";
-import messagesIcon from "@/public/assets/svgs/vendor/sidebar/messages.svg";
-import notificationIcon from "@/public/assets/svgs/vendor/sidebar/notification.svg";
+import {
+  Settings,
+  ExternalLink,
+  LayoutGrid,
+  ClipboardList,
+  Boxes,
+  Truck,
+  MessageSquare,
+  Bell,
+} from "lucide-react";
 
+// lucide icons paint with `currentColor`, so they follow the row's active and
+// inactive text color. The SVGs these replaced had their fill baked in, and had
+// even encoded the active state in the asset itself: dashboard.svg was #273054
+// while the rest were #475569. On the dark sidebar all six measured under 3:1.
 const navItems = [
   {
     label: "Dashboard",
-    icon: dashboardIcon,
+    icon: LayoutGrid,
     href: "/vendor/dashboard",
   },
   {
     label: "Orders",
-    icon: ordersIcon,
+    icon: ClipboardList,
     href: "/vendor/dashboard/orders",
   },
   {
     label: "Inventory",
-    icon: inventoryIcon,
+    icon: Boxes,
     href: "/vendor/dashboard/inventory",
   },
   {
     label: "Delivery",
-    icon: deliveryIcon,
+    icon: Truck,
     href: "/vendor/dashboard/delivery",
   },
   {
     label: "Messages",
-    icon: messagesIcon,
+    icon: MessageSquare,
     href: "/vendor/dashboard/messages",
     badge: 3,
   },
 ];
 
 const isActivePath = (pathname, href) => {
-  return pathname === href || pathname.startsWith(href + "/dashboard");
+  // Exact match for the dashboard root, so it does not light up on every child.
+  if (href === "/vendor/dashboard") return pathname === href;
+  // Prefix match on a path segment: `/orders` must also match `/orders/<id>`.
+  // This used to append "/dashboard", so opening an order detail page silently
+  // un-highlighted Orders in the nav.
+  return pathname === href || pathname.startsWith(href + "/");
 };
 
 export default function VendorSidebar() {
@@ -51,7 +63,7 @@ export default function VendorSidebar() {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Logo/Header */}
-      <div className="p-6 border-b border-[#E5E7EB]">
+      <div className="p-6 border-b border-white/08">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
@@ -65,25 +77,23 @@ export default function VendorSidebar() {
               />
             </div>
             <div>
-              <h1 className="font-manrope font-bold text-[15px] text-primary">
+              <h1 className="font-manrope font-bold text-[15px] text-white">
                 TBM & Bogat
               </h1>
-              <p className="font-manrope text-[11px] text-[#64748B] uppercase tracking-wider">
+              <p className="font-manrope text-[11px] text-muted uppercase tracking-wider">
                 VENDOR PORTAL
               </p>
             </div>
           </div>
 
           {/* Notification Icon */}
-          <button className="relative p-2 hover:bg-[#F8FAFC] rounded-lg transition-colors">
-            <Image
-              src={notificationIcon}
-              alt="Notifications"
-              width={16}
-              height={16}
-            />
+          <button
+            aria-label="Notifications"
+            className="relative p-2 text-white/50 hover:text-white hover:bg-white/05 rounded-lg transition-colors"
+          >
+            <Bell size={16} />
             {/* Notification Badge */}
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#EF4444] rounded-full"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-danger-solid rounded-full" />
           </button>
         </div>
       </div>
@@ -105,23 +115,18 @@ export default function VendorSidebar() {
                       font-manrope text-[14px] transition-colors
                       ${
                         isActive
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-[#64748B] hover:bg-[#F8FAFC]"
+                          ? "bg-white/08 text-white font-medium"
+                          : "text-white/50 hover:bg-white/05 hover:text-white"
                       }
                     `}
                   >
-                    <Image
-                      src={item.icon}
-                      alt={item.label}
-                      width={20}
-                      height={20}
-                    />
+                    <item.icon size={20} className="shrink-0" />
                     <span>{item.label}</span>
                     {item.badge && (
                       <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="ml-auto w-5 h-5 bg-[#EF4444] text-white text-[11px] font-bold rounded-full flex items-center justify-center"
+                        className="ml-auto w-5 h-5 bg-danger-solid text-white text-[11px] font-bold rounded-full flex items-center justify-center"
                       >
                         {item.badge}
                       </motion.span>
@@ -135,12 +140,12 @@ export default function VendorSidebar() {
       </nav>
 
       {/* Settings + Back to Site */}
-      <div className="p-4 border-t border-[#E5E7EB] space-y-1">
+      <div className="p-4 border-t border-white/08 space-y-1">
         <Link href="/vendor/dashboard/account-settings">
           <motion.div
             whileHover={{ x: 4 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#64748B] hover:bg-[#F8FAFC] font-manrope text-[14px] transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted hover:bg-white/05 font-manrope text-[14px] transition-colors"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -150,7 +155,7 @@ export default function VendorSidebar() {
           <motion.div
             whileHover={{ x: 4 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#64748B] hover:bg-[#F8FAFC] font-manrope text-[14px] transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted hover:bg-white/05 font-manrope text-[14px] transition-colors"
           >
             <ExternalLink size={20} />
             <span>Back to Main Site</span>
@@ -159,16 +164,16 @@ export default function VendorSidebar() {
       </div>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-[#E5E7EB]">
+      <div className="p-4 border-t border-white/08">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#F59E0B] rounded-full flex items-center justify-center text-white font-manrope font-bold text-[14px]">
+          <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-black font-manrope font-bold text-[14px]">
             AM
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-manrope font-medium text-[14px] text-primary truncate">
+            <p className="font-manrope font-medium text-[14px] text-white truncate">
               Alex Morgan
             </p>
-            <p className="font-manrope text-[12px] text-[#64748B] truncate">
+            <p className="font-manrope text-[12px] text-muted truncate">
               Vendor ID: #8939
             </p>
           </div>

@@ -14,10 +14,14 @@ export default function AdminLoginPage() {
   const { mutate: login, isPending } = useAdminLogin();
 
   const formik = useFormik({
+    // Never seed these. A default value here is not a convenience: it is
+    // compiled into the client bundle, so anyone who loads /admin/login — or
+    // greps .next/static — has the credentials. This form previously shipped a
+    // working admin+SuperAdmin login to every visitor.
     initialValues: {
-      email: "Ifemicheal2@gmail.com",
-      password: "Nisotgreg0",
-      rememberMe: true,
+      email: "",
+      password: "",
+      rememberMe: false,
     },
     validationSchema: signInSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -71,12 +75,12 @@ export default function AdminLoginPage() {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`w-full px-4 py-3 bg-[#1a1a1a] border ${
-                formik.errors.email && formik.touched.email ? "border-red-500" : "border-white/10"
-              } rounded-lg focus:outline-none focus:ring-2 placeholder:text-white/20 text-white focus:ring-[#D4AF37]/40 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 bg-surface-raised border ${
+                formik.errors.email && formik.touched.email ? "border-danger" : "border-white/10"
+              } rounded-lg focus:outline-none focus:ring-2 placeholder:text-white/20 text-white focus:ring-accent/40 focus:border-transparent transition-all`}
             />
             {formik.errors.email && formik.touched.email && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
+              <p className="text-danger text-xs mt-1">{formik.errors.email}</p>
             )}
           </div>
 
@@ -93,9 +97,9 @@ export default function AdminLoginPage() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full px-4 py-3 bg-[#1a1a1a] border ${
-                  formik.errors.password && formik.touched.password ? "border-red-500" : "border-white/10"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-transparent placeholder:text-white/20 text-white transition-all pr-12`}
+                className={`w-full px-4 py-3 bg-surface-raised border ${
+                  formik.errors.password && formik.touched.password ? "border-danger" : "border-white/10"
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-transparent placeholder:text-white/20 text-white transition-all pr-12`}
               />
               <button
                 type="button"
@@ -110,7 +114,7 @@ export default function AdminLoginPage() {
               </button>
             </div>
             {formik.errors.password && formik.touched.password && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+              <p className="text-danger text-xs mt-1">{formik.errors.password}</p>
             )}
           </div>
 
@@ -123,23 +127,23 @@ export default function AdminLoginPage() {
                 checked={formik.values.rememberMe}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-4 h-4 text-[#D4AF37] border-white/20 rounded focus:ring-[#D4AF37]/40 bg-[#1a1a1a]"
+                className="w-4 h-4 text-accent border-white/20 rounded focus:ring-accent/40 bg-surface-raised"
               />
               <span className="text-sm text-white/60">Remember me</span>
             </label>
           </div>
 
           {submitError && (
-            <div className="bg-red-950/30 border border-red-800/30 rounded-lg p-3">
-              <p className="text-red-400 text-sm">{submitError}</p>
+            <div className="bg-danger/10 border border-danger/25 rounded-lg p-3">
+              <p className="text-danger text-sm">{submitError}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={formik.isSubmitting || isPending}
-            className="w-full py-3 rounded-lg font-semibold text-black transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            className="w-full py-3 rounded-lg font-semibold text-white transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
           >
             {formik.isSubmitting || isPending ? "Signing In..." : "Sign In"}
           </button>

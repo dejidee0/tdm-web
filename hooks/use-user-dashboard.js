@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { dashboardApi } from "@/lib/api/user-dashboard";
-import { authKeys } from "@/hooks/use-auth";
+import { useSession } from "@/hooks/use-session";
 
 /**
  * Query key factory — keeps cache keys consistent across the app.
@@ -25,35 +25,18 @@ export const dashboardKeys = {
 };
 
 /**
- * Base hook — subscribes to the auth cache so the component re-renders
+ * Base hook — subscribes to the session cache so the component re-renders
  * as soon as the user data resolves (fixes stuck loading on first navigation).
  */
 function useAuthGuard() {
   const router = useRouter();
-
-  const { data: user, status } = useQuery({
-    queryKey: authKeys.user(),
-    queryFn: async () => {
-      const response = await fetch("/api/auth/me");
-      if (!response.ok) {
-        if (response.status === 401) return null;
-        throw new Error("Failed to fetch user");
-      }
-      return response.json();
-    },
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-    refetchOnWindowFocus: true,
-  });
-
-  const isAuthenticated = !!user;
+  const { user, isAuthenticated, isLoading } = useSession();
 
   useEffect(() => {
-    const settled = status === "success" || status === "error";
-    if (settled && !isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       router.replace("/sign-in");
     }
-  }, [isAuthenticated, status, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   return { user, isAuthenticated };
 }

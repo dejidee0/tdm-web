@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Crown, Zap, ArrowRight, AlertCircle } from "lucide-react";
+import { Wand2, Crown, Zap, ArrowRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { usePricing } from "@/hooks/use-pricing";
 
@@ -40,7 +40,7 @@ export default function SubscriptionUpgradeBanner({ currentTier = "economy" }) {
           className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
           style={{ background: "rgba(212,175,55,0.12)" }}
         >
-          <Sparkles className="w-6 h-6 text-[#D4AF37]" />
+          <Wand2 className="w-6 h-6 text-[#D4AF37]" />
         </div>
 
         {/* Text */}

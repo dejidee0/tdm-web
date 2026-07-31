@@ -1,8 +1,7 @@
 // app/api/account/password/otp/change/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -15,7 +14,7 @@ async function getAuthHeaders() {
 
 export async function POST(request) {
   const body = await request.json();
-  const res = await fetch(`${BASE}/account/password/change`, {
+  const res = await fetch(`${API_URL}/account/password/change`, {
     method: "POST",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),

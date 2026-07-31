@@ -2,9 +2,7 @@
 // Server Component — data fetched at build/request time, no client waterfall
 
 import TrendingClient from "./trending-client";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop";
@@ -12,7 +10,7 @@ const PLACEHOLDER =
 async function getFeaturedProducts() {
   try {
     const res = await fetch(
-      `${BASE_URL}/products?isFeatured=true&pageSize=4&ActiveOnly=true`,
+      `${API_URL}/products?isFeatured=true&pageSize=4&ActiveOnly=true`,
       {
         next: { revalidate: 300 }, // revalidate every 5 min
         headers: { "Content-Type": "application/json" },

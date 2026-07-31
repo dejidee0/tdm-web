@@ -1,0 +1,25 @@
+{
+  "endpoint": "/Cart/related",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "type": "array",
+    "length": 4,
+    "of": [
+      {
+        "id": "string",
+        "name": "string",
+        "price": "number",
+        "image": "string",
+        "rating": "number"
+      },
+      {
+        "id": "string",
+        "name": "string",
+        "price": "number",
+        "image": "null",
+        "rating": "number"
+      }
+    ]
+  }
+}

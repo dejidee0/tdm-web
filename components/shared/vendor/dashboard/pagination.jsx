@@ -48,12 +48,12 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-background border-t border-[#E5E7EB]">
+    <div className="flex items-center justify-between px-6 py-4 bg-surface border-t border-white/08">
       {/* Results info */}
-      <p className="font-manrope text-[13px] text-[#64748B]">
-        Showing <span className="font-bold text-primary">1</span> to{" "}
-        <span className="font-bold text-primary">5</span> of{" "}
-        <span className="font-bold text-primary">128</span> results
+      <p className="font-manrope text-[13px] text-muted">
+        Showing <span className="font-bold text-white">1</span> to{" "}
+        <span className="font-bold text-white">5</span> of{" "}
+        <span className="font-bold text-white">128</span> results
       </p>
 
       {/* Page numbers */}
@@ -66,11 +66,11 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           disabled={currentPage === 1}
           className={`
             w-9 h-9 rounded-lg flex items-center justify-center
-            border border-[#E5E7EB]
+            border border-white/08
             ${
               currentPage === 1
-                ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
+                ? "bg-white/05 text-accent cursor-not-allowed"
+                : "bg-surface-raised text-muted hover:bg-white/05"
             }
             transition-colors
           `}
@@ -84,7 +84,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             return (
               <span
                 key={`ellipsis-${index}`}
-                className="w-9 h-9 flex items-center justify-center font-manrope text-[13px] text-[#64748B]"
+                className="w-9 h-9 flex items-center justify-center font-manrope text-[13px] text-muted"
               >
                 ...
               </span>
@@ -105,8 +105,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                 transition-colors
                 ${
                   isActive
-                    ? "bg-primary text-white"
-                    : "bg-white text-[#64748B] border border-[#E5E7EB] hover:bg-[#F8FAFC]"
+                    ? "bg-accent-solid text-white"
+                    : "bg-surface-raised text-muted border border-white/08 hover:bg-white/05"
                 }
               `}
             >
@@ -123,11 +123,11 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           disabled={currentPage === totalPages}
           className={`
             w-9 h-9 rounded-lg flex items-center justify-center
-            border border-[#E5E7EB]
+            border border-white/08
             ${
               currentPage === totalPages
-                ? "bg-[#F8FAFC] text-[#CBD5E1] cursor-not-allowed"
-                : "bg-white text-[#64748B] hover:bg-[#F8FAFC]"
+                ? "bg-white/05 text-accent cursor-not-allowed"
+                : "bg-surface-raised text-muted hover:bg-white/05"
             }
             transition-colors
           `}

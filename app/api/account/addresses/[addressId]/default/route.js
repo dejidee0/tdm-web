@@ -2,8 +2,7 @@
 // PUT /account/addresses/{addressId}/default — set an address as the default
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -16,7 +15,7 @@ async function getAuthHeaders() {
 
 export async function PUT(_request, { params }) {
   const { addressId } = await params;
-  const res = await fetch(`${BASE}/account/addresses/${addressId}/default`, {
+  const res = await fetch(`${API_URL}/account/addresses/${addressId}/default`, {
     method: "PUT",
     headers: await getAuthHeaders(),
   });

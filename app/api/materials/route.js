@@ -1,8 +1,7 @@
 // app/api/materials/route.js
 // GET /api/v1/materials — public
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -14,7 +13,7 @@ export async function GET(request) {
 
   try {
     const query = params.toString();
-    const res = await fetch(`${BASE_URL}/materials${query ? `?${query}` : ""}`, {
+    const res = await fetch(`${API_URL}/materials${query ? `?${query}` : ""}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok)

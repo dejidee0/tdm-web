@@ -6,13 +6,17 @@ export default function ProductGrid({
   products,
   isLoading,
   viewMode = "grid",
+  emptyTitle = "No products found",
+  emptyMessage = "Try adjusting your filters to see more results",
+  onReset,
+  resetLabel = "Clear search",
 }) {
   if (isLoading) {
     return (
       <div
         className={`grid gap-px ${
           viewMode === "grid"
-            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            ? "grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
             : "grid-cols-1"
         }`}
         style={{ background: "rgba(255,255,255,0.06)" }}
@@ -25,7 +29,9 @@ export default function ProductGrid({
           >
             <div
               className={
-                viewMode === "grid" ? "h-64 bg-white/06" : "h-48 bg-white/06"
+                viewMode === "grid"
+                  ? "aspect-[4/5] bg-white/06"
+                  : "h-48 bg-white/06"
               }
             />
             <div className="p-4 space-y-3">
@@ -61,11 +67,17 @@ export default function ProductGrid({
           />
         </svg>
         <h3 className="text-lg font-medium text-white mb-2 font-primary">
-          No products found
+          {emptyTitle}
         </h3>
-        <p className="text-white/40 font-manrope">
-          Try adjusting your filters to see more results
-        </p>
+        <p className="text-white/40 font-manrope">{emptyMessage}</p>
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="mt-5 inline-flex items-center rounded-sm border border-white/15 px-4 py-2 text-[13px] font-medium text-white/70 transition-colors hover:border-[#D4AF37]/40 hover:text-[#D4AF37] font-manrope"
+          >
+            {resetLabel}
+          </button>
+        )}
       </div>
     );
   }

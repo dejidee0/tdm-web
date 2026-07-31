@@ -1,6 +1,7 @@
 // app/api/account/avatar/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { API_URL } from "@/lib/env";
 
 export async function POST(request) {
   const cookieStore = await cookies();
@@ -11,7 +12,7 @@ export async function POST(request) {
   // Forward the multipart/form-data as-is
   const formData = await request.formData();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/avatar`, {
+  const res = await fetch(`${API_URL}/account/avatar`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

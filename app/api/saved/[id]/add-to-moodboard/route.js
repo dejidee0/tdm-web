@@ -1,8 +1,7 @@
 // POST /api/v1/saved/{id}/add-to-moodboard
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeader() {
   const cookieStore = await cookies();
@@ -14,7 +13,7 @@ export async function POST(req, { params }) {
   try {
     const { id } = await params;
     const body = await req.json().catch(() => ({}));
-    const res = await fetch(`${BASE_URL}/saved/${id}/add-to-moodboard`, {
+    const res = await fetch(`${API_URL}/saved/${id}/add-to-moodboard`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

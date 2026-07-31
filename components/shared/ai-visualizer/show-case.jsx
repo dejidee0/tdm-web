@@ -13,7 +13,7 @@ import {
   Lightbulb,
   Settings,
   Check,
-  Sparkles,
+  Wand2,
   ArrowRight,
 } from "lucide-react";
 
@@ -493,7 +493,7 @@ export default function AppShowcase() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Link href="/dashboard/ai-designs" className="btn-gold px-6 py-3.5">
-              <Sparkles size={14} />
+              <Wand2 size={14} />
               Try Ziora Now
             </Link>
           </motion.div>

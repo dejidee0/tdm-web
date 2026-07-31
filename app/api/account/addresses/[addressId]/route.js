@@ -1,8 +1,7 @@
 // app/api/account/addresses/[addressId]/route.js
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.yourbackend.com";
+import { API_URL } from "@/lib/env";
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -16,7 +15,7 @@ async function getAuthHeaders() {
 export async function PUT(request, { params }) {
   const { addressId } = await params;
   const body = await request.json();
-  const res = await fetch(`${BASE}/account/addresses/${addressId}`, {
+  const res = await fetch(`${API_URL}/account/addresses/${addressId}`, {
     method: "PUT",
     headers: await getAuthHeaders(),
     body: JSON.stringify(body),
@@ -29,7 +28,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const { addressId } = await params;
-  const res = await fetch(`${BASE}/account/addresses/${addressId}`, {
+  const res = await fetch(`${API_URL}/account/addresses/${addressId}`, {
     method: "DELETE",
     headers: await getAuthHeaders(),
   });

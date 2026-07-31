@@ -10,7 +10,7 @@ import {
   Box,
   FileText,
   Package,
-  Sparkles,
+  Lightbulb,
   Settings2,
 } from "lucide-react";
 import Reveal from "@/components/common/reveal";
@@ -33,7 +33,7 @@ const NAV_ITEMS = [
   { Icon: Box, label: "3D Designs", active: true },
   { Icon: FileText, label: "Estimates" },
   { Icon: Package, label: "Materials" },
-  { Icon: Sparkles, label: "Inspiration" },
+  { Icon: Lightbulb, label: "Inspiration" },
   { Icon: Settings2, label: "Settings" },
 ];
 

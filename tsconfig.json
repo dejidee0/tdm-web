@@ -1,0 +1,54 @@
+{
+  // Incremental TypeScript adoption.
+  //
+  // `allowJs` lets the existing .js/.jsx tree keep compiling untouched, and
+  // `checkJs: false` means we do not type-check it — only files we have
+  // deliberately converted to .ts are checked, and those are checked strictly.
+  //
+  // Migration order: lib/api/* first. That is the boundary where the .NET
+  // backend's response shapes enter the app, and where guessing them has cost
+  // us the most (`json.data ?? json`, a cookie name typo, prices that are null).
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "skipLibCheck": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

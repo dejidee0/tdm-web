@@ -135,7 +135,7 @@ export default function AddUserModal({
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0d0b08] border border-white/08 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-surface border border-white/08 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
               {/* Header */}
               <div className="px-8 py-6 border-b border-white/08">
@@ -172,7 +172,7 @@ export default function AddUserModal({
                       value={formData.fullName}
                       onChange={(e) => handleChange("fullName", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                       placeholder="Enter full name"
                     />
                   </div>
@@ -187,7 +187,7 @@ export default function AddUserModal({
                       value={formData.email}
                       onChange={(e) => handleChange("email", e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                       placeholder="Enter email address"
                     />
                   </div>
@@ -204,7 +204,7 @@ export default function AddUserModal({
                         value={formData.role}
                         onChange={(e) => handleChange("role", e.target.value)}
                         required
-                        className="appearance-none w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                        className="appearance-none w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                       >
                         <option value="">Select a role</option>
                         <option value="Admin">Admin</option>
@@ -229,11 +229,11 @@ export default function AddUserModal({
                       <button
                         type="button"
                         onClick={handleToggleStatus}
-                        className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B82F6]"
+                        className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent/60 focus:ring-offset-surface"
                         style={{
                           backgroundColor: formData.isActive
-                            ? "#10B981"
-                            : "#94A3B8",
+                            ? "var(--color-success-solid)"
+                            : "var(--color-track-off)",
                         }}
                       >
                         <span
@@ -264,7 +264,7 @@ export default function AddUserModal({
                       value={formData.password}
                       onChange={(e) => handleChange("password", e.target.value)}
                       required={!isEditMode}
-                      className="flex-1 px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                      className="flex-1 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                       placeholder={
                         isEditMode
                           ? "Leave blank to keep current password"
@@ -277,7 +277,7 @@ export default function AddUserModal({
                       disabled={isGenerating}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-manrope text-[14px] font-medium text-white/60 hover:bg-white/08 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] font-medium text-white/60 hover:bg-white/08 transition-colors disabled:opacity-50"
                     >
                       <RefreshCw
                         size={16}
@@ -308,8 +308,8 @@ export default function AddUserModal({
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-2.5 rounded-lg font-manrope text-[14px] font-medium text-black transition-opacity"
-                    style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    className="px-6 py-2.5 rounded-lg font-manrope text-[14px] font-medium text-white transition-opacity"
+                    style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
                   >
                     {isEditMode ? "Update User" : "Create User"}
                   </motion.button>

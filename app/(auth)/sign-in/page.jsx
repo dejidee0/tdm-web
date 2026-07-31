@@ -25,7 +25,8 @@ function SignInForm() {
       setSubmitError("");
       login(values, {
         onError: (error) => {
-          const raw = error.message || "Something went wrong. Please try again.";
+          const raw =
+            error.message || "Something went wrong. Please try again.";
           setSubmitError(raw.replace(/^\[\d+\]\s*/, ""));
           setSubmitting(false);
         },
@@ -44,7 +45,7 @@ function SignInForm() {
           src="/auth.svg"
           alt=""
           fill
-          className="object-cover opacity-[0.04]"
+          className="object-cover opacity-[0.15]"
           priority
           aria-hidden="true"
         />
@@ -87,7 +88,10 @@ function SignInForm() {
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-white/60 mb-1.5 uppercase tracking-widest">
+              <label
+                htmlFor="email"
+                className="block text-xs font-medium text-white/60 mb-1.5 uppercase tracking-widest"
+              >
                 Email
               </label>
               <input
@@ -105,13 +109,18 @@ function SignInForm() {
                 }`}
               />
               {formik.errors.email && formik.touched.email && (
-                <p className="text-red-400 text-xs mt-1.5">{formik.errors.email}</p>
+                <p className="text-red-400 text-xs mt-1.5">
+                  {formik.errors.email}
+                </p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-xs font-medium text-white/60 mb-1.5 uppercase tracking-widest">
+              <label
+                htmlFor="password"
+                className="block text-xs font-medium text-white/60 mb-1.5 uppercase tracking-widest"
+              >
                 Password
               </label>
               <div className="relative">
@@ -134,17 +143,26 @@ function SignInForm() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
               {formik.errors.password && formik.touched.password && (
-                <p className="text-red-400 text-xs mt-1.5">{formik.errors.password}</p>
+                <p className="text-red-400 text-xs mt-1.5">
+                  {formik.errors.password}
+                </p>
               )}
             </div>
 
             {/* Remember + Forgot */}
             <div className="flex items-center justify-between">
-              <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer">
+              <label
+                htmlFor="rememberMe"
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 <input
                   id="rememberMe"
                   type="checkbox"
@@ -155,7 +173,10 @@ function SignInForm() {
                 />
                 <span className="text-xs text-white/50">Remember me</span>
               </label>
-              <Link href="/forgot-password" className="text-xs text-[#D4AF37] hover:text-[#D4AF37]/80 transition-colors">
+              <Link
+                href="/forgot-password"
+                className="text-xs text-[#D4AF37] hover:text-[#D4AF37]/80 transition-colors"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -172,7 +193,9 @@ function SignInForm() {
               type="submit"
               disabled={formik.isSubmitting || isPending}
               className="w-full py-3 rounded-lg font-semibold text-sm text-black transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              style={{
+                background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)",
+              }}
             >
               {formik.isSubmitting || isPending ? "Signing in…" : "Sign In"}
             </button>
@@ -180,7 +203,10 @@ function SignInForm() {
 
           <p className="text-center text-sm text-white/40 mt-6">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors">
+            <Link
+              href="/sign-up"
+              className="text-[#D4AF37] font-medium hover:text-[#D4AF37]/80 transition-colors"
+            >
               Sign Up
             </Link>
           </p>

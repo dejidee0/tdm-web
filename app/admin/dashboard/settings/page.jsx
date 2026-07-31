@@ -42,9 +42,6 @@ export default function PlatformSettingsPage() {
     useGeneralSettings();
 
   // Debug logging
-  console.log('Payment Settings:', paymentSettings);
-  console.log('Payment Error:', paymentError);
-  console.log('Payment Loading:', paymentLoading);
   const { mutate: saveSettings, isPending: isSaving } = useSaveSettings();
   const { mutate: toggleGateway } = useTogglePaymentGateway();
   const { mutate: toggleModel } = useToggleAIModel();
@@ -129,7 +126,7 @@ export default function PlatformSettingsPage() {
       <div className="max-w-360 mx-auto">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-16 h-16 border-4 border-white/10 border-t-accent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-white/50 font-inter text-[14px]">
               Loading settings...
             </p>
@@ -169,8 +166,8 @@ export default function PlatformSettingsPage() {
               whileTap={{ scale: 0.98 }}
               onClick={handleSave}
               disabled={!hasChanges || isSaving}
-              className="flex-1 md:flex-none px-4 sm:px-6 py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] font-medium text-black transition-opacity disabled:opacity-50"
-              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              className="flex-1 md:flex-none px-4 sm:px-6 py-2.5 rounded-lg font-inter text-[13px] sm:text-[14px] font-medium text-white transition-opacity disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg, var(--color-accent-solid) 0%, var(--color-accent-solid-dim) 100%)" }}
             >
               {isSaving ? "Saving..." : "Save Changes"}
             </motion.button>
@@ -187,7 +184,7 @@ export default function PlatformSettingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-3 sm:px-4 py-3 font-inter text-[14px] sm:text-[16px] lg:text-[17.42px] font-bold leading-[26.13px] tracking-[0.26px] border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "border-[#D4AF37] text-[#D4AF37]"
+                  ? "border-accent text-accent"
                   : "border-transparent text-white/40 hover:text-white"
               }`}
             >
@@ -209,11 +206,11 @@ export default function PlatformSettingsPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Error Display */}
           {activeTab === "payment" && paymentError && (
-            <div className="bg-red-950/30 border border-red-800/30 rounded-xl p-4 sm:p-6">
-              <h3 className="font-inter text-[16px] font-bold text-red-400 mb-2">
+            <div className="bg-danger/10 border border-danger/25 rounded-xl p-4 sm:p-6">
+              <h3 className="font-inter text-[16px] font-bold text-danger mb-2">
                 Error Loading Payment Settings
               </h3>
-              <p className="font-inter text-[14px] text-red-400/80">
+              <p className="font-inter text-[14px] text-danger/80">
                 {paymentError.message || 'Failed to load payment settings. Please try again.'}
               </p>
             </div>
@@ -223,10 +220,10 @@ export default function PlatformSettingsPage() {
           {activeTab === "payment" && paymentSettings && (
             <>
               {/* Payment Gateways */}
-              <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
+              <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#D1FAE5] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Image
                         src={paymentGatewaysIcon}
                         alt="Payment Gateways"
@@ -237,7 +234,7 @@ export default function PlatformSettingsPage() {
                       Payment Gateways
                     </h2>
                   </div>
-                  <span className="px-3 py-1 bg-transparent border-[1.24px] border-[#22C55E33] rounded-[12440.4px] font-inter text-[12px] sm:text-[14.93px] font-bold leading-[19.91px] text-[#22C55E] uppercase">
+                  <span className="px-3 py-1 bg-transparent border-[1.24px] border-success/20 rounded-[12440.4px] font-inter text-[12px] sm:text-[14.93px] font-bold leading-[19.91px] text-success uppercase">
                     SYSTEM ACTIVE
                   </span>
                 </div>
@@ -278,8 +275,8 @@ export default function PlatformSettingsPage() {
                         className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3"
                         style={{
                           backgroundColor: gateway.enabled
-                            ? "#10B981"
-                            : "#94A3B8",
+                            ? "var(--color-success-solid)"
+                            : "var(--color-track-off)",
                         }}
                       >
                         <span
@@ -305,11 +302,11 @@ export default function PlatformSettingsPage() {
 
           {/* Payment Tab - No Data */}
           {activeTab === "payment" && !paymentSettings && !paymentError && !paymentLoading && (
-            <div className="bg-yellow-950/30 border border-yellow-800/30 rounded-xl p-4 sm:p-6">
-              <h3 className="font-inter text-[16px] font-bold text-yellow-400 mb-2">
+            <div className="bg-warning/10 border border-warning/25 rounded-xl p-4 sm:p-6">
+              <h3 className="font-inter text-[16px] font-bold text-warning mb-2">
                 No Payment Settings Found
               </h3>
-              <p className="font-inter text-[14px] text-yellow-400/80">
+              <p className="font-inter text-[14px] text-warning/80">
                 Payment settings data is empty. Please check your API configuration.
               </p>
             </div>
@@ -317,9 +314,9 @@ export default function PlatformSettingsPage() {
 
           {/* AI Configuration Tab */}
           {activeTab === "ai" && aiConfig && (
-            <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
+            <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                <div className="w-10 h-10 bg-purple-950/40 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-white/05 rounded-lg flex items-center justify-center shrink-0">
                   <Image
                     src={aiConfigIcon}
                     alt="AI Configuration"
@@ -338,7 +335,7 @@ export default function PlatformSettingsPage() {
                     className="flex items-center justify-between p-3 sm:p-4 bg-white/05 rounded-lg border border-white/08"
                   >
                     <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#9333EA] to-[#4F46E5] rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-chart-1 to-accent-solid rounded-full flex items-center justify-center flex-shrink-0">
                         <Image
                           src={aiConfigIcon}
                           alt={model.name}
@@ -361,7 +358,7 @@ export default function PlatformSettingsPage() {
                       onClick={() => handleToggleModel(model.id, model.enabled)}
                       className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3"
                       style={{
-                        backgroundColor: model.enabled ? "#10B981" : "#94A3B8",
+                        backgroundColor: model.enabled ? "var(--color-success-solid)" : "var(--color-track-off)",
                       }}
                     >
                       <span
@@ -378,9 +375,9 @@ export default function PlatformSettingsPage() {
 
           {/* Notifications Tab */}
           {activeTab === "notifications" && notificationSettings && (
-            <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
+            <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                <div className="w-10 h-10 bg-blue-950/40 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center shrink-0">
                   <Image
                     src={notificationsIcon}
                     alt="Notifications"
@@ -411,7 +408,7 @@ export default function PlatformSettingsPage() {
                           <button
                             className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0"
                             style={{
-                              backgroundColor: value ? "#10B981" : "#94A3B8",
+                              backgroundColor: value ? "var(--color-success-solid)" : "var(--color-track-off)",
                             }}
                           >
                             <span
@@ -444,7 +441,7 @@ export default function PlatformSettingsPage() {
                           <button
                             className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0"
                             style={{
-                              backgroundColor: value ? "#10B981" : "#94A3B8",
+                              backgroundColor: value ? "var(--color-success-solid)" : "var(--color-track-off)",
                             }}
                           >
                             <span
@@ -464,7 +461,7 @@ export default function PlatformSettingsPage() {
 
           {/* General Tab */}
           {activeTab === "general" && generalSettings && (
-            <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
+            <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-4 sm:mb-6">
                 <div className="w-10 h-10 bg-white/08 rounded-lg flex items-center justify-center shrink-0">
                   <Image
@@ -486,7 +483,7 @@ export default function PlatformSettingsPage() {
                   <input
                     type="text"
                     defaultValue={generalSettings.platformName}
-                    className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -497,7 +494,7 @@ export default function PlatformSettingsPage() {
                   <input
                     type="email"
                     defaultValue={generalSettings.supportEmail}
-                    className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-inter text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -508,7 +505,7 @@ export default function PlatformSettingsPage() {
                   <div className="relative">
                     <select
                       defaultValue={generalSettings.timezone}
-                      className="appearance-none w-full px-4 py-2.5 bg-[#1a1a1a] border border-white/10 rounded-lg font-inter text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-transparent transition-all"
+                      className="appearance-none w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-inter text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-transparent transition-all"
                     >
                       {timezoneOptions.map((tz) => (
                         <option key={tz.value} value={tz.value}>
@@ -530,7 +527,7 @@ export default function PlatformSettingsPage() {
         {/* Right Sidebar */}
         <div className="space-y-4 sm:space-y-6">
           {/* Quick Actions */}
-          <div className="bg-[#0d0b08] rounded-xl border border-white/08 p-4 sm:p-6">
+          <div className="bg-surface rounded-xl border border-white/08 p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-3">
               <Image
                 src={quickActionsIcon}
@@ -568,14 +565,14 @@ export default function PlatformSettingsPage() {
           </div>
 
           {/* Security Context */}
-          <div className="bg-[#0d0b08] rounded-[14.93px] border border-white/08 p-4 sm:p-6">
+          <div className="bg-surface rounded-[14.93px] border border-white/08 p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-3">
               <Image
                 src={shieldIcon}
                 alt="Security"
                 className="h-[18px] w-[22px] sm:h-[20px] sm:w-[25px] shrink-0"
               />
-              <h3 className="font-inter text-[17px] sm:text-[19.91px] font-bold leading-tight sm:leading-[29.86px] text-[#D4AF37]">
+              <h3 className="font-inter text-[17px] sm:text-[19.91px] font-bold leading-tight sm:leading-[29.86px] text-accent">
                 Security Context
               </h3>
             </div>
@@ -584,7 +581,7 @@ export default function PlatformSettingsPage() {
               saving.
             </p>
             <div className="flex items-center gap-2 text-white">
-              <span className="w-2 h-2 bg-[#10B981] rounded-full shrink-0"></span>
+              <span className="w-2 h-2 bg-success-solid rounded-full shrink-0"></span>
               <span className="font-inter text-[12px] sm:text-[13px] font-medium text-white/70">
                 Audit Logging Active
               </span>
@@ -592,11 +589,11 @@ export default function PlatformSettingsPage() {
           </div>
 
           {/* Help */}
-          <div className="bg-[#0d0b08] rounded-[14.93px] border border-white/08 p-4 sm:p-6">
+          <div className="bg-surface rounded-[14.93px] border border-white/08 p-4 sm:p-6">
             <p className="font-inter text-[13px] sm:text-[14px] text-white/50 mb-3">
               Need help with fee calculation?
             </p>
-            <button className="flex items-center gap-2 font-inter text-[13px] sm:text-[14px] font-medium text-[#D4AF37] hover:underline">
+            <button className="flex items-center gap-2 font-inter text-[13px] sm:text-[14px] font-medium text-accent hover:underline">
               Read Documentation
               <ExternalLink size={14} />
             </button>

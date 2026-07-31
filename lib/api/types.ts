@@ -1,0 +1,232 @@
+// lib/api/types.ts
+//
+// Types for the .NET backend's responses. Every one is inferred from the Zod
+// schema that validates it, so the runtime check and the compile-time type
+// cannot drift apart — there is one definition, in lib/api/schemas/.
+//
+// This module is safe to import from client code **with `import type`**. The
+// schema imports below are type-only, so Zod is erased at compile time and
+// never reaches the browser bundle. Value-importing lib/api/schemas/* from a
+// client component is a lint error.
+//
+// The shapes were derived by calling the live API, not invented: the backend's
+// OpenAPI document declares all 266 operations as a bare `200: OK` with no body
+// type. Fields that were null in every observed response are `unknown` on
+// purpose. See CLAUDE.md, "Backend response shapes".
+
+import type { z } from "zod";
+import type {
+  brandTypeSchema,
+  categoryListResponse,
+  categoryResponse,
+  categorySchema,
+  flooringResponse,
+  materialListResponse,
+  materialSummarySchema,
+  productArrayResponse,
+  productImageSchema,
+  productListResponse,
+  productResponse,
+  productSchema,
+  productVariantSchema,
+} from "./schemas/catalog";
+import type {
+  listFiltersSchema,
+  listPaginationSchema,
+} from "./schemas/common";
+import type {
+  adminProductBulkResponse,
+  adminProductCreateResponse,
+  adminProductDeleteResponse,
+  adminProductImageUploadResponse,
+  adminProductUpdateResponse,
+} from "./schemas/admin-products";
+import type { aiStyleSchema, aiStylesResponse } from "./schemas/ai";
+
+// ── Envelopes ────────────────────────────────────────────────────────────────
+
+/** `{ success, message, data, errors }` — the wrapper on most of /api/v1. */
+export interface ApiEnvelope<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  errors: unknown;
+}
+
+/** Pagination inside the envelope, used by /products and /materials. */
+export interface Paged<T> {
+  items: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+// ── Domain ───────────────────────────────────────────────────────────────────
+
+/** TBM = 1, Bogat = 2. */
+export type BrandType = z.infer<typeof brandTypeSchema>;
+
+/**
+ * 1 = PhysicalProduct, 2 = Service.
+ *
+ * The spec types this as a bare `integer` with no enum; both values were
+ * decoded from live data by reading `productTypeName` alongside it. Widen only
+ * against real data.
+ */
+export type ProductType = 1 | 2;
+
+/**
+ * `price` is `null` exactly when `showPrice` is `false` (quote-only products,
+ * `priceDisplay: "Request Price"`). Narrow on `showPrice` before touching
+ * `price`; render `priceDisplay` when in doubt — it is always a string.
+ */
+export type Product = z.infer<typeof productSchema>;
+export type Category = z.infer<typeof categorySchema>;
+
+/** A product image. `Product.images[]` is an array of these. */
+export type ProductImage = z.infer<typeof productImageSchema>;
+export type ProductVariant = z.infer<typeof productVariantSchema>;
+
+/** /materials/list returns this, not a Product. `price` is nullable with no discriminant. */
+export type MaterialSummary = z.infer<typeof materialSummarySchema>;
+
+export type ListPagination = z.infer<typeof listPaginationSchema>;
+export type ListFilters = z.infer<typeof listFiltersSchema>;
+
+// ── Whole-response types ─────────────────────────────────────────────────────
+
+export type ProductListResponse = z.infer<typeof productListResponse>;
+export type ProductResponse = z.infer<typeof productResponse>;
+export type ProductArrayResponse = z.infer<typeof productArrayResponse>;
+export type CategoryListResponse = z.infer<typeof categoryListResponse>;
+export type CategoryResponse = z.infer<typeof categoryResponse>;
+
+/** /flooring — no envelope. */
+export type FlooringResponse = z.infer<typeof flooringResponse>;
+/** /materials/list — no envelope, and not Product[]. */
+export type MaterialListResponse = z.infer<typeof materialListResponse>;
+
+// AdminProducts. Create/update/bulk all return the same 41-field Product;
+// delete returns a bare boolean. Recorded, not assumed — see contracts/.
+export type AdminProductCreateResponse = z.infer<typeof adminProductCreateResponse>;
+export type AdminProductUpdateResponse = z.infer<typeof adminProductUpdateResponse>;
+export type AdminProductDeleteResponse = z.infer<typeof adminProductDeleteResponse>;
+export type AdminProductBulkResponse = z.infer<typeof adminProductBulkResponse>;
+export type AdminProductImageUploadResponse = z.infer<typeof adminProductImageUploadResponse>;
+
+/** GET /ai/styles — a bare array of { id, name }. */
+export type AiStyle = z.infer<typeof aiStyleSchema>;
+export type AiStylesResponse = z.infer<typeof aiStylesResponse>;
+
+/** Query params for the image-upload endpoint. The file goes in the body. */
+export interface UploadImageParams {
+  isPrimary?: boolean;
+  displayOrder?: number;
+  altText?: string;
+}
+
+// ── Request params ───────────────────────────────────────────────────────────
+
+export interface ProductListParams {
+  pageNumber?: number;
+  pageSize?: number;
+  brandType?: BrandType;
+  productType?: number;
+  categoryId?: string;
+  searchTerm?: string;
+  isFeatured?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  /** Defaults to true when omitted. */
+  activeOnly?: boolean;
+}
+
+export interface MaterialListParams {
+  pageNumber?: number;
+  pageSize?: number;
+}
+
+// ── AdminProducts request bodies ─────────────────────────────────────────────
+//
+// Unlike responses, requests *are* specified: these come from
+// docs/api/swagger.snapshot.json, not from a recorded response. Do not
+// reconstruct them from a neighbouring call site.
+//
+// The spec declares no `required` list and marks nearly every field
+// `nullable: true`. That is missing information, not permission to omit — send
+// every field, using null for "no value".
+
+/** `{ key, value }` pairs. Sent as an array, or null. */
+export interface SpecificationItem {
+  key: string | null;
+  value: string | null;
+}
+
+/** Fields common to CreateProductDto and UpdateProductDto. */
+interface ProductDtoBase {
+  name: string | null;
+  description: string | null;
+  shortDescription: string | null;
+  sku: string | null;
+  categoryId: string;
+  price: number | null;
+  compareAtPrice: number | null;
+  showPrice: boolean;
+  stockQuantity: number | null;
+  lowStockThreshold: number | null;
+  trackInventory: boolean;
+  isFeatured: boolean;
+  displayOrder: number;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  tags: string | null;
+  aiKeywords: string | null;
+  materialType: string | null;
+  qualityTier: string | null;
+  recommendedFor: string | null;
+  specifications: SpecificationItem[] | null;
+  keyFeatures: string[] | null;
+  whatsIncluded: string[] | null;
+  whatsNotIncluded: string[] | null;
+  dimensions: string | null;
+  warranty: string | null;
+  finishType: string | null;
+  installationType: string | null;
+  material: string | null;
+  color: string | null;
+}
+
+/**
+ * POST /admin/AdminProducts.
+ *
+ * Carries `brandType` and `productType`; has **no** `isActive`. The sibling
+ * UpdateProductDto is the mirror image. They look like typos of each other and
+ * are not — sending the wrong one silently drops or ignores fields.
+ */
+export interface CreateProductDto extends ProductDtoBase {
+  brandType: BrandType;
+  /** 1 = PhysicalProduct, 2 = Service. Typed `integer` in the spec, no enum. */
+  productType: ProductType;
+}
+
+/**
+ * PUT /admin/AdminProducts/{id}.
+ *
+ * Carries **neither** `brandType` nor `productType`, and adds `isActive`.
+ * A product's brand and type are immutable after creation.
+ */
+export interface UpdateProductDto extends ProductDtoBase {
+  isActive: boolean;
+}
+
+/** POST /admin/AdminProducts/bulk — a bare array, no envelope. */
+export type BulkCreateProductDto = CreateProductDto[];
+
+/** Error thrown by the api* helpers. `message` is already user-safe. */
+export interface ApiError extends Error {
+  status: number;
+  backendMessage: string;
+}

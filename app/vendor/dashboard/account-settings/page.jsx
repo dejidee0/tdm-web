@@ -23,6 +23,7 @@ import {
   useBrandAccess,
   useDeactivateAccount,
 } from "@/hooks/use-account";
+import { avatarStyle } from "@/lib/theme/avatar";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -125,10 +126,10 @@ export default function SettingsPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="font-manrope text-[32px] font-bold text-primary mb-2">
+            <h1 className="font-manrope text-[32px] font-bold text-white mb-2">
               Account Settings
             </h1>
-            <p className="font-manrope text-[14px] text-[#64748B]">
+            <p className="font-manrope text-[14px] text-muted">
               Manage your profile details, security preferences, and authorized
               brand access.
             </p>
@@ -143,7 +144,7 @@ export default function SettingsPage() {
               whileTap={{ scale: 0.98 }}
               onClick={handleSaveProfile}
               disabled={updateProfile.isLoading}
-              className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               <Save size={16} />
               Save Changes
@@ -153,7 +154,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="mb-8 border-b border-[#E5E7EB]">
+      <div className="mb-8 border-b border-white/08">
         <div className="flex gap-8">
           {tabs.map((tab) => (
             <button
@@ -163,8 +164,8 @@ export default function SettingsPage() {
                 pb-3 font-manrope text-[14px] font-medium border-b-2 transition-colors
                 ${
                   activeTab === tab.id
-                    ? "border-primary text-primary"
-                    : "border-transparent text-[#64748B] hover:text-primary"
+                    ? "border-accent text-white"
+                    : "border-transparent text-muted hover:text-white"
                 }
               `}
             >
@@ -183,20 +184,20 @@ export default function SettingsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-xl border border-[#E5E7EB] p-6 lg:col-span-2"
+              className="bg-surface rounded-xl border border-white/08 p-6 lg:col-span-2"
             >
               <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-8">
                 {/* Avatar Section */}
                 <div className="flex flex-col items-center">
                   <div className="relative mb-4">
-                    <div className="w-32 h-32 rounded-full bg-linear-to-br from-[#EEF2FF] to-[#E0E7FF] flex items-center justify-center">
-                      <span className="text-[48px] font-bold text-[#4F46E5]">
+                    <div className="w-32 h-32 rounded-full bg-linear-to-br from-chart-1/10 to-chart-1/10 flex items-center justify-center">
+                      <span className="text-[48px] font-bold text-chart-1">
                         {profile?.firstName?.[0]}
                         {profile?.lastName?.[0]}
                       </span>
                     </div>
                     {profile?.isVerifiedVendor && (
-                      <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-white rounded-full font-manrope text-[16px] font-bold">
+                      <div className="absolute top-0 right-0 px-3 py-1 bg-accent-solid text-white rounded-full font-manrope text-[16px] font-bold">
                         Verified Vendor
                       </div>
                     )}
@@ -204,7 +205,7 @@ export default function SettingsPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#F8FAFC] border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F1F5F9] transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white/05 border border-white/08 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/08 transition-colors"
                   >
                     <Camera size={16} />
                     Change Photo
@@ -216,7 +217,7 @@ export default function SettingsPage() {
                   {/* Name Row */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         FIRST NAME
                       </label>
                       <input
@@ -225,11 +226,11 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("firstName", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40"
                       />
                     </div>
                     <div>
-                      <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
+                      <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                         LAST NAME
                       </label>
                       <input
@@ -238,18 +239,18 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("lastName", e.target.value)
                         }
-                        className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40"
                       />
                     </div>
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       EMAIL ADDRESS
                     </label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
                         📧
                       </span>
                       <input
@@ -258,18 +259,18 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("email", e.target.value)
                         }
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full pl-12 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40"
                       />
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block font-manrope text-[13px] font-medium text-primary mb-2">
+                    <label className="block font-manrope text-[13px] font-medium text-white mb-2">
                       PHONE NUMBER
                     </label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
                         📱
                       </span>
                       <input
@@ -278,31 +279,31 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleProfileChange("phone", e.target.value)
                         }
-                        className="w-full pl-12 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full pl-12 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40"
                       />
                     </div>
                   </div>
 
                   {/* Company Info */}
-                  <div className="pt-4 border-t border-[#E5E7EB]">
+                  <div className="pt-4 border-t border-white/08">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-manrope text-[13px] font-medium text-[#64748B] mb-2">
+                        <label className="block font-manrope text-[13px] font-medium text-muted mb-2">
                           COMPANY NAME
                         </label>
-                        <div className="px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[14px]">
+                        <div className="px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[14px]">
                           {profile?.companyName}
                         </div>
                       </div>
                       <div>
-                        <label className="block font-manrope text-[13px] font-medium text-[#64748B] mb-2">
+                        <label className="block font-manrope text-[13px] font-medium text-muted mb-2">
                           VENDOR ID
                         </label>
-                        <div className="px-4 py-2.5 bg-[#F8FAFC] border border-[#E5E7EB] text-[#64748B] rounded-lg font-manrope text-[14px]">
+                        <div className="px-4 py-2.5 bg-white/05 border border-white/08 text-muted rounded-lg font-manrope text-[14px]">
                           {profile?.vendorId}
                         </div>
                         {!profile?.canChangeVendorId && (
-                          <p className="mt-1 font-manrope text-[11px] text-[#64748B]">
+                          <p className="mt-1 font-manrope text-[11px] text-muted">
                             Vendor ID cannot be changed manually. Contact
                             support.
                           </p>
@@ -321,77 +322,77 @@ export default function SettingsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] p-6 lg:col-span-2"
+            className="bg-surface rounded-xl border border-white/08 p-6 lg:col-span-2"
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-manrope text-[18px] font-bold text-primary mb-1">
+                <h3 className="font-manrope text-[18px] font-bold text-white mb-1">
                   Authorized Brand Access
                 </h3>
-                <p className="font-manrope text-[13px] text-[#64748B]">
+                <p className="font-manrope text-[13px] text-muted">
                   Brands you are authorized to supply and manage inventory for.
                 </p>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] font-medium text-primary hover:bg-[#F8FAFC] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors"
               >
                 Request Access
               </motion.button>
             </div>
 
             {/* Brand Access Table */}
-            <div className="border border-[#E5E7EB] rounded-xl overflow-hidden">
+            <div className="border border-white/08 rounded-xl overflow-hidden">
               {/* Header */}
-              <div className="px-6 py-3 bg-[#F8FAFC] border-b border-[#E5E7EB]">
+              <div className="px-6 py-3 bg-white/05 border-b border-white/08">
                 <div className="grid grid-cols-[1fr_180px_140px_100px] gap-4">
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     BRAND ENTITY
                   </span>
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     ROLE
                   </span>
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     STATUS
                   </span>
-                  <span className="font-manrope text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  <span className="font-manrope text-[11px] font-bold text-muted uppercase tracking-wider">
                     ACTION
                   </span>
                 </div>
               </div>
 
               {/* Rows */}
-              <div className="divide-y divide-[#E5E7EB]">
+              <div className="divide-y divide-white/08">
                 {brandAccess?.map((brand, index) => (
                   <motion.div
                     key={brand.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="px-6 py-4 hover:bg-[#F8FAFC] transition-colors"
+                    className="px-6 py-4 hover:bg-white/05 transition-colors"
                   >
                     <div className="grid grid-cols-[1fr_180px_140px_100px] gap-4 items-center">
                       {/* Brand Info */}
                       <div className="flex items-center gap-3">
                         <div
                           className="w-10 h-10 rounded-lg flex items-center justify-center text-[20px]"
-                          style={{ backgroundColor: brand.brandColor + "20" }}
+                          style={avatarStyle(brand.id ?? brand.name)}
                         >
                           {brand.brandIcon}
                         </div>
                         <div>
-                          <h4 className="font-manrope text-[14px] font-bold text-primary">
+                          <h4 className="font-manrope text-[14px] font-bold text-white">
                             {brand.brandName}
                           </h4>
-                          <p className="font-manrope text-[12px] text-[#64748B]">
+                          <p className="font-manrope text-[12px] text-muted">
                             {brand.brandDescription}
                           </p>
                         </div>
                       </div>
 
                       {/* Role */}
-                      <span className="font-manrope text-[13px] text-primary">
+                      <span className="font-manrope text-[13px] text-white">
                         {brand.role}
                       </span>
 
@@ -402,16 +403,16 @@ export default function SettingsPage() {
                             inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-manrope text-[11px] font-bold
                             ${
                               brand.statusColor === "success"
-                                ? "bg-[#D1FAE5] text-[#065F46]"
-                                : "bg-[#FEF3C7] text-[#92400E]"
+                                ? "bg-success/10 text-success"
+                                : "bg-warning/10 text-warning"
                             }
                           `}
                         >
                           <span
                             className={`w-1.5 h-1.5 rounded-full ${
                               brand.statusColor === "success"
-                                ? "bg-[#10B981]"
-                                : "bg-[#F59E0B]"
+                                ? "bg-success-solid"
+                                : "bg-warning"
                             }`}
                           />
                           {brand.status}
@@ -419,7 +420,7 @@ export default function SettingsPage() {
                       </div>
 
                       {/* Actions */}
-                      <button className="p-2 text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors">
+                      <button className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors">
                         <MoreVertical size={18} />
                       </button>
                     </div>
@@ -437,18 +438,18 @@ export default function SettingsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+              className="bg-surface rounded-xl border border-white/08 p-6"
             >
               <div className="flex items-center gap-3 mb-6">
-                <Lock size={20} className="text-primary" />
-                <h3 className="font-manrope text-[18px] font-bold text-primary">
+                <Lock size={20} className="text-white" />
+                <h3 className="font-manrope text-[18px] font-bold text-white">
                   Security
                 </h3>
               </div>
 
               {/* Change Password */}
               <div className="mb-6">
-                <h4 className="font-manrope text-[14px] font-bold text-primary mb-4">
+                <h4 className="font-manrope text-[14px] font-bold text-white mb-4">
                   Change Password
                 </h4>
                 <div className="space-y-3">
@@ -462,7 +463,7 @@ export default function SettingsPage() {
                         currentPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
                   />
                   <input
                     type="password"
@@ -474,7 +475,7 @@ export default function SettingsPage() {
                         newPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
                   />
                   <input
                     type="password"
@@ -486,14 +487,14 @@ export default function SettingsPage() {
                         confirmPassword: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-lg font-manrope text-[13px] text-primary placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
                   />
                   <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={handlePasswordChange}
                     disabled={changePassword.isLoading}
-                    className="w-full px-4 py-2.5 bg-primary text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-[#334155] transition-colors disabled:opacity-50"
+                    className="w-full px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
                   >
                     Update Password
                   </motion.button>
@@ -501,13 +502,13 @@ export default function SettingsPage() {
               </div>
 
               {/* 2FA Toggle */}
-              <div className="pt-6 border-t border-[#E5E7EB]">
+              <div className="pt-6 border-t border-white/08">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-bold text-primary mb-1">
+                    <h4 className="font-manrope text-[14px] font-bold text-white mb-1">
                       Two-Factor Auth
                     </h4>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-manrope text-[12px] text-muted">
                       Secure your account with 2FA.
                     </p>
                   </div>
@@ -518,10 +519,10 @@ export default function SettingsPage() {
                       onChange={(e) => handleToggle2FA(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
                 </div>
-                <button className="mt-3 font-manrope text-[13px] text-[#3B82F6] hover:underline flex items-center gap-1">
+                <button className="mt-3 font-manrope text-[13px] text-info hover:underline flex items-center gap-1">
                   Manage Methods
                   <ExternalLink size={12} />
                 </button>
@@ -533,11 +534,11 @@ export default function SettingsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl border border-[#E5E7EB] p-6"
+              className="bg-surface rounded-xl border border-white/08 p-6"
             >
               <div className="flex items-center gap-3 mb-6">
-                <Bell size={20} className="text-primary" />
-                <h3 className="font-manrope text-[18px] font-bold text-primary">
+                <Bell size={20} className="text-white" />
+                <h3 className="font-manrope text-[18px] font-bold text-white">
                   Notifications
                 </h3>
               </div>
@@ -546,10 +547,10 @@ export default function SettingsPage() {
                 {/* Order Updates */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-white mb-1">
                       Order Updates
                     </h4>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-manrope text-[12px] text-muted">
                       Status changes on active orders
                     </p>
                   </div>
@@ -565,17 +566,17 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
                 </div>
 
                 {/* Inventory Alerts */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-white mb-1">
                       Inventory Alerts
                     </h4>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-manrope text-[12px] text-muted">
                       Low stock warnings
                     </p>
                   </div>
@@ -591,17 +592,17 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
                 </div>
 
                 {/* Marketing */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-manrope text-[14px] font-medium text-primary mb-1">
+                    <h4 className="font-manrope text-[14px] font-medium text-white mb-1">
                       Marketing
                     </h4>
-                    <p className="font-manrope text-[12px] text-[#64748B]">
+                    <p className="font-manrope text-[12px] text-muted">
                       New features and promotions
                     </p>
                   </div>
@@ -614,7 +615,7 @@ export default function SettingsPage() {
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
                 </div>
               </div>
@@ -625,18 +626,18 @@ export default function SettingsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-[#FEF2F2] rounded-xl border border-[#FCA5A5] p-6 lg:col-span-2"
+              className="bg-danger/10 rounded-xl border border-danger/40 p-6 lg:col-span-2"
             >
               <div className="flex items-start gap-3 mb-4">
                 <AlertTriangle
                   size={20}
-                  className="text-[#DC2626] shrink-0 mt-0.5"
+                  className="text-danger shrink-0 mt-0.5"
                 />
                 <div>
-                  <h3 className="font-manrope text-[16px] font-bold text-[#DC2626] mb-1">
+                  <h3 className="font-manrope text-[16px] font-bold text-danger mb-1">
                     Warning
                   </h3>
-                  <p className="font-manrope text-[13px] text-[#991B1B]">
+                  <p className="font-manrope text-[13px] text-danger">
                     Actions listed here will be undone.
                   </p>
                 </div>
@@ -646,7 +647,7 @@ export default function SettingsPage() {
                 whileTap={{ scale: 0.99 }}
                 onClick={handleDeactivateAccount}
                 disabled={deactivateAccount.isLoading}
-                className="px-6 py-2.5 bg-white border border-[#DC2626] text-[#DC2626] rounded-lg font-manrope text-[13px] font-medium hover:bg-[#DC2626] hover:text-white transition-colors disabled:opacity-50"
+                className="px-6 py-2.5 bg-surface border border-danger text-danger rounded-lg font-manrope text-[13px] font-medium hover:bg-danger-solid hover:text-white transition-colors disabled:opacity-50"
               >
                 Deactivate Account
               </motion.button>
@@ -659,11 +660,11 @@ export default function SettingsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-[#E5E7EB] p-6 lg:col-span-2"
+            className="bg-surface rounded-xl border border-white/08 p-6 lg:col-span-2"
           >
             <div className="flex items-center gap-3 mb-6">
-              <Bell size={20} className="text-primary" />
-              <h3 className="font-manrope text-[18px] font-bold text-primary">
+              <Bell size={20} className="text-white" />
+              <h3 className="font-manrope text-[18px] font-bold text-white">
                 Notification Preferences
               </h3>
             </div>
@@ -672,10 +673,10 @@ export default function SettingsPage() {
               {/* Order Updates */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-white mb-1">
                     Order Updates
                   </h4>
-                  <p className="font-manrope text-[13px] text-[#64748B]">
+                  <p className="font-manrope text-[13px] text-muted">
                     Status changes on active orders
                   </p>
                 </div>
@@ -688,17 +689,17 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>
               </div>
 
               {/* Inventory Alerts */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-white mb-1">
                     Inventory Alerts
                   </h4>
-                  <p className="font-manrope text-[13px] text-[#64748B]">
+                  <p className="font-manrope text-[13px] text-muted">
                     Low stock warnings
                   </p>
                 </div>
@@ -714,17 +715,17 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>
               </div>
 
               {/* Marketing */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-manrope text-[16px] font-bold text-primary mb-1">
+                  <h4 className="font-manrope text-[16px] font-bold text-white mb-1">
                     Marketing
                   </h4>
-                  <p className="font-manrope text-[13px] text-[#64748B]">
+                  <p className="font-manrope text-[13px] text-muted">
                     New features and promotions
                   </p>
                 </div>
@@ -737,7 +738,7 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-[#E5E7EB] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-[#E5E7EB] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>
               </div>
             </div>
