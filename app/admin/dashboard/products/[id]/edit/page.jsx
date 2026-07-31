@@ -39,7 +39,7 @@ export default function EditProductPage({ params }) {
   }
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-400 space-y-6">
       <Link
         href="/admin/dashboard/products"
         className="inline-flex items-center gap-1.5 text-[13px] text-white/40 transition-colors hover:text-white"
@@ -66,36 +66,50 @@ export default function EditProductPage({ params }) {
       )}
 
       {product && (
-        <>
-          {/* Images are a separate resource with their own endpoints — managed
-              here, not through the product DTO. They save immediately, so this
-              sits outside the form and does not wait on "Save changes". */}
-          <ProductImageManager productId={id} images={product.images ?? []} />
-
-          <div className="h-px bg-white/10" />
-
-          <ProductForm
-            mode="edit"
-            initialValues={productToFormValues(product)}
-            onSubmit={handleSubmit}
-            isPending={isPending}
-            submitLabel="Save changes"
-          />
-        </>
+        <ProductForm
+          mode="edit"
+          initialValues={productToFormValues(product)}
+          onSubmit={handleSubmit}
+          isPending={isPending}
+          submitLabel="Save changes"
+          // Images are a separate resource with their own endpoints, and they
+          // save immediately rather than waiting on "Save changes" — hence the
+          // note in the manager itself. It is passed through as a slot so it
+          // renders at the top of the form's main column instead of stranded
+          // above a two-column layout; every control inside it is type="button",
+          // so nesting it in the <form> cannot submit anything.
+          media={<ProductImageManager productId={id} images={product.images ?? []} />}
+        />
       )}
     </div>
   );
 }
 
+/** Mirrors the form's two-column layout, down to the container query that
+ *  splits it — a single stack here would reflow the moment the data lands. */
 function FormSkeleton() {
   return (
-    <div className="space-y-6">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="space-y-2">
-          <div className="h-3 w-24 animate-pulse rounded bg-white/5" />
-          <div className="h-11 w-full animate-pulse rounded-lg bg-white/5" />
+    <div className="@container">
+      <div className="grid max-w-3xl grid-cols-1 items-start gap-x-8 gap-y-8 @[62rem]:max-w-none @[62rem]:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="min-w-0 space-y-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="aspect-square animate-pulse rounded-lg bg-white/5" />
+            ))}
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-3 w-24 animate-pulse rounded bg-white/5" />
+              <div className="h-11 w-full animate-pulse rounded-lg bg-white/5" />
+            </div>
+          ))}
         </div>
-      ))}
+        <div className="space-y-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-32 animate-pulse rounded-xl border border-white/10 bg-white/5" />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

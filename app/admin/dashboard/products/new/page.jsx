@@ -89,7 +89,7 @@ export default function NewProductPage() {
   const busy = isCreating || isUploading;
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-400 space-y-6">
       <Link
         href="/admin/dashboard/products"
         className="inline-flex items-center gap-1.5 text-[13px] text-white/40 transition-colors hover:text-white"
@@ -105,13 +105,6 @@ export default function NewProductPage() {
         </p>
       </header>
 
-      {/* Staged above the form, uploaded on submit. Kept outside <ProductForm>
-          because it is a separate resource with its own endpoint — the form DTO
-          carries no images. */}
-      <ProductImageStager value={stagedImages} onChange={setStagedImages} />
-
-      <div className="h-px bg-white/10" />
-
       <ProductForm
         mode="create"
         initialValues={createProductInitialValues}
@@ -122,6 +115,10 @@ export default function NewProductPage() {
             ? `Create product & upload ${stagedImages.length} image(s)`
             : "Create product"
         }
+        // Staged here, uploaded on submit — the form DTO carries no images.
+        // Rendered into the form's main column as a slot; its controls are all
+        // type="button", so nesting cannot trigger a submit.
+        media={<ProductImageStager value={stagedImages} onChange={setStagedImages} />}
       />
     </div>
   );

@@ -60,3 +60,10 @@ contracts/COVERAGE.md
 docs/api/tbm-backend-api.md
 docs/BOGAT_Luxury_Collections_Corrected_Grouping.pdf
 .gitignore
+
+# Local image staging for scripts/upload-bogat-images.mjs (large binaries, do not commit)
+product-images/
+product-images-test/
+public/product-images/
+public/saved-products/
+saved-products/
