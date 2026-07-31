@@ -9,7 +9,7 @@ import { useAddToCart } from "@/hooks/use-cart";
 import { ShoppingCart } from "lucide-react";
 
 const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop";
+  "/product-placeholder.svg";
 
 async function fetchFeaturedProducts() {
   const res = await fetch(

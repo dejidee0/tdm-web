@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ShoppingCart, Trash2, CheckSquare, Square } from "lucide-react";
 import { useRemoveSaved, useAddSavedToCart } from "@/hooks/use-saved";
 
-const PLACEHOLDER = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop";
+const PLACEHOLDER = "/product-placeholder.svg";
 
 export default function SavedItemCard({ item, index, isSelected, onToggleSelect }) {
   const removeSaved = useRemoveSaved();

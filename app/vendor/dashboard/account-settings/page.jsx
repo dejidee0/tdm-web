@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Save,
@@ -31,7 +31,7 @@ export default function SettingsPage() {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
   });
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -57,16 +57,19 @@ export default function SettingsPage() {
   const updateNotifications = useUpdateNotificationSettings();
   const deactivateAccount = useDeactivateAccount();
 
-  // Initialize profile data when loaded
-  useState(() => {
-    if (profile && !profileData.firstName) {
-      setProfileData({
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        email: profile.email,
-        phone: profile.phone,
-      });
-    }
+  // Prefill from the API. This was `useState(fn, [profile])` — a lazy state
+  // initialiser, which runs once at mount and ignores the dependency array
+  // entirely, so the form never populated once the request came back.
+  // `profile.phone` was also the wrong field: UpdateMeRequest and the /me
+  // response both call it `phoneNumber`.
+  useEffect(() => {
+    if (!profile) return;
+    setProfileData({
+      firstName: profile.firstName ?? "",
+      lastName: profile.lastName ?? "",
+      email: profile.email ?? "",
+      phoneNumber: profile.phoneNumber ?? "",
+    });
   }, [profile]);
 
   const handleProfileChange = (field, value) => {
@@ -87,6 +90,7 @@ export default function SettingsPage() {
     changePassword.mutate({
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword,
+      confirmNewPassword: passwordData.confirmPassword,
     });
     setPasswordData({
       currentPassword: "",
@@ -99,8 +103,11 @@ export default function SettingsPage() {
     toggle2FA.mutate(enabled);
   };
 
+  // NotificationPreferenceState declares all four booleans as required, and the
+  // route is a PUT — sending `{ [key]: value }` alone submitted three undefined
+  // preferences alongside the one being changed, switching them off.
   const handleNotificationToggle = (key, value) => {
-    updateNotifications.mutate({ [key]: value });
+    updateNotifications.mutate({ ...notifications, [key]: value });
   };
 
   const handleDeactivateAccount = () => {
@@ -275,9 +282,9 @@ export default function SettingsPage() {
                       </span>
                       <input
                         type="tel"
-                        value={profileData.phone}
+                        value={profileData.phoneNumber}
                         onChange={(e) =>
-                          handleProfileChange("phone", e.target.value)
+                          handleProfileChange("phoneNumber", e.target.value)
                         }
                         className="w-full pl-12 pr-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[14px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40"
                       />

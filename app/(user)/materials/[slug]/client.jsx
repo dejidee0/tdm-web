@@ -33,7 +33,7 @@ import ProductTabs from "@/components/shared/materials/details/tabs";
 import ProductGallery from "@/components/shared/materials/details/product-gallery";
 
 const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&h=600&fit=crop";
+  "/product-placeholder.svg";
 
 // Variants carry a raw price number, not a formatted string. Match the shape of
 // the backend's product-level `priceDisplay` ("₦850,000.00").
@@ -958,10 +958,14 @@ export default function MaterialDetailClient({
           purchasers to leave a review, so a ratings block would be fabricated.
           Restore this section once a reviews API exists. */}
 
-      {/* ── Similar products ──────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <SimilarStyles materials={normalisedSimilar} />
-      </div>
+      {/* ── Similar products ───────────────────────────────────────────────
+          Guarded so the padded wrapper does not leave a gap on the many
+          products that have no siblings in their category. */}
+      {normalisedSimilar.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <SimilarStyles materials={normalisedSimilar} />
+        </div>
+      )}
     </div>
   );
 }

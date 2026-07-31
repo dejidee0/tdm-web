@@ -16,7 +16,7 @@ import {
   useVendorConversationMessages,
   useSendConversationMessage,
 } from "@/hooks/use-messages";
-import { mockQuickReplies } from "@/lib/mock/messages";
+import { QUICK_REPLIES } from "@/lib/data/quick-replies";
 import { avatarStyle } from "@/lib/theme/avatar";
 
 export default function MessagesPage() {
@@ -378,7 +378,7 @@ export default function MessagesPage() {
           {/* Quick Replies */}
           <div className="px-4 md:px-6 py-3 border-t border-white/08">
             <div className="flex flex-wrap md:flex-nowrap gap-1 md:gap-2 overflow-x-auto pb-2 -mb-2">
-              {mockQuickReplies.map((reply, index) => (
+              {QUICK_REPLIES.map((reply, index) => (
                 <motion.button
                   key={index}
                   whileHover={{ scale: 1.02 }}
