@@ -8,7 +8,7 @@ import { useUpdateQuantity, useRemoveItem } from "@/hooks/use-cart";
 import { useState } from "react";
 
 const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop";
+  "/product-placeholder.svg";
 
 export default function CartItem({ item, index }) {
   const [quantity, setQuantity] = useState(item.quantity);
