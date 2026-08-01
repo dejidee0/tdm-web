@@ -9,13 +9,24 @@ import {
   Layers,
   Heart,
   User,
-  Wand2,
   FolderOpen,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useDashboardUser } from "@/hooks/use-user-dashboard";
+import { useSubscriptionState } from "@/hooks/use-subscription";
+import PlanCard from "./plan-card";
+
+/** The plan label under the user's name. This used to be the string
+ *  "Premium Member", hardcoded — so an account with no subscription at all was
+ *  told it was premium, on the same screen where the designs page offered to
+ *  sell it a plan. */
+const TIER_LABEL = {
+  luxury: "Luxury plan",
+  premium: "Premium plan",
+  economy: "Economy plan",
+};
 
 const navItems = [
   { icon: LayoutGrid, label: "Overview",   href: "/dashboard" },
@@ -29,6 +40,9 @@ const navItems = [
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { user } = useDashboardUser();
+  const { tier, isLoading: planLoading } = useSubscriptionState();
+
+  const planLabel = planLoading ? null : (TIER_LABEL[tier] ?? "No active plan");
 
   const displayName =
     user?.fullName ||
@@ -66,10 +80,17 @@ export default function Sidebar({ isOpen, onClose }) {
             <div className="min-w-0">
               {user ? (
                 <>
-                  <p className="text-base text-white font-semibold font-manrope truncate">
-                    Welcome back, {user?.firstName || displayName}
+                  {/* The name alone. "Welcome back, {name}" was prefixed onto a
+                      fixed-width column, so every name past ~6 characters
+                      truncated to the greeting — the page header greets now. */}
+                  <p className="truncate font-manrope text-[15px] font-semibold text-white">
+                    {displayName}
                   </p>
-                  <p className="text-sm text-white/40 mt-0.5">Premium Member</p>
+                  {planLabel ? (
+                    <p className="mt-0.5 truncate text-[13px] text-white/40">{planLabel}</p>
+                  ) : (
+                    <div className="mt-1.5 h-3 w-20 animate-pulse rounded bg-white/08" />
+                  )}
                 </>
               ) : (
                 <>
@@ -125,34 +146,9 @@ export default function Sidebar({ isOpen, onClose }) {
         })}
       </nav>
 
-      {/* Go Pro Card */}
-      <div className="p-3">
-        <div
-          className="rounded-2xl p-5 text-white"
-          style={{
-            background: "rgba(212,175,55,0.06)",
-            boxShadow: "0 0 0 1px rgba(212,175,55,0.15)",
-          }}
-        >
-          <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
-            style={{ background: "rgba(212,175,55,0.12)" }}
-          >
-            <Wand2 className="w-5 h-5 text-[#D4AF37]" />
-          </div>
-          <h3 className="text-[16px] font-semibold mb-2 text-white">Go Pro?</h3>
-          <p className="text-[13px] text-white/50 mb-4 leading-relaxed">
-            Get unlimited AI renders and priority support.
-          </p>
-          <Link
-            href="/ziora#pricing"
-            className="block w-full text-center text-[14px] font-medium py-2.5 px-4 rounded-lg transition-colors text-black"
-            style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
-          >
-            Upgrade Plan
-          </Link>
-        </div>
-      </div>
+      {/* Plan + quota. Replaces the fixed "Go Pro?" card, which said the same
+          sentence to a free user and a paying one. See plan-card.jsx. */}
+      <PlanCard />
     </div>
   );
 

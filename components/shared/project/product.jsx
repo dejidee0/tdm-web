@@ -320,7 +320,7 @@ export default function MasterpiecesGallery() {
                   </div>
                 </div>
               </div>
-              <Link href="/contact?type=consultation" className="mt-auto block">
+              <Link href="/consultation" className="mt-auto block">
                 <button
                   className="w-full py-3 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity tracking-wide"
                   style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
@@ -469,7 +469,7 @@ export default function MasterpiecesGallery() {
               <p className="text-sm text-white/40 mb-4 flex-1 font-manrope">
                 {project.description}
               </p>
-              <Link href="/contact?type=consultation" className="mt-auto block">
+              <Link href="/consultation" className="mt-auto block">
                 <button
                   className="w-full py-3 text-black text-sm font-semibold font-manrope hover:opacity-90 transition-opacity tracking-wide"
                   style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}

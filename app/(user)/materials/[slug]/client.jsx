@@ -840,7 +840,7 @@ export default function MaterialDetailClient({
                 </h2>
               </div>
               <Link
-                href="/contact?type=consultation"
+                href="/consultation"
                 className="group inline-flex items-center gap-2 text-[13px] font-medium text-[#D4AF37] transition-opacity hover:opacity-80 shrink-0"
               >
                 Speak to a design consultant
@@ -943,7 +943,7 @@ export default function MaterialDetailClient({
                       : "Buy Now"}
                 </motion.button>
                 <Link
-                  href="/contact?type=consultation"
+                  href="/consultation"
                   className="w-full py-3.5 rounded-sm border border-white/15 text-center text-white/80 font-manrope font-semibold text-[11px] tracking-[0.25em] uppercase transition-colors hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
                 >
                   Book a consultation
