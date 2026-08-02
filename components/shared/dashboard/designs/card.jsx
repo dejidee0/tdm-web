@@ -124,9 +124,13 @@ export default function DesignCard({ design, index, isList = false }) {
     setShowMenu(false);
   };
   const handleDelete = () => {
-    deleteDesign.mutate(design.id);
+    // The confirm dialog stays open until the mutation settles — closing it
+    // immediately made a failed delete look like a success, then the design
+    // would silently reappear on the next fetch with no explanation.
+    deleteDesign.mutate(design.id, {
+      onSuccess: () => setShowDeleteConfirm(false),
+    });
     setShowMenu(false);
-    setShowDeleteConfirm(false);
   };
 
   const menuItems = (
@@ -139,15 +143,27 @@ export default function DesignCard({ design, index, isList = false }) {
       </button>
       <button
         onClick={handleDownload}
-        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors"
+        disabled={downloadDesign.isPending}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <Download className="w-4 h-4" /> Download
+        {downloadDesign.isPending ? (
+          <span className="block h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+        ) : (
+          <Download className="w-4 h-4" />
+        )}
+        {downloadDesign.isPending ? "Downloading…" : "Download"}
       </button>
       <button
         onClick={handleShare}
-        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors"
+        disabled={shareDesign.isPending}
+        className="w-full px-4 py-2.5 text-left text-[14px] text-white/70 hover:bg-white/05 flex items-center gap-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <Share2 className="w-4 h-4" /> Share
+        {shareDesign.isPending ? (
+          <span className="block h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+        ) : (
+          <Share2 className="w-4 h-4" />
+        )}
+        {shareDesign.isPending ? "Sharing…" : "Share"}
       </button>
       <div className="h-px bg-white/06 my-1" />
       <button
@@ -205,23 +221,38 @@ export default function DesignCard({ design, index, isList = false }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handleFavorite}
-              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+              disabled={toggleFavorite.isPending}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Heart
-                className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/30"}`}
-              />
+              {toggleFavorite.isPending ? (
+                <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+              ) : (
+                <Heart
+                  className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/30"}`}
+                />
+              )}
             </button>
             <button
               onClick={handleDownload}
-              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+              disabled={downloadDesign.isPending}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Download className="w-5 h-5 text-white/30" />
+              {downloadDesign.isPending ? (
+                <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+              ) : (
+                <Download className="w-5 h-5 text-white/30" />
+              )}
             </button>
             <button
               onClick={handleShare}
-              className="p-2 hover:bg-white/05 rounded-lg transition-colors"
+              disabled={shareDesign.isPending}
+              className="p-2 hover:bg-white/05 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Share2 className="w-5 h-5 text-white/30" />
+              {shareDesign.isPending ? (
+                <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+              ) : (
+                <Share2 className="w-5 h-5 text-white/30" />
+              )}
             </button>
           </div>
         </div>
@@ -255,11 +286,16 @@ export default function DesignCard({ design, index, isList = false }) {
         )}
         <button
           onClick={handleFavorite}
-          className="absolute top-3 right-3 w-9 h-9 bg-black/60 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
+          disabled={toggleFavorite.isPending}
+          className="absolute top-3 right-3 w-9 h-9 bg-black/60 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Heart
-            className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/50"}`}
-          />
+          {toggleFavorite.isPending ? (
+            <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/70" />
+          ) : (
+            <Heart
+              className={`w-5 h-5 ${isFavorite ? "fill-[#ef4444] text-[#ef4444]" : "text-white/50"}`}
+            />
+          )}
         </button>
       </div>
 
@@ -306,20 +342,30 @@ export default function DesignCard({ design, index, isList = false }) {
                 e.stopPropagation();
                 handleDownload();
               }}
-              className="p-1.5 hover:bg-white/05 rounded-md transition-colors"
+              disabled={downloadDesign.isPending}
+              className="p-1.5 hover:bg-white/05 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Download"
             >
-              <Download className="w-4 h-4 text-white/40" />
+              {downloadDesign.isPending ? (
+                <span className="block h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+              ) : (
+                <Download className="w-4 h-4 text-white/40" />
+              )}
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleShare();
               }}
-              className="p-1.5 hover:bg-white/05 rounded-md transition-colors"
+              disabled={shareDesign.isPending}
+              className="p-1.5 hover:bg-white/05 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Share"
             >
-              <Share2 className="w-4 h-4 text-white/40" />
+              {shareDesign.isPending ? (
+                <span className="block h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+              ) : (
+                <Share2 className="w-4 h-4 text-white/40" />
+              )}
             </button>
           </div>
         </div>
@@ -345,15 +391,20 @@ export default function DesignCard({ design, index, isList = false }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 px-4 py-2.5 bg-white/06 text-white rounded-lg text-[14px] font-medium hover:bg-white/10 transition-colors"
+                disabled={deleteDesign.isPending}
+                className="flex-1 px-4 py-2.5 bg-white/06 text-white rounded-lg text-[14px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-[14px] font-medium hover:bg-red-700 transition-colors"
+                disabled={deleteDesign.isPending}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg text-[14px] font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Delete
+                {deleteDesign.isPending && (
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                )}
+                {deleteDesign.isPending ? "Deleting…" : "Delete"}
               </button>
             </div>
           </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Reveal from "@/components/common/reveal";
 
@@ -30,6 +30,11 @@ import Reveal from "@/components/common/reveal";
  * @param {"soft"|"sharp"} [variant]
  * @param {string} [beforeLabel] Corner pill text
  * @param {string} [afterLabel]
+ * @param {string|number} [sweepKey] Changing this value plays the divider
+ *   across the frame once — a visitor scrubbing through a filmstrip of
+ *   projects would otherwise never discover the image is draggable at all.
+ *   Skipped under `prefers-reduced-motion`, where the divider just settles
+ *   at center.
  */
 export default function BeforeAfter({
   before,
@@ -40,10 +45,56 @@ export default function BeforeAfter({
   variant = "soft",
   beforeLabel = "Before",
   afterLabel = "After",
+  sweepKey,
 }) {
   const [pos, setPos] = useState(50); // 0–100 (% from left)
-  const [dragging, setDragging] = useState(false);
+  const [dragging, setDraggingState] = useState(false);
+  const draggingRef = useRef(false);
   const cardRef = useRef(null);
+  const setDragging = useCallback((value) => {
+    draggingRef.current = value;
+    setDraggingState(value);
+  }, []);
+
+  // Auto-sweep on sweepKey change: reveal the "before", pause, wipe to
+  // "after", settle center. Interrupted cleanly if the visitor starts
+  // dragging mid-sweep, or if sweepKey changes again before it finishes.
+  useEffect(() => {
+    if (sweepKey === undefined) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPos(50);
+      return;
+    }
+
+    const keyframes = [
+      { t: 0, pos: 50 },
+      { t: 250, pos: 12 },
+      { t: 950, pos: 12 },
+      { t: 1700, pos: 88 },
+      { t: 2200, pos: 88 },
+      { t: 2700, pos: 50 },
+    ];
+    const start = performance.now();
+    let raf;
+
+    const ease = (x) => 1 - Math.pow(1 - x, 3); // cubic ease-out per leg
+
+    const tick = (now) => {
+      if (draggingRef.current) return; // a real drag always wins
+      const elapsed = now - start;
+      let i = 0;
+      while (i < keyframes.length - 2 && elapsed > keyframes[i + 1].t) i++;
+      const a = keyframes[i];
+      const b = keyframes[i + 1];
+      const span = b.t - a.t;
+      const local = span > 0 ? Math.min(1, Math.max(0, (elapsed - a.t) / span)) : 1;
+      setPos(a.pos + (b.pos - a.pos) * ease(local));
+      if (elapsed < keyframes[keyframes.length - 1].t) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sweepKey]);
 
   const soft = variant === "soft";
   const frameRadius = soft ? "rounded-2xl" : "";
@@ -73,7 +124,7 @@ export default function BeforeAfter({
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseup", onUp);
     },
-    [updatePos],
+    [updatePos, setDragging],
   );
 
   /* Touch */
@@ -94,7 +145,7 @@ export default function BeforeAfter({
       window.addEventListener("touchmove", onMove, { passive: false });
       window.addEventListener("touchend", onEnd);
     },
-    [updatePos],
+    [updatePos, setDragging],
   );
 
   /* Also allow clicking anywhere on the card to jump the slider */

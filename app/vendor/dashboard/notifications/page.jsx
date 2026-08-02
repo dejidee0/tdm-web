@@ -53,11 +53,15 @@ export default function NotificationsPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleMarkAllRead}
-              disabled={markAllRead.isLoading}
+              disabled={markAllRead.isPending}
               className="flex items-center gap-2 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] font-medium text-white hover:bg-white/05 transition-colors disabled:opacity-50"
             >
-              <Check size={16} />
-              Mark all as read
+              {markAllRead.isPending ? (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              ) : (
+                <Check size={16} />
+              )}
+              {markAllRead.isPending ? "Marking…" : "Mark all as read"}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { profileApi } from "@/lib/api/profile";
 import { useSession } from "@/hooks/use-session";
+import { showToast } from "@/components/shared/toast";
 
 // Account settings — GET /api/v1/account/me.
 //
@@ -56,18 +57,22 @@ export function useBrandAccess() {
 }
 
 /** Invalidating the one key refreshes every derived view above. */
-function useAccountMutation(mutationFn) {
+function useAccountMutation(mutationFn, errorMessage) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ACCOUNT_QUERY_KEYS.me }),
+    onError: (error) => showToast.error(error.message || errorMessage),
   });
 }
 
 /** PATCH /api/v1/account/me */
 export function useUpdateProfile() {
-  return useAccountMutation((updates) => profileApi.updateMe(updates));
+  return useAccountMutation(
+    (updates) => profileApi.updateMe(updates),
+    "Failed to save profile",
+  );
 }
 
 /**
@@ -88,20 +93,32 @@ export function useChangePassword() {
         newPassword,
         confirmNewPassword: confirmNewPassword ?? newPassword,
       }),
+    onError: (error) =>
+      showToast.error(error.message || "Failed to update password"),
   });
 }
 
 /** PUT /api/v1/account/security/2fa */
 export function useToggle2FA() {
-  return useAccountMutation((enabled) => profileApi.update2fa(enabled));
+  return useAccountMutation(
+    (enabled) => profileApi.update2fa(enabled),
+    "Failed to update two-factor authentication",
+  );
 }
 
 /** PUT /api/v1/account/notifications */
 export function useUpdateNotificationSettings() {
-  return useAccountMutation((prefs) => profileApi.updateNotifications(prefs));
+  return useAccountMutation(
+    (prefs) => profileApi.updateNotifications(prefs),
+    "Failed to update notification preferences",
+  );
 }
 
 /** POST /api/v1/account/deactivate */
 export function useDeactivateAccount() {
-  return useMutation({ mutationFn: profileApi.deactivateAccount });
+  return useMutation({
+    mutationFn: profileApi.deactivateAccount,
+    onError: (error) =>
+      showToast.error(error.message || "Failed to deactivate account"),
+  });
 }

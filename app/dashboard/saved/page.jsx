@@ -92,8 +92,12 @@ export default function SavedItemsPage() {
                 disabled={createBoard.isPending}
                 className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-4 text-[14px] font-medium text-white/60 transition-colors hover:bg-white/05 hover:text-white disabled:opacity-50"
               >
-                <FolderPlus className="h-4 w-4" strokeWidth={1.75} />
-                Create Board
+                {createBoard.isPending ? (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white/70" />
+                ) : (
+                  <FolderPlus className="h-4 w-4" strokeWidth={1.75} />
+                )}
+                {createBoard.isPending ? "Creating…" : "Create Board"}
               </button>
               <button
                 onClick={handleBuyAll}

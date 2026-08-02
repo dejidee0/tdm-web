@@ -124,7 +124,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
                   src={imageUrl}
                   alt={product.name}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  // `object-contain`, not `object-cover`: a forced 4:5 crop cut
+                  // off pieces of whatever aspect ratio the source photo
+                  // actually was. Letterboxing on the card's own dark
+                  // background loses no product, unlike a crop.
+                  className="object-contain transition-transform duration-700 group-hover:scale-105"
                   sizes="224px"
                 />
               ) : (
@@ -189,7 +193,7 @@ export default function ProductCard({ product, viewMode = "grid" }) {
               src={imageUrl}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="object-contain transition-transform duration-700 ease-out group-hover:scale-105"
               sizes="(max-width: 768px) 50vw, 33vw"
             />
           ) : (

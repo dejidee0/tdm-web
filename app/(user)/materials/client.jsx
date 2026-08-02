@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import FilterSidebar from "@/components/shared/materials/filter-sidebar";
 import ProductGrid from "@/components/shared/materials/product-grid";
 import Pagination from "@/components/shared/materials/pagination";
-import { productKeys } from "@/hooks/use-products";
+import { productKeys, useCategories } from "@/hooks/use-products";
 
 // ─── Sort helper (client-side, price sorts now just UI order fallback) ────────
 function sortItems(items = [], sortBy) {
@@ -65,20 +65,6 @@ async function fetchProducts(filters, page, pageSize = 12) {
     hasPreviousPage: json.data?.hasPreviousPage ?? false,
     hasNextPage: json.data?.hasNextPage ?? false,
   };
-}
-
-// ─── Derive categories from items ────────────────────────────────────────────
-function extractCategories(items = []) {
-  const map = new Map();
-  items.forEach((item) => {
-    if (item.categoryId && item.categoryName && !map.has(item.categoryId)) {
-      map.set(item.categoryId, {
-        id: item.categoryId,
-        name: item.categoryName,
-      });
-    }
-  });
-  return Array.from(map.values());
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -149,15 +135,20 @@ export default function MaterialsClient({ initialData }) {
     }
   }, [data, activeFilters, currentPage, queryClient]);
 
-  // ── Categories derived from a wide fetch ─────────────────────────────────
-  const { data: allItemsData } = useQuery({
-    queryKey: ["products", "all-for-categories"],
-    queryFn: () => fetchProducts({}, 1, 100),
-    staleTime: 15 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  });
-  const categories = extractCategories(allItemsData?.items);
+  // The categories endpoint, not a 100-product page: deriving the filter list
+  // from products hid every category whose products fell outside that page, and
+  // spent a 100-item fetch to do it.
+  const { data: categoryData } = useCategories();
+  const categories = useMemo(
+    () =>
+      (categoryData ?? [])
+        // A filter that can only return an empty grid is not worth a row. Empty
+        // categories still belong in the product *forms* — that is how they stop
+        // being empty — so the filtering happens here, not in the hook.
+        .filter((c) => c.productCount > 0)
+        .map((c) => ({ id: c.id, name: c.name })),
+    [categoryData],
+  );
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleFilterChange = useCallback((newFilters) => {

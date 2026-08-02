@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { vendorDeliveriesAPI } from "@/lib/api/vendor/deliveries";
+import { showToast } from "@/components/shared/toast";
 
 // Query keys
 export const DELIVERY_QUERY_KEYS = {
@@ -54,10 +55,21 @@ export function useUpdateDeliveryAssignment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }) =>
-      deliveryAPI.updateDeliveryAssignment(id, updates),
+    // No backend endpoint accepts a deliveryPartner/trackingNumber update on a
+    // delivery assignment — see BACKLOG.md #13. This used to call the
+    // undefined `deliveryAPI` global and throw an uncaught ReferenceError on
+    // every Save; rejecting here instead lets the button's onError show the
+    // vendor a real message rather than crashing silently.
+    mutationFn: () => {
+      throw new Error(
+        "Delivery assignment updates aren't available yet. This has been flagged for the backend team.",
+      );
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["delivery", "assignments"] });
+    },
+    onError: (error) => {
+      showToast.error(error.message);
     },
   });
 }

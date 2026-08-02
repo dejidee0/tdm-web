@@ -8,8 +8,18 @@ import { useFormik } from "formik";
 import { ArrowLeft, ImagePlus, Loader2, Trash2 } from "lucide-react";
 
 import { useCreatePortfolioProject } from "@/hooks/use-admin-portfolio";
+import { usePortfolioCategories } from "@/hooks/use-project";
 import { portfolioProjectSchema } from "@/lib/validations/admin-portfolio";
 import { showToast } from "@/components/shared/toast";
+
+/**
+ * Sentinel `<option>` value that reveals a free-text input instead of selecting
+ * a category. The option list is derived from projects already published, so
+ * without an escape hatch the first project of a new type could never be filed.
+ * No real category can collide with it — the derived list is trimmed, non-empty
+ * strings taken verbatim from the backend.
+ */
+const NEW_CATEGORY = "__new__";
 
 const MAX_PER_SIDE = 6;
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -136,8 +146,26 @@ export default function NewPortfolioProjectPage() {
   const router = useRouter();
   const [beforeFiles, setBeforeFiles] = useState([]);
   const [afterFiles, setAfterFiles] = useState([]);
+  const [addingCategory, setAddingCategory] = useState(false);
 
   const createProject = useCreatePortfolioProject();
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+    isError: categoriesError,
+  } = usePortfolioCategories();
+
+  const hasCategories = (categories?.length ?? 0) > 0;
+  // A dropdown with nothing in it is a dead end, so the input stands in whenever
+  // there is no list to pick from — a failed fetch must not block publishing.
+  const typingCategory =
+    addingCategory || categoriesError || (!categoriesLoading && !hasCategories);
+
+  const categoryHint = categoriesError
+    ? "Could not load existing categories — type one."
+    : typingCategory
+      ? "Reuse an existing spelling where one fits; the public filter matches exactly."
+      : "Categories already in use across published projects.";
 
   const formik = useFormik({
     initialValues: {
@@ -252,17 +280,63 @@ export default function NewPortfolioProjectPage() {
             <Field
               label="Category"
               required
+              hint={categoryHint}
               error={formik.errors.category}
               touched={formik.touched.category}
             >
-              <input
-                name="category"
-                value={formik.values.category}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="Bathroom Renovation"
-                className={inputClass}
-              />
+              {typingCategory ? (
+                <>
+                  <input
+                    name="category"
+                    value={formik.values.category}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Bathroom Renovation"
+                    className={inputClass}
+                  />
+                  {hasCategories && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAddingCategory(false);
+                        formik.setFieldValue("category", "");
+                      }}
+                      className="mt-2 min-h-11 text-[12px] text-[#D4AF37]/80 underline-offset-4 transition-colors hover:text-[#D4AF37] hover:underline"
+                    >
+                      Choose from existing categories
+                    </button>
+                  )}
+                </>
+              ) : (
+                <select
+                  name="category"
+                  value={formik.values.category}
+                  onChange={(event) => {
+                    // The sentinel is not a category — it swaps the control.
+                    if (event.target.value === NEW_CATEGORY) {
+                      setAddingCategory(true);
+                      formik.setFieldValue("category", "");
+                      return;
+                    }
+                    formik.handleChange(event);
+                  }}
+                  onBlur={formik.handleBlur}
+                  disabled={categoriesLoading}
+                  className={inputClass}
+                >
+                  <option value="">
+                    {categoriesLoading
+                      ? "Loading categories…"
+                      : "Select a category…"}
+                  </option>
+                  {(categories ?? []).map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                  <option value={NEW_CATEGORY}>+ New category…</option>
+                </select>
+              )}
             </Field>
           </div>
 
