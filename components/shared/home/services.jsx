@@ -17,37 +17,37 @@ const SERVICES = [
     Icon: HardHat,
     label: "Renovation",
     desc: "Transforming existing spaces into luxury",
-    src: "/hero/re-imagine.png",
+    src: "/services/renovation.png",
   },
   {
     Icon: Hammer,
     label: "Construction",
     desc: "Building modern, durable structures",
-    src: "/product-4.png",
+    src: "/services/construction.png",
   },
   {
     Icon: Bath,
     label: "Bathrooms",
     desc: "Luxury bathroom designs & remodeling",
-    src: "/product-3.jpg",
+    src: "/services/bathrooms.jpeg",
   },
   {
     Icon: UtensilsCrossed,
     label: "Kitchens",
     desc: "Modern, functional kitchen spaces",
-    src: "/product-1.jpg",
+    src: "/services/kitchens.jpeg",
   },
   {
     Icon: Palette,
     label: "Interior Finishing",
     desc: "Exquisite finishes tailored to your style",
-    src: "/product-2.jpg",
+    src: "/services/interior.png",
   },
   {
     Icon: Package,
     label: "Materials (Bogat)",
     desc: "Premium tiles, fittings and finishing materials",
-    src: "/brass.png",
+    src: "/services/materials.jpeg",
   },
 ];
 
