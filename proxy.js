@@ -41,6 +41,16 @@ const RULES = [
     login: "/sign-in",
     open: [],
   },
+  // The Ziora studio sits outside /dashboard so it can drop the shell, but it
+  // is the same private surface and needs the same gate. Only /ziora/studio —
+  // the rest of /ziora is the public marketing and pricing page.
+  {
+    prefix: "/ziora/studio",
+    cookie: "authToken",
+    refresh: "refreshToken",
+    login: "/sign-in",
+    open: [],
+  },
 ];
 
 /** Decode a JWT's exp claim. Signature is NOT checked — the backend does that. */
@@ -79,5 +89,10 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/vendor/:path*", "/dashboard/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/vendor/:path*",
+    "/dashboard/:path*",
+    "/ziora/studio/:path*",
+  ],
 };

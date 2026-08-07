@@ -368,7 +368,7 @@ function ServiceCard({ service, index }) {
           </div>
 
           <div className="mt-6 flex flex-col gap-2">
-            <Link href="/contact?type=consultation">
+            <Link href="/consultation">
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}

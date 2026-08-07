@@ -71,9 +71,28 @@ export default function PlatformSettingsPage() {
 
   const { mutate: savePayment, isPending: isSaving } = useSavePaymentSettings();
   const { mutate: saveGeneral, isPending: isSavingGeneral } = useSaveGeneralSettings();
-  const { mutate: saveNotifications } = useUpdateNotificationSettings();
-  const { mutate: toggleGateway } = useTogglePaymentGateway();
-  const { mutate: toggleModel } = useToggleAIModel();
+  const { mutate: saveNotifications, isPending: isSavingNotifications } =
+    useUpdateNotificationSettings();
+  const {
+    mutate: toggleGateway,
+    isPending: isTogglingGateway,
+    variables: gatewayVariables,
+  } = useTogglePaymentGateway();
+  const {
+    mutate: toggleModel,
+    isPending: isTogglingModel,
+    variables: modelVariables,
+  } = useToggleAIModel();
+
+  // Each toggle mutation is one instance shared by every row's switch — scope
+  // pending to the row actually mutating, or one slow toggle disables every
+  // switch in the section. Gateway/model requests carry their own id in
+  // `variables`; the notification request sends the whole preferences object,
+  // so the key being changed is tracked separately, set at the same time the
+  // mutation fires.
+  const pendingGatewayId = isTogglingGateway ? gatewayVariables?.gatewayId : null;
+  const pendingModelId = isTogglingModel ? modelVariables?.modelId : null;
+  const [pendingNotificationKey, setPendingNotificationKey] = useState(null);
 
   // Local state for form values. Field names match the API's, so nothing has to
   // be renamed on the way out — the old shape (`baseFee`, `fixedFee`,
@@ -158,9 +177,13 @@ export default function PlatformSettingsPage() {
    */
   const handleToggleNotification = (key) => {
     if (!notificationSettings) return;
+    setPendingNotificationKey(key);
     saveNotifications(
       { ...notificationSettings, [key]: !notificationSettings[key] },
-      { onError: (err) => showToast.error("Could not save settings", err.message) },
+      {
+        onError: (err) => showToast.error("Could not save settings", err.message),
+        onSettled: () => setPendingNotificationKey(null),
+      },
     );
   };
 
@@ -342,18 +365,23 @@ export default function PlatformSettingsPage() {
                         onClick={() =>
                           handleToggleGateway(gateway.id, gateway.enabled)
                         }
-                        className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3"
+                        disabled={pendingGatewayId === gateway.id}
+                        className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3 disabled:opacity-50 disabled:cursor-not-allowed"
                         style={{
                           backgroundColor: gateway.enabled
                             ? "var(--color-success-solid)"
                             : "var(--color-track-off)",
                         }}
                       >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            gateway.enabled ? "translate-x-6" : "translate-x-1"
-                          }`}
-                        />
+                        {pendingGatewayId === gateway.id ? (
+                          <span className="mx-auto h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                        ) : (
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              gateway.enabled ? "translate-x-6" : "translate-x-1"
+                            }`}
+                          />
+                        )}
                       </button>
                     </div>
                   ))}
@@ -429,16 +457,21 @@ export default function PlatformSettingsPage() {
                     </div>
                     <button
                       onClick={() => handleToggleModel(model.id, model.enabled)}
-                      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3"
+                      disabled={pendingModelId === model.id}
+                      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
                         backgroundColor: model.enabled ? "var(--color-success-solid)" : "var(--color-track-off)",
                       }}
                     >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          model.enabled ? "translate-x-6" : "translate-x-1"
-                        }`}
-                      />
+                      {pendingModelId === model.id ? (
+                        <span className="mx-auto h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                      ) : (
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            model.enabled ? "translate-x-6" : "translate-x-1"
+                          }`}
+                        />
+                      )}
                     </button>
                   </div>
                 ))}
@@ -508,18 +541,23 @@ export default function PlatformSettingsPage() {
                                 aria-checked={value}
                                 aria-label={label}
                                 onClick={() => handleToggleNotification(key)}
-                                className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0"
+                                disabled={pendingNotificationKey === key}
+                                className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{
                                   backgroundColor: value
                                     ? "var(--color-success-solid)"
                                     : "var(--color-track-off)",
                                 }}
                               >
-                                <span
-                                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                    value ? "translate-x-6" : "translate-x-1"
-                                  }`}
-                                />
+                                {pendingNotificationKey === key ? (
+                                  <span className="mx-auto h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                ) : (
+                                  <span
+                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                      value ? "translate-x-6" : "translate-x-1"
+                                    }`}
+                                  />
+                                )}
                               </button>
                             </div>
                           );

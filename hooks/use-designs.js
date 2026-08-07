@@ -3,6 +3,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { designsApi, designSessionsApi } from "@/lib/api/designs";
+import { showToast } from "@/components/shared/toast";
 
 // ─── Saved Designs ────────────────────────────────────────────────────────────
 
@@ -71,6 +72,8 @@ export function useToggleFavorite() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to update favorite"),
   });
 }
 
@@ -81,18 +84,24 @@ export function useDeleteDesign() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to delete design"),
   });
 }
 
 export function useDownloadDesign() {
   return useMutation({
     mutationFn: (designId) => designsApi.downloadDesign(designId),
+    onError: (error) =>
+      showToast.error(error.message || "Failed to download design"),
   });
 }
 
 export function useShareDesign() {
   return useMutation({
     mutationFn: (designId) => designsApi.shareDesign(designId),
+    onError: (error) =>
+      showToast.error(error.message || "Failed to share design"),
   });
 }
 
@@ -138,6 +147,8 @@ export function useCreateDesignSession() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["design-sessions"] });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to start design session"),
   });
 }
 
@@ -149,6 +160,7 @@ export function useUploadSessionPhoto() {
     onSuccess: (_data, { sessionId }) => {
       queryClient.invalidateQueries({ queryKey: ["design-session", sessionId] });
     },
+    onError: (error) => showToast.error(error.message || "Failed to upload photo"),
   });
 }
 
@@ -161,6 +173,8 @@ export function useGenerateDesign() {
         queryKey: ["design-session-status", sessionId],
       });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to generate design"),
   });
 }
 
@@ -171,6 +185,8 @@ export function useAddBomToCart() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to add items to cart"),
   });
 }
 

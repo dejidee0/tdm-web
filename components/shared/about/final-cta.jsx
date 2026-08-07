@@ -53,7 +53,7 @@ export default function FinalCTA() {
               className="flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               <Link
-                href="/contact?type=consultation"
+                href="/consultation"
                 className="inline-flex items-center justify-center rounded-xl px-8 py-4 text-black font-semibold text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity w-full sm:w-auto"
                 style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
               >

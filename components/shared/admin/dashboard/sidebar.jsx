@@ -10,6 +10,7 @@ import {
   Zap,
   CreditCard,
   Package,
+  Images,
   LayoutGrid,
   Users,
   Wallet,
@@ -37,6 +38,11 @@ const navItems = [
     label: "Products",
     icon: Package,
     href: "/admin/dashboard/products",
+  },
+  {
+    label: "Portfolio",
+    icon: Images,
+    href: "/admin/dashboard/portfolio",
   },
   {
     label: "Financial Report",

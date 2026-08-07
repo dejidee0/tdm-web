@@ -319,7 +319,7 @@ export default function Navbar() {
 
                   {/* Book Consultation — solid gold fill */}
                   <Link
-                    href="/contact?type=consultation"
+                    href="/consultation"
                     className="px-5 py-2 rounded-lg bg-[#D4AF37] text-black text-[13px] font-manrope font-semibold tracking-wide hover:bg-gold-dim transition-colors duration-200"
                   >
                     Book Consultation
@@ -512,7 +512,7 @@ export default function Navbar() {
                       Login
                     </Link>
                     <Link
-                      href="/contact?type=consultation"
+                      href="/consultation"
                       className="flex items-center justify-center w-full px-4 py-3 text-[14px] font-semibold text-black bg-[#D4AF37] rounded-lg hover:bg-gold-dim transition-colors tracking-wide"
                       onClick={() => setIsMenuOpen(false)}
                     >

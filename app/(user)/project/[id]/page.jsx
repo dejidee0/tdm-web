@@ -278,7 +278,7 @@ export default function PortfolioDetailPage() {
                   <div className="pt-3 border-t border-white/8 space-y-2">
                     <p className="text-white/40 text-xs font-manrope">Want a similar transformation?</p>
                     <Link
-                      href="/contact?type=consultation"
+                      href="/consultation"
                       className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#D4AF37] text-black text-sm font-manrope font-semibold rounded-xl hover:bg-[#D4AF37]/90 transition-colors"
                     >
                       <Phone className="w-4 h-4" />

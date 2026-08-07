@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { vendorMessagesAPI } from "@/lib/api/vendor/messages";
+import { showToast } from "@/components/shared/toast";
 
 // Query keys.
 //
@@ -245,6 +246,8 @@ export function useSendVendorMessage() {
         queryKey: ["messages", "conversations"],
       });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to send message"),
   });
 }
 
@@ -276,5 +279,7 @@ export function useSendConversationMessage() {
         queryKey: ["messages", "conversations"],
       });
     },
+    onError: (error) =>
+      showToast.error(error.message || "Failed to send message"),
   });
 }

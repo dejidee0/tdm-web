@@ -147,6 +147,15 @@
       "schema": null,
       "itemsAt": "data.items",
       "auth": true
+    },
+    {
+      "op": "GET /api/v1/portfolio",
+      "label": "portfolio",
+      "sample": "?pageSize=50",
+      "schema": null,
+      "itemsAt": "data.items",
+      "auth": false,
+      "$why": "The public before/after showcase behind /project. Enveloped, but the pagination block is the un-enveloped style — data.{items,totalCount,page,pageSize,totalPages,hasMore}, not Paged's pageNumber/hasNextPage. Each item carries beforeImages[], afterImages[], referenceImages[] and thumbnailUrl."
     }
   ]
 }

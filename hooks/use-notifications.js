@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { vendorNotificationsAPI } from "@/lib/api/vendor/notifications";
+import { showToast } from "@/components/shared/toast";
 
 // Vendor notifications — GET /api/v1/vendor/notifications.
 //
@@ -69,6 +70,8 @@ export function useMarkAllRead() {
     mutationFn: vendorNotificationsAPI.markAllAsRead,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_QUERY_KEYS.all }),
+    onError: (error) =>
+      showToast.error(error.message || "Failed to mark notifications as read"),
   });
 }
 
@@ -79,5 +82,7 @@ export function useMarkAsRead() {
     mutationFn: (id) => vendorNotificationsAPI.markAsRead(id),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_QUERY_KEYS.all }),
+    onError: (error) =>
+      showToast.error(error.message || "Failed to mark notification as read"),
   });
 }

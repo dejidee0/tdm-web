@@ -4,16 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { usePortfolio } from "@/hooks/use-project";
-
-const CATEGORIES = [
-  "Guest Toilet Renovation",
-  "Construction (Shell to Finish)",
-  "Outdoor / Exterior Design",
-  "Bathroom Renovation",
-  "Interior Finishing",
-  "Interior Renovation",
-];
+import { usePortfolio, usePortfolioCategories } from "@/hooks/use-project";
 
 const CATEGORY_COLORS = {
   "Guest Toilet Renovation": "bg-black/75 text-blue-300 border-blue-400/60",
@@ -105,6 +96,10 @@ export default function PortfolioPage() {
     ...(activeCategory ? { category: activeCategory } : {}),
   });
 
+  // Derived from the published portfolio, the same source the admin form picks
+  // from — a tab can never offer a category no project carries.
+  const { data: categories } = usePortfolioCategories();
+
   const items = data?.items ?? [];
   const totalCount = data?.totalCount ?? 0;
   const totalPages = Math.ceil(totalCount / 12);
@@ -150,7 +145,7 @@ export default function PortfolioPage() {
             >
               All
             </FilterBtn>
-            {CATEGORIES.map((cat) => (
+            {(categories ?? []).map((cat) => (
               <FilterBtn
                 key={cat}
                 active={activeCategory === cat}

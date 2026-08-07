@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Edit2, Package, MoreVertical } from "lucide-react";
-import { useUpdateDeliveryAssignment } from "@/hooks/use-delivery";
+import { Edit2, Package, MoreVertical, Clock } from "lucide-react";
 
 const statusStyles = {
   warning: {
@@ -33,20 +32,8 @@ const statusStyles = {
   },
 };
 
-const deliveryPartners = [
-  "DHL Express",
-  "FedEx",
-  "UPS Ground",
-  "USPS Priority",
-  "Amazon Logistics",
-];
-
 export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
   const [selectedAssignments, setSelectedAssignments] = useState([]);
-  const [editingRow, setEditingRow] = useState(null);
-  const [editData, setEditData] = useState({});
-
-  const updateAssignment = useUpdateDeliveryAssignment();
 
   const handleSelectAssignment = (assignmentId) => {
     setSelectedAssignments((prev) =>
@@ -62,27 +49,6 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
     } else {
       setSelectedAssignments(assignments?.map((a) => a.id) || []);
     }
-  };
-
-  const handleEdit = (assignment) => {
-    setEditingRow(assignment.id);
-    setEditData({
-      deliveryPartner: assignment.deliveryPartner || "",
-      trackingNumber: assignment.trackingNumber || "",
-    });
-  };
-
-  const handleSave = (assignmentId) => {
-    updateAssignment.mutate({
-      id: assignmentId,
-      updates: editData,
-    });
-    setEditingRow(null);
-  };
-
-  const handleCancel = () => {
-    setEditingRow(null);
-    setEditData({});
   };
 
   if (isLoading) {
@@ -110,6 +76,17 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
 
   return (
     <div className="bg-surface rounded-xl border border-white/08 overflow-hidden">
+      {/* Assigning a delivery partner / tracking number has no backend
+          endpoint yet (BACKLOG.md #13) — surfaced honestly as upcoming rather
+          than left as a control that fails when clicked. */}
+      <div className="flex items-center gap-2 px-6 py-3 bg-info/10 border-b border-white/08">
+        <Clock size={14} className="text-info shrink-0" />
+        <p className="font-manrope text-[12px] text-info">
+          Assigning delivery partners and tracking numbers from this table is
+          coming soon.
+        </p>
+      </div>
+
       {/* Table Header */}
       <div className="overflow-x-auto table-scroll">
         <div className="px-6 py-4 bg-white/05 border-b border-white/08 min-w-[1020px]">
@@ -149,7 +126,6 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
           {assignments.map((assignment, index) => {
             const statusStyle = statusStyles[assignment.statusColor];
             const isSelected = selectedAssignments.includes(assignment.id);
-            const isEditing = editingRow === assignment.id;
 
             return (
               <motion.div
@@ -208,156 +184,79 @@ export default function DeliveryAssignmentsTable({ assignments, isLoading }) {
                   </span>
 
                   {/* Delivery Partner */}
-                  {isEditing ? (
-                    <select
-                      value={editData.deliveryPartner}
-                      onChange={(e) =>
-                        setEditData((prev) => ({
-                          ...prev,
-                          deliveryPartner: e.target.value,
-                        }))
-                      }
-                      className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
-                    >
-                      <option value="">Select Partner</option>
-                      {deliveryPartners.map((partner) => (
-                        <option key={partner} value={partner}>
-                          {partner}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      {assignment.deliveryPartner ? (
-                        <>
-                          <span className="w-4 h-4 bg-accent-solid rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
-                            📦
-                          </span>
-                          <span className="font-manrope text-[13px] text-white truncate">
-                            {assignment.deliveryPartner}
-                          </span>
-                        </>
-                      ) : (
-                        <select
-                          onChange={(e) => {
-                            handleEdit(assignment);
-                            setEditData((prev) => ({
-                              ...prev,
-                              deliveryPartner: e.target.value,
-                            }));
-                          }}
-                          className="w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
-                        >
-                          <option value="">Select Partner</option>
-                          {deliveryPartners.map((partner) => (
-                            <option key={partner} value={partner}>
-                              {partner}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {assignment.deliveryPartner ? (
+                      <>
+                        <span className="w-4 h-4 bg-accent-solid rounded flex items-center justify-center text-white text-[8px] flex-shrink-0">
+                          📦
+                        </span>
+                        <span className="font-manrope text-[13px] text-white truncate">
+                          {assignment.deliveryPartner}
+                        </span>
+                      </>
+                    ) : (
+                      <span
+                        className="font-manrope text-[12px] text-muted/60 italic"
+                        title="Assigning a delivery partner from this table is coming soon"
+                      >
+                        Not assigned yet
+                      </span>
+                    )}
+                  </div>
 
                   {/* Tracking Number */}
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      placeholder="Enter Tracking #"
-                      value={editData.trackingNumber}
-                      onChange={(e) =>
-                        setEditData((prev) => ({
-                          ...prev,
-                          trackingNumber: e.target.value,
-                        }))
-                      }
-                      className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
-                    />
+                  {assignment.trackingNumber ? (
+                    <span className="font-manrope text-[13px] text-white font-mono">
+                      {assignment.trackingNumber}
+                    </span>
                   ) : (
-                    <>
-                      {assignment.trackingNumber ? (
-                        <span className="font-manrope text-[13px] text-white font-mono">
-                          {assignment.trackingNumber}
-                        </span>
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="Enter Tracking #"
-                          onFocus={() => handleEdit(assignment)}
-                          className="px-3 py-2 bg-surface-raised border border-white/10 rounded-lg font-manrope text-[13px] text-muted placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
-                        />
-                      )}
-                    </>
+                    <span
+                      className="font-manrope text-[12px] text-muted/60 italic"
+                      title="Adding a tracking number from this table is coming soon"
+                    >
+                      —
+                    </span>
                   )}
 
                   {/* Actions */}
                   <div className="flex items-center gap-2">
-                    {isEditing ? (
-                      <>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleSave(assignment.id)}
-                          className="p-2 text-success hover:bg-success/10 rounded-lg transition-colors"
-                          title="Save"
-                        >
-                          ✓
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={handleCancel}
-                          className="p-2 text-danger hover:bg-danger/10 rounded-lg transition-colors"
-                          title="Cancel"
-                        >
-                          ✕
-                        </motion.button>
-                      </>
-                    ) : (
-                      <>
-                        {assignment.status === "Picked Up" && (
-                          <button className="font-manrope text-[13px] text-info hover:underline font-medium">
-                            Track
-                          </button>
-                        )}
-                        {assignment.status === "In Transit" && (
-                          <button className="font-manrope text-[13px] text-info hover:underline font-medium">
-                            Track
-                          </button>
-                        )}
-                        {(assignment.status === "Pending" ||
-                          assignment.status === "Urgent") && (
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleEdit(assignment)}
-                            className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
-                            title="Assign"
-                          >
-                            <Package size={18} />
-                          </motion.button>
-                        )}
-                        {assignment.status === "Assigned" && (
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleEdit(assignment)}
-                            className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
-                            title="Edit"
-                          >
-                            <Edit2 size={18} />
-                          </motion.button>
-                        )}
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
-                          title="More"
-                        >
-                          <MoreVertical size={18} />
-                        </motion.button>
-                      </>
+                    {assignment.status === "Picked Up" && (
+                      <button className="font-manrope text-[13px] text-info hover:underline font-medium">
+                        Track
+                      </button>
                     )}
+                    {assignment.status === "In Transit" && (
+                      <button className="font-manrope text-[13px] text-info hover:underline font-medium">
+                        Track
+                      </button>
+                    )}
+                    {(assignment.status === "Pending" ||
+                      assignment.status === "Urgent") && (
+                      <button
+                        disabled
+                        title="Assigning a delivery partner is coming soon"
+                        className="p-2 text-muted/30 rounded-lg cursor-not-allowed"
+                      >
+                        <Package size={18} />
+                      </button>
+                    )}
+                    {assignment.status === "Assigned" && (
+                      <button
+                        disabled
+                        title="Editing delivery details is coming soon"
+                        className="p-2 text-muted/30 rounded-lg cursor-not-allowed"
+                      >
+                        <Edit2 size={18} />
+                      </button>
+                    )}
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="p-2 text-muted hover:bg-white/08 rounded-lg transition-colors"
+                      title="More"
+                    >
+                      <MoreVertical size={18} />
+                    </motion.button>
                   </div>
                 </div>
               </motion.div>

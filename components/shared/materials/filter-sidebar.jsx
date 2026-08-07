@@ -182,7 +182,7 @@ function CollectionsFilter({
             collection.
           </p>
           <a
-            href="/contact?type=consultation"
+            href="/consultation"
             className="text-sm font-medium text-[#D4AF37]/80 hover:text-[#D4AF37] transition-colors inline-flex items-center gap-1 font-manrope"
           >
             Book a consultation →
@@ -434,7 +434,7 @@ function FullFilterSidebar({
           collection.
         </p>
         <a
-          href="/contact?type=consultation"
+          href="/consultation"
           className="text-sm font-medium text-[#D4AF37]/80 hover:text-[#D4AF37] transition-colors inline-flex items-center gap-1 font-manrope"
         >
           Book a consultation →

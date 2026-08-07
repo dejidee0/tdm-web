@@ -150,11 +150,15 @@ export default function SettingsPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleSaveProfile}
-              disabled={updateProfile.isLoading}
+              disabled={updateProfile.isPending}
               className="flex items-center gap-2 px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
             >
-              <Save size={16} />
-              Save Changes
+              {updateProfile.isPending ? (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              ) : (
+                <Save size={16} />
+              )}
+              {updateProfile.isPending ? "Saving…" : "Save Changes"}
             </motion.button>
           )}
         </div>
@@ -500,10 +504,10 @@ export default function SettingsPage() {
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={handlePasswordChange}
-                    disabled={changePassword.isLoading}
+                    disabled={changePassword.isPending}
                     className="w-full px-4 py-2.5 bg-accent-solid text-white rounded-lg font-manrope text-[13px] font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
                   >
-                    Update Password
+                    {changePassword.isPending ? "Updating…" : "Update Password"}
                   </motion.button>
                 </div>
               </div>
@@ -524,7 +528,8 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={security?.twoFactorEnabled || false}
                       onChange={(e) => handleToggle2FA(e.target.checked)}
-                      className="sr-only peer"
+                      disabled={toggle2FA.isPending}
+                      className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
@@ -571,7 +576,8 @@ export default function SettingsPage() {
                           e.target.checked,
                         )
                       }
-                      className="sr-only peer"
+                      disabled={updateNotifications.isPending}
+                      className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
@@ -597,7 +603,8 @@ export default function SettingsPage() {
                           e.target.checked,
                         )
                       }
-                      className="sr-only peer"
+                      disabled={updateNotifications.isPending}
+                      className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
@@ -620,7 +627,8 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         handleNotificationToggle("marketing", e.target.checked)
                       }
-                      className="sr-only peer"
+                      disabled={updateNotifications.isPending}
+                      className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                   </label>
@@ -653,10 +661,12 @@ export default function SettingsPage() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleDeactivateAccount}
-                disabled={deactivateAccount.isLoading}
+                disabled={deactivateAccount.isPending}
                 className="px-6 py-2.5 bg-surface border border-danger text-danger rounded-lg font-manrope text-[13px] font-medium hover:bg-danger-solid hover:text-white transition-colors disabled:opacity-50"
               >
-                Deactivate Account
+                {deactivateAccount.isPending
+                  ? "Deactivating…"
+                  : "Deactivate Account"}
               </motion.button>
             </motion.div>
           </>
@@ -694,7 +704,8 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       handleNotificationToggle("orderUpdates", e.target.checked)
                     }
-                    className="sr-only peer"
+                    disabled={updateNotifications.isPending}
+                    className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>
@@ -720,7 +731,8 @@ export default function SettingsPage() {
                         e.target.checked,
                       )
                     }
-                    className="sr-only peer"
+                    disabled={updateNotifications.isPending}
+                    className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>
@@ -743,7 +755,8 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       handleNotificationToggle("marketing", e.target.checked)
                     }
-                    className="sr-only peer"
+                    disabled={updateNotifications.isPending}
+                    className="sr-only peer disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <div className="w-11 h-6 bg-track-off peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-white/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-solid"></div>
                 </label>

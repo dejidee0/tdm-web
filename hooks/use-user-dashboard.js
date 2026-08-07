@@ -41,6 +41,26 @@ function useAuthGuard() {
   return { user, isAuthenticated };
 }
 
+/**
+ * Unwrap the response envelope.
+ *
+ * The dashboard API returns `ApiEnvelope<T>` = `{ success, message, data }`,
+ * but every widget reads its fields off the root — `order.title`, `design.style`,
+ * `consultations.upcoming`. Without this the components received the envelope,
+ * so `design.title` was `undefined` while `design` itself stayed truthy and
+ * `design.hasDesign !== false` still passed. The card rendered, and rendered
+ * blank: no title, a "Style:" with nothing after it, a broken image, and a
+ * "Generated" badge with no date. That is what the live dashboard was showing.
+ *
+ * It keys off the presence of a `data` key rather than its truthiness, because
+ * not every endpoint here is enveloped (see the shape table in CLAUDE.md) and
+ * because `data` is `null` precisely when there is no order or no design — the
+ * shorter `res?.data ?? res` would fall back to the envelope in exactly that
+ * case and hand the widget a truthy object again.
+ */
+const unwrap = (res) =>
+  res && typeof res === "object" && "data" in res ? (res.data ?? null) : (res ?? null);
+
 /** Shared options for dashboard queries — tune once, apply everywhere */
 const dashboardQueryOptions = {
   staleTime: 5 * 60 * 1000, // 5 min — data considered fresh
@@ -68,6 +88,7 @@ export function useRecentOrder() {
     queryFn: dashboardApi.getRecentOrder,
     enabled: isAuthenticated,
     ...dashboardQueryOptions,
+    select: unwrap,
   });
 }
 
@@ -99,6 +120,7 @@ export function useLatestDesign() {
     queryFn: dashboardApi.getLatestDesign,
     enabled: isAuthenticated,
     ...dashboardQueryOptions,
+    select: unwrap,
   });
 }
 
@@ -120,6 +142,7 @@ export function useConsultations() {
     queryFn: dashboardApi.getConsultations,
     enabled: isAuthenticated,
     ...consultationQueryOptions,
+    select: unwrap,
   });
 }
 
@@ -130,6 +153,7 @@ export function useSavedItems() {
     queryFn: dashboardApi.getSavedItems,
     enabled: isAuthenticated,
     ...dashboardQueryOptions,
+    select: unwrap,
   });
 }
 

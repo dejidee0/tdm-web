@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ImageIcon,
   Video,
@@ -375,37 +375,53 @@ function ContextTagPicker({ contextTags, setContextTags }) {
 }
 
 /**
- * A focused shell — deliberately no dashboard sidebar.
+ * The studio shell — a chromeless surface with one bar of its own.
  *
- * This page is a single, self-contained task, and it is the one dashboard view
- * with a two-column body, so it competes with the sidebar for horizontal space
- * in a way the list pages do not. Dropping the nav removes the distraction, hands
- * ~16rem back to the content, and makes the full-height-sidebar problem moot here.
+ * There is no site navbar and no dashboard sidebar above this (see
+ * app/ziora/studio/layout.jsx). Generation is a single sustained task with a
+ * two-column body and a large image preview, so the ~16rem the sidebar would
+ * take is handed back to the content, and the surrounding navigation — every
+ * item of which is a way to abandon the task halfway — is gone.
  *
- * The escape route is explicit instead: a "Back to My Designs" button, always the
- * first thing in the reading order.
+ * What replaces it is deliberately minimal: one way out, the mark, and the
+ * number that governs whether the user can act at all. The bar is sticky
+ * because the form is long enough to scroll past it, and an escape route you
+ * have to scroll back up to find is not an escape route.
  *
- * A max-width belongs here, unlike inside DashboardLayout — with no sidebar there
- * is nothing else constraining the column, and an unbounded form would sprawl on
- * a wide monitor.
+ * A max-width belongs here — with no sidebar there is nothing else constraining
+ * the column, and an unbounded form would sprawl on a wide monitor.
  */
-function FocusShell({ children }) {
+function StudioShell({ children, quota }) {
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-black">
+    <div className="min-h-screen bg-black">
+      <header
+        className="sticky top-0 z-50 border-b border-white/07"
+        style={{ background: "rgba(9,8,6,0.82)", backdropFilter: "blur(20px)" }}
+      >
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+          <Link
+            href="/dashboard/ai-designs"
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl pl-1 pr-3 text-[13px] font-medium text-white/60 transition-colors hover:text-white"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 transition-colors group-hover:border-white/25">
+              <ArrowLeft className="h-4 w-4" strokeWidth={1.75} />
+            </span>
+            <span className="hidden sm:inline">Back to My Designs</span>
+          </Link>
+
+          <div className="mx-auto flex items-center gap-2">
+            <Wand2 className="h-4 w-4 text-[#D4AF37]" strokeWidth={1.75} />
+            <span className="text-[13px] font-semibold tracking-[0.18em] text-white/70 uppercase">
+              Ziora Studio
+            </span>
+          </div>
+
+          <div className="ml-auto shrink-0">{quota}</div>
+        </div>
+      </header>
+
       <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">{children}</div>
     </div>
-  );
-}
-
-function BackToDesigns() {
-  return (
-    <Link
-      href="/dashboard/ai-designs"
-      className="inline-flex items-center gap-2 rounded-lg border border-white/12 px-3.5 py-2 text-[13px] font-medium text-white/70 transition-colors hover:border-white/30 hover:text-white"
-    >
-      <ArrowLeft className="h-4 w-4" strokeWidth={1.75} />
-      Back to My Designs
-    </Link>
   );
 }
 
@@ -427,13 +443,19 @@ function QuotaChip({ used, allowed, exhausted }) {
   );
 }
 
-export default function CreateDesignView() {
+export default function StudioView() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
 
   const [outputType, setOutputType] = useState(1);
   const [styleId, setStyleId] = useState(null);
-  const [prompt, setPrompt] = useState("");
+  // Seeded from `?prompt=`, which the empty gallery's starter ideas link with,
+  // so "try one of these" lands on a form that is already half filled in rather
+  // than the same blank box the user just declined. Read once, as the initial
+  // value — after that the field is the user's, and editing it must not be
+  // undone by a re-render.
+  const [prompt, setPrompt] = useState(() => searchParams.get("prompt") ?? "");
   const [contextTags, setContextTags] = useState([]);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
@@ -552,7 +574,7 @@ export default function CreateDesignView() {
   // ── Full-panel states ───────────────────────────────────────────────────────
   if (step === "generating" || step === "done" || step === "error") {
     return (
-      <FocusShell>
+      <StudioShell>
         <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
           {step === "generating" && (
             <>
@@ -615,34 +637,36 @@ export default function CreateDesignView() {
             </>
           )}
         </div>
-      </FocusShell>
+      </StudioShell>
     );
   }
 
   // ── Form ────────────────────────────────────────────────────────────────────
   return (
-    <FocusShell>
+    <StudioShell
+      quota={
+        <QuotaChip
+          used={generationsUsed}
+          allowed={generationsAllowed}
+          exhausted={quotaExhausted}
+        />
+      }
+    >
       <div className="w-full space-y-8 pb-28">
         <div>
-          <BackToDesigns />
-          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <h1 className="text-[28px] font-extrabold leading-tight text-white md:text-[32px]">
-              Create a New Design
-            </h1>
-            <QuotaChip
-              used={generationsUsed}
-              allowed={generationsAllowed}
-              exhausted={quotaExhausted}
-            />
-          </div>
-          <p className="mt-1 max-w-2xl text-[15px] font-medium text-white/50">
+          <h1 className="text-[28px] font-extrabold leading-tight text-white md:text-[32px]">
+            Create a New Design
+          </h1>
+          <p className="mt-1.5 max-w-2xl text-[15px] font-medium text-white/50">
             Upload your room, choose a style, and describe the vision — Ziora renders the rest.
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
           {/* Left: the room (visual anchor) */}
-          <div className="lg:sticky lg:top-4 lg:self-start">
+          {/* `top-20` = the sticky studio bar (h-16) plus a 16px gap. At `top-4`
+              the pinned upload panel slid underneath the bar on scroll. */}
+          <div className="lg:sticky lg:top-20 lg:self-start">
             <SectionHeader
               n="1"
               title="Photo of your space"
@@ -880,6 +904,6 @@ export default function CreateDesignView() {
           </motion.button>
         </div>
       </div>
-    </FocusShell>
+    </StudioShell>
   );
 }
