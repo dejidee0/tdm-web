@@ -7,20 +7,30 @@ import { FileText, Headphones, ChevronRight } from "lucide-react";
 import { use } from "react";
 
 import { useOrderDetails, useDownloadInvoice } from "@/hooks/use-order-details";
+import { showToast } from "@/components/shared/toast";
 import OrderTimeline from "@/components/shared/orders/timeline";
 import OrderItems from "@/components/shared/orders/items";
 import ShippingDetails from "@/components/shared/orders/shipping-details";
 import AIVisualizerPromo from "@/components/shared/orders/ai-promo";
 import HelpSection from "@/components/shared/orders/help";
 
+function formatDate(value) {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime())
+    ? null
+    : d.toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+}
+
 export default function OrderDetailsPage({ params }) {
   const { orderId } = use(params);
-  const { data: order, isLoading } = useOrderDetails(orderId);
+  const { data: order, isLoading, isError } = useOrderDetails(orderId);
   const downloadInvoice = useDownloadInvoice();
 
   const handleDownloadInvoice = () => {
     downloadInvoice.mutate(orderId, {
       onSuccess: (data) => window.open(data.url, "_blank"),
+      onError: (err) => showToast.error(err.message),
     });
   };
 
@@ -30,6 +40,29 @@ export default function OrderDetailsPage({ params }) {
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[14px] text-white/40">Loading order details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !order) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center pt-20 px-4">
+        <div className="text-center">
+          <p className="text-[16px] text-white mb-2">
+            {isError ? "Couldn't load this order" : "Order not found"}
+          </p>
+          <p className="text-[14px] text-white/40 mb-6">
+            {isError
+              ? "Your order is safe — this is a problem reaching it. Try again in a moment."
+              : "It may have been cancelled, or belong to another account."}
+          </p>
+          <Link
+            href="/dashboard/orders"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/10 text-[14px] text-white hover:bg-white/05 transition-colors"
+          >
+            Back to Orders
+          </Link>
         </div>
       </div>
     );
@@ -47,7 +80,7 @@ export default function OrderDetailsPage({ params }) {
             <ChevronRight className="w-3 h-3 text-white/20" />
             <Link href="/dashboard/orders" className="text-white/30 hover:text-white/60 transition-colors">Orders</Link>
             <ChevronRight className="w-3 h-3 text-white/20" />
-            <span className="text-[#D4AF37] font-medium">Order {order?.orderNumber}</span>
+            <span className="text-[#D4AF37] font-medium">Order {order.orderNumber}</span>
           </div>
         </div>
 
@@ -60,12 +93,12 @@ export default function OrderDetailsPage({ params }) {
         >
           <div>
             <h1 className="text-[40px] md:text-[48px] font-bold text-white leading-tight">
-              Order {order?.orderNumber}
+              Order {order.orderNumber}
             </h1>
             <p className="text-[14px] text-white/40 mt-2">
-              Placed on {order?.placedDate} · Total:{" "}
+              Placed on {formatDate(order.createdAt) ?? "—"} · Total:{" "}
               <span className="font-semibold text-[#D4AF37]">
-                ₦{order?.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                ₦{order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </span>
             </p>
           </div>
@@ -92,12 +125,12 @@ export default function OrderDetailsPage({ params }) {
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-8">
           <div className="space-y-6">
-            <OrderTimeline estimatedDelivery={order?.estimatedDelivery} timeline={order?.timeline} />
-            <OrderItems items={order?.items} />
+            <OrderTimeline order={order} />
+            <OrderItems items={order.items} />
           </div>
           <div className="space-y-6">
-            <ShippingDetails shipping={order?.shipping} tracking={order?.tracking} />
-            <AIVisualizerPromo items={order?.items} />
+            <ShippingDetails order={order} />
+            <AIVisualizerPromo items={order.items} />
             <HelpSection />
           </div>
         </div>

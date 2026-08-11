@@ -254,13 +254,19 @@ export default function OrdersPage() {
       )}
 
       {/* Orders Table */}
-      <OrdersTable orders={data?.orders} isLoading={isLoading} />
+      {/* GET /vendor/orders answers { items, total, page, pageSize } — no
+          `orders`/`pagination` keys, and no `totalPages` (unlike the enveloped
+          Paged<T> shape other list endpoints use). This read `data?.orders`
+          and `data.pagination.page/totalPages` until 2026-08-11, which was
+          always undefined against the real response — the table silently
+          showed "No orders found" and pagination never rendered, regardless
+          of how many orders actually existed. See lib/api/schemas/orders.ts. */}
+      <OrdersTable orders={data?.items} isLoading={isLoading} />
 
-      {/* Pagination */}
-      {data?.pagination && (
+      {data?.total > (data?.pageSize ?? filters.limit) && (
         <Pagination
-          currentPage={data.pagination.page}
-          totalPages={data.pagination.totalPages}
+          currentPage={data.page}
+          totalPages={Math.ceil(data.total / (data.pageSize || filters.limit))}
           onPageChange={handlePageChange}
         />
       )}

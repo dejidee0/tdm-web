@@ -9,8 +9,9 @@ export default function AIVisualizerPromo({ items }) {
   // The copy used to name "the Italian Carrara Marble" regardless of what was
   // ordered — a product from the old mock catalogue that no order can contain.
   // Name the item the shopper actually bought, or say nothing specific.
+  // Order line items carry `productName`, not `name` (lib/api/schemas/orders.ts).
   const visualizable = items?.find((item) =>
-    /\b(tile|tiles|marble|granite|stone|flooring)\b/i.test(item.name ?? ""),
+    /\b(tile|tiles|marble|granite|stone|flooring)\b/i.test(item.productName ?? ""),
   );
 
   if (!visualizable) return null;
@@ -40,7 +41,7 @@ export default function AIVisualizerPromo({ items }) {
 
         <h3 className="text-[20px] font-bold text-white mb-2">Visualize your space</h3>
         <p className="text-[14px] text-white/60 mb-6 leading-relaxed">
-          While you wait, see how your {visualizable.name} looks in your own
+          While you wait, see how your {visualizable.productName} looks in your own
           space using Ziora.
         </p>
 

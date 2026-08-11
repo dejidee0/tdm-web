@@ -37,13 +37,13 @@ export default function OrdersPage() {
     if (!hasOrders) return;
 
     const rows = [
-      ["Order ID", "Date", "Items", "Total", "Status"],
+      ["Order Number", "Date", "Items", "Total", "Status"],
       ...orders.map((order) => [
-        order.id,
-        order.date,
-        order.items.map((i) => i.name).join(" | "),
+        order.orderNumber,
+        order.createdAt,
+        order.items.map((i) => i.productName).join(" | "),
         order.total.toFixed(2),
-        order.status,
+        order.statusName,
       ]),
     ];
 

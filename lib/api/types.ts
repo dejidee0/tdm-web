@@ -42,6 +42,21 @@ import type {
   adminProductUpdateResponse,
 } from "./schemas/admin-products";
 import type { aiStyleSchema, aiStylesResponse } from "./schemas/ai";
+import type {
+  orderItemSchema,
+  orderListResponse,
+  orderResponse,
+  orderSchema,
+  vendorOrderListItemSchema,
+  vendorOrderListResponse,
+} from "./schemas/orders";
+import type {
+  checkoutAddressSchema,
+  checkoutDataResponse,
+  checkoutItemSchema,
+  checkoutPaymentResponse,
+  checkoutVerifyResponse,
+} from "./schemas/checkout";
 
 // ── Envelopes ────────────────────────────────────────────────────────────────
 
@@ -120,6 +135,30 @@ export type AdminProductImageUploadResponse = z.infer<typeof adminProductImageUp
 /** GET /ai/styles — a bare array of { id, name }. */
 export type AiStyle = z.infer<typeof aiStyleSchema>;
 export type AiStylesResponse = z.infer<typeof aiStylesResponse>;
+
+/**
+ * `status`/`paymentStatus` are unnamed integer enums (0-7 for OrderStatus,
+ * per the spec — CLAUDE.md). Read `statusName`/`paymentStatusName` instead of
+ * mapping the number yourself.
+ */
+export type Order = z.infer<typeof orderSchema>;
+export type OrderItem = z.infer<typeof orderItemSchema>;
+export type OrderResponse = z.infer<typeof orderResponse>;
+/** GET /orders/my-orders — `data` is a bare Order[], not `data.items`. */
+export type OrderListResponse = z.infer<typeof orderListResponse>;
+
+/** A row from GET /vendor/orders (list) — not the same shape as Order. */
+export type VendorOrderListItem = z.infer<typeof vendorOrderListItemSchema>;
+export type VendorOrderListResponse = z.infer<typeof vendorOrderListResponse>;
+
+/** GET /Checkout — no envelope. */
+export type CheckoutItem = z.infer<typeof checkoutItemSchema>;
+export type CheckoutAddress = z.infer<typeof checkoutAddressSchema>;
+export type CheckoutDataResponse = z.infer<typeof checkoutDataResponse>;
+/** POST /Checkout/payment — no envelope; creates an order as a side effect. */
+export type CheckoutPaymentResponse = z.infer<typeof checkoutPaymentResponse>;
+/** GET /Checkout/payment/paystack/verify/{reference} — no envelope. */
+export type CheckoutVerifyResponse = z.infer<typeof checkoutVerifyResponse>;
 
 /** Query params for the image-upload endpoint. The file goes in the body. */
 export interface UploadImageParams {

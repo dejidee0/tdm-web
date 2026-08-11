@@ -37,8 +37,24 @@ function CheckoutVerifyContent() {
     checkoutApi
       .verifyPaystackPayment(reference)
       .then((data) => {
-        setOrderId(data?.orderId || data?.order?.id || null);
-        setStatus("success");
+        // The HTTP call succeeding (`success: true`) only means the request
+        // was answered — it does not mean the payment was. A reference that
+        // was never completed at Paystack comes back 200 with
+        // `paymentStatus: "Failed"` (confirmed live, contracts/checkout.json).
+        // Only an explicitly paid-looking status counts as success; anything
+        // else — including a status this app has never seen — shows the
+        // "couldn't confirm" state rather than false-positive confetti.
+        setOrderId(data?.orderId || null);
+        if (data?.paymentStatus && /paid|success|complete/i.test(data.paymentStatus)) {
+          setStatus("success");
+        } else {
+          setErrorMessage(
+            data?.paymentStatus === "Failed"
+              ? "Your payment was not completed."
+              : `We couldn't confirm this payment (status: ${data?.paymentStatus ?? "unknown"}). If you were charged, contact support with your order number.`,
+          );
+          setStatus("failed");
+        }
       })
       .catch((err) => {
         setErrorMessage(err.message || "Payment could not be verified.");

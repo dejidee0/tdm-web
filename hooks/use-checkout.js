@@ -17,9 +17,11 @@ export function useSubmitPayment() {
   return useMutation({
     mutationFn: checkoutApi.submitPayment,
     onSuccess: () => {
-      // Invalidate cart and checkout data after successful payment
-      queryClient.invalidateQueries(["cart"]);
-      queryClient.invalidateQueries(["checkout"]);
+      // v5 takes a filters object, not a bare key array — the old calls here
+      // matched every query (filters.queryKey was undefined) rather than
+      // scoping to cart/checkout.
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["checkout"] });
     },
   });
 }

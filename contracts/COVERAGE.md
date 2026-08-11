@@ -5,7 +5,7 @@
 The backend's OpenAPI document declares all 278 operations as a bare `200: OK`
 with no response body type. This table records what we have actually observed.
 
-**12 of 278 operations (4.3%) have a validated schema.**
+**18 of 278 operations (6.5%) have a validated schema.**
 
 `npm run contract:coverage -- <Tag>` lists a tag's operations and their state.
 
@@ -34,7 +34,7 @@ with no response body type. This table records what we have actually observed.
 | Auth | 0 | 15 |
 | Cart | 1 | 8 |
 | Categories | 1 | 7 |
-| Checkout | 0 | 4 |
+| Checkout | 2 | 4 |
 | Contact | 0 | 1 |
 | Dashboard | 0 | 5 |
 | DesignSessions | 0 | 7 |
@@ -42,7 +42,7 @@ with no response body type. This table records what we have actually observed.
 | Inspection | 0 | 2 |
 | Inspiration | 0 | 1 |
 | Lookups | 0 | 10 |
-| Orders | 0 | 7 |
+| Orders | 3 | 7 |
 | PaystackWebhook | 0 | 1 |
 | Portfolio | 0 | 2 |
 | Pricing | 0 | 1 |
@@ -53,7 +53,7 @@ with no response body type. This table records what we have actually observed.
 | Saved | 0 | 7 |
 | Subscription | 0 | 6 |
 | Upload | 0 | 1 |
-| Vendor | 0 | 25 |
+| Vendor | 1 | 25 |
 | VendorPortfolio | 0 | 9 |
 
 ## Modelled operations
@@ -61,18 +61,24 @@ with no response body type. This table records what we have actually observed.
 - `DELETE /api/v1/admin/AdminProducts/{id}` → `adminProductDeleteResponse`
 - `GET /api/v1/Cart/related` → `cartRelatedResponse`
 - `GET /api/v1/Categories` → `categoryListResponse`
+- `GET /api/v1/Checkout` → `checkoutDataResponse`
 - `GET /api/v1/Products` → `productListResponse`
 - `GET /api/v1/Products/featured` → `productArrayResponse`
 - `GET /api/v1/ai/styles` → `aiStylesResponse`
 - `GET /api/v1/flooring` → `flooringResponse`
 - `GET /api/v1/materials/list` → `materialListResponse`
+- `GET /api/v1/orders/my-orders` → `orderListResponse`
+- `GET /api/v1/orders/{orderId}` → `orderResponse`
+- `GET /api/v1/vendor/orders` → `vendorOrderListResponse`
+- `POST /api/v1/Checkout/payment` → `checkoutPaymentResponse`
 - `POST /api/v1/admin/AdminProducts` → `adminProductCreateResponse`
 - `POST /api/v1/admin/AdminProducts/bulk` → `adminProductBulkResponse`
 - `POST /api/v1/admin/AdminProducts/{productId}/images/upload` → `adminProductImageUploadResponse`
+- `POST /api/v1/orders` → `orderResponse`
 - `PUT /api/v1/admin/AdminProducts/{id}` → `adminProductUpdateResponse`
 
 ## Recorded but not modelled
 
 - `GET /api/v1/Cart` — Only ever observed empty, so the item shape is genuinely unknown. Modelling it now would be a guess.
 - `GET /api/v1/account/me`
-- `GET /api/v1/orders/my-orders`
+- `GET /api/v1/portfolio` — The public before/after showcase behind /project. Enveloped, but the pagination block is the un-enveloped style — data.{items,totalCount,page,pageSize,totalPages,hasMore}, not Paged's pageNumber/hasNextPage. Each item carries beforeImages[], afterImages[], referenceImages[] and thumbnailUrl.
