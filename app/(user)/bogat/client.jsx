@@ -158,17 +158,18 @@ export default function BogatClient() {
           HERO
       ═══════════════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Desktop — right image column */}
-        <div className="hidden lg:block absolute inset-y-0 right-0 w-[48%]">
+        {/* Desktop — full-bleed image, text emerges from the gradient rather
+            than sitting beside a hard-edged image column */}
+        <div className="hidden lg:block absolute inset-0">
           <div className="relative h-full w-full">
             <Image
-              src="/hero/re-imagine.png"
+              src="/hero/bogat-hero.png"
               alt="Bogat premium materials showroom"
               fill
               priority
               className="object-cover object-center"
             />
-            <div className="absolute inset-y-0 left-0 w-48 bg-linear-to-r from-black to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-black via-black/85 to-black/40" />
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute bottom-0 inset-x-0 h-28 bg-linear-to-t from-black to-transparent" />
           </div>
@@ -177,7 +178,7 @@ export default function BogatClient() {
         {/* Mobile — background image */}
         <div className="lg:hidden absolute inset-0">
           <Image
-            src="/hero/re-imagine.png"
+            src="/hero/bogat-hero.png"
             alt="Bogat premium materials"
             fill
             priority
