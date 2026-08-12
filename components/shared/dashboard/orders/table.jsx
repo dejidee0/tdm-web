@@ -3,8 +3,10 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
 import { useState } from "react";
+import { useResumePayment } from "@/hooks/use-checkout";
+import { showToast } from "@/components/shared/toast";
 
 const PLACEHOLDER = "/product-placeholder.svg";
 
@@ -31,6 +33,25 @@ function formatDate(value) {
 export default function OrdersTable({ orders, isLoading, isError }) {
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
+  const [resumingOrderId, setResumingOrderId] = useState(null);
+  const resumePayment = useResumePayment();
+
+  const handleResumePayment = (order) => {
+    setResumingOrderId(order.id);
+    resumePayment.mutate(order, {
+      onSuccess: (data) => {
+        if (data?.authorizationUrl) window.location.href = data.authorizationUrl;
+        else {
+          setResumingOrderId(null);
+          showToast.error("Could not resume this payment. Try checking out again.");
+        }
+      },
+      onError: (err) => {
+        setResumingOrderId(null);
+        showToast.error(err.message);
+      },
+    });
+  };
 
   if (isLoading) return <LoadingSkeleton />;
 
@@ -71,9 +92,9 @@ export default function OrdersTable({ orders, isLoading, isError }) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-white/08">
-              {["Order ID", "Date", "Items", "Total", "Status"].map((h, i) => (
+              {["Order ID", "Date", "Items", "Total", "Status", ""].map((h, i) => (
                 <th
-                  key={h}
+                  key={h || "actions"}
                   className={`px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest ${i === 3 ? "text-right" : "text-left"}`}
                 >
                   {h}
@@ -123,6 +144,22 @@ export default function OrdersTable({ orders, isLoading, isError }) {
                 <td className="px-6 py-4">
                   <StatusBadge status={order.statusName} />
                 </td>
+                <td className="px-6 py-4 text-right">
+                  {order.paymentStatusName === "Pending" && order.paymentReference && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleResumePayment(order);
+                      }}
+                      disabled={resumingOrderId === order.id}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12px] font-medium text-black hover:opacity-90 transition-opacity disabled:opacity-50 whitespace-nowrap"
+                      style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+                    >
+                      <CreditCard className="w-3.5 h-3.5" />
+                      {resumingOrderId === order.id ? "Redirecting…" : "Complete Payment"}
+                    </button>
+                  )}
+                </td>
               </motion.tr>
             ))}
           </tbody>
@@ -171,6 +208,21 @@ export default function OrdersTable({ orders, isLoading, isError }) {
               <span className="text-[13px] text-white/40">Total</span>
               <span className="text-[16px] font-semibold text-white">{fmt(order.total)}</span>
             </div>
+
+            {order.paymentStatusName === "Pending" && order.paymentReference && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleResumePayment(order);
+                }}
+                disabled={resumingOrderId === order.id}
+                className="mt-3 w-full inline-flex items-center justify-center gap-2 h-11 rounded-lg text-[14px] font-medium text-black hover:opacity-90 transition-opacity disabled:opacity-50"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+              >
+                <CreditCard className="w-4 h-4" />
+                {resumingOrderId === order.id ? "Redirecting…" : "Complete Payment"}
+              </button>
+            )}
           </motion.div>
         ))}
       </div>

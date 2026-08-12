@@ -3,10 +3,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { FileText, Headphones, ChevronRight } from "lucide-react";
+import { FileText, Headphones, ChevronRight, CreditCard } from "lucide-react";
 import { use } from "react";
 
 import { useOrderDetails, useDownloadInvoice } from "@/hooks/use-order-details";
+import { useResumePayment } from "@/hooks/use-checkout";
 import { showToast } from "@/components/shared/toast";
 import OrderTimeline from "@/components/shared/orders/timeline";
 import OrderItems from "@/components/shared/orders/items";
@@ -26,10 +27,21 @@ export default function OrderDetailsPage({ params }) {
   const { orderId } = use(params);
   const { data: order, isLoading, isError } = useOrderDetails(orderId);
   const downloadInvoice = useDownloadInvoice();
+  const resumePayment = useResumePayment();
 
   const handleDownloadInvoice = () => {
     downloadInvoice.mutate(orderId, {
       onSuccess: (data) => window.open(data.url, "_blank"),
+      onError: (err) => showToast.error(err.message),
+    });
+  };
+
+  const handleResumePayment = () => {
+    resumePayment.mutate(order, {
+      onSuccess: (data) => {
+        if (data?.authorizationUrl) window.location.href = data.authorizationUrl;
+        else showToast.error("Could not resume this payment. Try checking out again.");
+      },
       onError: (err) => showToast.error(err.message),
     });
   };
@@ -83,6 +95,33 @@ export default function OrderDetailsPage({ params }) {
             <span className="text-[#D4AF37] font-medium">Order {order.orderNumber}</span>
           </div>
         </div>
+
+        {/* Payment still pending — the checkout that created this order was
+            never confirmed (tab closed, connection dropped). The Paystack
+            session is still live; resuming reuses it instead of starting a
+            new order. Not shown once paymentStatusName moves past Pending. */}
+        {order.paymentStatusName === "Pending" && order.paymentReference && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between rounded-xl border p-4 mb-6"
+            style={{ background: "rgba(212,175,55,0.06)", borderColor: "rgba(212,175,55,0.20)" }}
+          >
+            <p className="text-[14px] text-white/70">
+              This order is awaiting payment. If you already paid and it hasn&rsquo;t
+              updated, wait a moment before trying again.
+            </p>
+            <button
+              onClick={handleResumePayment}
+              disabled={resumePayment.isPending}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[14px] font-medium text-black hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+              style={{ background: "linear-gradient(135deg, #D4AF37 0%, #b8962e 100%)" }}
+            >
+              <CreditCard className="w-4 h-4" />
+              {resumePayment.isPending ? "Redirecting…" : "Complete Payment"}
+            </button>
+          </motion.div>
+        )}
 
         {/* Header */}
         <motion.div

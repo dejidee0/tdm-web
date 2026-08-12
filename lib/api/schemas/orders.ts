@@ -30,13 +30,18 @@ export const orderItemSchema = z.looseObject({
  * The full order, returned identically by `POST /orders` and
  * `GET /orders/{orderId}` (and inside the array from `GET /orders/my-orders`).
  *
- * `paymentMethod`/`paymentMethodName`, `trackingNumber`, `shippedAt`,
- * `deliveredAt`, `cancelledAt`, `cancellationReason`, `paymentReference`,
- * `paidAt`, `shippingNotes`, `adminNotes`, `guestEmail`, `guestPhone`, and
- * `designSessionId` were null on every order observed so far — the one order
- * placed for this recording was card-unpaid and cancelled, not delivered, so
- * none of the lifecycle fields had a chance to populate. Widen off real data
- * once a paid/shipped/delivered order has been seen.
+ * `paymentMethod`/`paymentMethodName`/`paymentReference` were widened
+ * 2026-08-12: null before a payment attempt, then `1`/`"Paystack"`/the
+ * idempotency key sent to `POST /checkout/payment` once one has been made
+ * (confirmed live — an order created via `POST /orders` directly, bypassing
+ * checkout, still shows all three null). `paymentMethod` is a bare integer
+ * with only `1` decoded so far; treat other values as unconfirmed.
+ *
+ * `trackingNumber`, `shippedAt`, `deliveredAt`, `cancelledAt`,
+ * `cancellationReason`, `paidAt`, `shippingNotes`, `adminNotes`,
+ * `guestEmail`, `guestPhone`, and `designSessionId` are still `z.unknown()`
+ * — null on every order observed so far, including paid ones. Widen off real
+ * data once a shipped/delivered/refunded order has been seen.
  */
 export const orderSchema = z.looseObject({
   id: z.string(),
@@ -52,8 +57,8 @@ export const orderSchema = z.looseObject({
   statusName: z.string(),
   paymentStatus: z.number(),
   paymentStatusName: z.string(),
-  paymentMethod: z.unknown(),
-  paymentMethodName: z.unknown(),
+  paymentMethod: z.number().nullable(),
+  paymentMethodName: z.string().nullable(),
   subTotal: z.number(),
   shippingCost: z.number(),
   tax: z.number(),
@@ -65,7 +70,7 @@ export const orderSchema = z.looseObject({
   shippingCity: z.string(),
   shippingState: z.string(),
   shippingNotes: z.unknown(),
-  paymentReference: z.unknown(),
+  paymentReference: z.string().nullable(),
   paidAt: z.unknown(),
   trackingNumber: z.unknown(),
   shippedAt: z.unknown(),
