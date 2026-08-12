@@ -9,39 +9,27 @@ export const DELIVERY_QUERY_KEYS = {
 
 // Hook to fetch delivery assignments
 export function useDeliveryAssignments(filters = {}) {
-  const {
-    page = 1,
-    limit = 10,
-    search = "",
-    status = "all",
-    dateRange = null,
-  } = filters;
+  const { page = 1, limit = 10, status = "all" } = filters;
 
   return useQuery({
-    queryKey: DELIVERY_QUERY_KEYS.assignments({
-      page,
-      limit,
-      search,
-      status,
-      dateRange,
-    }),
+    queryKey: DELIVERY_QUERY_KEYS.assignments({ page, limit, status }),
     queryFn: async () => {
       const response = await vendorDeliveriesAPI.getDeliveries({
         page,
         limit,
-        search,
         status,
-        dateRange,
       });
 
-      // Transform backend response to match expected frontend structure
+      // GET /vendor/deliveries has no envelope: { items, total, page, pageSize }.
+      // This read `response.totalCount`, which doesn't exist on the real
+      // response (real field is `total`) — pagination always showed 0 results.
       return {
         assignments: response.items || [],
         pagination: {
-          page,
-          limit,
-          total: response.totalCount || 0,
-          totalPages: Math.ceil((response.totalCount || 0) / limit),
+          page: response.page ?? page,
+          limit: response.pageSize ?? limit,
+          total: response.total || 0,
+          totalPages: Math.ceil((response.total || 0) / (response.pageSize || limit)),
         },
       };
     },
@@ -50,21 +38,17 @@ export function useDeliveryAssignments(filters = {}) {
   });
 }
 
-// Hook to update delivery assignment
+/**
+ * PATCH /api/v1/vendor/deliveries/{orderId} — now real. Was rejecting with a
+ * placeholder error because no endpoint existed (BACKLOG.md); it does now,
+ * with exactly `{ deliveryPartner, trackingNumber }`.
+ */
 export function useUpdateDeliveryAssignment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    // No backend endpoint accepts a deliveryPartner/trackingNumber update on a
-    // delivery assignment — see BACKLOG.md #13. This used to call the
-    // undefined `deliveryAPI` global and throw an uncaught ReferenceError on
-    // every Save; rejecting here instead lets the button's onError show the
-    // vendor a real message rather than crashing silently.
-    mutationFn: () => {
-      throw new Error(
-        "Delivery assignment updates aren't available yet. This has been flagged for the backend team.",
-      );
-    },
+    mutationFn: ({ orderId, updates }) =>
+      vendorDeliveriesAPI.updateDelivery(orderId, updates),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["delivery", "assignments"] });
     },

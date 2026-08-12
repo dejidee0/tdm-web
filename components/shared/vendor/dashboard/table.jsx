@@ -31,7 +31,7 @@ function formatDate(value) {
     : d.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" });
 }
 
-export default function OrdersTable({ orders, isLoading }) {
+export default function OrdersTable({ orders, isLoading, isError }) {
   const router = useRouter();
 
   if (isLoading) {
@@ -43,6 +43,22 @@ export default function OrdersTable({ orders, isLoading }) {
             Loading orders...
           </p>
         </div>
+      </div>
+    );
+  }
+
+  // GET /vendor/orders 500s (NullReferenceException) once pagination crosses
+  // past the first ~6 orders for a vendor — confirmed live 2026-08-12,
+  // BACKLOG.md. Without this, that response's `data?.items === undefined`
+  // fell into the empty-state branch below and silently claimed "No orders
+  // found" for a vendor who very much has orders.
+  if (isError) {
+    return (
+      <div className="bg-surface rounded-xl border border-white/08 p-12 text-center">
+        <p className="text-muted font-manrope text-[14px]">
+          Couldn&rsquo;t load orders. Your orders are safe — this is a problem
+          reaching them. Try again in a moment.
+        </p>
       </div>
     );
   }
