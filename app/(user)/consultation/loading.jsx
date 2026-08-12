@@ -1,7 +1,8 @@
 /**
- * Mirrors app/(user)/consultation/client.jsx step 1: header, stepper, the
- * stacked list of consultation options and the running-total panel beneath it.
- * A spinner here would tell the user nothing about what is arriving.
+ * Mirrors app/(user)/consultation/client.jsx step 1: header, stepper, and the
+ * stacked list of consultation options (single-select, each row shows its own
+ * real fee/duration/format — GET /consultations/types). A spinner here would
+ * tell the user nothing about what is arriving.
  *
  * The list is one bordered block with divided rows, not a 2-up grid of cards —
  * if this drifts from the real layout the page will visibly jump when it
@@ -53,12 +54,6 @@ export default function ConsultationLoading() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Running total */}
-        <div className="mt-4 border border-z-line bg-z-deep p-4 sm:p-5 flex items-center justify-between gap-4">
-          <div className="h-3 w-40 max-w-full bg-white/5" />
-          <div className="h-6 w-28 bg-white/8" />
         </div>
 
         {/* Property type field */}

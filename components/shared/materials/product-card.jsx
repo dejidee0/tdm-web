@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { useIsAuthenticated } from "@/hooks/use-auth";
 import { useIsSaved, useToggleSave } from "@/hooks/use-saved";
 
@@ -65,6 +65,20 @@ function SaveButton({ productId, className = "", iconClass = "w-4 h-4" }) {
     >
       <HeartIcon filled={isSaved} loading={isLoading} className={iconClass} />
     </button>
+  );
+}
+
+// Only rendered once a product has at least one real review — averageRating
+// is 0 and reviewCount is 0 on every unreviewed product, and "0.0 ★ (0)" on
+// every card would read as broken, not honest.
+function RatingBadge({ averageRating, reviewCount, className = "" }) {
+  if (!reviewCount) return null;
+  return (
+    <span className={`inline-flex items-center gap-1 text-[11px] text-white/50 font-manrope ${className}`}>
+      <Star className="h-3 w-3 fill-[#D4AF37] text-[#D4AF37]" />
+      {averageRating.toFixed(1)}
+      <span className="text-white/30">({reviewCount})</span>
+    </span>
   );
 }
 
@@ -150,6 +164,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
               <h3 className="font-poppins text-lg font-semibold text-white leading-snug">
                 {product.name}
               </h3>
+              <RatingBadge
+                averageRating={product.averageRating}
+                reviewCount={product.reviewCount}
+                className="mt-1"
+              />
               {product.shortDescription && (
                 <p className="mt-1.5 text-sm text-white/45 line-clamp-2 font-manrope">
                   {product.shortDescription}
@@ -238,6 +257,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
           <h3 className="font-poppins text-[15px] font-semibold leading-snug text-white line-clamp-2">
             {product.name}
           </h3>
+          <RatingBadge
+            averageRating={product.averageRating}
+            reviewCount={product.reviewCount}
+            className="mt-1"
+          />
 
           <div className="mt-auto pt-4">
             <div className="flex items-baseline gap-2">

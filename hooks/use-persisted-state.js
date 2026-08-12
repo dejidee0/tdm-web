@@ -102,3 +102,23 @@ export const CHECKOUT_KEYS = {
  * being the reason `/checkout` redirects instead of rendering.
  */
 export const CHECKOUT_ATTEMPT_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
+/**
+ * Same role as `CHECKOUT_KEYS.attempt`, for consultation booking payment —
+ * `localStorage`, `{ storage: "local" }`. `{ consultationId, createdAt }`.
+ *
+ * The failure mode this guards against is narrower than checkout's:
+ * `BookConsultationRequestDto` has no idempotency key, so a lost response
+ * after `POST /consultations` genuinely cannot be deduped by resubmitting —
+ * only the slot-locking side effect ("That consultation slot has just been
+ * booked") catches an exact resubmit, and it reads as a confusing error, not
+ * a safe no-op. This key's job is narrower and still real: once a
+ * consultation id is known, never call `book()` again for that attempt —
+ * only ever retry `initialize-payment` against the same id, which is safe to
+ * repeat (see lib/api/consultations.js).
+ */
+export const CONSULTATION_KEYS = {
+  attempt: "tbm_consultation_attempt",
+};
+
+export const CONSULTATION_ATTEMPT_TTL_MS = 30 * 60 * 1000; // 30 minutes

@@ -43,6 +43,22 @@ import type {
 } from "./schemas/admin-products";
 import type { aiStyleSchema, aiStylesResponse } from "./schemas/ai";
 import type {
+  productReviewsDataSchema,
+  productReviewsResponse,
+} from "./schemas/reviews";
+import type {
+  consultationAvailabilityResponse,
+  consultationBookingResponse,
+  consultationListResponse,
+  consultationPaymentInitResponse,
+  consultationResponse,
+  consultationSchema,
+  consultationSlotSchema,
+  consultationTypeSchema,
+  consultationTypesResponse,
+  consultationVerifyPaymentResponse,
+} from "./schemas/consultations";
+import type {
   orderItemSchema,
   orderListResponse,
   orderResponse,
@@ -135,6 +151,33 @@ export type AdminProductImageUploadResponse = z.infer<typeof adminProductImageUp
 /** GET /ai/styles — a bare array of { id, name }. */
 export type AiStyle = z.infer<typeof aiStyleSchema>;
 export type AiStylesResponse = z.infer<typeof aiStylesResponse>;
+
+/**
+ * GET /products/{productId}/reviews. `items` is `unknown[]` — every product
+ * checked has zero reviews, so the element shape has never been observed.
+ * Widen `productReviewsDataSchema` (lib/api/schemas/reviews.ts) once one has.
+ */
+export type ProductReviewsData = z.infer<typeof productReviewsDataSchema>;
+export type ProductReviewsResponse = z.infer<typeof productReviewsResponse>;
+
+/**
+ * `status` is a real string the backend names itself — observed:
+ * "PendingPayment", "Confirmed", "Cancelled". Render as-is; the full set is
+ * unconfirmed, so don't build a switch that assumes only these three.
+ */
+export type ConsultationType = z.infer<typeof consultationTypeSchema>;
+export type ConsultationSlot = z.infer<typeof consultationSlotSchema>;
+export type Consultation = z.infer<typeof consultationSchema>;
+export type ConsultationTypesResponse = z.infer<typeof consultationTypesResponse>;
+export type ConsultationAvailabilityResponse = z.infer<typeof consultationAvailabilityResponse>;
+export type ConsultationBookingResponse = z.infer<typeof consultationBookingResponse>;
+export type ConsultationResponse = z.infer<typeof consultationResponse>;
+/** GET /consultations/mine — `data` is a bare Consultation[], not `data.items`. */
+export type ConsultationListResponse = z.infer<typeof consultationListResponse>;
+/** POST /consultations/{id}/initialize-payment — enveloped, unlike checkout's equivalent. */
+export type ConsultationPaymentInitResponse = z.infer<typeof consultationPaymentInitResponse>;
+/** POST /consultations/verify-payment — only the failure shape (400) is confirmed. */
+export type ConsultationVerifyPaymentResponse = z.infer<typeof consultationVerifyPaymentResponse>;
 
 /**
  * `status`/`paymentStatus` are unnamed integer enums (0-7 for OrderStatus,

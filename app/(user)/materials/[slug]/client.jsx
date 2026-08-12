@@ -31,6 +31,7 @@ import ProjectCard from "@/components/shared/materials/details/card";
 import SimilarStyles from "@/components/shared/materials/details/similar";
 import ProductTabs from "@/components/shared/materials/details/tabs";
 import ProductGallery from "@/components/shared/materials/details/product-gallery";
+import ProductReviews from "@/components/shared/materials/details/product-reviews";
 
 const PLACEHOLDER =
   "/product-placeholder.svg";
@@ -954,9 +955,11 @@ export default function MaterialDetailClient({
         </section>
       )}
 
-      {/* Reviews intentionally omitted: there is no endpoint for verified
-          purchasers to leave a review, so a ratings block would be fabricated.
-          Restore this section once a reviews API exists. */}
+      {/* GET/POST /products/{productId}/reviews exists now — reviews API
+          delivered 2026-08-12, BACKLOG.md. */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <ProductReviews productId={product.id} />
+      </div>
 
       {/* ── Similar products ───────────────────────────────────────────────
           Guarded so the padded wrapper does not leave a gap on the many

@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: "Book a Consultation | TBM Building Services",
     description:
-      "Pick a consultation type, choose a date and time, describe your project and share photos. A TBM consultant confirms within 24 hours.",
+      "Pick a consultation type, choose a real available time, and confirm instantly — free consultations confirm on booking, paid ones after checkout.",
     type: "website",
   },
   alternates: { canonical: "/consultation" },

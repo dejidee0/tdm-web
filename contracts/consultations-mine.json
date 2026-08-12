@@ -1,0 +1,15 @@
+{
+  "endpoint": "/consultations/mine",
+  "status": 200,
+  "recordedFrom": "tbmdev-001-site1.dtempurl.com",
+  "shape": {
+    "success": "boolean",
+    "message": "string",
+    "data": {
+      "type": "array",
+      "length": 0,
+      "of": "unknown"
+    },
+    "errors": "null"
+  }
+}
