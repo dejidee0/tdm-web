@@ -51,11 +51,11 @@ function BeforeAfterSlider({ beforeUrl, afterUrl, beforeCaption, afterCaption })
         onTouchMove={(e) => { if (isDragging.current) updatePos(e.touches[0].clientX); }}
       >
         {/* After (background) */}
-        <img src={afterUrl} alt="After renovation" draggable={false} className="absolute inset-0 w-full h-full object-cover" />
+        <img src={afterUrl} alt="After renovation" draggable={false} className="absolute inset-0 w-full h-full object-contain" />
 
         {/* Before (clipped to left) */}
         <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <img src={beforeUrl} alt="Before renovation" draggable={false} className="w-full h-full object-cover" />
+          <img src={beforeUrl} alt="Before renovation" draggable={false} className="w-full h-full object-contain" />
         </div>
 
         {/* Divider + handle */}
@@ -215,7 +215,7 @@ export default function PortfolioDetailPage() {
                 ) : after ? (
                   <div>
                     <p className="text-white/40 text-xs font-manrope uppercase tracking-widest mb-4">Completed Work</p>
-                    <img src={after} alt={item.title} className="w-full aspect-[16/10] object-cover rounded-2xl" />
+                    <img src={after} alt={item.title} className="w-full max-h-[75vh] object-contain bg-[#111] rounded-2xl" />
                   </div>
                 ) : null}
 
