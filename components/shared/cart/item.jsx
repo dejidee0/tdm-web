@@ -50,7 +50,7 @@ export default function CartItem({ item, index }) {
               src={item.image || PLACEHOLDER}
               alt={item.name}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="96px"
             />
           </div>
@@ -127,7 +127,7 @@ export default function CartItem({ item, index }) {
             src={item.image || PLACEHOLDER}
             alt={item.name}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="72px"
           />
         </div>

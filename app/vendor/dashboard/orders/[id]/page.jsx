@@ -28,13 +28,19 @@ import { showToast } from "@/components/shared/toast";
  * items, the shipping fields of CreateOrderDto, the delivery agent of
  * VendorOrderAssignmentRequest, and POST /vendor/orders/{id}/notes.
  *
- * The response *shape* is still unverified — the dev backend cannot create an
- * order at all (POST /api/v1/orders 500s on a SQL sequence defect), so there
- * has never been one to observe, and contracts/ has no recording. Every read
- * below therefore goes through `pick`, which tries the candidate spellings the
- * DTOs suggest and renders an em dash when none is present. Nothing here can
- * throw on a missing field. When an order can finally be placed, record the
- * shape, model it in lib/api/schemas/, and replace `pick` with real fields.
+ * Update, 2026-08-11: `POST /api/v1/orders` (the SQL sequence defect,
+ * BACKLOG.md item 7) is fixed and the *Order* shape — id, orderNumber, status/
+ * statusName, items[], shippingFullName/Phone/Address/City/State, subTotal/
+ * shippingCost/tax/discount/total, customerNotes, createdAt — is confirmed
+ * live (`GET /orders/{orderId}`, contracts/orders.json, lib/api/schemas/orders.ts).
+ * `pick()` below is *kept*, not removed: it already tries the correct field
+ * names first for every one of those, so it was silently correct the whole
+ * time the shape was unknown. What is genuinely still unverified is whether
+ * *this vendor-scoped detail endpoint* returns that same Order shape — the
+ * only response seen from it is a 403 scope error
+ * (`"Order is outside this vendor scope"`, confirmed live), because the order
+ * placed to record the shape wasn't owned by the vendor account used to read
+ * it. `pick()` staying defensive here is deliberate, not leftover caution.
  */
 
 /** First present, non-null value among `keys`. */
@@ -345,9 +351,9 @@ export default function OrderDetailPage() {
           <Panel title="Customer" delay={0.1}>
             <div className="space-y-3">
               <Row label="Name">
-                {pick(order, "customerName", "shippingFullName", "guestName")}
+                {pick(order, "userFullName", "customerName", "shippingFullName", "guestName")}
               </Row>
-              <Row label="Email">{pick(order, "customerEmail", "guestEmail")}</Row>
+              <Row label="Email">{pick(order, "userEmail", "customerEmail", "guestEmail")}</Row>
               <Row label="Phone">
                 {pick(order, "customerPhone", "shippingPhone", "guestPhone")}
               </Row>

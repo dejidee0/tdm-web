@@ -11,14 +11,16 @@
         "name": "string",
         "price": "number",
         "image": "string",
-        "rating": "number"
+        "rating": "null",
+        "reviewCount": "number"
       },
       {
         "id": "string",
         "name": "string",
         "price": "number",
         "image": "null",
-        "rating": "number"
+        "rating": "null",
+        "reviewCount": "number"
       }
     ]
   }

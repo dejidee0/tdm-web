@@ -2,8 +2,8 @@
 
 - **Source:** [`https://tbmdev-001-site1.dtempurl.com/swagger/v1/swagger.json`](https://tbmdev-001-site1.dtempurl.com/swagger/v1/swagger.json) (Swagger UI: `/index.html`)
 - **Spec:** OpenAPI 3.0.1 · `TBM BUILDING AI VISUALIZER API` · version `v1`
-- **Snapshot taken:** 2026-07-18
-- **Size:** 240 paths · 278 operations · 87 object schemas · 9 enums
+- **Snapshot taken:** 2026-08-12
+- **Size:** 258 paths · 303 operations · 125 object schemas · 9 enums
 
 Regenerate with `node scripts/gen-api-doc.mjs` after re-downloading the spec
 above; this file is a snapshot, not a live view.
@@ -14,7 +14,7 @@ This document is only as good as the spec, and the spec has real gaps. Every one
 of them is a place where you must read the backend or observe a live response
 rather than trust this file.
 
-- **There are no response schemas.** All 278 operations declare exactly one
+- **There are no response schemas.** All 303 operations declare exactly one
   response, a bare `200: OK`, with no body type. The spec describes *requests
   only*. This is the documented reason response shapes are guessed at call sites
   in this repo (`json.data ?? json`) — Swagger cannot resolve it for you.
@@ -24,7 +24,7 @@ rather than trust this file.
   intent has to be inferred from its path, tag, and request payload.
 - **Enums are bare integers.** The spec gives the numeric values but not their
   names, so `OrderStatus: 3` is undecodable from here. See [Enums](#enums).
-- **Almost nothing is marked required.** Exactly 1 of the 96 schemas declares a
+- **Almost nothing is marked required.** Exactly 1 of the 134 schemas declares a
   `required` list, and nearly every property is `nullable: true`. Treat
   "optional" in this doc as "unknown", not as "safe to omit".
 - **This is the dev instance, fetched unauthenticated.** Endpoints hidden from
@@ -79,7 +79,7 @@ set it yourself, and the client's own `Authorization` header is not forwarded.
 
 ### Path casing
 
-The spec mixes conventions: 69 of 240 paths carry a PascalCase segment
+The spec mixes conventions: 69 of 258 paths carry a PascalCase segment
 (`/api/v1/Cart`, `/api/v1/Products`, `/api/v1/admin/AdminUsers`) while the rest are
 lowercase (`/api/v1/account/profile`, `/api/v1/orders`).
 
@@ -108,31 +108,33 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 ## Endpoints
 
-278 operations across 44 tags. `Body` links to the payload schema.
+303 operations across 48 tags. `Body` links to the payload schema.
 
 | Tag | Ops |  | Tag | Ops |
 | --- | --- | --- | --- | --- |
 | [AI](#tag-ai) | 8 |  | [Categories](#tag-categories) | 7 |
 | [AIAssistant](#tag-aiassistant) | 9 |  | [Checkout](#tag-checkout) | 4 |
-| [AIRenovationEstimator](#tag-airenovationestimator) | 6 |  | [Contact](#tag-contact) | 1 |
-| [AIUpload](#tag-aiupload) | 1 |  | [Dashboard](#tag-dashboard) | 5 |
-| [Account](#tag-account) | 22 |  | [DesignSessions](#tag-designsessions) | 7 |
-| [AdminAI](#tag-adminai) | 4 |  | [Designs](#tag-designs) | 7 |
-| [AdminAnalytics](#tag-adminanalytics) | 3 |  | [Inspection](#tag-inspection) | 2 |
-| [AdminAuth](#tag-adminauth) | 3 |  | [Inspiration](#tag-inspiration) | 1 |
+| [AIRenovationEstimator](#tag-airenovationestimator) | 6 |  | [Consultations](#tag-consultations) | 11 |
+| [AIUpload](#tag-aiupload) | 1 |  | [Contact](#tag-contact) | 1 |
+| [Account](#tag-account) | 22 |  | [Dashboard](#tag-dashboard) | 5 |
+| [AdminAI](#tag-adminai) | 4 |  | [DesignSessions](#tag-designsessions) | 7 |
+| [AdminAnalytics](#tag-adminanalytics) | 3 |  | [Designs](#tag-designs) | 7 |
+| [AdminAuth](#tag-adminauth) | 3 |  | [Inspection](#tag-inspection) | 3 |
+| [AdminConsultations](#tag-adminconsultations) | 2 |  | [Inspiration](#tag-inspiration) | 1 |
 | [AdminDashboard](#tag-admindashboard) | 7 |  | [Lookups](#tag-lookups) | 10 |
 | [AdminDiscounts](#tag-admindiscounts) | 5 |  | [Orders](#tag-orders) | 7 |
 | [AdminFinancial](#tag-adminfinancial) | 5 |  | [PaystackWebhook](#tag-paystackwebhook) | 1 |
 | [AdminObservability](#tag-adminobservability) | 2 |  | [Portfolio](#tag-portfolio) | 2 |
-| [AdminOrders](#tag-adminorders) | 5 |  | [Pricing](#tag-pricing) | 1 |
-| [AdminPortfolio](#tag-adminportfolio) | 6 |  | [Products](#tag-products) | 16 |
-| [AdminPricing](#tag-adminpricing) | 4 |  | [ProjectRequests](#tag-projectrequests) | 3 |
-| [AdminProducts](#tag-adminproducts) | 8 |  | [Projects](#tag-projects) | 7 |
+| [AdminOrders](#tag-adminorders) | 6 |  | [Pricing](#tag-pricing) | 1 |
+| [AdminPortfolio](#tag-adminportfolio) | 8 |  | [ProductReviews](#tag-productreviews) | 2 |
+| [AdminPricing](#tag-adminpricing) | 4 |  | [Products](#tag-products) | 16 |
+| [AdminProducts](#tag-adminproducts) | 10 |  | [ProjectRequests](#tag-projectrequests) | 3 |
+| [AdminProjectQuotations](#tag-adminprojectquotations) | 2 |  | [Projects](#tag-projects) | 8 |
 | [AdminSettings](#tag-adminsettings) | 11 |  | [PublicProjects](#tag-publicprojects) | 1 |
 | [AdminSystemLogs](#tag-adminsystemlogs) | 3 |  | [Saved](#tag-saved) | 7 |
 | [AdminUsers](#tag-adminusers) | 9 |  | [Subscription](#tag-subscription) | 6 |
 | [AdminVendors](#tag-adminvendors) | 4 |  | [Upload](#tag-upload) | 1 |
-| [Auth](#tag-auth) | 15 |  | [Vendor](#tag-vendor) | 25 |
+| [Auth](#tag-auth) | 15 |  | [Vendor](#tag-vendor) | 26 |
 | [Cart](#tag-cart) | 8 |  | [VendorPortfolio](#tag-vendorportfolio) | 9 |
 
 ### <a id="tag-ai"></a>AI
@@ -231,6 +233,13 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `POST` | `/api/v1/admin/auth/logout` | — | [`Auth.RefreshTokenDto`](#s-auth-refreshtokendto) |
 | `POST` | `/api/v1/admin/auth/refresh` | — | [`Auth.RefreshTokenDto`](#s-auth-refreshtokendto) |
 
+### <a id="tag-adminconsultations"></a>AdminConsultations
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/admin/consultations` | `status?` string *(query)*<br>`fromUtc?` string(date-time) *(query)*<br>`toUtc?` string(date-time) *(query)*<br>`page?` integer *(query)*<br>`pageSize?` integer *(query)* | — |
+| `PUT` | `/api/v1/admin/consultations/{id}/cancel` | `id` string(uuid) *(path)* | [`Consultations.CancelConsultationRequestDto`](#s-consultations-cancelconsultationrequestdto) |
+
 ### <a id="tag-admindashboard"></a>AdminDashboard
 
 | Method | Path | Parameters | Body |
@@ -275,6 +284,7 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/admin/orders` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`status?` OrderStatus *(query)*<br>`search?` string *(query)* | — |
+| `GET` | `/api/v1/admin/orders/{id}` | `id` string(uuid) *(path)* | — |
 | `PATCH` | `/api/v1/admin/orders/{id}/cancel` | `id` string(uuid) *(path)* | inline string |
 | `POST` | `/api/v1/admin/orders/{id}/refund` | `id` string(uuid) *(path)* | inline string |
 | `PATCH` | `/api/v1/admin/orders/{id}/status` | `id` string(uuid) *(path)* | [`OrderStatus`](#s-orderstatus) |
@@ -286,7 +296,9 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/admin/AdminPortfolio` | `status?` PortfolioStatus *(query)*<br>`page?` integer *(query)*<br>`pageSize?` integer *(query)* | — |
 | `POST` | `/api/v1/admin/AdminPortfolio` | — | [`Portfolio.AdminCreatePortfolioProjectDto`](#s-portfolio-admincreateportfolioprojectdto) |
+| `DELETE` | `/api/v1/admin/AdminPortfolio/{id}` | `id` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/admin/AdminPortfolio/{id}` | `id` string(uuid) *(path)* | — |
+| `PUT` | `/api/v1/admin/AdminPortfolio/{id}` | `id` string(uuid) *(path)* | [`Portfolio.UpdatePortfolioProjectDto`](#s-portfolio-updateportfolioprojectdto) |
 | `POST` | `/api/v1/admin/AdminPortfolio/{id}/images` | `id` string(uuid) *(path)*<br>`imageType?` PortfolioImageType *(query)*<br>`caption?` string *(query)* | **multipart/form-data**<br>`file` |
 | `POST` | `/api/v1/admin/AdminPortfolio/{id}/publish` | `id` string(uuid) *(path)* | — |
 | `PATCH` | `/api/v1/admin/AdminPortfolio/{id}/status` | `id` string(uuid) *(path)* | [`Portfolio.UpdatePortfolioStatusDto`](#s-portfolio-updateportfoliostatusdto) |
@@ -306,12 +318,21 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `POST` | `/api/v1/admin/AdminProducts` | — | [`Products.CreateProductDto`](#s-products-createproductdto) |
 | `DELETE` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | — |
+| `GET` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | — |
 | `PUT` | `/api/v1/admin/AdminProducts/{id}` | `id` string(uuid) *(path)* | [`Products.UpdateProductDto`](#s-products-updateproductdto) |
 | `POST` | `/api/v1/admin/AdminProducts/{id}/images` | `id` string(uuid) *(path)* | [`Products.AddProductImageDto`](#s-products-addproductimagedto) |
 | `PUT` | `/api/v1/admin/AdminProducts/{productId}/images/{imageId}/primary` | `productId` string(uuid) *(path)*<br>`imageId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/admin/AdminProducts/{productId}/images/upload` | `productId` string(uuid) *(path)*<br>`isPrimary?` boolean *(query)*<br>`displayOrder?` integer *(query)*<br>`altText?` string *(query)* | **multipart/form-data**<br>`file` |
 | `POST` | `/api/v1/admin/AdminProducts/bulk` | — | inline [`Products.CreateProductDto`](#s-products-createproductdto)[] |
+| `PUT` | `/api/v1/admin/AdminProducts/bulk` | — | inline [`Products.BulkUpdateProductItemDto`](#s-products-bulkupdateproductitemdto)[] |
 | `DELETE` | `/api/v1/admin/AdminProducts/images/{imageId}` | `imageId` string(uuid) *(path)* | — |
+
+### <a id="tag-adminprojectquotations"></a>AdminProjectQuotations
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/admin/projects/{projectId}/quotations` | `projectId` string(uuid) *(path)* | [`DesignFlow.CreateProjectQuotationRequestDto`](#s-designflow-createprojectquotationrequestdto) |
+| `PUT` | `/api/v1/admin/projects/{projectId}/quotations/{quotationId}/status` | `projectId` string(uuid) *(path)*<br>`quotationId` string(uuid) *(path)* | [`DesignFlow.UpdateProjectQuotationStatusRequestDto`](#s-designflow-updateprojectquotationstatusrequestdto) |
 
 ### <a id="tag-adminsettings"></a>AdminSettings
 
@@ -414,6 +435,22 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `GET` | `/api/v1/Checkout/payment/paystack/verify/{reference}` | `reference` string *(path)* | — |
 | `POST` | `/api/v1/Checkout/validate-promo` | — | [`Checkout.PromoValidationRequestDto`](#s-checkout-promovalidationrequestdto) |
 
+### <a id="tag-consultations"></a>Consultations
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/consultations` | — | [`Consultations.BookConsultationRequestDto`](#s-consultations-bookconsultationrequestdto) |
+| `GET` | `/api/v1/consultations/{id}` | `id` string(uuid) *(path)* | — |
+| `POST` | `/api/v1/consultations/{id}/cancel` | `id` string(uuid) *(path)* | [`Consultations.CancelConsultationRequestDto`](#s-consultations-cancelconsultationrequestdto) |
+| `PUT` | `/api/v1/consultations/{id}/cancel` | `id` string(uuid) *(path)* | [`Consultations.CancelConsultationRequestDto`](#s-consultations-cancelconsultationrequestdto) |
+| `POST` | `/api/v1/consultations/{id}/initialize-payment` | `id` string(uuid) *(path)* | [`Consultations.InitializeConsultationPaymentRequestDto`](#s-consultations-initializeconsultationpaymentrequestdto) |
+| `PUT` | `/api/v1/consultations/{id}/reschedule` | `id` string(uuid) *(path)* | [`Consultations.RescheduleConsultationRequestDto`](#s-consultations-rescheduleconsultationrequestdto) |
+| `GET` | `/api/v1/consultations/availability` | `type?` string *(query)*<br>`date?` string(date) *(query)*<br>`startDate?` string(date) *(query)* | — |
+| `POST` | `/api/v1/consultations/book` | — | [`Consultations.BookConsultationRequestDto`](#s-consultations-bookconsultationrequestdto) |
+| `GET` | `/api/v1/consultations/mine` | — | — |
+| `GET` | `/api/v1/consultations/types` | — | — |
+| `POST` | `/api/v1/consultations/verify-payment` | — | [`Consultations.VerifyConsultationPaymentRequestDto`](#s-consultations-verifyconsultationpaymentrequestdto) |
+
 ### <a id="tag-contact"></a>Contact
 
 | Method | Path | Parameters | Body |
@@ -458,6 +495,7 @@ the meanings below are unknown from the spec alone — confirm against the backe
 
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
+| `POST` | `/api/v1/inspections/{id}/initialize-payment` | `id` string(uuid) *(path)* | [`Inspections.InitializeInspectionPaymentRequestDto`](#s-inspections-initializeinspectionpaymentrequestdto) |
 | `POST` | `/api/v1/inspections/book` | — | [`Inspections.BookInspectionRequestDto`](#s-inspections-bookinspectionrequestdto) |
 | `POST` | `/api/v1/inspections/verify-payment` | — | [`Inspections.VerifyInspectionPaymentRequestDto`](#s-inspections-verifyinspectionpaymentrequestdto) |
 
@@ -513,6 +551,13 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/pricing` | `promoCode?` string *(query)* | — |
 
+### <a id="tag-productreviews"></a>ProductReviews
+
+| Method | Path | Parameters | Body |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/products/{productId}/reviews` | `productId` string(uuid) *(path)*<br>`page?` integer *(query)*<br>`pageSize?` integer *(query)* | — |
+| `POST` | `/api/v1/products/{productId}/reviews` | `productId` string(uuid) *(path)* | [`Products.CreateProductReviewDto`](#s-products-createproductreviewdto) |
+
 ### <a id="tag-products"></a>Products
 
 | Method | Path | Parameters | Body |
@@ -547,6 +592,7 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | Method | Path | Parameters | Body |
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/projects` | — | — |
+| `POST` | `/api/v1/projects` | — | [`DesignFlow.CreateProjectRequestDto`](#s-designflow-createprojectrequestdto) |
 | `GET` | `/api/v1/projects/{projectId}` | `projectId` string(uuid) *(path)* | — |
 | `GET` | `/api/v1/projects/{projectId}/documents` | `projectId` string(uuid) *(path)* | — |
 | `POST` | `/api/v1/projects/{projectId}/documents` | `projectId` string(uuid) *(path)* | **multipart/form-data**<br>`File`<br>`Type`<br>`Name` |
@@ -601,6 +647,7 @@ the meanings below are unknown from the spec alone — confirm against the backe
 | `GET` | `/api/v1/vendor/alerts` | — | — |
 | `GET` | `/api/v1/vendor/dashboard` | — | — |
 | `GET` | `/api/v1/vendor/deliveries` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`status?` OrderStatus *(query)* | — |
+| `PATCH` | `/api/v1/vendor/deliveries/{orderId}` | `orderId` string(uuid) *(path)* | [`Vendor.VendorDeliveryUpdateRequest`](#s-vendor-vendordeliveryupdaterequest) |
 | `GET` | `/api/v1/vendor/inventory` | `page?` integer *(query)*<br>`pageSize?` integer *(query)*<br>`search?` string *(query)*<br>`lowStockOnly?` boolean *(query)* | — |
 | `PUT` | `/api/v1/vendor/inventory/{productId}` | `productId` string(uuid) *(path)* | [`Vendor.VendorInventoryUpdateRequest`](#s-vendor-vendorinventoryupdaterequest) |
 | `POST` | `/api/v1/vendor/inventory/products` | — | [`Vendor.VendorInventoryCreateRequest`](#s-vendor-vendorinventorycreaterequest) |
@@ -638,6 +685,149 @@ the meanings below are unknown from the spec alone — confirm against the backe
 Request payloads. `?` marks `nullable: true` — which, given only one schema in the
 whole spec declares `required`, means "the spec doesn't say" more often than it
 means "genuinely optional".
+
+### <a id="s-0-0, culture=neutral, publickeytoken=7cec85d7bea7798e]]"></a>0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[System.Collections.Generic.List`1[[TBM.Application.DTOs.Consultations.ConsultationDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data?` | [`Consultations.ConsultationDto`](#s-consultations-consultationdto)[] | nullable |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=7cec85d7bea7798e]]"></a>0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[System.Collections.Generic.List`1[[TBM.Application.DTOs.Consultations.ConsultationTypeDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data?` | [`Consultations.ConsultationTypeDto`](#s-consultations-consultationtypedto)[] | nullable |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=7cec85d7bea7798e]]"></a>0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data?` | object | nullable |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationAvailabilityDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationAvailabilityDto`](#s-consultations-consultationavailabilitydto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationBookingResultDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationBookingResultDto`](#s-consultations-consultationbookingresultdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationDto`](#s-consultations-consultationdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationPagedResultDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationPagedResultDto`](#s-consultations-consultationpagedresultdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationPaymentInitializationDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationPaymentInitializationDto`](#s-consultations-consultationpaymentinitializationdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Consultations.ConsultationPaymentVerificationDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Consultations.ConsultationPaymentVerificationDto`](#s-consultations-consultationpaymentverificationdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.DesignFlow.ProjectQuotationDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`DesignFlow.ProjectQuotationDto`](#s-designflow-projectquotationdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-0-0, culture=neutral, publickeytoken=null]]"></a>0.0, Culture=neutral, PublicKeyToken=null]]
+
+<sub>`TBM.Application.DTOs.Common.ApiResponse`1[[TBM.Application.DTOs.Products.AdminProductDto, TBM.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `success` | boolean |  |
+| `message?` | string | nullable |
+| `data` | [`Products.AdminProductDto`](#s-products-adminproductdto) |  |
+| `errors?` | string[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
 ### <a id="s-accountcontroller-addressrequest"></a>AccountController.AddressRequest
 
@@ -919,6 +1109,7 @@ Body of: `POST /api/v1/ai/renovation/estimate`, `POST /api/v1/ai/renovation-esti
 
 | Property | Type | |
 | --- | --- | --- |
+| `projectId?` | string(uuid) | nullable |
 | `projectName?` | string | nullable |
 | `roomType?` | string | nullable |
 | `lengthMeters` | number |  |
@@ -1160,6 +1351,198 @@ Body of: `POST /api/v1/Cart/apply-promo`, `POST /api/v1/Checkout/validate-promo`
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
+### <a id="s-consultations-bookconsultationrequestdto"></a>Consultations.BookConsultationRequestDto
+
+<sub>`TBM.Application.DTOs.Consultations.BookConsultationRequestDto`</sub>
+
+Body of: `POST /api/v1/consultations/book`, `POST /api/v1/consultations`
+
+| Property | Type | |
+| --- | --- | --- |
+| `typeKey?` | string | nullable |
+| `scheduledStart` | string(date-time) |  |
+| `projectId?` | string(uuid) | nullable |
+| `contactName?` | string | nullable |
+| `contactPhone?` | string | nullable |
+| `contactEmail?` | string | nullable |
+| `propertyType?` | string | nullable |
+| `siteAddress?` | string | nullable |
+| `siteCity?` | string | nullable |
+| `siteState?` | string | nullable |
+| `notes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-cancelconsultationrequestdto"></a>Consultations.CancelConsultationRequestDto
+
+<sub>`TBM.Application.DTOs.Consultations.CancelConsultationRequestDto`</sub>
+
+Body of: `PUT /api/v1/admin/consultations/{id}/cancel`, `POST /api/v1/consultations/{id}/cancel`, `PUT /api/v1/consultations/{id}/cancel`
+
+| Property | Type | |
+| --- | --- | --- |
+| `reason?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationavailabilitydto"></a>Consultations.ConsultationAvailabilityDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationAvailabilityDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `type` | [`Consultations.ConsultationTypeDto`](#s-consultations-consultationtypedto) |  |
+| `timeZone?` | string | nullable |
+| `slots?` | [`Consultations.ConsultationSlotDto`](#s-consultations-consultationslotdto)[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationbookingresultdto"></a>Consultations.ConsultationBookingResultDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationBookingResultDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `consultation` | [`Consultations.ConsultationDto`](#s-consultations-consultationdto) |  |
+| `managementToken?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationdto"></a>Consultations.ConsultationDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `projectId?` | string(uuid) | nullable |
+| `typeKey?` | string | nullable |
+| `typeName?` | string | nullable |
+| `format?` | string | nullable |
+| `durationMinutes` | integer |  |
+| `fee` | number |  |
+| `scheduledStart` | string(date-time) |  |
+| `scheduledEnd` | string(date-time) |  |
+| `status?` | string | nullable |
+| `paymentVerified` | boolean |  |
+| `paymentReference?` | string | nullable |
+| `contactName?` | string | nullable |
+| `contactEmail?` | string | nullable |
+| `contactPhone?` | string | nullable |
+| `propertyType?` | string | nullable |
+| `siteAddress?` | string | nullable |
+| `siteCity?` | string | nullable |
+| `siteState?` | string | nullable |
+| `notes?` | string | nullable |
+| `cancelledAtUtc?` | string(date-time) | nullable |
+| `cancellationReason?` | string | nullable |
+| `cancellationRequiresManualRefundReview` | boolean |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationpagedresultdto"></a>Consultations.ConsultationPagedResultDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationPagedResultDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `items?` | [`Consultations.ConsultationDto`](#s-consultations-consultationdto)[] | nullable |
+| `page` | integer |  |
+| `pageSize` | integer |  |
+| `totalCount` | integer |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationpaymentinitializationdto"></a>Consultations.ConsultationPaymentInitializationDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationPaymentInitializationDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `authorizationUrl?` | string | nullable |
+| `accessCode?` | string | nullable |
+| `reference?` | string | nullable |
+| `amount` | number |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationpaymentverificationdto"></a>Consultations.ConsultationPaymentVerificationDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationPaymentVerificationDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `verified` | boolean |  |
+| `reference?` | string | nullable |
+| `amount` | number |  |
+| `paidAtUtc?` | string(date-time) | nullable |
+| `status?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationslotdto"></a>Consultations.ConsultationSlotDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationSlotDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `start` | string(date-time) |  |
+| `end` | string(date-time) |  |
+| `isAvailable` | boolean |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-consultationtypedto"></a>Consultations.ConsultationTypeDto
+
+<sub>`TBM.Application.DTOs.Consultations.ConsultationTypeDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `key?` | string | nullable |
+| `name?` | string | nullable |
+| `durationMinutes` | integer |  |
+| `fee` | number |  |
+| `format?` | string | nullable |
+| `description?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-initializeconsultationpaymentrequestdto"></a>Consultations.InitializeConsultationPaymentRequestDto
+
+<sub>`TBM.Application.DTOs.Consultations.InitializeConsultationPaymentRequestDto`</sub>
+
+Body of: `POST /api/v1/consultations/{id}/initialize-payment`
+
+| Property | Type | |
+| --- | --- | --- |
+| `email?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-rescheduleconsultationrequestdto"></a>Consultations.RescheduleConsultationRequestDto
+
+<sub>`TBM.Application.DTOs.Consultations.RescheduleConsultationRequestDto`</sub>
+
+Body of: `PUT /api/v1/consultations/{id}/reschedule`
+
+| Property | Type | |
+| --- | --- | --- |
+| `scheduledStart` | string(date-time) |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-consultations-verifyconsultationpaymentrequestdto"></a>Consultations.VerifyConsultationPaymentRequestDto
+
+<sub>`TBM.Application.DTOs.Consultations.VerifyConsultationPaymentRequestDto`</sub>
+
+Body of: `POST /api/v1/consultations/verify-payment`
+
+| Property | Type | |
+| --- | --- | --- |
+| `reference?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
 ### <a id="s-contact-createcontactmessagedto"></a>Contact.CreateContactMessageDto
 
 <sub>`TBM.Application.DTOs.Contact.CreateContactMessageDto`</sub>
@@ -1205,6 +1588,40 @@ Body of: `POST /api/v1/designs/sessions`
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
+### <a id="s-designflow-createprojectquotationrequestdto"></a>DesignFlow.CreateProjectQuotationRequestDto
+
+<sub>`TBM.Application.DTOs.DesignFlow.CreateProjectQuotationRequestDto`</sub>
+
+Body of: `POST /api/v1/admin/projects/{projectId}/quotations`
+
+| Property | Type | |
+| --- | --- | --- |
+| `title?` | string | nullable |
+| `description?` | string | nullable |
+| `subtotal` | number |  |
+| `discount` | number |  |
+| `currency?` | string | nullable |
+| `validUntilUtc?` | string(date-time) | nullable |
+| `notes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-designflow-createprojectrequestdto"></a>DesignFlow.CreateProjectRequestDto
+
+<sub>`TBM.Application.DTOs.DesignFlow.CreateProjectRequestDto`</sub>
+
+Body of: `POST /api/v1/projects`
+
+| Property | Type | |
+| --- | --- | --- |
+| `name?` | string | nullable |
+| `description?` | string | nullable |
+| `roomType?` | string | nullable |
+| `startDate?` | string(date-time) | nullable |
+| `totalBudget?` | number | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
 ### <a id="s-designflow-generatedesignsessionrequestdto"></a>DesignFlow.GenerateDesignSessionRequestDto
 
 <sub>`TBM.Application.DTOs.DesignFlow.GenerateDesignSessionRequestDto`</sub>
@@ -1214,6 +1631,31 @@ Body of: `POST /api/v1/designs/sessions/{sessionId}/generate`
 | Property | Type | |
 | --- | --- | --- |
 | `generateBOM` | boolean |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-designflow-projectquotationdto"></a>DesignFlow.ProjectQuotationDto
+
+<sub>`TBM.Application.DTOs.DesignFlow.ProjectQuotationDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `projectId` | string(uuid) |  |
+| `quotationNumber?` | string | nullable |
+| `title?` | string | nullable |
+| `description?` | string | nullable |
+| `subtotal` | number |  |
+| `discount` | number |  |
+| `total` | number |  |
+| `currency?` | string | nullable |
+| `status?` | string | nullable |
+| `validUntilUtc?` | string(date-time) | nullable |
+| `sentAtUtc?` | string(date-time) | nullable |
+| `acceptedAtUtc?` | string(date-time) | nullable |
+| `rejectedAtUtc?` | string(date-time) | nullable |
+| `notes?` | string | nullable |
+| `createdAt` | string(date-time) |  |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1229,6 +1671,19 @@ Body of: `POST /api/v1/designs/sessions/{sessionId}/generate`
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
+### <a id="s-designflow-updateprojectquotationstatusrequestdto"></a>DesignFlow.UpdateProjectQuotationStatusRequestDto
+
+<sub>`TBM.Application.DTOs.DesignFlow.UpdateProjectQuotationStatusRequestDto`</sub>
+
+Body of: `PUT /api/v1/admin/projects/{projectId}/quotations/{quotationId}/status`
+
+| Property | Type | |
+| --- | --- | --- |
+| `status?` | string | nullable |
+| `notes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
 ### <a id="s-inspections-bookinspectionrequestdto"></a>Inspections.BookInspectionRequestDto
 
 <sub>`TBM.Application.DTOs.Inspections.BookInspectionRequestDto`</sub>
@@ -1237,6 +1692,7 @@ Body of: `POST /api/v1/inspections/book`
 
 | Property | Type | |
 | --- | --- | --- |
+| `projectId?` | string(uuid) | nullable |
 | `contactName?` | string | nullable |
 | `contactPhone?` | string | nullable |
 | `contactEmail?` | string | nullable |
@@ -1248,6 +1704,18 @@ Body of: `POST /api/v1/inspections/book`
 | `uploadedFileUrls?` | string[] | nullable |
 | `paymentReference?` | string | nullable |
 | `additionalNotes?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-inspections-initializeinspectionpaymentrequestdto"></a>Inspections.InitializeInspectionPaymentRequestDto
+
+<sub>`TBM.Application.DTOs.Inspections.InitializeInspectionPaymentRequestDto`</sub>
+
+Body of: `POST /api/v1/inspections/{id}/initialize-payment`
+
+| Property | Type | |
+| --- | --- | --- |
+| `email?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1412,7 +1880,7 @@ Body of: `POST /api/v1/vendor/portfolio`
 
 <sub>`TBM.Application.DTOs.Portfolio.UpdatePortfolioProjectDto`</sub>
 
-Body of: `PUT /api/v1/vendor/portfolio/{id}`
+Body of: `PUT /api/v1/admin/AdminPortfolio/{id}`, `PUT /api/v1/vendor/portfolio/{id}`
 
 | Property | Type | |
 | --- | --- | --- |
@@ -1457,6 +1925,127 @@ Body of: `POST /api/v1/admin/AdminProducts/{id}/images`, `POST /api/v1/Products/
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
+### <a id="s-products-adminproductdto"></a>Products.AdminProductDto
+
+<sub>`TBM.Application.DTOs.Products.AdminProductDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `name?` | string | nullable |
+| `description?` | string | nullable |
+| `shortDescription?` | string | nullable |
+| `slug?` | string | nullable |
+| `sku?` | string | nullable |
+| `brandType` | integer |  |
+| `brandName?` | string | nullable |
+| `productType` | integer |  |
+| `productTypeName?` | string | nullable |
+| `categoryId` | string(uuid) |  |
+| `categoryName?` | string | nullable |
+| `price?` | number | nullable |
+| `compareAtPrice?` | number | nullable |
+| `showPrice` | boolean |  |
+| `priceDisplay?` | string | nullable |
+| `stockQuantity?` | integer | nullable |
+| `inStock` | boolean |  |
+| `trackInventory` | boolean |  |
+| `isActive` | boolean |  |
+| `isFeatured` | boolean |  |
+| `displayOrder` | integer |  |
+| `lowStockThreshold` | integer |  |
+| `averageRating` | number |  |
+| `reviewCount` | integer |  |
+| `tags?` | string | nullable |
+| `aiKeywords?` | string | nullable |
+| `materialType?` | string | nullable |
+| `qualityTier?` | string | nullable |
+| `recommendedFor?` | string | nullable |
+| `specifications?` | [`Products.SpecificationItemDto`](#s-products-specificationitemdto)[] | nullable |
+| `keyFeatures?` | string[] | nullable |
+| `whatsIncluded?` | string[] | nullable |
+| `whatsNotIncluded?` | string[] | nullable |
+| `dimensions?` | string | nullable |
+| `warranty?` | string | nullable |
+| `finishType?` | string | nullable |
+| `installationType?` | string | nullable |
+| `material?` | string | nullable |
+| `color?` | string | nullable |
+| `size?` | string | nullable |
+| `variants?` | [`Products.ProductVariantDto`](#s-products-productvariantdto)[] | nullable |
+| `images?` | [`Products.ProductImageDto`](#s-products-productimagedto)[] | nullable |
+| `primaryImageUrl?` | string | nullable |
+| `similarProducts?` | [`Products.ProductCardDto`](#s-products-productcarddto)[] | nullable |
+| `createdAt` | string(date-time) |  |
+| `updatedAt` | string(date-time) |  |
+| `metaTitle?` | string | nullable |
+| `metaDescription?` | string | nullable |
+| `metaKeywords?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-bulkupdateproductitemdto"></a>Products.BulkUpdateProductItemDto
+
+<sub>`TBM.Application.DTOs.Products.BulkUpdateProductItemDto`</sub>
+
+Body of: `PUT /api/v1/admin/AdminProducts/bulk`
+
+| Property | Type | |
+| --- | --- | --- |
+| `name?` | string | nullable |
+| `description?` | string | nullable |
+| `shortDescription?` | string | nullable |
+| `sku?` | string | nullable |
+| `categoryId` | string(uuid) |  |
+| `price?` | number | nullable |
+| `compareAtPrice?` | number | nullable |
+| `showPrice` | boolean |  |
+| `stockQuantity?` | integer | nullable |
+| `lowStockThreshold?` | integer | nullable |
+| `trackInventory` | boolean |  |
+| `isActive` | boolean |  |
+| `isFeatured` | boolean |  |
+| `displayOrder` | integer |  |
+| `metaTitle?` | string | nullable |
+| `metaDescription?` | string | nullable |
+| `metaKeywords?` | string | nullable |
+| `tags?` | string | nullable |
+| `aiKeywords?` | string | nullable |
+| `materialType?` | string | nullable |
+| `qualityTier?` | string | nullable |
+| `recommendedFor?` | string | nullable |
+| `specifications?` | [`Products.SpecificationItemDto`](#s-products-specificationitemdto)[] | nullable |
+| `keyFeatures?` | string[] | nullable |
+| `whatsIncluded?` | string[] | nullable |
+| `whatsNotIncluded?` | string[] | nullable |
+| `dimensions?` | string | nullable |
+| `warranty?` | string | nullable |
+| `finishType?` | string | nullable |
+| `installationType?` | string | nullable |
+| `material?` | string | nullable |
+| `color?` | string | nullable |
+| `size?` | string | nullable |
+| `variants?` | [`Products.CreateProductVariantDto`](#s-products-createproductvariantdto)[] | nullable |
+| `images?` | [`Products.AddProductImageDto`](#s-products-addproductimagedto)[] | nullable |
+| `id` | string(uuid) |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-cartrelatedproductdto"></a>Products.CartRelatedProductDto
+
+<sub>`TBM.Application.DTOs.Products.CartRelatedProductDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `name?` | string | nullable |
+| `price` | number |  |
+| `image?` | string | nullable |
+| `rating?` | number | nullable |
+| `reviewCount` | integer |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
 ### <a id="s-products-createcategorydto"></a>Products.CreateCategoryDto
 
 <sub>`TBM.Application.DTOs.Products.CreateCategoryDto`</sub>
@@ -1470,6 +2059,7 @@ Body of: `POST /api/v1/Categories`
 | `brandType` | integer |  |
 | `parentCategoryId?` | string(uuid) | nullable |
 | `imageUrl?` | string | nullable |
+| `iconUrl?` | string | nullable |
 | `displayOrder` | integer |  |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
@@ -1499,6 +2089,7 @@ Body of: `POST /api/v1/admin/AdminProducts/bulk`, `POST /api/v1/admin/AdminProdu
 | `displayOrder` | integer |  |
 | `metaTitle?` | string | nullable |
 | `metaDescription?` | string | nullable |
+| `metaKeywords?` | string | nullable |
 | `tags?` | string | nullable |
 | `aiKeywords?` | string | nullable |
 | `materialType?` | string | nullable |
@@ -1514,6 +2105,84 @@ Body of: `POST /api/v1/admin/AdminProducts/bulk`, `POST /api/v1/admin/AdminProdu
 | `installationType?` | string | nullable |
 | `material?` | string | nullable |
 | `color?` | string | nullable |
+| `size?` | string | nullable |
+| `variants?` | [`Products.CreateProductVariantDto`](#s-products-createproductvariantdto)[] | nullable |
+| `images?` | [`Products.AddProductImageDto`](#s-products-addproductimagedto)[] | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-createproductreviewdto"></a>Products.CreateProductReviewDto
+
+<sub>`TBM.Application.DTOs.Products.CreateProductReviewDto`</sub>
+
+Body of: `POST /api/v1/products/{productId}/reviews`
+
+| Property | Type | |
+| --- | --- | --- |
+| `rating` | integer |  |
+| `title?` | string | nullable |
+| `comment?` | string | nullable |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-createproductvariantdto"></a>Products.CreateProductVariantDto
+
+<sub>`TBM.Application.DTOs.Products.CreateProductVariantDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `size?` | string | nullable |
+| `price` | number |  |
+| `stockQuantity` | integer |  |
+| `isActive` | boolean |  |
+| `displayOrder` | integer |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-productcarddto"></a>Products.ProductCardDto
+
+<sub>`TBM.Application.DTOs.Products.ProductCardDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `name?` | string | nullable |
+| `slug?` | string | nullable |
+| `price?` | number | nullable |
+| `image?` | string | nullable |
+| `category?` | string | nullable |
+| `inStock` | boolean |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-productimagedto"></a>Products.ProductImageDto
+
+<sub>`TBM.Application.DTOs.Products.ProductImageDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `productId` | string(uuid) |  |
+| `imageUrl?` | string | nullable |
+| `altText?` | string | nullable |
+| `viewType?` | string | nullable |
+| `displayOrder` | integer |  |
+| `isPrimary` | boolean |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-products-productvariantdto"></a>Products.ProductVariantDto
+
+<sub>`TBM.Application.DTOs.Products.ProductVariantDto`</sub>
+
+| Property | Type | |
+| --- | --- | --- |
+| `id` | string(uuid) |  |
+| `size?` | string | nullable |
+| `price` | number |  |
+| `stockQuantity` | integer |  |
+| `isActive` | boolean |  |
+| `displayOrder` | integer |  |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1540,6 +2209,7 @@ Body of: `PUT /api/v1/Categories/{id}`
 | `description?` | string | nullable |
 | `parentCategoryId?` | string(uuid) | nullable |
 | `imageUrl?` | string | nullable |
+| `iconUrl?` | string | nullable |
 | `displayOrder` | integer |  |
 | `isActive` | boolean |  |
 
@@ -1569,6 +2239,7 @@ Body of: `PUT /api/v1/admin/AdminProducts/{id}`, `PUT /api/v1/Products/{id}`
 | `displayOrder` | integer |  |
 | `metaTitle?` | string | nullable |
 | `metaDescription?` | string | nullable |
+| `metaKeywords?` | string | nullable |
 | `tags?` | string | nullable |
 | `aiKeywords?` | string | nullable |
 | `materialType?` | string | nullable |
@@ -1584,6 +2255,9 @@ Body of: `PUT /api/v1/admin/AdminProducts/{id}`, `PUT /api/v1/Products/{id}`
 | `installationType?` | string | nullable |
 | `material?` | string | nullable |
 | `color?` | string | nullable |
+| `size?` | string | nullable |
+| `variants?` | [`Products.CreateProductVariantDto`](#s-products-createproductvariantdto)[] | nullable |
+| `images?` | [`Products.AddProductImageDto`](#s-products-addproductimagedto)[] | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 
@@ -1876,6 +2550,19 @@ Body of: `POST /api/v1/admin/vendors/products/{productId}/assign`
 | Property | Type | |
 | --- | --- | --- |
 | `vendorUserId` | string(uuid) |  |
+
+<sub>`additionalProperties: false` — unknown keys are rejected.</sub>
+
+### <a id="s-vendor-vendordeliveryupdaterequest"></a>Vendor.VendorDeliveryUpdateRequest
+
+<sub>`TBM.Application.DTOs.Vendor.VendorDeliveryUpdateRequest`</sub>
+
+Body of: `PATCH /api/v1/vendor/deliveries/{orderId}`
+
+| Property | Type | |
+| --- | --- | --- |
+| `deliveryPartner?` | string | nullable |
+| `trackingNumber?` | string | nullable |
 
 <sub>`additionalProperties: false` — unknown keys are rejected.</sub>
 

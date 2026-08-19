@@ -15,7 +15,6 @@ export const dashboardKeys = {
   all: ["dashboard"],
   recentOrder: () => [...dashboardKeys.all, "recent-order"],
   orders: () => [...dashboardKeys.all, "orders"],
-  order: (id) => [...dashboardKeys.all, "order", id],
   orderTracking: (id) => [...dashboardKeys.all, "order-tracking", id],
   designs: (filters) => [...dashboardKeys.all, "designs", filters],
   latestDesign: () => [...dashboardKeys.all, "latest-design"],
@@ -92,26 +91,12 @@ export function useRecentOrder() {
   });
 }
 
-export function useOrders(filters = {}) {
-  const { isAuthenticated } = useAuthGuard();
-  return useQuery({
-    queryKey: dashboardKeys.orders(filters),
-    queryFn: () => dashboardApi.getOrders(filters),
-    enabled: isAuthenticated,
-    ...dashboardQueryOptions,
-    placeholderData: (prev) => prev, // keepPreviousData equivalent in v5
-  });
-}
-
-export function useOrder(id) {
-  const { isAuthenticated } = useAuthGuard();
-  return useQuery({
-    queryKey: dashboardKeys.order(id),
-    queryFn: () => dashboardApi.getOrder(id),
-    enabled: isAuthenticated && !!id,
-    ...dashboardQueryOptions,
-  });
-}
+// `useOrders`/`useOrder` used to live here too — a second, unused fetcher on
+// the same `dashboardKeys.orders`/`dashboardKeys.order` keys that
+// `hooks/use-user-orders.js` and `hooks/use-order-details.js` already own and
+// wire to real pages. Removed rather than fixed: exactly the "one query key,
+// one queryFn" trap CLAUDE.md calls out, just not caught here because nothing
+// imported these.
 
 export function useLatestDesign() {
   const { isAuthenticated } = useAuthGuard();

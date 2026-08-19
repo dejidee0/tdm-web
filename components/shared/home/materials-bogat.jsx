@@ -7,15 +7,37 @@ import { ArrowRight, ShoppingBag, Star } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchShowcaseProducts() {
-  const params = new URLSearchParams({
-    pageSize: "8",
-    ActiveOnly: "true",
-    isFeatured: "true",
-  });
-  const res = await fetch(`/api/products?${params.toString()}`);
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const json = await res.json();
-  return json.data?.items ?? [];
+  // Showcase only products that have a real photo — placeholder tiles read
+  // as a broken catalogue. Featured products come first; if too few of them
+  // carry an image, backfill from the wider active range.
+  const TARGET = 8;
+  const withImage = (items) => items.filter((p) => p.primaryImageUrl);
+
+  const fetchPage = async (extra = {}) => {
+    const params = new URLSearchParams({
+      pageSize: "24",
+      ActiveOnly: "true",
+      ...extra,
+    });
+    const res = await fetch(`/api/products?${params.toString()}`);
+    if (!res.ok) throw new Error("Failed to fetch products");
+    const json = await res.json();
+    return json.data?.items ?? [];
+  };
+
+  const picks = withImage(await fetchPage({ isFeatured: "true" })).slice(
+    0,
+    TARGET
+  );
+  if (picks.length < TARGET) {
+    const seen = new Set(picks.map((p) => p.id));
+    for (const p of withImage(await fetchPage())) {
+      if (seen.has(p.id)) continue;
+      picks.push(p);
+      if (picks.length >= TARGET) break;
+    }
+  }
+  return picks;
 }
 
 const PLACEHOLDER =

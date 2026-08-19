@@ -103,6 +103,12 @@ const productFields = {
   /** A comma-separated string, not an array. Null on most products. */
   tags: z.string().nullable(),
 
+  // Added 2026-08-12 once the reviews API shipped (BACKLOG.md). 0/0 on every
+  // product checked so far — no product has a review yet — but the fields
+  // themselves are non-null, unlike the block below.
+  averageRating: z.number(),
+  reviewCount: z.number(),
+
   // Widened from z.unknown() once the seeded Bogat catalogue populated it:
   // 120/120 products carry a string[] of feature bullets; null on the rest.
   keyFeatures: z.array(z.string()).nullable(),

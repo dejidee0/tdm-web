@@ -168,7 +168,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                       alt={product.name}
                       width={35}
                       height={35}
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 object-contain"
                     />
                   ) : (
                     <div
@@ -305,7 +305,7 @@ export default function InventoryProductsTable({ products, isLoading }) {
                       alt={product.name}
                       width={35}
                       height={35}
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 object-contain"
                     />
                   ) : (
                     <div

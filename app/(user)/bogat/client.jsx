@@ -38,42 +38,42 @@ const CATEGORIES = [
     Icon: Layers,
     label: "Tiles & Stone",
     href: "/bogat/materials?category=tiles",
-    image: "/matte.png",
+    image: "/site-images/web/staircase-after.jpg",
     description: "Large format tiles, porcelain, ceramic & more.",
   },
   {
     Icon: Droplets,
     label: "Bathroom Fittings",
     href: "/bogat/materials?category=bathroom",
-    image: "/brass.png",
+    image: "/site-images/web/bathroom-2-after.jpg",
     description: "Premium taps, showers, mixers & accessories.",
   },
   {
     Icon: Bath,
     label: "Sanitary Ware",
     href: "/bogat/materials?category=sanitary",
-    image: "/pendant.png",
+    image: "/site-images/web/bathroom-1-after.jpg",
     description: "Elegant, durable and hygienic solutions.",
   },
   {
     Icon: DoorOpen,
     label: "Doors & Hardware",
     href: "/bogat/materials?category=doors",
-    image: "/oak.png",
+    image: "/site-images/web/interior-finished.jpg",
     description: "Security, style and durability in every detail.",
   },
   {
     Icon: Gem,
     label: "Accessories",
     href: "/bogat/materials?category=accessories",
-    image: "/chair.png",
+    image: "/site-images/web/patio-after.jpg",
     description: "Complements that define your space.",
   },
   {
     Icon: Diamond,
     label: "Marble & Quartz",
     href: "/bogat/materials?category=marble",
-    image: "/geo.png",
+    image: "/site-images/web/kitchen-island.jpg",
     description: "Natural stone, engineered for perfection.",
   },
 ];
@@ -158,17 +158,18 @@ export default function BogatClient() {
           HERO
       ═══════════════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Desktop — right image column */}
-        <div className="hidden lg:block absolute inset-y-0 right-0 w-[48%]">
+        {/* Desktop — full-bleed image, text emerges from the gradient rather
+            than sitting beside a hard-edged image column */}
+        <div className="hidden lg:block absolute inset-0">
           <div className="relative h-full w-full">
             <Image
-              src="/hero/re-imagine.png"
+              src="/hero/bogat-hero.png"
               alt="Bogat premium materials showroom"
               fill
               priority
               className="object-cover object-center"
             />
-            <div className="absolute inset-y-0 left-0 w-48 bg-linear-to-r from-black to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-black via-black/85 to-black/40" />
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute bottom-0 inset-x-0 h-28 bg-linear-to-t from-black to-transparent" />
           </div>
@@ -177,7 +178,7 @@ export default function BogatClient() {
         {/* Mobile — background image */}
         <div className="lg:hidden absolute inset-0">
           <Image
-            src="/hero/re-imagine.png"
+            src="/hero/bogat-hero.png"
             alt="Bogat premium materials"
             fill
             priority

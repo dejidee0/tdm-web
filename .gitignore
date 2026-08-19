@@ -68,3 +68,6 @@ public/product-images/
 public/saved-products/
 public/before-after/
 saved-products/
+
+# Raw client photo originals (optimized copies live in public/site-images/web)
+/site-images-originals/
