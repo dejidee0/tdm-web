@@ -58,7 +58,7 @@ export default function OrderSummary({
                   src={item.image || PLACEHOLDER}
                   alt={item.name}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="64px"
                 />
               </div>

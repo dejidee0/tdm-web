@@ -34,10 +34,10 @@ import { EASE, DUR_MICRO } from "@/lib/theme/motion";
  *   · Build   — a costed breakdown. Labelled Sample, always, so the figures can
  *     never be mistaken for a quotation.
  *
- * The background is the finished building from a real TBM project
- * (/hero/after.png — /hero/before.jpg is the same structure under scaffolding).
- * It replaced a stock kitchen photo that was also doing duty as the showcase
- * screen and the final-CTA screen: one image, three jobs, no conviction.
+ * The background is a finished luxury kitchen from a real TBM project
+ * (/site-images/web/kitchen-lux-after.jpg). Its dark cabinetry and gold cove
+ * lighting match the page's black/gold palette, and an interior fits Ziora's
+ * room-visualization pitch better than a facade.
  *
  * Exploring is anonymous — the account wall sits at save-a-design /
  * detailed-estimate / book-a-consultation, not at the front door.
@@ -260,10 +260,10 @@ export default function Hero() {
 
   return (
     <section className="relative bg-black overflow-hidden">
-      {/* ── Background: a real finished TBM build ── */}
+      {/* ── Background: a real finished TBM interior ── */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/hero/after.png"
+          src="/site-images/web/kitchen-lux-after.jpg"
           alt=""
           fill
           priority
@@ -292,7 +292,7 @@ export default function Hero() {
               <p className="text-gold font-primary font-extrabold text-[1.75rem] sm:text-[2rem] tracking-[0.3em] uppercase leading-none">
                 Ziora
               </p>
-              <p className="mt-2.5 z-micro text-[11px] sm:text-[12px] tracking-[0.18em]">
+              <p className="mt-2.5 font-manrope font-semibold uppercase text-white/80 text-[12px] sm:text-[13px] tracking-[0.18em] leading-snug">
                 AI Renovation Platform by TBM Building Services
               </p>
             </motion.div>
@@ -323,7 +323,7 @@ export default function Hero() {
                       className={
                         on
                           ? "z-gold-text"
-                          : "text-white/55 group-hover:text-white transition-colors duration-300"
+                          : "text-white/70 group-hover:text-white transition-colors duration-300"
                       }
                     >
                       {word}
@@ -349,7 +349,7 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  className="text-white/70 text-[15px] sm:text-base leading-relaxed"
+                  className="text-white/90 text-base sm:text-lg leading-relaxed [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]"
                 >
                   {ACTS[active].line}
                 </motion.p>
@@ -375,13 +375,13 @@ export default function Hero() {
               <div className="flex items-center gap-5">
                 <Link
                   href="/consultation"
-                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-white transition-colors"
+                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/85 hover:text-white transition-colors"
                 >
                   Book a Consultation
                 </Link>
                 <Link
                   href={isAuthenticated ? "/dashboard" : "/sign-in"}
-                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/50 hover:text-white transition-colors"
+                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-white transition-colors"
                 >
                   {isAuthenticated ? "My Dashboard" : "Log In"}
                 </Link>
@@ -392,7 +392,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.6 }}
-              className="mt-6 text-white/50 text-[12px] leading-relaxed max-w-sm"
+              className="mt-6 text-white/70 text-[13px] leading-relaxed max-w-sm"
             >
               Explore without an account. You&rsquo;ll only need one to save a
               design, request a detailed estimate or book a consultation.

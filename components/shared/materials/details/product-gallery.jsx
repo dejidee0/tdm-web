@@ -170,7 +170,7 @@ export default function ProductGallery({
                   src={img}
                   alt={`${name} view ${i + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="76px"
                 />
               </button>
@@ -336,7 +336,7 @@ export default function ProductGallery({
                           : "2px solid rgba(255,255,255,0.15)",
                     }}
                   >
-                    <Image src={img} alt="" fill className="object-cover" sizes="56px" />
+                    <Image src={img} alt="" fill className="object-contain" sizes="56px" />
                   </button>
                 ))}
               </div>

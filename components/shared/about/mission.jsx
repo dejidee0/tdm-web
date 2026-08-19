@@ -18,8 +18,8 @@ export default function MissionVision() {
           >
             <div className="aspect-4/3 overflow-hidden relative">
               <Image
-                src="/about2.png"
-                alt="Modern kitchen interior"
+                src="/site-images/web/team-on-site.jpg"
+                alt="TBM team on a project site"
                 fill
                 className="object-cover"
                 priority

@@ -36,7 +36,7 @@ export default function OrderItems({ items }) {
                   src={item.productImageUrl || PLACEHOLDER}
                   alt={item.productName}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="80px"
                 />
               </div>

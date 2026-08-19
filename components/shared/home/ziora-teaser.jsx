@@ -38,10 +38,10 @@ const NAV_ITEMS = [
 ];
 
 const THUMBS = [
-  "/product-1.jpg",
-  "/product-2.jpg",
-  "/product-3.jpg",
-  "/product-4.png",
+  "/site-images/web/interior-finished.jpg",
+  "/site-images/web/kitchen-lux-after.jpg",
+  "/site-images/web/bathroom-2-after.jpg",
+  "/site-images/web/patio-after.jpg",
 ];
 
 function ZioraAppMockup() {

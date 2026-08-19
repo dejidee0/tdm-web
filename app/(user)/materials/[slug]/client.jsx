@@ -749,7 +749,7 @@ export default function MaterialDetailClient({
                             src={mat.image}
                             alt={mat.label}
                             fill
-                            className="object-cover"
+                            className="object-contain"
                             sizes="(max-width: 768px) 33vw, 15vw"
                           />
                         </div>
@@ -797,7 +797,7 @@ export default function MaterialDetailClient({
                             src={comp.image}
                             alt={comp.label}
                             fill
-                            className="object-cover"
+                            className="object-contain"
                             sizes="(max-width: 768px) 50vw, 20vw"
                           />
                         </div>

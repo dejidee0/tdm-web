@@ -744,7 +744,7 @@ export default function AddProductModal({
                           <img
                             src={image.preview}
                             alt={`Preview ${index + 1}`}
-                            className="w-full h-24 object-cover"
+                            className="w-full h-24 object-contain"
                           />
                           <button
                             type="button"

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Star } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
@@ -10,21 +9,18 @@ const TESTIMONIALS = [
       '"TBM Digital didn\'t just build our headquarters; they interpreted our brand values into a structural language. The AI visualizer was a game changer for our board."',
     name: "Adesola K.",
     title: "CEO, ZENITH FRONTIERS",
-    avatar: "/avatars/avatar1.png",
   },
   {
     quote:
       '"The transition from the digital render to the final site in Lagos was indistinguishable. Their commitment to material quality is unparalleled."',
     name: "Chiamaka O.",
     title: "PRINCIPAL, O. LIVING",
-    avatar: "/avatars/avatar2.png",
   },
   {
     quote:
       '"Their methodical approach removed all the anxiety usually associated with high-end construction. Truly the architects of the digital age."',
     name: "Dr. Marcus T.",
     title: "PROPERTY DEVELOPER",
-    avatar: "/avatars/avatar3.png",
   },
 ];
 
@@ -66,14 +62,6 @@ export default function TestimonialsSection() {
                 {/* Author */}
                 <div className="flex items-center gap-4">
                   <div className="relative w-11 h-11 rounded-full overflow-hidden bg-[#333] shrink-0">
-                    <Image
-                      src={t.avatar}
-                      alt={t.name}
-                      fill
-                      className="object-cover"
-                      onError={(e) => { e.currentTarget.style.display = "none"; }}
-                    />
-                    {/* Fallback initial */}
                     <span className="absolute inset-0 flex items-center justify-center text-white/60 text-sm font-bold font-manrope">
                       {t.name.charAt(0)}
                     </span>

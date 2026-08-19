@@ -124,7 +124,7 @@ export default function OrdersTable({ orders, isLoading, isError }) {
                         src={order.items[0].productImageUrl || PLACEHOLDER}
                         alt={order.items[0].productName}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         sizes="48px"
                       />
                     </div>
@@ -190,7 +190,7 @@ export default function OrdersTable({ orders, isLoading, isError }) {
                   src={order.items[0].productImageUrl || PLACEHOLDER}
                   alt={order.items[0].productName}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="64px"
                 />
               </div>
