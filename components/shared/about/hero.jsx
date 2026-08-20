@@ -19,8 +19,8 @@ export default function Hero() {
           />
 
           {/* Deep warm dark overlay — heavier on the left where the copy sits */}
-          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/80" />
-          <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/55 to-black/85 md:from-black/60 md:via-black/50 md:to-black/80" />
+          <div className="absolute inset-0 hidden md:block bg-linear-to-r from-black/60 via-black/25 to-transparent" />
 
           {/* Content */}
           <motion.div

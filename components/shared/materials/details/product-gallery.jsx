@@ -126,8 +126,10 @@ export default function ProductGallery({
     setLightbox(true);
   };
 
+  // Aspect lives in the class (square on mobile, 4:3 from sm) — a fixed 4:3
+  // frame on a ~360px screen leaves a contained portrait photo tiny.
+  const frameClass = "aspect-square sm:aspect-[4/3]";
   const frame = {
-    aspectRatio: "4/3",
     border: "1px solid rgba(212,175,55,0.2)",
     background: "#0d0b09",
   };
@@ -135,7 +137,7 @@ export default function ProductGallery({
   // ── No photography yet ──────────────────────────────────────────────────────
   if (!hasRealImages || count === 0) {
     return (
-      <div className="relative w-full overflow-hidden" style={frame}>
+      <div className={`relative w-full overflow-hidden ${frameClass}`} style={frame}>
         <Placeholder name={name} categoryName={categoryName} />
         <Badges {...badges} />
       </div>
@@ -182,7 +184,7 @@ export default function ProductGallery({
         <button
           onClick={openLightbox}
           aria-label="Open full-screen gallery"
-          className="group relative block flex-1 cursor-zoom-in overflow-hidden"
+          className={`group relative block flex-1 cursor-zoom-in overflow-hidden ${frameClass}`}
           style={frame}
         >
           <AnimatePresence mode="wait">
