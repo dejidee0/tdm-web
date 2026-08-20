@@ -36,6 +36,13 @@ has one example: `.claude/agents/frontend-architect.md`). No new libraries.
   Contact → Projects → Services → Materials/Bogat → Ziora (per spec §4). This
   plan does not execute that loop — it only builds the tool that will run it.
 
+**Note (post-implementation):** the reviewer verdict contract described above
+was revised during Task 2's review — see commit `a29f803` and the shipped
+`.claude/agents/page-readiness-reviewer.md` for the current five-field
+contract (adds `NEEDS HUMAN VERIFICATION`). This section is left as
+originally written for historical accuracy; do not use it as the current
+spec.
+
 ---
 
 ### Task 1: Write the Page-Readiness Rubric
@@ -337,6 +344,14 @@ PASSING ITEMS: <n> of <total>
 Do not propose fixes. Do not edit anything. Your job ends at the verdict.
 ```
 
+**Note (post-implementation):** the block above is Task 2's originally
+specified content and is left unchanged for historical accuracy. It was
+revised during Task 2's review — see commit `a29f803` and the shipped
+`.claude/agents/page-readiness-reviewer.md` for the actual current content
+(the five-field verdict contract, the `(human)`-tag-based NEEDS HUMAN
+VERIFICATION rule, and other fixes made after this step was written). Do not
+use this code block as the current spec.
+
 - [ ] **Step 2: Verify the frontmatter is well-formed**
 
 Run:
@@ -408,7 +423,7 @@ plan is merged.
 ```
 PAGE: Home (/)
 VERDICT: FAIL
-PASSING ITEMS: 9 of 21
+PASSING ITEMS: 9 of 21 (corrected — see note below)
 ```
 
 Correction: the dispatched agent's own arithmetic was wrong — it returned
@@ -418,11 +433,45 @@ failing is 9 passing, not 15. Independently recounted directly from
 `docs/client-recent/PAGE-READINESS-RUBRIC.md` (8 global + 7 home + 6
 PASS/FAIL-eligible technical items = 21) and from the enumerated failing
 list itself. This was caught by the Task 3 task-reviewer, not by the
-controller's own initial self-review — see `task-3-report.md` for the full
-correction trail. The count mismatch is a real defect in the dispatched
-agent's summary arithmetic, not a transcription error; it does not affect
-the FAILING ITEMS list itself, which was independently spot-checked and
-found accurate (see below).
+controller's own initial self-review. The count mismatch is a real defect in
+the dispatched agent's summary arithmetic, not a transcription error; it does
+not affect the FAILING ITEMS list itself, which was independently
+spot-checked and found accurate (see below).
+
+Full verdict inlined below; the original dispatch transcript also lives in
+this plan's now-deleted SDD workspace (`task-3-report.md`, gitignored under
+`.superpowers/sdd/`, not part of the committed history — the block below is
+the complete, self-contained record).
+
+The agent returned (verbatim final message):
+
+```
+PAGE: Home (/)
+VERDICT: FAIL
+
+FAILING ITEMS:
+  [global] No "TBM Digital", "TDM", or "Sarah Jenkins" appears anywhere in rendered output or source — components/shared/home/testimonials.jsx:9 contains `'"TBM Digital didn\'t just build our headquarters..."'`. The component is currently unused (no import of `home/testimonials` found anywhere under app/ or components/), so it is not in the live render, but it still exists as source under the Home feature's own component directory.
+  [global] Exactly one verified project-count figure is used site-wide — components/shared/home/trust-strip.jsx:7 renders "700+ Projects Completed" on the Home page, while components/shared/about/mission.jsx:56 renders "Over 10,000 homes transformed" — this is the exact contradiction the rubric names by example.
+  [global] Bogat is described as TBM's premium bathroom vanity/sanitaryware/bathroom-ware brand, never as a generic materials catalogue — on this page, components/shared/home/materials-bogat.jsx:213-216 describes Bogat as "Premium bathroom fittings, kitchen fixtures, and luxury finishes — sourced, priced, and delivered across Nigeria," and components/shared/home/services.jsx:48-50 labels the same tile "Materials (Bogat)" / "Premium tiles, fittings and finishing materials" — both frame Bogat as a general materials catalogue (tiles, kitchen fixtures) rather than a bathroom-specific brand.
+  [global] Ziora copy/layout must never compete with or outrank TBM's core renovation/construction offer — components/shared/home/hero.jsx:97-102 makes "Start with Ziora" the hero's primary CTA (before any renovation-led CTA), and components/shared/home/ziora-teaser.jsx is rendered as the third section on the page (app/(user)/page.js:56), immediately after the trust strip and before Services, before/after project proof, or the process section — Ziora visually leads the page rather than following TBM's core offer.
+  [global] No unqualified absolute claims ("On-Time Delivery — Always") — components/shared/home/trust-strip.jsx:10 renders exactly this stat: `{ Icon: Clock, value: "On-Time Delivery", label: "Always" }`, displayed as "On-Time Delivery" / "Always".
+  [global] Contact details (phone, WhatsApp number, email, office address) are identical everywhere they appear — the Home page's WhatsApp CTA (components/shared/home/why-choose-tbm.jsx:143, `wa.me/2348107524643`, confirmed in rendered HTML) does not match the Contact page's number (app/(user)/contact/page.jsx:217,230, `+2349066913241`), which in turn does not match the Bogat page's number (app/(user)/bogat/client.jsx:676, `+2348107324443`) — three different numbers across the site.
+  [home] Primary CTA is renovation/inspection-led, not a Ziora CTA — components/shared/home/hero.jsx:96-109: the hero's primary button is `Link href="/ziora"` reading "Start with Ziora"; the renovation-relevant action ("View Projects") is the secondary button.
+  [home] Ziora is introduced below TBM's services, real project proof, trust signals, and process sections, never in the hero or first major section — app/(user)/page.js:49-62 renders `<ZioraSection />` as section 3 (right after Hero and StatsStrip), before `<TransformationSection />` (project proof), `<ProcessSection />`, and `<ServicesSection />`.
+  [home] Every stat, testimonial, and identity shown on the homepage is genuine and verifiable — no template/demo content — components/shared/home/why-choose-tbm.jsx:16-34 hardcodes testimonials from "Chiamaka O." ("The transition from the digital render to the final site was indistinguishable. Material quality is unparalleled.") and "Dr. Marcus T." ("Their methodical approach removed all the anxiety usually associated with high-end construction.") that are near-verbatim restatements of the same two named people's quotes in the unused demo file components/shared/home/testimonials.jsx:14-24, which itself explicitly references "TBM Digital" — strong evidence this is recycled template/demo copy, not genuine client testimonials.
+  [home] A visible WhatsApp contact action exists using the correct business number — a WhatsApp action is visible (components/shared/home/why-choose-tbm.jsx:142-159, `wa.me/2348107524643`), but given three conflicting numbers exist site-wide (see Global finding above) and the Contact page's number is used consistently in two places there vs. this page's number appearing nowhere else, this page's number cannot be confirmed as "the correct business number."
+  [technical] `loading.jsx` exists for the route segment — no `loading.jsx` exists for the `/` route: `find app -maxdepth 2 -iname "loading*"` only returns `app/dashboard/loading.jsx`; neither `app/(user)/loading.jsx` nor `app/loading.jsx` exists.
+  [technical] Touch targets are at least 44×44px — components/common/navbar.jsx:335-341 (saved/heart button), :343-350 (cart button), and :351-357 (mobile hamburger button) all use `p-2` padding around a `w-5 h-5` (20px) icon, giving a ~36×36px hit target, below the 44×44px floor. This navbar renders on every route via app/(user)/layout.js, including Home.
+
+NEEDS HUMAN VERIFICATION:
+  [technical] The page has been driven in a browser, signed out (and signed in, if relevant) — this requires visual/interactive judgment (does the hero video play, does the mobile drawer open/close correctly, do hover/scroll reveals fire, does the product grid resolve after the client-side fetch) that cannot be established from source inspection or a single curl of the SSR HTML.
+
+PASSING ITEMS: 15 of 21
+```
+
+(Note: the `PASSING ITEMS: 15 of 21` line above is the raw, uncorrected
+dispatch output, preserved verbatim as evidence — the corrected value is
+`9 of 21`, per the Correction paragraph above.)
 
 Note: `subagent_type: "page-readiness-reviewer"` was not yet registered in
 this session (custom agents in `.claude/agents/` load at session start,

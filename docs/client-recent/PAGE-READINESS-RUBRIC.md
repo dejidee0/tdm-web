@@ -8,7 +8,14 @@ work moves to the next one. See
 mechanism this file drives.
 
 Every item below is phrased so it can be marked PASS or FAIL from observable
-evidence (a file, a rendered string) — never from unverifiable intent.
+evidence (a file, a rendered string) — never from unverifiable intent. An item
+whose checkbox is suffixed `(human)` is never marked PASS or FAIL by the
+automated reviewer — it always goes in a separate human-verification list;
+every other item must always be marked PASS or FAIL from evidence, never
+skipped as "too subjective" — even a judgment call like "is this testimonial
+genuine" must be resolved from what's actually readable in the code (e.g.
+duplicate/recycled copy, a component that's provably unused, absence of any
+real name/photo) rather than deferred to a human.
 
 ## Global
 
@@ -34,7 +41,15 @@ site-wide consistency rules.
       brand voice on every public route — no page reverts to a different
       template/nav.
 - [ ] Contact details (phone, WhatsApp number, email, office address) are
-      identical everywhere they appear.
+      identical everywhere they appear. Canonical values established in the
+      client audit (`Website developers audit.pdf`, Priority 4): email
+      `info@tbmbuilding.com`, website `www.tbmbuilding.com`, social handle
+      `@tbmbuildingservices`. No canonical phone/WhatsApp number is
+      established yet in the client docs — for that field specifically, the
+      check is only "identical everywhere it appears," not "matches a known-
+      correct number"; finding multiple distinct numbers across pages is
+      sufficient evidence for FAIL on its own, without needing to know which
+      one is correct.
 - [ ] Apple App Store / Google Play badges appear only if a real, live app
       exists; otherwise they are removed.
 
@@ -53,8 +68,11 @@ site-wide consistency rules.
       furniture) appear in any homepage shop/category section.
 - [ ] Every stat, testimonial, and identity shown on the homepage is genuine
       and verifiable — no template/demo content.
-- [ ] A visible WhatsApp contact action exists using the correct business
-      number.
+- [ ] A visible WhatsApp contact action exists, using the same number that
+      appears consistently elsewhere on the site (see Global — no single
+      canonical number is established yet in the client docs, so flag it as
+      a FAIL if this page's number doesn't match what's used elsewhere,
+      without needing to know which number is "correct").
 - [ ] `app/(user)/page.js` is the single source for this route (confirm no
       second competing homepage template is being rendered).
 
@@ -69,7 +87,8 @@ site-wide consistency rules.
 - [ ] No exaggerated or unverifiable claims.
 - [ ] Page shares the same header/nav/footer template as Home (audit's "two
       different website identities" problem specifically calls out About).
-- [ ] File: `app/(user)/about/page.jsx`.
+
+Files to read: `app/(user)/about/page.jsx`.
 
 ## Contact
 
@@ -85,7 +104,8 @@ site-wide consistency rules.
       inbox.
 - [ ] Office/showroom address, phone, WhatsApp, and email are present and
       match the Global section's values.
-- [ ] Files: `app/(user)/contact/page.jsx`, `app/(user)/contact/layout.jsx`.
+
+Files to read: `app/(user)/contact/page.jsx`, `app/(user)/contact/layout.jsx`.
 
 ## Projects
 
@@ -100,7 +120,8 @@ site-wide consistency rules.
       Kitchens, Living rooms, Full home renovation, Commercial,
       Construction).
 - [ ] A "Start Similar Project" (or equivalent) CTA exists per project.
-- [ ] Files: `app/(user)/project/page.jsx`, `app/(user)/project/layout.jsx`.
+
+Files to read: `app/(user)/project/page.jsx`, `app/(user)/project/layout.jsx`.
 
 ## Services
 
@@ -110,7 +131,8 @@ site-wide consistency rules.
       agency services.
 - [ ] Each service includes: short intro, what's included, timeline,
       pricing approach, sample projects, CTA.
-- [ ] File: `app/(user)/services/page.js`.
+
+Files to read: `app/(user)/services/page.js`.
 
 ## Materials/Bogat
 
@@ -147,8 +169,10 @@ site-wide consistency rules.
 Reused from `CLAUDE.md`'s Feature Checklist — applies to whichever page is
 under review.
 
-- [ ] `loading.jsx` exists for the route segment and its skeleton matches the
-      real layout (not a bare spinner).
+- [ ] If the route segment awaits data (a fetch, a DB call, anything async
+      before render), `loading.jsx` exists for it and its skeleton matches
+      the real layout (not a bare spinner). A fully synchronous route needs
+      no `loading.jsx`.
 - [ ] An explicit empty state exists where the page can show zero results.
 - [ ] Error path never renders raw `error.message`; only `error.digest` or a
       pre-approved user-safe message.
@@ -158,4 +182,4 @@ under review.
 - [ ] Touch targets are at least 44×44px.
 - [ ] `npm run lint:arch` and `npm run typecheck` both pass.
 - [ ] The page has been driven in a browser, signed out (and signed in, if
-      relevant) — not just confirmed via a successful build.
+      relevant) — not just confirmed via a successful build. (human)
