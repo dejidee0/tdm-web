@@ -402,3 +402,29 @@ This confirms the mechanism works. Actual remediation of whatever the
 verdict lists as failing items is sub-project B (out of scope for this
 plan, per the spec) — it begins the page-by-page loop for real once this
 plan is merged.
+
+### Smoke test result (2026-08-20)
+
+```
+PAGE: Home (/)
+VERDICT: FAIL
+PASSING ITEMS: 15 of 21
+```
+
+Note: `subagent_type: "page-readiness-reviewer"` was not yet registered in
+this session (custom agents in `.claude/agents/` load at session start,
+before Task 2 created the file). The dispatch was simulated by running the
+reviewer file's exact body as a general-purpose agent's instructions — this
+validates the mechanism (rubric + instructions → correct, evidence-backed
+verdict shape) but not the harness's `subagent_type` registration path
+itself. Re-verify with a real `subagent_type: "page-readiness-reviewer"`
+dispatch after a fresh session picks up the file.
+
+The verdict correctly surfaced real, evidence-backed gaps matching the
+client audit almost exactly: three different WhatsApp numbers across
+Home/Contact/Bogat, the 700+ vs 10,000+ project-count contradiction, Ziora
+as the hero's primary CTA ahead of any renovation-led action, and
+testimonial copy in `why-choose-tbm.jsx` that's a near-verbatim rewrite of
+demo copy in an unused `testimonials.jsx` that still says "TBM Digital".
+The output structure matched the mandated contract exactly, including the
+`NEEDS HUMAN VERIFICATION` field for "driven in a browser."
