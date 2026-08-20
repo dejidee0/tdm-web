@@ -408,8 +408,21 @@ plan is merged.
 ```
 PAGE: Home (/)
 VERDICT: FAIL
-PASSING ITEMS: 15 of 21
+PASSING ITEMS: 9 of 21
 ```
+
+Correction: the dispatched agent's own arithmetic was wrong — it returned
+"15 of 21," but its enumerated `FAILING ITEMS` block lists exactly 12 items
+(6 global + 4 home + 2 technical), and 21 total eligible items minus 12
+failing is 9 passing, not 15. Independently recounted directly from
+`docs/client-recent/PAGE-READINESS-RUBRIC.md` (8 global + 7 home + 6
+PASS/FAIL-eligible technical items = 21) and from the enumerated failing
+list itself. This was caught by the Task 3 task-reviewer, not by the
+controller's own initial self-review — see `task-3-report.md` for the full
+correction trail. The count mismatch is a real defect in the dispatched
+agent's summary arithmetic, not a transcription error; it does not affect
+the FAILING ITEMS list itself, which was independently spot-checked and
+found accurate (see below).
 
 Note: `subagent_type: "page-readiness-reviewer"` was not yet registered in
 this session (custom agents in `.claude/agents/` load at session start,
