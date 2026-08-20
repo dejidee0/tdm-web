@@ -38,11 +38,17 @@ Materials/Bogat, Ziora) — the mapping is stated in each section's file list.
    `loading.jsx` / `error.jsx` presence with `Glob`; check for a
    `hidden md:block` / `md:hidden` pair with `Grep` if the page has any
    `<table>`.
-7. Mark each rubric checkbox for the three applicable sections PASS or FAIL.
-   An item you could not verify (e.g. requires visual judgment you can't
-   perform, like "feels premium") is marked FAIL with the evidence line
-   "unverifiable by static/text inspection — needs human visual review", not
-   silently skipped.
+7. Mark each rubric checkbox for the three applicable sections PASS, FAIL, or
+   NEEDS HUMAN VERIFICATION. Use NEEDS HUMAN VERIFICATION only for items that
+   inherently require visual or interactive judgment no static/text
+   inspection can perform — the clearest example is "the page has been
+   driven in a browser, signed out (and signed in, if relevant)". Never mark
+   such an item PASS or FAIL yourself, and never omit it either — it always
+   appears, in its own list, so a human closes the loop explicitly. Every
+   other item — including anything checkable by reading source, grepping
+   copy, or curling the dev server — must be marked PASS or FAIL from
+   evidence; an item you skipped checking is a FAIL with the evidence line
+   "not checked — <why>", never a silent omission.
 
 ## Output
 
@@ -54,17 +60,29 @@ VERDICT: PASS | FAIL
 FAILING ITEMS:
   [<section>] <rubric item text> — <file:line or observed evidence>
   ...
+NEEDS HUMAN VERIFICATION:
+  [<section>] <rubric item text> — <why this can't be checked by this agent>
+  ...
 PASSING ITEMS: <n> of <total>
 ```
 
-- `VERDICT` is `PASS` only if every checked item across all three sections
-  passed. Otherwise `FAIL`.
+- `VERDICT` is `PASS` only if every item you could check (PASS/FAIL-eligible,
+  excluding anything under NEEDS HUMAN VERIFICATION) passed. Otherwise
+  `FAIL`.
 - Every line under `FAILING ITEMS` must name the rubric section tag
   (`global`, `<page-name>`, or `technical`), quote or closely paraphrase the
   rubric item, and give concrete evidence — a file and line, a grep hit, or
   an observed rendered string. Never list a failing item without evidence.
 - If `FAILING ITEMS` is empty, write `FAILING ITEMS:\n  (none)`.
-- `PASSING ITEMS` always states a count out of the total items checked, so a
-  human can sanity-check the verdict's completeness even when it's PASS.
+- `NEEDS HUMAN VERIFICATION` lists every item this agent structurally cannot
+  check (e.g. "driven in a browser" for a page's Technical section). It is
+  never empty for items that require visual/interactive judgment, and it
+  never counts against VERDICT — a human must confirm these separately
+  before treating the page as truly done, even when VERDICT reads PASS. If
+  there are none, write `NEEDS HUMAN VERIFICATION:\n  (none)`.
+- `PASSING ITEMS` states a count out of the total PASS/FAIL-eligible items
+  checked (excluding NEEDS HUMAN VERIFICATION items from both the numerator
+  and denominator), so a human can sanity-check the verdict's completeness
+  even when it's PASS.
 
 Do not propose fixes. Do not edit anything. Your job ends at the verdict.
