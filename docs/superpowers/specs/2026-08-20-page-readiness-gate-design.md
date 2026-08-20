@@ -102,8 +102,20 @@ FAILING ITEMS:
   [global] "TBM Digital" reference found — components/shared/footer.jsx:42
   [about]  "10,000 homes transformed" conflicts with homepage's "700+ projects"
   [technical] no loading.jsx for this route segment
+NEEDS HUMAN VERIFICATION:
+  [technical] page driven in a browser, signed out — requires visual/interactive judgment this agent can't perform
 PASSING ITEMS: <count> of <total>
 ```
+
+VERDICT is PASS only over items the agent can actually check — anything
+requiring visual or interactive judgment (starting with "driven in a
+browser") is never marked PASS/FAIL and never counted toward VERDICT.
+Instead it's always listed under `NEEDS HUMAN VERIFICATION`, so a human
+confirms it separately before a page is treated as truly done. Without this
+split, the reviewer's own fail-closed rule (below) would make every page
+permanently FAIL, since "driven in a browser" can never be verified by a
+text-only agent — this was caught and ruled on during implementation (see
+the plan's ledger).
 
 A FAIL always names the rubric line item, the file/evidence, and enough
 detail to act on without re-deriving the gap. A PASS still lists what was
