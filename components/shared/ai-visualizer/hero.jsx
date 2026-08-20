@@ -271,7 +271,7 @@ export default function Hero() {
           className="object-cover object-center"
         />
         {/* Left-heavy gradient so text stays readable */}
-        <div className="absolute inset-0 bg-linear-to-r from-black via-black/85 to-black/40" />
+        <div className="absolute inset-0 bg-linear-to-b md:bg-linear-to-r from-black via-black/85 to-black/60 md:to-black/40" />
         <div className="absolute inset-0 bg-black/30" />
       </div>
 

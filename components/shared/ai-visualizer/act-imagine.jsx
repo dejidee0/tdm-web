@@ -14,10 +14,9 @@ import { enter, RISE } from "@/lib/theme/motion";
  * evidence, and it answers with the one thing a render cannot fake: a real
  * building that actually got built.
  *
- * /hero/before.jpg and /hero/after.png are the same structure — the concrete
- * frame under scaffolding, and the finished house with the same blade columns
- * and cantilevered roof. That pair was sitting unused in the repo while this
- * page led with a stock kitchen photo.
+ * The pair is the "Contemporary Luxury Villa Exterior Transformation" project
+ * from the live portfolio (site-images/web/villa-contemp-*.jpg) — the concrete
+ * shell behind the TBM site board, and the finished villa at handover.
  *
  * Deliberately one idea, at size. The temptation is to pad a section like this
  * with three supporting cards; the restraint is the point. A large, genuinely
@@ -59,15 +58,15 @@ export default function ActImagine() {
           viewport={{ once: true, margin: "-60px" }}
           transition={enter(1)}
         >
-          {/* 4/3 is the gentlest shared crop for this pair: the after image is
-              roughly 6:5 and the before is portrait, so a wider frame would cut
-              the roofline off the building the section is about. */}
+          {/* 6/5 is the gentlest shared crop for this pair: the before is
+              slightly portrait (~0.92) and the after is ~1.44 landscape, so a
+              near-square frame trims the least off either photo. */}
           <div className="border border-z-line p-2 bg-z-panel">
             <BeforeAfter
-              before="/hero/before.jpg"
-              after="/hero/after.png"
+              before="/site-images/web/villa-contemp-before.jpg"
+              after="/site-images/web/villa-contemp-after.jpg"
               variant="sharp"
-              aspect="4/3"
+              aspect="6/5"
               beforeLabel="Structure"
               afterLabel="Finished"
             />
@@ -77,7 +76,7 @@ export default function ActImagine() {
           <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
             <div className="flex items-center gap-2.5">
               <span aria-hidden className="h-px w-6 bg-gold/50 shrink-0" />
-              <p className="z-micro">A real project — frame to finish</p>
+              <p className="z-micro">Contemporary Luxury Villa, Abuja — frame to finish</p>
             </div>
 
             <Link

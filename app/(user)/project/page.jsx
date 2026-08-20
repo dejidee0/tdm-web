@@ -36,7 +36,7 @@ function PortfolioCard({ item }) {
       className="group cursor-pointer bg-[#111] border border-white/8 rounded-2xl overflow-hidden hover:border-[#D4AF37]/40 transition-colors duration-300"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[4/3] bg-[#1a1a1a] overflow-hidden">
+      <div className="relative aspect-square sm:aspect-[4/3] bg-[#1a1a1a] overflow-hidden">
         {item.thumbnailUrl ? (
           <img
             src={item.thumbnailUrl}
@@ -168,7 +168,7 @@ export default function PortfolioPage() {
                   key={i}
                   className="bg-[#111] border border-white/8 rounded-2xl overflow-hidden animate-pulse"
                 >
-                  <div className="aspect-[4/3] bg-white/5" />
+                  <div className="aspect-square sm:aspect-[4/3] bg-white/5" />
                   <div className="p-4 space-y-2">
                     <div className="h-4 bg-white/5 rounded w-3/4" />
                     <div className="h-3 bg-white/5 rounded w-1/2" />

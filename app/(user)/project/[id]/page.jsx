@@ -20,6 +20,10 @@ const CATEGORY_COLORS = {
 
 function BeforeAfterSlider({ beforeUrl, afterUrl, beforeCaption, afterCaption }) {
   const [pos, setPos] = useState(50);
+  // Natural aspect of the After photo. The frame adopts it once known, so a
+  // portrait pair gets a tall centered frame instead of floating in a 16:10
+  // letterbox, and a landscape pair still fills the column.
+  const [ratio, setRatio] = useState(null);
   const containerRef = useRef(null);
   const isDragging = useRef(false);
 
@@ -44,18 +48,34 @@ function BeforeAfterSlider({ beforeUrl, afterUrl, beforeCaption, afterCaption })
     <div className="space-y-3">
       <div
         ref={containerRef}
-        className="relative w-full aspect-[16/10] overflow-hidden cursor-col-resize select-none rounded-2xl bg-[#111]"
+        className={`relative mx-auto overflow-hidden cursor-col-resize select-none rounded-2xl bg-[#111] ${ratio ? "" : "w-full aspect-[4/5] sm:aspect-[16/10]"}`}
+        style={
+          ratio
+            ? ratio >= 1
+              ? { aspectRatio: ratio, width: "100%" }
+              : { aspectRatio: ratio, height: "min(72vh, 40rem)", maxWidth: "100%" }
+            : undefined
+        }
         onMouseDown={(e) => { isDragging.current = true; updatePos(e.clientX); }}
         onMouseMove={(e) => { if (isDragging.current) updatePos(e.clientX); }}
         onTouchStart={(e) => { isDragging.current = true; updatePos(e.touches[0].clientX); }}
         onTouchMove={(e) => { if (isDragging.current) updatePos(e.touches[0].clientX); }}
       >
         {/* After (background) */}
-        <img src={afterUrl} alt="After renovation" draggable={false} className="absolute inset-0 w-full h-full object-contain" />
+        <img
+          src={afterUrl}
+          alt="After renovation"
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover"
+          onLoad={(e) => {
+            const { naturalWidth: w, naturalHeight: h } = e.target;
+            if (w > 0 && h > 0) setRatio(w / h);
+          }}
+        />
 
         {/* Before (clipped to left) */}
         <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <img src={beforeUrl} alt="Before renovation" draggable={false} className="w-full h-full object-contain" />
+          <img src={beforeUrl} alt="Before renovation" draggable={false} className="w-full h-full object-cover" />
         </div>
 
         {/* Divider + handle */}
@@ -120,7 +140,7 @@ function Skeleton() {
   return (
     <div className="animate-pulse space-y-6">
       <div className="h-8 bg-white/5 rounded-lg w-2/3" />
-      <div className="aspect-[16/10] bg-white/5 rounded-2xl" />
+      <div className="aspect-[4/5] sm:aspect-[16/10] bg-white/5 rounded-2xl" />
       <div className="grid grid-cols-2 gap-3">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="h-16 bg-white/5 rounded-xl" />

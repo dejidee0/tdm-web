@@ -34,6 +34,8 @@ function useTransformationProjects() {
     const items = data?.items ?? [];
     return items
       .filter((p) => p.beforeImages?.[0]?.imageUrl && p.afterImages?.[0]?.imageUrl)
+      // A homepage teaser, not the archive — the full list lives at /project.
+      .slice(0, 6)
       .map((p) => ({
         id: p.id,
         title: p.title,
