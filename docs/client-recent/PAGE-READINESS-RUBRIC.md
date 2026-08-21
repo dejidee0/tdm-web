@@ -52,14 +52,19 @@ site-wide consistency rules.
       template/nav.
 - [ ] Contact details (phone, WhatsApp number, email, office address) are
       identical everywhere they appear. Canonical values established in the
-      client audit (`Website developers audit.pdf`, Priority 4): email
-      `info@tbmbuilding.com`, website `www.tbmbuilding.com`, social handle
-      `@tbmbuildingservices`. No canonical phone/WhatsApp number is
-      established yet in the client docs — for that field specifically, the
-      check is only "identical everywhere it appears," not "matches a known-
-      correct number"; finding multiple distinct numbers across pages is
-      sufficient evidence for FAIL on its own, without needing to know which
-      one is correct.
+      client audit (`Website developers audit.pdf`, Priority 4): website
+      `www.tbmbuilding.com`, social handle `@tbmbuildingservices`.
+      TODO(client): the audit's `info@tbmbuilding.com` was assumed canonical,
+      but the live site also uses `support@tbmbuilding.com` in
+      `app/(user)/privacy-policy/page.jsx` and elsewhere — two distinct real
+      addresses, same unresolved-conflict shape as the phone number below.
+      Confirm which email is correct (or if both are, and for what purpose
+      each is used) before treating either as canonical.
+      No canonical phone/WhatsApp number is established yet in the client
+      docs either — for both fields, the check is only "identical everywhere
+      it appears," not "matches a known-correct value"; finding multiple
+      distinct numbers or addresses across pages is sufficient evidence for
+      FAIL on its own, without needing to know which one is correct.
 - [ ] Apple App Store / Google Play badges appear only if a real, live app
       exists; otherwise they are removed.
 
