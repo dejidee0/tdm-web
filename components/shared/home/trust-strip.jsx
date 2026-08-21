@@ -9,7 +9,7 @@ import Reveal from "@/components/common/reveal";
 // accurate. Provide one real, verifiable count and it can go back in.
 const STATS = [
   { Icon: MapPin, value: "Abuja & Lagos", label: "We Serve" },
-  { Icon: ShieldCheck, value: "Premium Quality", label: "Guaranteed" },
+  { Icon: ShieldCheck, value: "Premium Quality", label: "Our Standard" },
   { Icon: Clock, value: "On-Time Delivery", label: "Our Commitment" },
 ];
 

@@ -282,7 +282,7 @@ export default function MaterialsBogatSection() {
           {/* Trust chips */}
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-6 gap-y-2">
             {[
-              "100% Authentic",
+              "Authentic Materials",
               "Fast Delivery — Abuja & Lagos",
               "Expert Support",
             ].map((item) => (
