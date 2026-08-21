@@ -211,8 +211,8 @@ export default function MaterialsBogatSection() {
               transition={{ delay: 0.12 }}
               className="mt-3 text-white/45 text-sm font-manrope leading-relaxed max-w-md"
             >
-              Premium bathroom fittings, kitchen fixtures, and luxury finishes —
-              sourced, priced, and delivered across Nigeria.
+              TBM&apos;s premium bathroom vanity, sanitaryware and finishing
+              brand — sourced, priced, and delivered across Nigeria.
             </motion.p>
           </div>
 

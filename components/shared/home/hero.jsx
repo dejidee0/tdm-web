@@ -92,13 +92,13 @@ export default function HeroSection() {
             ))}
           </div>
 
-          {/* CTAs */}
+          {/* CTAs — TBM's core offer leads; Ziora supports, it doesn't compete */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-ctas">
             <Link
-              href="/ziora"
+              href="/consultation"
               className="btn-gold px-8 py-3.5"
             >
-              Start with Ziora <ArrowRight size={14} />
+              Book a Site Inspection <ArrowRight size={14} />
             </Link>
             <Link
               href="/project"

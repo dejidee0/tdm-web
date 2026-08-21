@@ -46,7 +46,7 @@ const SERVICES = [
   {
     Icon: Package,
     label: "Materials (Bogat)",
-    desc: "Premium tiles, fittings and finishing materials",
+    desc: "Premium bathroom vanities, sanitaryware & fittings",
     src: "/site-images/web/kitchen-dark-lux.jpg",
   },
 ];

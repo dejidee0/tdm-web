@@ -49,29 +49,32 @@ export default function Home() {
       {/* 1. Hero — split layout */}
       <HeroSection />
 
-      {/* 2. Stats — 4-stat horizontal bar */}
+      {/* 2. Stats — trust indicators */}
       <StatsStrip />
 
-      {/* 3. Ziora AI — 3-panel app mockup */}
-      <ZioraSection />
-
-      {/* 4. Before & After — 4-across transformation gallery */}
+      {/* 3. Before & After — 4-across transformation gallery (real project proof) */}
       <TransformationSection />
       <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
-      {/* 5. The TBM × Ziora System — 4-step process */}
+      {/* 4. The TBM × Ziora System — 4-step process */}
       <ProcessSection />
       <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
-      {/* 6. Our Services — 6 image cards */}
+      {/* 5. Our Services — 6 image cards */}
       <ServicesSection />
 
-      {/* 7. Explore Our Work — filterable portfolio */}
+      {/* 6. Explore Our Work — filterable portfolio */}
       {/* <PortfolioSection /> */}
 
-      {/* 8. Bogat Marketplace — product showcase */}
-      <MaterialsBogatSection />
-
-      {/* 9. Why Choose TBM + Testimonials + Final CTA */}
+      {/* 7. Why Choose TBM + Final CTA — trust signals */}
       <WhyChooseTBM />
+
+      {/* 8. Ziora AI — supporting technology, introduced only after TBM's
+          services, project proof, process, and trust signals (per the
+          client audit: Ziora must never compete with or precede TBM's
+          core offer) */}
+      <ZioraSection />
+
+      {/* 9. Bogat Marketplace — product showcase */}
+      <MaterialsBogatSection />
 
       {/* 10. App Download */}
       {/* <AppDownloadBanner /> */}
