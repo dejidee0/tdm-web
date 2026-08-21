@@ -7,6 +7,16 @@ work moves to the next one. See
 `docs/superpowers/specs/2026-08-20-page-readiness-gate-design.md` for the
 mechanism this file drives.
 
+**Document priority (client-confirmed, 2026-08-21):** where the source
+documents disagree, `Website developers audit.pdf` wins. It's the newest
+document and the only one written by reviewing the site as actually built —
+the other documents (`TBM web app correction doc.docx`, `Website spec.docx`,
+`tbmbuilding.com.docx`) predate it and, in places, describe an earlier
+direction (e.g. a Ziora-forward hero, a general-materials framing for Bogat)
+that the audit explicitly reverses. Every item below already reflects the
+audit's version wherever the two conflicted; this note exists so a future
+edit doesn't "correct" the rubric back toward an out-of-date document.
+
 Every item below is phrased so it can be marked PASS or FAIL from observable
 evidence (a file, a rendered string) — never from unverifiable intent. An item
 whose checkbox is suffixed `(human)` is never marked PASS or FAIL by the
@@ -31,7 +41,7 @@ site-wide consistency rules.
 - [ ] Bogat is described as TBM's premium bathroom vanity / sanitaryware /
       bathroom-ware brand, never as a generic/general materials catalogue.
 - [ ] Ziora is described as a TBM-assisted design, visualisation, and
-      estimation *advantage* — copy and layout never let it compete with or
+      estimation _advantage_ — copy and layout never let it compete with or
       visually outrank TBM's core renovation/construction offer.
 - [ ] No unqualified absolute claims — "On-Time Delivery — Always", "instant
       accurate estimates", any "real-time" claim — unless the feature is
