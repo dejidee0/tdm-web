@@ -8,7 +8,6 @@ import ServicesSection from "@/components/shared/home/services";
 import PortfolioSection from "@/components/shared/home/featured-projects";
 import MaterialsBogatSection from "@/components/shared/home/materials-bogat";
 import WhyChooseTBM from "@/components/shared/home/why-choose-tbm";
-import AppDownloadBanner from "@/components/shared/home/app-download";
 
 export const metadata = {
   title: "TBM Building Services – Luxury Renovation & Smart Construction",
@@ -55,7 +54,7 @@ export default function Home() {
       {/* 3. Before & After — 4-across transformation gallery (real project proof) */}
       <TransformationSection />
       <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
-      {/* 4. The TBM × Ziora System — 4-step process */}
+      {/* 4. How TBM Works — 4-step process */}
       <ProcessSection />
       <div className="bg-white/35 h-[0.35px] w-[80%] mx-auto"></div>
       {/* 5. Our Services — 6 image cards */}
@@ -75,9 +74,6 @@ export default function Home() {
 
       {/* 9. Bogat Marketplace — product showcase */}
       <MaterialsBogatSection />
-
-      {/* 10. App Download */}
-      {/* <AppDownloadBanner /> */}
     </main>
   );
 }
