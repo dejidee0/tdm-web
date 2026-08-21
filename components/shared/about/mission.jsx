@@ -49,13 +49,12 @@ export default function MissionVision() {
               Our Mission & Vision
             </h2>
             <p className="text-base text-white/50 leading-relaxed max-w-xl">
-              We are dedicated to{" "}
+              To deliver{" "}
               <span className="font-semibold text-white">
-                empowering homeowners
+                premium construction and renovation experiences
               </span>{" "}
-              with the tools and expertise to create spaces they love. Our
-              vision is to become Nigeria&apos;s leading platform for home
-              renovation.
+              through structured execution, high-quality materials, and
+              disciplined project management.
             </p>
 
             {/* Value Cards */}
