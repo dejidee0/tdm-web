@@ -15,7 +15,8 @@ const REASONS = [
 // TODO(client): the testimonials previously shown here ("Chiamaka O.",
 // "Dr. Marcus T.", "Mrs. Aisha Ibrahim") were recycled/unverifiable —
 // two of the three were near-identical to fabricated demo copy in a
-// legacy, unused component that still referenced "TBM Digital". Removed
+// legacy, unused component that still carried the retired agency-era
+// branding. Removed
 // until real, verified client testimonials (name, project, city) are
 // provided.
 

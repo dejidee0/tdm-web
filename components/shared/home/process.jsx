@@ -7,7 +7,7 @@ const STEPS = [
   {
     Icon: Box,
     number: "01",
-    title: "Design with Ziora",
+    title: "AI-Assisted Design & Planning",
     description: "3D designs & project estimate",
   },
   {
