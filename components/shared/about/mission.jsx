@@ -24,40 +24,13 @@ export default function MissionVision() {
                 className="object-cover"
                 priority
               />
-              {/* Impact Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="absolute bottom-6 left-6 right-6"
-              >
-                <div className="bg-black/80 backdrop-blur-sm px-5 py-4 flex items-center gap-4 border border-white/10">
-                  <div className="w-10 h-10 border border-[#D4AF37]/50 flex items-center justify-center shrink-0">
-                    <svg
-                      className="w-5 h-5 text-[#D4AF37]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-[16px] font-semibold text-[#D4AF37] uppercase tracking-[0.2em]">
-                      Impact
-                    </div>
-                    <div className="text-sm font-medium text-white leading-snug">
-                      Over 10,000 homes transformed
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              {/*
+                TODO(client): the "Impact Badge" (Over 10,000 homes
+                transformed) was removed — it conflicted with the homepage's
+                "700+" figure (also removed there) and neither number could
+                be confirmed as accurate. Provide one real, verifiable
+                project/homes-transformed count and this badge can go back.
+              */}
             </div>
           </motion.div>
 

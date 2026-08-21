@@ -40,16 +40,17 @@ const TOTAL = ESTIMATE_LINES.reduce((sum, l) => sum + l.value, 0);
 const naira = (n) => `₦ ${n.toLocaleString("en-NG")}`;
 
 /**
- * Verified figures across three years of TBM projects.
- *
  * "Photo to first render" rather than the previous "Avg. Design Time": same
  * measurement, stated as the thing a visitor gets instead of as an internal
  * metric. A stat band answers "what does this do for me", not "what do we
  * track".
+ *
+ * TODO(client): "700+ Projects designed" and "10,000+ Designs generated"
+ * were removed — they conflicted with the site's other project-count
+ * figures (Home, About) and none of them could be confirmed as accurate.
+ * Provide one real, verifiable count and it can go back in.
  */
 const STATS = [
-  { value: "700+", label: "Projects designed" },
-  { value: "10,000+", label: "Designs generated" },
   { value: "98%", label: "Estimate accuracy" },
   { value: "~3 min", label: "Photo to first render" },
 ];
@@ -218,14 +219,12 @@ export default function ActBuild() {
         className="border-t border-z-line bg-z-base"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2">
             {STATS.map(({ value, label }, i) => (
               <div
                 key={label}
                 className={`px-4 sm:px-6 py-9 sm:py-11 text-center border-z-line
-                  ${i < 2 ? "border-b lg:border-b-0" : ""}
-                  ${i % 2 === 0 ? "border-r" : ""}
-                  ${i === 2 ? "lg:border-r" : ""}
+                  ${i < STATS.length - 1 ? "border-r" : ""}
                 `}
               >
                 <p className="text-white text-[1.75rem] sm:text-[2.25rem] font-extrabold font-primary leading-none tabular-nums">
