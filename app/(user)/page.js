@@ -8,6 +8,7 @@ import ServicesSection from "@/components/shared/home/services";
 import PortfolioSection from "@/components/shared/home/featured-projects";
 import MaterialsBogatSection from "@/components/shared/home/materials-bogat";
 import WhyChooseTBM from "@/components/shared/home/why-choose-tbm";
+import CTASection from "@/components/shared/home/cta";
 
 export const metadata = {
   title: "TBM Building Services – Luxury Renovation & Smart Construction",
@@ -74,6 +75,10 @@ export default function Home() {
 
       {/* 9. Bogat Marketplace — product showcase */}
       <MaterialsBogatSection />
+
+      {/* 10. Final conversion section — repeats the booking CTA at the very
+          bottom of the page, per the audit's homepage hierarchy (row 8) */}
+      <CTASection />
     </main>
   );
 }

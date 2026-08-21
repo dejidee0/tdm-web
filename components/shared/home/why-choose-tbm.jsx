@@ -78,7 +78,7 @@ export default function WhyChooseTBM() {
 
               <div className="flex flex-col gap-3">
                 <Link href="/consultation" className="btn-gold gap-2">
-                  Book a Site Inspection
+                  Book a Paid Site Inspection
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 

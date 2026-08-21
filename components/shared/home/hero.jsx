@@ -99,13 +99,13 @@ export default function HeroSection() {
               href="/consultation"
               className="btn-gold px-8 py-3.5"
             >
-              Book a Site Inspection <ArrowRight size={14} />
+              Book a Paid Site Inspection <ArrowRight size={14} />
             </Link>
             <Link
               href="/project"
               className="btn-outline px-8 py-3.5"
             >
-              View Projects
+              View Our Projects
             </Link>
           </div>
         </div>
