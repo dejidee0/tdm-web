@@ -13,10 +13,11 @@ export const metadata = {
     "AI project estimate Nigeria",
     "before and after renovation AI",
     "AI interior design Lagos",
-    "Ziora AI visualizer",
+    "Design with Ziora",
   ],
   openGraph: {
-    title: "Ziora AI — Design, Visualize & Know the Cost | TBM Building Services",
+    title:
+      "Ziora AI — Design, Visualize & Know the Cost | TBM Building Services",
     description:
       "See your space redesigned before a single tile is laid. 3D designs + instant cost estimates. Powered by Ziora AI.",
     type: "website",

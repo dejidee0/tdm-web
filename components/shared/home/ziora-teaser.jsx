@@ -306,9 +306,9 @@ export default function ZioraSection() {
                 className="text-white/45 font-manrope leading-[1.75] mb-7"
                 style={{ fontSize: 16, maxWidth: 320 }}
               >
-                Upload your space, choose your style and get stunning 3D
-                designs with a cost estimate range in minutes — assisted by
-                TBM&apos;s team.
+                Upload your space, choose your style and get stunning 3D designs
+                with a cost estimate range in minutes — assisted by TBM&apos;s
+                team.
               </p>
             </Reveal>
 
@@ -338,7 +338,7 @@ export default function ZioraSection() {
             <Reveal direction="up" delay={160}>
               <div className="flex items-center gap-5 flex-wrap">
                 <Link href="/ziora" className="btn-gold">
-                  Try Ziora Now →
+                  Design with Ziora Now →
                 </Link>
                 <Link
                   href="/services#how-it-works"

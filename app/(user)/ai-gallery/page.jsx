@@ -178,7 +178,7 @@ export default function AIGalleryPage() {
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-black text-sm font-manrope font-semibold rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
             >
               <Wand2 className="w-4 h-4" />
-              Try AI Visualizer
+              Try Design with Ziora
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>

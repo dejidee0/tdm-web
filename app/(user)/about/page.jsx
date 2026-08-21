@@ -1,7 +1,7 @@
 export const metadata = {
   title: "About TBM Building Services",
   description:
-    "Learn about TBM Building Services — our mission, the Bogat materials store, Ziora AI visualizer, and our execution teams across Abuja and Lagos.",
+    "Learn about TBM Building Services — our mission, the Bogat materials store, Design with Ziora, and our execution teams across Abuja and Lagos.",
   keywords: [
     "about TBM Building Services",
     "renovation company Abuja",

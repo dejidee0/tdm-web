@@ -508,7 +508,7 @@ export default function AppDownloadBanner() {
             >
               <Feature
                 icon={Zap}
-                label="Ziora AI Visualizer"
+                label="Design with Ziora"
                 desc="Generate photorealistic room renders from a single photo."
               />
               <Feature

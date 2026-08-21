@@ -33,8 +33,7 @@ import ProductTabs from "@/components/shared/materials/details/tabs";
 import ProductGallery from "@/components/shared/materials/details/product-gallery";
 import ProductReviews from "@/components/shared/materials/details/product-reviews";
 
-const PLACEHOLDER =
-  "/product-placeholder.svg";
+const PLACEHOLDER = "/product-placeholder.svg";
 
 // Variants carry a raw price number, not a formatted string. Match the shape of
 // the backend's product-level `priceDisplay` ("₦850,000.00").
@@ -636,7 +635,7 @@ export default function MaterialDetailClient({
                 )}
               </div>
 
-              {/* ── AI Visualizer & Project Card ──────────────────────── */}
+              {/* ── Design with Ziora & Project Card ──────────────────────── */}
               {/* <div className="space-y-3">
                 <AIVisualizer />
                 <ProjectCard
@@ -893,7 +892,9 @@ export default function MaterialDetailClient({
       {product.showPrice && product.inStock && (
         <section
           className="border-y border-[#D4AF37]/20"
-          style={{ background: "linear-gradient(180deg, #100d09 0%, #0a0908 100%)" }}
+          style={{
+            background: "linear-gradient(180deg, #100d09 0%, #0a0908 100%)",
+          }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
@@ -907,8 +908,8 @@ export default function MaterialDetailClient({
                 {isMadeToOrder && (
                   <p className="mt-4 text-[14.5px] text-white/50 leading-relaxed">
                     Reserve your size and finish today. Our design team confirms
-                    your quote, stone selection and 8–12 week timeline before any
-                    payment is taken.
+                    your quote, stone selection and 8–12 week timeline before
+                    any payment is taken.
                   </p>
                 )}
               </div>
@@ -928,10 +929,13 @@ export default function MaterialDetailClient({
                   whileHover={{ scale: 1.01, y: -1 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={handleBuyNow}
-                  disabled={buyingNow || addToCart.isPending || !product.inStock}
+                  disabled={
+                    buyingNow || addToCart.isPending || !product.inStock
+                  }
                   className="w-full py-4 rounded-sm text-white font-manrope font-bold text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
                   style={{
-                    background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
+                    background:
+                      "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
                     boxShadow:
                       "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.18), 0 0 0 1px rgba(184,148,10,0.6), 0 0 22px rgba(212,175,55,0.32)",
                     textShadow: "0 1px 2px rgba(0,0,0,0.45)",
