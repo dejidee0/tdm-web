@@ -87,7 +87,7 @@ export default function FinalCTA() {
 
         <Link
           href="/ziora/guide"
-          className="group mt-10 inline-flex items-center gap-2 py-2 text-white/50 hover:text-gold text-[13px] transition-colors"
+          className="group mt-10 inline-flex items-center min-h-11 gap-2 py-2 text-white/50 hover:text-gold text-[13px] transition-colors"
         >
           <BookOpen size={13} className="shrink-0" aria-hidden />
           New here? Read the 9-step guide

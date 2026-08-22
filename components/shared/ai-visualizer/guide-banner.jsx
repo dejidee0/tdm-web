@@ -47,7 +47,7 @@ export default function ZioraGuideBanner() {
 
           <Link
             href="/ziora/guide"
-            className="group inline-flex items-center gap-2 py-2 shrink-0 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-gold transition-colors"
+            className="group inline-flex items-center min-h-11 gap-2 py-2 shrink-0 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-gold transition-colors"
           >
             Read the guide
             <ArrowRight

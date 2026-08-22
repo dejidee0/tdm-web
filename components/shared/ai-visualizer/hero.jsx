@@ -378,13 +378,13 @@ export default function Hero() {
               <div className="flex items-center gap-5">
                 <Link
                   href="/consultation"
-                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/85 hover:text-white transition-colors"
+                  className="inline-flex items-center min-h-11 py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/85 hover:text-white transition-colors"
                 >
                   Book a Consultation
                 </Link>
                 <Link
                   href={isAuthenticated ? "/dashboard" : "/sign-in"}
-                  className="inline-flex items-center py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-white transition-colors"
+                  className="inline-flex items-center min-h-11 py-2 text-[13px] font-semibold tracking-[0.12em] uppercase text-white/70 hover:text-white transition-colors"
                 >
                   {isAuthenticated ? "My Dashboard" : "Log In"}
                 </Link>
