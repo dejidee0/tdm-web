@@ -267,7 +267,7 @@ export default function AIGalleryPage() {
             </h2>
             <p className="text-white/50 font-manrope mb-8">
               Upload a photo of any room and let our AI generate stunning
-              renovation concepts in seconds.
+              renovation concepts in minutes.
             </p>
             <Link
               href="/ziora"

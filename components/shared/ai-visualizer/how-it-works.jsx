@@ -48,9 +48,9 @@ const STEPS = [
   {
     number: "03",
     Icon: ReceiptText,
-    title: "Get Project Estimate",
-    desc: "Every concept comes costed to Nigerian market rates — construction, finishing and materials, line by line.",
-    outcome: "An itemised cost breakdown",
+    title: "Get Project Estimate — Coming Soon",
+    desc: "Every concept will come costed to Nigerian market rates — construction, finishing and materials, line by line.",
+    outcome: "An itemised cost breakdown (in development)",
   },
   {
     number: "04",

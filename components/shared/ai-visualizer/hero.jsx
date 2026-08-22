@@ -61,7 +61,10 @@ const CAPABILITIES = [
     label: "Estimate",
     // Act III already says "Costed to Nigerian market rates" verbatim, with a
     // paragraph behind it. Two identical sentences on one page read as filler.
-    desc: "A costed breakdown, not a ballpark",
+    // Coming Soon: no package tier currently ships a working cost estimate
+    // (package-tiers.jsx marks every cost-estimate feature Coming Soon), so
+    // this can't be described as a live capability yet.
+    desc: "A costed breakdown, not a ballpark — Coming Soon",
   },
   {
     Icon: LayoutGrid,
