@@ -252,7 +252,7 @@ const TIERS = [
       "50 generations per billing period",
       "Multiple style variations",
       "Style selection control",
-      "Basic cost range estimate",
+      "Basic cost range estimate — Coming Soon",
       "Priority rendering queue",
     ],
   },
@@ -266,7 +266,7 @@ const TIERS = [
     features: [
       "Unlimited generations",
       "Full material mapping (BOQ) — Coming Soon",
-      "Detailed cost breakdown",
+      "Detailed cost breakdown — Coming Soon",
       "Start Project with TBM — Coming Soon",
       "Buy Materials via Bogat — Coming Soon",
       "Execution-ready output",

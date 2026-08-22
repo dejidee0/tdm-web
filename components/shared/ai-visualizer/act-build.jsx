@@ -49,11 +49,14 @@ const naira = (n) => `₦ ${n.toLocaleString("en-NG")}`;
  * were removed — they conflicted with the site's other project-count
  * figures (Home, About) and none of them could be confirmed as accurate.
  * Provide one real, verifiable count and it can go back in.
+ *
+ * TODO(client): "98% Estimate accuracy" was also removed — no cost/estimate
+ * feature is actually implemented anywhere in the app yet (the breakdown
+ * below is explicitly labeled "Sample"), so an accuracy figure for it isn't
+ * verifiable. Add it back once the real estimate feature ships and the
+ * number is measured, not assumed.
  */
-const STATS = [
-  { value: "98%", label: "Estimate accuracy" },
-  { value: "~3 min", label: "Photo to first render" },
-];
+const STATS = [{ value: "~3 min", label: "Photo to first render" }];
 
 const TRUST = [
   {
@@ -219,7 +222,7 @@ export default function ActBuild() {
         className="border-t border-z-line bg-z-base"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-1">
             {STATS.map(({ value, label }, i) => (
               <div
                 key={label}

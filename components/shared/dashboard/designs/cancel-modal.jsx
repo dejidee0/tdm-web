@@ -90,7 +90,7 @@ export default function CancelModal({ isOpen, onClose, accessUntil }) {
                 <button
                   onClick={handleClose}
                   disabled={cancel.isPending}
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-white/30 hover:bg-white/05 transition-colors"
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-white/30 hover:bg-white/05 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
