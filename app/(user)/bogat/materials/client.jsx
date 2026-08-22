@@ -298,7 +298,7 @@ export default function BogatMaterialsClient({ initialData }) {
                   onClick={() =>
                     handleFilterChange({ ...activeFilters, categoryIds: [] })
                   }
-                  className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
+                  className={`shrink-0 whitespace-nowrap min-h-11 flex items-center px-4 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
                     (activeFilters.categoryIds?.length ?? 0) === 0
                       ? "bg-[#D4AF37] text-black"
                       : "border border-white/12 text-white/60 hover:border-white/30 hover:text-white"
@@ -317,7 +317,7 @@ export default function BogatMaterialsClient({ initialData }) {
                           categoryIds: [cat.id],
                         })
                       }
-                      className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
+                      className={`shrink-0 whitespace-nowrap min-h-11 flex items-center px-4 rounded-sm text-[12px] font-medium tracking-wide transition-colors ${
                         active
                           ? "bg-[#D4AF37] text-black"
                           : "border border-white/12 text-white/60 hover:border-white/30 hover:text-white"

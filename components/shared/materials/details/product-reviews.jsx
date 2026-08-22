@@ -98,7 +98,7 @@ function WriteReviewForm({ productId, onDone }) {
             onClick={() => setRating(n)}
             onMouseEnter={() => setHoverRating(n)}
             onMouseLeave={() => setHoverRating(0)}
-            className="p-1"
+            className="min-w-11 min-h-11 flex items-center justify-center"
             aria-label={`${n} star${n > 1 ? "s" : ""}`}
           >
             <Star

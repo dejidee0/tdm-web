@@ -71,7 +71,7 @@ export default function SimilarStyles({ materials = [] }) {
             whileTap={{ scale: 0.9 }}
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
-            className={`w-10 h-10 flex items-center justify-center rounded-full border-2 transition-colors ${
+            className={`w-11 h-11 flex items-center justify-center rounded-full border-2 transition-colors ${
               canScrollLeft
                 ? "border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
                 : "border-white/10 text-white/20 cursor-not-allowed"
@@ -85,7 +85,7 @@ export default function SimilarStyles({ materials = [] }) {
             whileTap={{ scale: 0.9 }}
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
-            className={`w-10 h-10 flex items-center justify-center rounded-full border-2 transition-colors ${
+            className={`w-11 h-11 flex items-center justify-center rounded-full border-2 transition-colors ${
               canScrollRight
                 ? "border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
                 : "border-white/10 text-white/20 cursor-not-allowed"

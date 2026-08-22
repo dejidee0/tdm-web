@@ -71,7 +71,7 @@ function CollectionsFilter({
     <button
       key={id ?? "all"}
       onClick={() => select(id)}
-      className={`flex w-full items-center justify-between gap-3 rounded-sm px-3 py-2.5 text-left transition-colors ${
+      className={`flex w-full min-h-11 items-center justify-between gap-3 rounded-sm px-3 text-left transition-colors ${
         active
           ? "bg-[#D4AF37]/8 text-white"
           : "text-white/55 hover:bg-white/3 hover:text-white/85"
