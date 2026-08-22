@@ -33,48 +33,54 @@ const TRUST_CHIPS = [
   { Icon: Headphones, label: "Expert Advice" },
 ];
 
+// Bogat's real signature collections — all bathroom vanity/stone, matching
+// the client audit's required positioning. Sourced from the live category
+// data (parent "Bathroom", 7 children); hrefs use each collection's real
+// slug, which app/(user)/bogat/materials/client.jsx resolves to a category
+// id and applies as a filter. Do not add categories that don't exist in the
+// live catalogue (Bogat has no separate tiles/doors/general-materials line).
 const CATEGORIES = [
   {
-    Icon: Layers,
-    label: "Tiles & Stone",
-    href: "/bogat/materials?category=tiles",
-    image: "/site-images/web/staircase-after.jpg",
-    description: "Large format tiles, porcelain, ceramic & more.",
-  },
-  {
-    Icon: Droplets,
-    label: "Bathroom Fittings",
-    href: "/bogat/materials?category=bathroom",
+    Icon: Diamond,
+    label: "Eclat Atelier",
+    href: "/bogat/materials?category=eclat-atelier",
     image: "/site-images/web/bathroom-2-after.jpg",
-    description: "Premium taps, showers, mixers & accessories.",
-  },
-  {
-    Icon: Bath,
-    label: "Sanitary Ware",
-    href: "/bogat/materials?category=sanitary",
-    image: "/site-images/web/bathroom-1-after.jpg",
-    description: "Elegant, durable and hygienic solutions.",
-  },
-  {
-    Icon: DoorOpen,
-    label: "Doors & Hardware",
-    href: "/bogat/materials?category=doors",
-    image: "/site-images/web/interior-finished.jpg",
-    description: "Security, style and durability in every detail.",
+    description: "Complete luxury vanity systems.",
   },
   {
     Icon: Gem,
-    label: "Accessories",
-    href: "/bogat/materials?category=accessories",
-    image: "/site-images/web/patio-after.jpg",
-    description: "Complements that define your space.",
+    label: "Joaillerie Stone",
+    href: "/bogat/materials?category=joaillerie-stone",
+    image: "/site-images/web/bathroom-1-after.jpg",
+    description: "Stone & cabinet editions.",
   },
   {
-    Icon: Diamond,
-    label: "Marble & Quartz",
-    href: "/bogat/materials?category=marble",
+    Icon: Layers,
+    label: "Monolithe Prive",
+    href: "/bogat/materials?category=monolithe-prive",
+    image: "/site-images/web/staircase-after.jpg",
+    description: "Illuminated stone vanities.",
+  },
+  {
+    Icon: Droplets,
+    label: "Levitation Royale",
+    href: "/bogat/materials?category=levitation-royale",
     image: "/site-images/web/kitchen-island.jpg",
-    description: "Natural stone, engineered for perfection.",
+    description: "Light floating basins.",
+  },
+  {
+    Icon: Bath,
+    label: "Maison Sculptee",
+    href: "/bogat/materials?category=maison-sculptee",
+    image: "/site-images/web/interior-finished.jpg",
+    description: "Vessel & double vanity collection.",
+  },
+  {
+    Icon: DoorOpen,
+    label: "Terra Sculpte",
+    href: "/bogat/materials?category=terra-sculpte",
+    image: "/site-images/web/patio-after.jpg",
+    description: "Organic & artisan stone forms.",
   },
 ];
 

@@ -262,6 +262,11 @@ export default function ProductCard({ product, viewMode = "grid" }) {
             reviewCount={product.reviewCount}
             className="mt-1"
           />
+          {product.shortDescription && (
+            <p className="mt-1.5 text-[13px] text-white/45 line-clamp-2 font-manrope">
+              {product.shortDescription}
+            </p>
+          )}
 
           <div className="mt-auto pt-4">
             <div className="flex items-baseline gap-2">

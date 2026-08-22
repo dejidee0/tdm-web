@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
@@ -146,6 +146,7 @@ export default function BogatMaterialsClient({ initialData }) {
         .filter((c) => c.parentCategoryId != null)
         .map((c) => ({
           id: c.id,
+          slug: c.slug,
           name: c.name,
           count: c.productCount ?? 0,
           displayOrder: c.displayOrder ?? 0,
@@ -153,6 +154,27 @@ export default function BogatMaterialsClient({ initialData }) {
         .sort((a, b) => a.displayOrder - b.displayOrder),
     [bogatCategories],
   );
+
+  // The Bogat landing page links to a collection by slug (?category=<slug>),
+  // a stable, human-readable value it can hardcode. Categories only carry
+  // their real id once bogatCategories has loaded, so this resolves the slug
+  // to an id and applies it once, the same way `search` is read from the URL
+  // above. Runs once per slug — a category slug removed from the URL later
+  // (e.g. the user clears the filter) does not re-trigger it.
+  const categoryParam = searchParams.get("category");
+  const appliedCategoryParam = useRef(null);
+  useEffect(() => {
+    if (!categoryParam || categoryParam === appliedCategoryParam.current) return;
+    const match = categories.find((c) => c.slug === categoryParam);
+    if (!match) return;
+    appliedCategoryParam.current = categoryParam;
+    setActiveFilters((prev) =>
+      prev.categoryIds.includes(match.id)
+        ? prev
+        : { ...prev, categoryIds: [match.id] },
+    );
+    setCurrentPage(1);
+  }, [categoryParam, categories]);
 
   const handleFilterChange = useCallback((newFilters) => {
     setActiveFilters(newFilters);
