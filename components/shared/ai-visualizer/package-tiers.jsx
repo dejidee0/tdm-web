@@ -265,10 +265,10 @@ const TIERS = [
     badge: "Full Access",
     features: [
       "Unlimited generations",
-      "Full material mapping (BOQ)",
+      "Full material mapping (BOQ) — Coming Soon",
       "Detailed cost breakdown",
-      "Start Project with TBM",
-      "Buy Materials via Bogat",
+      "Start Project with TBM — Coming Soon",
+      "Buy Materials via Bogat — Coming Soon",
       "Execution-ready output",
     ],
   },
@@ -604,7 +604,7 @@ export default function PackageTiers({ id, onSubscribed }) {
                   <button
                     key={cycle}
                     onClick={() => setBilling(cycle)}
-                    className="relative px-5 py-2 text-sm font-semibold transition-colors font-manrope text-black"
+                    className="relative min-h-11 px-5 py-2 text-sm font-semibold transition-colors font-manrope text-black"
                     style={
                       billing === cycle
                         ? {
@@ -662,7 +662,7 @@ export default function PackageTiers({ id, onSubscribed }) {
                   <button
                     onClick={handleApplyPromo}
                     disabled={!promoInput.trim() || priceLoading}
-                    className="px-4 py-2 text-sm font-semibold font-manrope text-white disabled:opacity-40 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
+                    className="min-h-11 px-4 py-2 text-sm font-semibold font-manrope text-white disabled:opacity-40 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
                     style={{
                       background: "linear-gradient(180deg, #E8C230 0%, #B8940A 100%)",
                       boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 0 14px rgba(212,175,55,0.22)",

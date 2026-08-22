@@ -619,6 +619,20 @@ export default function StudioView() {
               >
                 View my designs
               </button>
+              <div className="mt-3 flex flex-col sm:flex-row items-center gap-3">
+                <Link
+                  href="/contact?type=estimate"
+                  className="rounded-xl border border-white/15 px-6 py-3 text-sm font-semibold text-white/70 hover:border-white/30 hover:text-white transition-colors"
+                >
+                  Continue to Estimate
+                </Link>
+                <Link
+                  href="/consultation"
+                  className="rounded-xl border border-white/15 px-6 py-3 text-sm font-semibold text-white/70 hover:border-white/30 hover:text-white transition-colors"
+                >
+                  Start Project with TBM
+                </Link>
+              </div>
             </>
           )}
 

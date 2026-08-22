@@ -3,7 +3,7 @@ import AIVisualizerView from "@/components/shared/ai-visualizer/visualizer-view"
 export const metadata = {
   title: "Ziora AI — Design, Visualize & Know the Cost Before You Build",
   description:
-    "Ziora AI by TBM creates stunning 3D interior designs and generates accurate project cost estimates in minutes. Upload a room photo, choose a style, and get a full breakdown — smart, fast, accurate.",
+    "Ziora AI by TBM creates 3D interior designs and generates project cost estimate ranges. Upload a room photo, choose a style, and see what's possible before you build.",
   keywords: [
     "Ziora AI",
     "AI interior design Nigeria",
@@ -19,7 +19,7 @@ export const metadata = {
     title:
       "Ziora AI — Design, Visualize & Know the Cost | TBM Building Services",
     description:
-      "See your space redesigned before a single tile is laid. 3D designs + instant cost estimates. Powered by Ziora AI.",
+      "See your space redesigned before a single tile is laid. 3D designs + cost estimate ranges. Powered by Ziora AI.",
     type: "website",
   },
 };
