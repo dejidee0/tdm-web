@@ -34,11 +34,14 @@ async function fetchProducts(filters, page, pageSize = 12) {
   params.set("pageNumber", String(page));
   params.set("pageSize", String(pageSize));
   params.set("ActiveOnly", "true");
+  // This page is Bogat's own shop — it must never show TBM's general
+  // product catalogue. The sidebar here uses the "collections" variant,
+  // which has no brand toggle, so filters.brandTypes is always empty;
+  // brandType is forced rather than left to depend on that being set.
+  params.set("brandType", String(BOGAT_BRAND_TYPE));
 
   if (filters.categoryIds?.length === 1)
     params.set("categoryId", filters.categoryIds[0]);
-  if (filters.brandTypes?.length === 1)
-    params.set("brandType", String(filters.brandTypes[0]));
   if (filters.productTypes?.length === 1)
     params.set("productType", String(filters.productTypes[0]));
   if (filters.searchTerm) params.set("searchTerm", filters.searchTerm);
@@ -407,7 +410,7 @@ export default function BogatMaterialsClient({ initialData }) {
                 <div className="flex items-center gap-px border border-white/10 p-1">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`p-1.5 transition-colors ${viewMode === "grid" ? "bg-white/10" : "hover:bg-white/05"}`}
+                    className={`min-w-11 min-h-11 flex items-center justify-center transition-colors ${viewMode === "grid" ? "bg-white/10" : "hover:bg-white/05"}`}
                   >
                     <svg className="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -415,7 +418,7 @@ export default function BogatMaterialsClient({ initialData }) {
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`p-1.5 transition-colors ${viewMode === "list" ? "bg-white/10" : "hover:bg-white/05"}`}
+                    className={`min-w-11 min-h-11 flex items-center justify-center transition-colors ${viewMode === "list" ? "bg-white/10" : "hover:bg-white/05"}`}
                   >
                     <svg className="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />

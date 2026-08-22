@@ -21,6 +21,7 @@ import {
   ShoppingCart,
   PackageSearch,
   BookOpen,
+  Sparkles,
 } from "lucide-react";
 import Reveal from "@/components/common/reveal";
 
@@ -81,6 +82,13 @@ const CATEGORIES = [
     href: "/bogat/materials?category=terra-sculpte",
     image: "/site-images/web/patio-after.jpg",
     description: "Organic & artisan stone forms.",
+  },
+  {
+    Icon: Sparkles,
+    label: "Symphonie Deux",
+    href: "/bogat/materials?category=symphonie-deux",
+    image: "/site-images/web/villa-modern-after.jpg",
+    description: "Statement stone collection.",
   },
 ];
 
@@ -295,7 +303,7 @@ export default function BogatClient() {
         className="border-y border-white/[0.08]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 md:grid-cols-6 divide-x divide-white/[0.08]">
+          <div className="grid grid-cols-3 md:grid-cols-7 divide-x divide-white/[0.08]">
             {CATEGORIES.map(({ Icon, label, href }) => (
               <Link
                 key={label}

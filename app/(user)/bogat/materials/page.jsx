@@ -34,8 +34,11 @@ export const metadata = {
 
 async function getInitialProducts() {
   try {
+    // brandType=2 (Bogat) — this is Bogat's own shop and must never
+    // server-render TBM's general product catalogue, even before the
+    // client-side query (which forces the same filter) takes over.
     const res = await fetch(
-      `${API_URL}/products?pageNumber=1&pageSize=12&ActiveOnly=true`,
+      `${API_URL}/products?pageNumber=1&pageSize=12&ActiveOnly=true&brandType=2`,
       { next: { revalidate: 60 } },
     );
     if (!res.ok) return null;

@@ -386,7 +386,7 @@ export default function MaterialDetailClient({
                   whileTap={{ scale: savedLoading ? 1 : 0.9 }}
                   onClick={handleToggleSave}
                   disabled={savedLoading || toggleSave.isPending}
-                  className="shrink-0 w-10 h-10 flex items-center justify-center transition-colors disabled:opacity-50"
+                  className="shrink-0 w-11 h-11 flex items-center justify-center transition-colors disabled:opacity-50"
                   aria-label={isSaved ? "Remove from saved" : "Save product"}
                 >
                   <Heart
@@ -542,7 +542,7 @@ export default function MaterialDetailClient({
                     <div className="flex items-center border border-white/10 rounded-sm overflow-hidden">
                       <button
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                        className="w-10 h-10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
+                        className="w-11 h-11 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
                       >
                         −
                       </button>
@@ -557,7 +557,7 @@ export default function MaterialDetailClient({
                               : q + 1,
                           )
                         }
-                        className="w-10 h-10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
+                        className="w-11 h-11 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/05 transition-colors text-lg font-medium"
                       >
                         +
                       </button>
