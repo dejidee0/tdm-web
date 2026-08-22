@@ -116,10 +116,11 @@ export const portfolioKeys = {
   categories: () => ["portfolio", "categories"],
 };
 
-export function usePortfolio(params = {}) {
+export function usePortfolio({ enabled = true, ...params } = {}) {
   return useQuery({
     queryKey: portfolioKeys.list(params),
     queryFn: () => projectsApi.getPortfolio(params),
+    enabled,
     staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     select: (res) => ({
