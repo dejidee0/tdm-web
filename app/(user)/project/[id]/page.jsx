@@ -173,7 +173,7 @@ export default function PortfolioDetailPage() {
         {isError && (
           <div className="text-center py-24">
             <p className="text-white/40 font-manrope text-sm">Could not load this project. Please try again.</p>
-            <button onClick={() => router.back()} className="mt-4 text-[#D4AF37] text-sm font-manrope hover:underline">
+            <button onClick={() => router.back()} className="inline-flex items-center justify-center min-h-11 mt-4 text-[#D4AF37] text-sm font-manrope hover:underline">
               Back to Past Projects
             </button>
           </div>
@@ -185,7 +185,7 @@ export default function PortfolioDetailPage() {
             {/* Back link */}
             <button
               onClick={() => router.back()}
-              className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-manrope mb-8"
+              className="inline-flex items-center gap-2 min-h-11 text-white/40 hover:text-white transition-colors text-sm font-manrope mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Past Projects
