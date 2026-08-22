@@ -61,8 +61,8 @@ export default function FinalCTA() {
         </h2>
 
         <p className="mt-7 text-white/70 text-base leading-relaxed max-w-lg mx-auto">
-          Upload one photo and see the space, the specification and the cost
-          together — then talk to the people who would build it.
+          Upload one photo and see the space and the specification — then talk
+          to the people who would build it.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">

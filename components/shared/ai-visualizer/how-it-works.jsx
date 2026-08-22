@@ -141,7 +141,7 @@ export default function HowItWorks() {
 
           <p className="mt-7 text-white/70 text-[15px] leading-relaxed max-w-md">
             No drawings to commission, no quotes to chase. Upload one photo and
-            see the design and the cost side by side.
+            see the design — cost estimates are coming soon.
           </p>
 
           <ActionBlock className="hidden lg:block mt-10" />

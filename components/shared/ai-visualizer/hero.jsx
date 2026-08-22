@@ -95,7 +95,7 @@ const ACTS = [
   {
     id: "build",
     word: "Build.",
-    line: "Every concept comes costed to Nigerian market rates, broken out line by line.",
+    line: "Cost estimates to Nigerian market rates, broken out line by line — coming soon.",
   },
 ];
 

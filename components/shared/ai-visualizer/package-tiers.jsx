@@ -268,7 +268,7 @@ const TIERS = [
       "Full material mapping (BOQ) — Coming Soon",
       "Detailed cost breakdown — Coming Soon",
       "Start Project with TBM — Coming Soon",
-      "Buy Materials via Bogat — Coming Soon",
+      "Buy Bathroom Vanities via Bogat — Coming Soon",
       "Execution-ready output",
     ],
   },
