@@ -213,7 +213,7 @@ export default function PortfolioPage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1 || isFetching}
-                    className="flex items-center gap-1.5 px-4 py-2 text-sm font-manrope text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center gap-1.5 min-h-11 px-4 text-sm font-manrope text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="w-4 h-4" /> Prev
                   </button>
@@ -223,7 +223,7 @@ export default function PortfolioPage() {
                   <button
                     onClick={() => setPage((p) => p + 1)}
                     disabled={!hasMore || isFetching}
-                    className="flex items-center gap-1.5 px-4 py-2 text-sm font-manrope text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center gap-1.5 min-h-11 px-4 text-sm font-manrope text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     Next <ChevronRight className="w-4 h-4" />
                   </button>
@@ -241,7 +241,7 @@ function FilterBtn({ children, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-manrope font-medium border transition-colors duration-200 whitespace-nowrap ${
+      className={`shrink-0 flex items-center justify-center min-h-11 px-4 rounded-full text-xs font-manrope font-medium border transition-colors duration-200 whitespace-nowrap ${
         active
           ? "bg-[#D4AF37] text-black border-[#D4AF37]"
           : "bg-transparent text-white/50 border-white/15 hover:text-white hover:border-white/30"
