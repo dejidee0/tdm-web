@@ -312,7 +312,7 @@ export default function Navbar() {
                   {/* Login — solid white fill */}
                   <Link
                     href="/sign-in"
-                    className="px-5 py-2 rounded-lg bg-white text-black text-[13px] font-manrope font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200"
+                    className="inline-flex items-center min-h-11 px-5 py-2 rounded-lg bg-white text-black text-[13px] font-manrope font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200"
                   >
                     Login
                   </Link>
@@ -320,7 +320,7 @@ export default function Navbar() {
                   {/* Book Consultation — solid gold fill */}
                   <Link
                     href="/consultation"
-                    className="px-5 py-2 rounded-lg bg-[#D4AF37] text-black text-[13px] font-manrope font-semibold tracking-wide hover:bg-gold-dim transition-colors duration-200"
+                    className="inline-flex items-center min-h-11 px-5 py-2 rounded-lg bg-[#D4AF37] text-black text-[13px] font-manrope font-semibold tracking-wide hover:bg-gold-dim transition-colors duration-200"
                   >
                     Book Consultation
                   </Link>

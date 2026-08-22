@@ -698,7 +698,7 @@ export default function PackageTiers({ id, onSubscribed }) {
                   )}
                   <button
                     onClick={handleRemovePromo}
-                    className="text-xs text-white/50 hover:text-white underline font-manrope transition-colors"
+                    className="inline-flex items-center min-h-11 text-xs text-white/50 hover:text-white underline font-manrope transition-colors"
                   >
                     Remove
                   </button>
