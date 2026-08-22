@@ -46,7 +46,7 @@ const SERVICES = [
       },
       {
         q: "Can I supply my own materials?",
-        a: "Yes, but we recommend sourcing through Bogat to ensure quality and warranty coverage.",
+        a: "Yes. For bathroom vanities and sanitaryware specifically, we recommend sourcing through Bogat for quality and warranty coverage.",
       },
     ],
   },
@@ -73,7 +73,7 @@ const SERVICES = [
     faqs: [
       {
         q: "Do you handle FF&E procurement?",
-        a: "Yes — we can coordinate furniture, fixtures, and equipment sourcing through Bogat or third-party suppliers.",
+        a: "Yes — we can coordinate furniture and equipment sourcing through trusted third-party suppliers, and bathroom fixtures through Bogat.",
       },
     ],
   },
@@ -130,7 +130,7 @@ const SERVICES = [
     faqs: [
       {
         q: "Do you supply kitchen units?",
-        a: "Yes — we can supply through Bogat or work with your chosen brand.",
+        a: "Yes — we can supply through our trusted kitchen partners or work with your chosen brand.",
       },
     ],
   },
