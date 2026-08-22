@@ -41,6 +41,8 @@ const BUDGETS = [
 
 const CONTACT_METHODS = ["WhatsApp", "Email", "Phone Call", "Video Call", "In-Person"];
 
+const LOCATIONS = ["Abuja", "Lagos", "Other"];
+
 const FAQS = [
   {
     q: "How quickly can I schedule a consultation?",
@@ -76,6 +78,8 @@ function ContactPageInner() {
   const [isBudgetOpen, setIsBudgetOpen] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [isMethodOpen, setIsMethodOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -119,6 +123,7 @@ function ContactPageInner() {
       message: formData.message.trim(),
       budget: selectedBudget || undefined,
       preferredContact: selectedMethod || undefined,
+      location: selectedLocation || undefined,
       pipeline: selectedType.pipeline,
     };
 
@@ -149,6 +154,7 @@ function ContactPageInner() {
       setSelectedType(FORM_TYPES[0]);
       setSelectedBudget("");
       setSelectedMethod("");
+      setSelectedLocation("");
     } catch (err) {
       showToast.error({
         title: "Network Error",
@@ -214,7 +220,7 @@ function ContactPageInner() {
                   </div>
                   <span className="text-white/40 text-xs font-bold uppercase tracking-widest">Call</span>
                 </div>
-                <a href="tel:+2349066913241" className="text-white text-sm font-bold hover:text-[#D4AF37] transition-colors">
+                <a href="tel:+2349066913241" className="inline-flex items-center min-h-11 -my-2 py-2 text-white text-sm font-bold hover:text-[#D4AF37] transition-colors">
                   (+234) 906-691-3241
                 </a>
               </div>
@@ -230,7 +236,7 @@ function ContactPageInner() {
                   href="https://wa.me/2349066913241"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-400 text-sm font-bold hover:text-green-300 transition-colors"
+                  className="inline-flex items-center min-h-11 -my-2 py-2 text-green-400 text-sm font-bold hover:text-green-300 transition-colors"
                 >
                   Chat Now
                 </a>
@@ -243,7 +249,7 @@ function ContactPageInner() {
                   </div>
                   <span className="text-white/40 text-xs font-bold uppercase tracking-widest">Email</span>
                 </div>
-                <a href="mailto:info@tbmbuilding.com" className="text-white text-sm font-bold hover:text-[#D4AF37] transition-colors break-all">
+                <a href="mailto:info@tbmbuilding.com" className="inline-flex items-center min-h-11 -my-2 py-2 text-white text-sm font-bold hover:text-[#D4AF37] transition-colors break-all">
                   info@tbmbuilding.com
                 </a>
               </div>
@@ -348,8 +354,43 @@ function ContactPageInner() {
                 className={inputClass}
               />
 
-              {/* Budget + preferred contact */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Location + budget + preferred contact */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsLocationOpen(!isLocationOpen)}
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 sm:py-4 text-left text-sm sm:text-base flex items-center justify-between focus:outline-none focus:border-[#D4AF37]/50 transition-colors"
+                  >
+                    <span className={selectedLocation ? "text-white" : "text-white/25"}>
+                      {selectedLocation || "Location"}
+                    </span>
+                    <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${isLocationOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isLocationOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        className="absolute z-20 w-full mt-2 rounded-xl overflow-hidden border border-white/10"
+                        style={{ background: "#0d0b08" }}
+                      >
+                        {LOCATIONS.map((l, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => { setSelectedLocation(l); setIsLocationOpen(false); }}
+                            className="w-full px-4 py-3 text-left hover:bg-white/05 text-white/70 hover:text-white text-sm transition-colors"
+                          >
+                            {l}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <div className="relative">
                   <button
                     type="button"
