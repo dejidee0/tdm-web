@@ -398,7 +398,7 @@ export default function Hero() {
               className="mt-6 text-white/70 text-[13px] leading-relaxed max-w-sm"
             >
               Explore without an account. You&rsquo;ll only need one to save a
-              design, request a detailed estimate or book a consultation.
+              design or book a consultation.
             </motion.p>
           </motion.div>
 

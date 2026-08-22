@@ -61,15 +61,15 @@ const STATS = [{ value: "~3 min", label: "Photo to first render" }];
 const TRUST = [
   {
     title: "Costed to Nigerian market rates",
-    body: "Not a global average converted at today's rate. The figures track what materials and labour actually cost here.",
+    body: "Not a global average converted at today's rate. The figures will track what materials and labour actually cost here.",
   },
   {
     title: "Broken out line by line",
-    body: "Structure, finishes and materials are separated, so you can see where the money goes and what moves if you change your mind.",
+    body: "Structure, finishes and materials will be separated, so you can see where the money goes and what moves if you change your mind.",
   },
   {
     title: "Re-costed when the design changes",
-    body: "Revise the concept and the estimate follows it. The number is attached to the design, not to a document that goes stale.",
+    body: "Revise the concept and the estimate will follow it. The number is attached to the design, not to a document that goes stale.",
   },
 ];
 
@@ -191,8 +191,8 @@ export default function ActBuild() {
             <hr className="z-rule my-9" />
 
             <p className="text-white/70 text-[15px] leading-relaxed">
-              And when it is time to build, the estimate is not the end of the
-              conversation — TBM built the house at the top of this page.
+              And when it is time to build, the design is only the start of
+              the conversation — TBM built the house at the top of this page.
             </p>
 
             <div className="mt-7 flex flex-col sm:flex-row gap-3">

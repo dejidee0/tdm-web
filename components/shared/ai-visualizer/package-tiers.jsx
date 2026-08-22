@@ -580,7 +580,7 @@ export default function PackageTiers({ id, onSubscribed }) {
             <p className="text-white/70 text-base max-w-xl font-manrope">
               {currentTier && isActive
                 ? "You're all set. Manage your subscription or upgrade below."
-                : "Start free and upgrade when you're ready for deeper design power, cost estimates, and full project execution."}
+                : "Start free and upgrade when you're ready for deeper design power and full project execution."}
             </p>
           </motion.div>
 

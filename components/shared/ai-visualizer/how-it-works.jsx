@@ -133,7 +133,7 @@ export default function HowItWorks() {
           <span className="z-eyebrow mb-5">How Ziora Works</span>
 
           <h2 className="font-primary text-[2.25rem] sm:text-5xl xl:text-[3.5rem] font-bold text-white tracking-tight leading-[1.05]">
-            From idea to estimate
+            From idea to design
             <span className="block" style={GOLD_TEXT}>
               in four steps
             </span>
