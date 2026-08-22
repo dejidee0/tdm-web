@@ -30,7 +30,7 @@ import Reveal from "@/components/common/reveal";
 const TRUST_CHIPS = [
   { Icon: Diamond, label: "Premium Quality" },
   { Icon: Shield, label: "Verified Authentic" },
-  { Icon: Truck, label: "On-Time Delivery" },
+  { Icon: Truck, label: "Reliable Delivery" },
   { Icon: Headphones, label: "Expert Advice" },
 ];
 
