@@ -140,7 +140,20 @@ function ContactPageInner() {
       try { json = JSON.parse(rawText); } catch {}
 
       if (!res.ok) {
-        const errMsg = json?.message || json?.title || rawText || `Server returned ${res.status}`;
+        // Two known-safe shapes: json?.message from the backend's own
+        // envelope ({ success, message, data, errors }), and json?.errors
+        // from an ASP.NET validation ProblemDetails response — both are
+        // user-facing-safe text about the submitted data, not internals.
+        // Never fall back to json?.title, json?.traceId, or the raw
+        // response body — those can carry a stack frame or other internal
+        // detail from an unhandled server error.
+        const firstValidationError = json?.errors
+          ? Object.values(json.errors).flat()[0]
+          : null;
+        const errMsg =
+          json?.message ||
+          firstValidationError ||
+          "Something went wrong. Please try again.";
         showToast.error({ title: `Error ${res.status}`, message: errMsg });
         return;
       }
@@ -156,9 +169,11 @@ function ContactPageInner() {
       setSelectedMethod("");
       setSelectedLocation("");
     } catch (err) {
+      // Never render the raw caught exception's message — it can be a
+      // browser/runtime-internal string, not something safe to show a user.
       showToast.error({
         title: "Network Error",
-        message: err.message || "Unable to send message. Please check your connection.",
+        message: "Unable to send message. Please check your connection.",
       });
     } finally {
       setIsSubmitting(false);
