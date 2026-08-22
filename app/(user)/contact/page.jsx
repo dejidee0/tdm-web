@@ -22,12 +22,22 @@ import { showToast } from "@/components/shared/toast";
 const API_BASE = "/api/v1";
 
 const FORM_TYPES = [
-  { key: "consultation", label: "Book a Consultation", pipeline: "Renovation Lead" },
-  { key: "estimate", label: "Get a Project Estimate", pipeline: "Renovation Lead" },
+  { key: "consultation", label: "Book a Consultation", pipeline: "Book Project" },
+  { key: "estimate", label: "Get a Project Estimate", pipeline: "Estimate Request" },
   { key: "product", label: "Product / Material Inquiry", pipeline: "Product Inquiry" },
-  { key: "ziora", label: "Ziora AI Inquiry", pipeline: "Ziora Lead" },
+  { key: "ziora", label: "Ziora AI Inquiry", pipeline: "Design Inquiry" },
   { key: "partnership", label: "Partnership / Vendor Inquiry", pipeline: "Partnership" },
   { key: "other", label: "General Inquiry", pipeline: "General" },
+];
+
+const PROJECT_TYPES = [
+  "Kitchen Renovation",
+  "Bathroom Renovation",
+  "Full Home Renovation",
+  "New Construction",
+  "Interior Fit-Out",
+  "Exterior / Outdoor",
+  "Other",
 ];
 
 const BUDGETS = [
@@ -80,6 +90,8 @@ function ContactPageInner() {
   const [isMethodOpen, setIsMethodOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [selectedProjectType, setSelectedProjectType] = useState("");
+  const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -124,6 +136,7 @@ function ContactPageInner() {
       budget: selectedBudget || undefined,
       preferredContact: selectedMethod || undefined,
       location: selectedLocation || undefined,
+      projectType: selectedProjectType || undefined,
       pipeline: selectedType.pipeline,
     };
 
@@ -168,6 +181,7 @@ function ContactPageInner() {
       setSelectedBudget("");
       setSelectedMethod("");
       setSelectedLocation("");
+      setSelectedProjectType("");
     } catch (err) {
       // Never render the raw caught exception's message — it can be a
       // browser/runtime-internal string, not something safe to show a user.
@@ -369,8 +383,43 @@ function ContactPageInner() {
                 className={inputClass}
               />
 
-              {/* Location + budget + preferred contact */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Project type + location + budget + preferred contact */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsProjectTypeOpen(!isProjectTypeOpen)}
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 sm:py-4 text-left text-sm sm:text-base flex items-center justify-between focus:outline-none focus:border-[#D4AF37]/50 transition-colors"
+                  >
+                    <span className={selectedProjectType ? "text-white" : "text-white/25"}>
+                      {selectedProjectType || "Project Type"}
+                    </span>
+                    <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${isProjectTypeOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isProjectTypeOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        className="absolute z-20 w-full mt-2 rounded-xl overflow-hidden border border-white/10"
+                        style={{ background: "#0d0b08" }}
+                      >
+                        {PROJECT_TYPES.map((p, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => { setSelectedProjectType(p); setIsProjectTypeOpen(false); }}
+                            className="w-full px-4 py-3 text-left hover:bg-white/05 text-white/70 hover:text-white text-sm transition-colors"
+                          >
+                            {p}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <div className="relative">
                   <button
                     type="button"

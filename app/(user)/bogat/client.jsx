@@ -222,9 +222,8 @@ export default function BogatClient() {
               transition={{ duration: 0.5, delay: 0.16 }}
               className="text-white/50 text-[14px] sm:text-[17px] leading-relaxed mb-8 max-w-[85%]"
             >
-              We supply premium tiles, fittings, sanitary ware, marble, doors,
-              and accessories for luxury homes and commercial spaces across
-              Nigeria.
+              TBM&apos;s premium bathroom vanity, sanitaryware, and finishing
+              brand — for luxury homes and commercial spaces across Nigeria.
             </motion.p>
 
             <motion.div
