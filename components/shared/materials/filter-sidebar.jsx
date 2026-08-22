@@ -121,7 +121,7 @@ function CollectionsFilter({
             onSearchChange?.("");
           }}
           aria-label="Clear search"
-          className="absolute right-2.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+          className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/10 hover:text-white"
         >
           <X className="h-3.5 w-3.5" />
         </button>
@@ -139,7 +139,7 @@ function CollectionsFilter({
         <div className="mb-4 flex items-center gap-2">
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex flex-1 items-center justify-center gap-2 rounded-sm border border-white/12 px-4 py-2.5 text-sm font-medium text-white/80"
+            className="flex flex-1 min-h-11 items-center justify-center gap-2 rounded-sm border border-white/12 px-4 py-2.5 text-sm font-medium text-white/80"
           >
             <SlidersHorizontal className="h-4 w-4" />
             {selectedId
